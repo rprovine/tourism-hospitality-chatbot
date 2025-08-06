@@ -14,7 +14,7 @@ LeniLani Tourism & Hospitality AI Chatbot is a white-label SaaS solution designe
 
 ### Key Features
 
-- 🤖 **Intelligent AI Responses** - Context-aware conversations with guests
+- 🤖 **Claude AI Integration** - Powered by Anthropic's Claude for sophisticated, context-aware responses
 - 💼 **Multi-Tenant Architecture** - Supports multiple businesses with data isolation
 - 🎨 **Customizable Branding** - White-label solution with custom colors and messaging
 - 📊 **Analytics Dashboard** - Track conversations, satisfaction, and metrics
@@ -122,6 +122,7 @@ tourism-hospitality-chatbot/
 |----------|-------------|----------|
 | `DATABASE_URL` | Database connection string | Yes |
 | `JWT_SECRET` | Secret key for JWT tokens | Yes |
+| `ANTHROPIC_API_KEY` | Claude API key for enhanced AI | Recommended |
 | `STRIPE_SECRET_KEY` | Stripe API key (for payments) | No |
 | `SMTP_HOST` | Email server host | No |
 | `SMTP_PORT` | Email server port | No |
