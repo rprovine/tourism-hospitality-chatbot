@@ -149,22 +149,36 @@ export default function LandingPage() {
           <p className="text-lg text-gray-700">Choose the perfect plan for your business needs</p>
         </div>
         
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-lg overflow-hidden shadow-sm">
               <thead>
                 <tr className="border-b-2 border-gray-300 bg-gray-50">
-                  <th className="text-left py-4 px-4 font-medium text-gray-900">Features</th>
-                  <th className="text-center py-6 px-4 bg-white">
-                    <div className="font-bold text-xl text-gray-900">Starter</div>
-                    <div className="text-3xl font-extrabold text-gray-900 mt-2">$299<span className="text-lg font-normal text-gray-600">/mo</span></div>
+                  <th className="text-left py-4 px-4 font-medium text-gray-900 min-w-[200px]">Features</th>
+                  <th className="text-center py-6 px-4 bg-white min-w-[150px]">
+                    <div className="font-bold text-lg text-gray-900">Starter</div>
+                    <div className="text-2xl font-extrabold text-gray-900 mt-2">$299<span className="text-sm font-normal text-gray-600">/mo</span></div>
                   </th>
-                  <th className="text-center py-6 px-4 bg-cyan-50">
+                  <th className="text-center py-6 px-4 bg-cyan-50 min-w-[150px]">
                     <div className="inline-flex items-center gap-2 mb-2">
-                      <span className="font-bold text-xl text-gray-900">Professional</span>
-                      <span className="bg-gradient-to-r from-cyan-600 to-cyan-700 text-white text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide">Popular</span>
+                      <span className="font-bold text-lg text-gray-900">Professional</span>
+                      <span className="bg-gradient-to-r from-cyan-600 to-cyan-700 text-white text-xs px-2 py-1 rounded-full font-bold uppercase">Popular</span>
                     </div>
-                    <div className="text-3xl font-extrabold text-cyan-700">$899<span className="text-lg font-normal text-gray-600">/mo</span></div>
+                    <div className="text-2xl font-extrabold text-cyan-700">$899<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                  </th>
+                  <th className="text-center py-6 px-4 bg-purple-50 min-w-[150px]">
+                    <div className="inline-flex items-center gap-2 mb-2">
+                      <span className="font-bold text-lg text-gray-900">Premium</span>
+                      <span className="text-2xl">✨</span>
+                    </div>
+                    <div className="text-2xl font-extrabold text-purple-700">$2,499<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                  </th>
+                  <th className="text-center py-6 px-4 bg-gray-100 min-w-[150px]">
+                    <div className="inline-flex items-center gap-2 mb-2">
+                      <span className="font-bold text-lg text-gray-900">Enterprise</span>
+                      <span className="text-2xl">🏢</span>
+                    </div>
+                    <div className="text-2xl font-extrabold text-gray-900">Custom</div>
                   </th>
                 </tr>
               </thead>
@@ -180,10 +194,10 @@ export default function LandingPage() {
                           <X className="h-5 w-5 text-red-500 mx-auto" />
                         )
                       ) : (
-                        <span className="text-gray-800 font-medium">{feature.starter}</span>
+                        <span className="text-gray-800 text-sm">{feature.starter}</span>
                       )}
                     </td>
-                    <td className="text-center py-4 px-4">
+                    <td className="text-center py-4 px-4 bg-cyan-50/30">
                       {typeof feature.professional === 'boolean' ? (
                         feature.professional ? (
                           <Check className="h-5 w-5 text-green-700 mx-auto" />
@@ -191,7 +205,29 @@ export default function LandingPage() {
                           <X className="h-5 w-5 text-red-500 mx-auto" />
                         )
                       ) : (
-                        <span className="text-gray-900 font-medium">{feature.professional}</span>
+                        <span className="text-gray-900 text-sm font-medium">{feature.professional}</span>
+                      )}
+                    </td>
+                    <td className="text-center py-4 px-4 bg-purple-50/30">
+                      {typeof feature.premium === 'boolean' ? (
+                        feature.premium ? (
+                          <Check className="h-5 w-5 text-green-700 mx-auto" />
+                        ) : (
+                          <X className="h-5 w-5 text-red-500 mx-auto" />
+                        )
+                      ) : (
+                        <span className="text-purple-900 text-sm font-medium">{feature.premium}</span>
+                      )}
+                    </td>
+                    <td className="text-center py-4 px-4 bg-gray-50">
+                      {typeof feature.enterprise === 'boolean' ? (
+                        feature.enterprise ? (
+                          <Check className="h-5 w-5 text-green-700 mx-auto" />
+                        ) : (
+                          <X className="h-5 w-5 text-red-500 mx-auto" />
+                        )
+                      ) : (
+                        <span className="text-gray-900 text-sm font-medium">{feature.enterprise}</span>
                       )}
                     </td>
                   </tr>

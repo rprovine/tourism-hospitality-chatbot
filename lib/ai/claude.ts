@@ -53,19 +53,19 @@ export async function generateClaudeResponse(
     
     switch(context.tier) {
       case 'enterprise':
-        model = 'claude-3-opus-20240229'  // Most capable model for enterprise
+        model = 'claude-3-5-sonnet-20241022'  // Latest and most capable model for enterprise
         maxTokens = 2000  // Maximum context for complex operations
         break
       case 'premium':
-        model = 'claude-3-opus-20240229'  // Most capable model for premium tier
+        model = 'claude-3-5-sonnet-20241022'  // Latest and most capable model for premium
         maxTokens = 1000
         break
       case 'professional':
-        model = 'claude-3-sonnet-20240229'  // Balanced model for professional tier
+        model = 'claude-3-5-sonnet-20241022'  // Latest model for professional tier
         maxTokens = 500
         break
       default: // starter
-        model = 'claude-3-haiku-20240307'  // Fast, economical model for starter
+        model = 'claude-3-5-haiku-20241022'  // Fast, economical model for starter
         maxTokens = 200
     }
 

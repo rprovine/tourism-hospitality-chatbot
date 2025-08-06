@@ -17,10 +17,10 @@ export const tierComparison: TierFeature[] = [
   },
   {
     name: 'AI Model',
-    starter: 'Claude Haiku',
-    professional: 'Claude Sonnet',
-    premium: 'Claude Opus',
-    enterprise: 'Claude Opus + Custom'
+    starter: 'Claude 3.5 Haiku',
+    professional: 'Claude 3.5 Sonnet',
+    premium: 'Claude 3.5 Sonnet',
+    enterprise: 'Claude 3.5 Sonnet + Custom'
   },
   {
     name: 'Languages Supported',
@@ -174,7 +174,7 @@ export const pricingTiers: PricingTier[] = [
     description: 'Luxury tier for 5-star resorts & exclusive tours',
     features: [
       'Everything in Professional, plus:',
-      'Claude Opus AI model',
+      'Claude 3.5 Sonnet (1000 tokens)',
       'Dedicated account manager',
       'Custom AI training on your data',
       'Bespoke integrations',
