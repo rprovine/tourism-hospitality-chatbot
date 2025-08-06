@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Business/Organization model
+model Business {
+  id               String          @id @default(cuid())
+  email            String          @unique
+  password         String
+  name             String
+  type             String          // hotel, tour_operator, vacation_rental
+  tier             String          @default("starter") // starter, professional
+  
+  // Customization
+  primaryColor     String          @default("#0891b2")
+  logo             String?
+  welcomeMessage   String          @default("Aloha! How can I help you today?")
+  businessInfo     Json?           // address, phone, hours, etc.
+  
+  // Relations
+  conversations    Conversation[]
+  knowledgeBase    KnowledgeBase[]
+  subscription     Subscription?
+  analytics        Analytics[]
+  
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+// Subscription model
+model Subscription {
+  id               String          @id @default(cuid())
+  businessId       String          @unique
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  tier             String          // starter, professional
+  status           String          // active, canceled, past_due
+  stripeCustomerId String?
+  stripeSubscriptionId String?
+  
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  cancelAtPeriodEnd  Boolean       @default(false)
+  
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+// Conversation model
+model Conversation {
+  id               String          @id @default(cuid())
+  businessId       String
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  sessionId        String
+  userId           String?         // Optional user identifier
+  
+  messages         Message[]
+  metadata         Json?           // userLocation, language, etc.
+  
+  satisfaction     Int?            // 1-5 rating
+  resolved         Boolean         @default(false)
+  
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  
+  @@index([businessId])
+  @@index([sessionId])
+}
+
+// Message model
+model Message {
+  id               String          @id @default(cuid())
+  conversationId   String
+  conversation     Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  role             String          // user, assistant, system
+  content          String
+  metadata         Json?
+  
+  createdAt        DateTime        @default(now())
+  
+  @@index([conversationId])
+}
+
+// Knowledge Base model
+model KnowledgeBase {
+  id               String          @id @default(cuid())
+  businessId       String
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  category         String
+  question         String
+  answer           String
+  keywords         String          // Comma-separated keywords
+  isActive         Boolean         @default(true)
+  
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  
+  @@index([businessId])
+}
+
+// Analytics model
+model Analytics {
+  id               String          @id @default(cuid())
+  businessId       String
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  date             DateTime
+  
+  totalConversations Int           @default(0)
+  uniqueUsers      Int             @default(0)
+  avgResponseTime  Float           @default(0)
+  avgSatisfaction  Float           @default(0)
+  bookingsGenerated Int            @default(0)
+  
+  topQuestions     Json?           // Array of {question, count}
+  languageBreakdown Json?          // {en: 60, ja: 20, ...}
+  
+  createdAt        DateTime        @default(now())
+  
+  @@unique([businessId, date])
+  @@index([businessId])
+}
