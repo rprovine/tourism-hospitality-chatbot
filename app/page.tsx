@@ -21,7 +21,7 @@ import ChatWidget from '@/components/chatbot/ChatWidget'
 import { tierComparison, pricingTiers, useCases, sampleQuestions } from '@/lib/data/pricing'
 
 export default function LandingPage() {
-  const [selectedTier, setSelectedTier] = useState<'starter' | 'professional' | 'premium'>('starter')
+  const [selectedTier, setSelectedTier] = useState<'starter' | 'professional' | 'premium' | 'enterprise'>('starter')
   const [showDemo, setShowDemo] = useState(false)
   const [selectedQuestion, setSelectedQuestion] = useState('')
 
@@ -287,12 +287,22 @@ export default function LandingPage() {
           >
             Premium Demo ✨
           </Button>
+          <Button
+            variant={selectedTier === 'enterprise' ? 'default' : 'outline'}
+            onClick={() => setSelectedTier('enterprise')}
+            className={selectedTier === 'enterprise' ? 'bg-cyan-700 hover:bg-cyan-800 font-semibold' : 'font-medium'}
+          >
+            Enterprise Demo 🏢
+          </Button>
         </div>
 
         <Card className="max-w-4xl mx-auto">
           <CardHeader>
             <CardTitle>
-              {selectedTier === 'starter' ? 'Starter Tier' : selectedTier === 'professional' ? 'Professional Tier' : 'Premium Tier 👑'} Capabilities
+              {selectedTier === 'starter' ? 'Starter Tier' : 
+               selectedTier === 'professional' ? 'Professional Tier' : 
+               selectedTier === 'premium' ? 'Premium Tier 👑' : 
+               'Enterprise Tier 🏢'} Capabilities
             </CardTitle>
             <CardDescription>
               Try these sample questions to see the AI in action
@@ -425,7 +435,9 @@ export default function LandingPage() {
                 ? "Aloha! Welcome to our resort. How can I help you today?"
                 : selectedTier === 'professional'
                 ? "Aloha! I'm your AI concierge. I can help with bookings, recommendations, and answer any questions about your stay!"
-                : "Aloha and welcome to our exclusive luxury experience. I'm your personal AI concierge, available 24/7 to curate your perfect Hawaiian escape. How may I exceed your expectations today?"
+                : selectedTier === 'premium'
+                ? "Aloha and welcome to our exclusive luxury experience. I'm your personal AI concierge, available 24/7 to curate your perfect Hawaiian escape. How may I exceed your expectations today?"
+                : "Welcome to our enterprise hospitality platform. I'm your advanced AI assistant with access to all properties, loyalty programs, and corporate services. How may I assist with your multi-property or group requirements today?"
             }
             autoOpen={true}
             initialQuestion={selectedQuestion}

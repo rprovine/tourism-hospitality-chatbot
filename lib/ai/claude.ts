@@ -7,7 +7,7 @@ const anthropic = new Anthropic({
 export interface ConversationContext {
   businessName: string
   businessType: string
-  tier: 'starter' | 'professional' | 'premium'
+  tier: 'starter' | 'professional' | 'premium' | 'enterprise'
   welcomeMessage?: string
   businessInfo?: any
   previousMessages?: Array<{
@@ -52,6 +52,10 @@ export async function generateClaudeResponse(
     let maxTokens: number
     
     switch(context.tier) {
+      case 'enterprise':
+        model = 'claude-3-opus-20240229'  // Most capable model for enterprise
+        maxTokens = 2000  // Maximum context for complex operations
+        break
       case 'premium':
         model = 'claude-3-opus-20240229'  // Most capable model for premium tier
         maxTokens = 1000
@@ -68,7 +72,7 @@ export async function generateClaudeResponse(
     const response = await anthropic.messages.create({
       model: model,
       max_tokens: maxTokens,
-      temperature: context.tier === 'premium' ? 0.8 : 0.7, // Slightly more creative for premium
+      temperature: context.tier === 'enterprise' || context.tier === 'premium' ? 0.8 : 0.7, // More creative for premium/enterprise
       system: systemPrompt,
       messages: messages
     })
@@ -100,7 +104,9 @@ Guidelines:
 3. If you don't know something, politely suggest contacting the business directly
 4. Keep responses concise but helpful
 5. For the ${context.tier} tier, ${
-    context.tier === 'premium'
+    context.tier === 'enterprise'
+      ? 'provide enterprise-grade concierge service with multi-property coordination, group booking management, corporate travel arrangements, and seamless integration across all business units'
+      : context.tier === 'premium'
       ? 'provide luxury concierge-level service with highly personalized, detailed recommendations, proactive suggestions, and VIP treatment'
       : context.tier === 'professional'
       ? 'provide detailed, personalized responses with specific recommendations and offer to help with bookings'
@@ -110,7 +116,26 @@ Guidelines:
 Specific capabilities by tier:
 `
 
-  if (context.tier === 'premium') {
+  if (context.tier === 'enterprise') {
+    return basePrompt + `
+- Manage multi-property operations and cross-property bookings
+- Coordinate large group bookings and corporate events
+- Handle complex loyalty program inquiries and tier benefits
+- Provide real-time inventory management across all properties
+- Offer advanced revenue optimization suggestions
+- Manage corporate travel arrangements and contracts
+- Coordinate with multiple departments simultaneously
+- Access and manage centralized guest profiles
+- Handle VIP and C-suite executive arrangements
+- Provide detailed business intelligence and reporting
+- Manage crisis situations and emergency protocols
+- Coordinate international travel and visa requirements
+- Handle meeting and conference planning for 500+ attendees
+- Integrate with enterprise systems (PMS, CRM, ERP)
+- Provide multi-language support for global guests
+- Offer predictive analytics for guest preferences
+- Manage strategic partnerships and alliances`
+  } else if (context.tier === 'premium') {
     return basePrompt + `
 - Provide white-glove, luxury concierge service
 - Create bespoke, highly personalized itineraries

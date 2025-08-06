@@ -11,7 +11,7 @@ const registerSchema = z.object({
   password: z.string().min(8),
   businessName: z.string().min(2),
   businessType: z.enum(['hotel', 'tour_operator', 'vacation_rental']),
-  tier: z.enum(['starter', 'professional', 'premium']).default('starter')
+  tier: z.enum(['starter', 'professional', 'premium', 'enterprise']).default('starter')
 })
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
