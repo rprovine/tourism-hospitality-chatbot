@@ -21,7 +21,7 @@ import ChatWidget from '@/components/chatbot/ChatWidget'
 import { tierComparison, pricingTiers, useCases, sampleQuestions } from '@/lib/data/pricing'
 
 export default function LandingPage() {
-  const [selectedTier, setSelectedTier] = useState<'starter' | 'professional'>('starter')
+  const [selectedTier, setSelectedTier] = useState<'starter' | 'professional' | 'premium'>('starter')
   const [showDemo, setShowDemo] = useState(false)
   const [selectedQuestion, setSelectedQuestion] = useState('')
 
@@ -280,12 +280,19 @@ export default function LandingPage() {
           >
             Professional Demo
           </Button>
+          <Button
+            variant={selectedTier === 'premium' ? 'default' : 'outline'}
+            onClick={() => setSelectedTier('premium')}
+            className={selectedTier === 'premium' ? 'bg-cyan-700 hover:bg-cyan-800 font-semibold' : 'font-medium'}
+          >
+            Premium Demo ✨
+          </Button>
         </div>
 
         <Card className="max-w-4xl mx-auto">
           <CardHeader>
             <CardTitle>
-              {selectedTier === 'starter' ? 'Starter Tier' : 'Professional Tier'} Capabilities
+              {selectedTier === 'starter' ? 'Starter Tier' : selectedTier === 'professional' ? 'Professional Tier' : 'Premium Tier 👑'} Capabilities
             </CardTitle>
             <CardDescription>
               Try these sample questions to see the AI in action
@@ -416,7 +423,9 @@ export default function LandingPage() {
             welcomeMessage={
               selectedTier === 'starter' 
                 ? "Aloha! Welcome to our resort. How can I help you today?"
-                : "Aloha! I'm your AI concierge. I can help with bookings, recommendations, and answer any questions about your stay!"
+                : selectedTier === 'professional'
+                ? "Aloha! I'm your AI concierge. I can help with bookings, recommendations, and answer any questions about your stay!"
+                : "Aloha and welcome to our exclusive luxury experience. I'm your personal AI concierge, available 24/7 to curate your perfect Hawaiian escape. How may I exceed your expectations today?"
             }
             autoOpen={true}
             initialQuestion={selectedQuestion}

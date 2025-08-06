@@ -2,6 +2,7 @@ export interface TierFeature {
   name: string
   starter: boolean | string
   professional: boolean | string
+  premium?: boolean | string
 }
 
 export interface PricingTier {
@@ -49,7 +50,7 @@ export interface Business {
   id: string
   name: string
   type: 'hotel' | 'tour_operator' | 'vacation_rental'
-  tier: 'starter' | 'professional'
+  tier: 'starter' | 'professional' | 'premium'
   customization: {
     primaryColor: string
     logo?: string

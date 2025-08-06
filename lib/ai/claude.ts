@@ -7,7 +7,7 @@ const anthropic = new Anthropic({
 export interface ConversationContext {
   businessName: string
   businessType: string
-  tier: 'starter' | 'professional'
+  tier: 'starter' | 'professional' | 'premium'
   welcomeMessage?: string
   businessInfo?: any
   previousMessages?: Array<{
@@ -47,12 +47,28 @@ export async function generateClaudeResponse(
       content: userMessage
     })
 
+    // Select model based on tier
+    let model: string
+    let maxTokens: number
+    
+    switch(context.tier) {
+      case 'premium':
+        model = 'claude-3-opus-20240229'  // Most capable model for premium tier
+        maxTokens = 1000
+        break
+      case 'professional':
+        model = 'claude-3-sonnet-20240229'  // Balanced model for professional tier
+        maxTokens = 500
+        break
+      default: // starter
+        model = 'claude-3-haiku-20240307'  // Fast, economical model for starter
+        maxTokens = 200
+    }
+
     const response = await anthropic.messages.create({
-      model: context.tier === 'professional' 
-        ? 'claude-3-sonnet-20240229'  // Better model for professional tier
-        : 'claude-3-haiku-20240307',   // Faster, cheaper model for starter
-      max_tokens: context.tier === 'professional' ? 500 : 200,
-      temperature: 0.7,
+      model: model,
+      max_tokens: maxTokens,
+      temperature: context.tier === 'premium' ? 0.8 : 0.7, // Slightly more creative for premium
       system: systemPrompt,
       messages: messages
     })
@@ -83,14 +99,32 @@ Guidelines:
 2. Use "Aloha" spirit in your responses
 3. If you don't know something, politely suggest contacting the business directly
 4. Keep responses concise but helpful
-5. For the ${context.tier} tier, ${context.tier === 'professional' 
-    ? 'provide detailed, personalized responses with specific recommendations and offer to help with bookings' 
-    : 'provide basic information and general assistance'}
+5. For the ${context.tier} tier, ${
+    context.tier === 'premium'
+      ? 'provide luxury concierge-level service with highly personalized, detailed recommendations, proactive suggestions, and VIP treatment'
+      : context.tier === 'professional'
+      ? 'provide detailed, personalized responses with specific recommendations and offer to help with bookings'
+      : 'provide basic information and general assistance'
+  }
 
 Specific capabilities by tier:
 `
 
-  if (context.tier === 'professional') {
+  if (context.tier === 'premium') {
+    return basePrompt + `
+- Provide white-glove, luxury concierge service
+- Create bespoke, highly personalized itineraries
+- Offer exclusive experiences and VIP access
+- Arrange private tours, chefs, and luxury transportation
+- Provide detailed cultural insights and local expertise
+- Anticipate needs and make proactive suggestions
+- Handle complex multi-day trip planning
+- Coordinate with partner businesses for seamless experiences
+- Remember guest preferences across conversations
+- Offer insider tips and hidden gems known only to locals
+- Arrange special occasions (proposals, anniversaries, celebrations)
+- Provide 24/7 assistance mindset`
+  } else if (context.tier === 'professional') {
     return basePrompt + `
 - Offer to make reservations and bookings
 - Provide detailed local recommendations

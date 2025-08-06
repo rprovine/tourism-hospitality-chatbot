@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       {
         businessName: conversation.business.name,
         businessType: conversation.business.type,
-        tier: conversation.business.tier as 'starter' | 'professional',
+        tier: conversation.business.tier as 'starter' | 'professional' | 'premium',
         welcomeMessage: conversation.business.welcomeMessage,
         businessInfo: conversation.business.businessInfo,
         previousMessages: previousMessages.map(m => ({

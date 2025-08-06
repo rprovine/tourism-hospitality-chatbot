@@ -17,7 +17,7 @@ model Business {
   password         String
   name             String
   type             String          // hotel, tour_operator, vacation_rental
-  tier             String          @default("starter") // starter, professional
+  tier             String          @default("starter") // starter, professional, premium
   
   // Customization
   primaryColor     String          @default("#0891b2")
@@ -41,7 +41,7 @@ model Subscription {
   businessId       String          @unique
   business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
   
-  tier             String          // starter, professional
+  tier             String          // starter, professional, premium
   status           String          // active, canceled, past_due
   stripeCustomerId String?
   stripeSubscriptionId String?

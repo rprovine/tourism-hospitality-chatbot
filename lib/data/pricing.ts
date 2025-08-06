@@ -4,62 +4,92 @@ export const tierComparison: TierFeature[] = [
   {
     name: 'AI-Powered Conversations',
     starter: 'Basic Q&A',
-    professional: 'Advanced NLP with context'
+    professional: 'Advanced NLP with context',
+    premium: 'Luxury concierge AI'
   },
   {
     name: 'Monthly Conversations',
     starter: '1,000',
-    professional: 'Unlimited'
+    professional: 'Unlimited',
+    premium: 'Unlimited VIP'
+  },
+  {
+    name: 'AI Model',
+    starter: 'Claude Haiku',
+    professional: 'Claude Sonnet',
+    premium: 'Claude Opus'
   },
   {
     name: 'Languages Supported',
     starter: 'English only',
-    professional: '10+ languages'
+    professional: '10+ languages',
+    premium: '20+ languages'
   },
   {
     name: 'Custom Branding',
     starter: true,
-    professional: true
+    professional: true,
+    premium: true
   },
   {
     name: 'Analytics Dashboard',
     starter: 'Basic metrics',
-    professional: 'Advanced analytics'
+    professional: 'Advanced analytics',
+    premium: 'Executive insights'
   },
   {
     name: 'Booking Integration',
     starter: false,
-    professional: true
+    professional: true,
+    premium: true
   },
   {
     name: 'CRM Integration',
     starter: false,
-    professional: true
+    professional: true,
+    premium: true
   },
   {
     name: 'Custom Knowledge Base',
     starter: '50 Q&As',
-    professional: 'Unlimited'
+    professional: 'Unlimited',
+    premium: 'AI-trained on your data'
   },
   {
     name: 'Response Time',
     starter: '< 3 seconds',
-    professional: '< 1 second'
+    professional: '< 1 second',
+    premium: 'Instant'
   },
   {
     name: 'Support',
     starter: 'Email',
-    professional: '24/7 Priority'
+    professional: '24/7 Priority',
+    premium: 'Dedicated manager'
   },
   {
     name: 'API Access',
     starter: false,
-    professional: true
+    professional: true,
+    premium: true
   },
   {
     name: 'White Label Options',
     starter: 'Basic',
-    professional: 'Full customization'
+    professional: 'Full customization',
+    premium: 'Bespoke design'
+  },
+  {
+    name: 'Custom AI Training',
+    starter: false,
+    professional: false,
+    premium: true
+  },
+  {
+    name: 'SLA Guarantee',
+    starter: false,
+    professional: false,
+    premium: true
   }
 ]
 
@@ -94,6 +124,23 @@ export const pricingTiers: PricingTier[] = [
       'API access',
       'Custom AI training',
       'Unlimited knowledge base'
+    ]
+  },
+  {
+    name: 'Premium',
+    price: '$2,499',
+    description: 'Luxury tier for 5-star resorts & exclusive tours',
+    features: [
+      'Everything in Professional, plus:',
+      'Claude Opus AI model',
+      'Dedicated account manager',
+      'Custom AI training on your data',
+      'Bespoke integrations',
+      'Priority feature development',
+      'Quarterly business reviews',
+      '99.9% SLA guarantee',
+      'Executive analytics dashboard',
+      'White-glove onboarding'
     ]
   }
 ]
@@ -131,5 +178,13 @@ export const sampleQuestions = {
     'Change my existing reservation',
     'What\'s the weather forecast?',
     'Help me plan a 3-day itinerary'
+  ],
+  premium: [
+    'Plan a surprise anniversary celebration',
+    'Arrange a private helicopter tour',
+    'Book our chef\'s table experience',
+    'Coordinate a multi-island luxury itinerary',
+    'Arrange VIP airport transfer with lei greeting',
+    'Create a personalized cultural immersion program'
   ]
 }
