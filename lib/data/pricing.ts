@@ -213,9 +213,19 @@ export const useCases = [
     icon: '🏨'
   },
   {
+    title: 'Boutique Hotels',
+    description: 'Personalized guest experiences with local charm and unique property features',
+    icon: '🏩'
+  },
+  {
     title: 'Tour Operators',
     description: 'Answer tour questions, process bookings, and provide local recommendations',
     icon: '🚐'
+  },
+  {
+    title: 'Adventure Tours',
+    description: 'Manage outdoor activities, safety info, and equipment rentals for thrill-seekers',
+    icon: '🏄'
   },
   {
     title: 'Vacation Rentals',
@@ -223,9 +233,9 @@ export const useCases = [
     icon: '🏠'
   },
   {
-    title: 'Hotel Chains',
-    description: 'Manage multi-property operations with centralized AI and analytics',
-    icon: '🏢'
+    title: 'Luxury Villas',
+    description: 'White-glove service for high-end properties with exclusive amenities',
+    icon: '🏝️'
   }
 ]
 

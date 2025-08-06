@@ -58,9 +58,9 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 bg-cyan-50 text-cyan-800 px-4 py-2 rounded-full mb-6 border border-cyan-200">
+          <div className="inline-flex items-center gap-2 bg-cyan-700 text-white px-4 py-2 rounded-full mb-6 border border-cyan-600 shadow-md">
             <Sparkles className="h-4 w-4" />
-            <span className="text-sm font-semibold">AI-Powered Guest Experience Platform</span>
+            <span className="text-sm font-bold">AI-Powered Guest Experience Platform</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Transform Your Hospitality Business with{' '}
@@ -118,7 +118,7 @@ export default function LandingPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Built for Hawaii&apos;s Tourism Industry</h2>
             <p className="text-lg text-gray-700">Tailored solutions for every hospitality business</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {useCases.map((useCase, index) => (
               <motion.div
                 key={index}
