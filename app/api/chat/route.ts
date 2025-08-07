@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { z } from 'zod'
 import { generateClaudeResponse } from '@/lib/ai/claude'
 import { searchKnowledgeBase } from '@/lib/ai/knowledge-base-search'
+import { checkConversationLimit, isLanguageSupported } from '@/lib/tier-limits'
 
 const prisma = new PrismaClient()
 
@@ -26,6 +27,23 @@ export async function POST(request: NextRequest) {
         where: { id: validatedData.conversationId },
         include: { business: true }
       })
+      
+      // Check conversation limits for existing conversations
+      if (conversation?.business) {
+        const limitCheck = await checkConversationLimit(
+          conversation.business.id,
+          conversation.business.tier,
+          prisma
+        )
+        
+        if (!limitCheck.allowed) {
+          return NextResponse.json({
+            message: `Your ${conversation.business.tier} plan has reached its monthly conversation limit of ${limitCheck.limit}. Please upgrade to continue.`,
+            limitReached: true,
+            tier: conversation.business.tier
+          })
+        }
+      }
     } else {
       // For demo purposes, use a default business or create one
       let business = validatedData.businessId 

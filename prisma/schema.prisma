@@ -28,11 +28,16 @@ model Business {
   welcomeMessage   String          @default("Aloha! How can I help you today?")
   businessInfo     Json?           // address, phone, hours, etc.
   
+  // Usage tracking
+  monthlyConversationCount Int     @default(0)
+  lastConversationReset    DateTime @default(now())
+  
   // Relations
   conversations    Conversation[]
   knowledgeBase    KnowledgeBase[]
   subscription     Subscription?
   analytics        Analytics[]
+  apiLogs          ApiLog[]
   
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
@@ -147,4 +152,20 @@ model Analytics {
   
   @@unique([businessId, date])
   @@index([businessId])
+}
+
+// API usage tracking
+model ApiLog {
+  id               String          @id @default(cuid())
+  businessId       String
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  endpoint         String
+  method           String
+  statusCode       Int
+  responseTime     Int             // in milliseconds
+  
+  createdAt        DateTime        @default(now())
+  
+  @@index([businessId, createdAt])
 }

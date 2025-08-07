@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { z } from 'zod'
 import { verifyToken } from '@/lib/auth/jwt'
+import { checkKnowledgeBaseLimit, isLanguageSupported, getSupportedLanguages } from '@/lib/tier-limits'
 
 const prisma = new PrismaClient()
 
@@ -86,6 +87,41 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     const validatedData = knowledgeBaseSchema.parse(body)
+    
+    // Get business to check tier
+    const business = await prisma.business.findUnique({
+      where: { id: payload.businessId }
+    })
+    
+    if (!business) {
+      return NextResponse.json({ error: 'Business not found' }, { status: 404 })
+    }
+    
+    // Check knowledge base limits
+    const limitCheck = await checkKnowledgeBaseLimit(
+      payload.businessId,
+      business.tier,
+      prisma
+    )
+    
+    if (!limitCheck.allowed) {
+      return NextResponse.json({
+        error: `Your ${business.tier} plan has reached its knowledge base limit of ${limitCheck.limit} items. Please upgrade to add more.`,
+        limitReached: true,
+        limit: limitCheck.limit,
+        remaining: 0
+      }, { status: 403 })
+    }
+    
+    // Check language support
+    if (!isLanguageSupported(business.tier, validatedData.language)) {
+      const supportedLanguages = getSupportedLanguages(business.tier)
+      return NextResponse.json({
+        error: `Language '${validatedData.language}' is not supported in your ${business.tier} plan.`,
+        supportedLanguages,
+        tier: business.tier
+      }, { status: 403 })
+    }
 
     const item = await prisma.knowledgeBase.create({
       data: {
