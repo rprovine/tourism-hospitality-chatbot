@@ -11,7 +11,7 @@ export const tierComparison: TierFeature[] = [
   {
     name: 'Monthly Conversations',
     starter: '1,000',
-    professional: 'Unlimited',
+    professional: '5,000',
     premium: 'Unlimited VIP',
     enterprise: 'Unlimited + Multi-property'
   },
@@ -177,15 +177,15 @@ export const pricingTiers: PricingTier[] = [
   },
   {
     name: 'Professional',
-    price: '$99',
-    originalPrice: '$199',
+    price: '$149',
+    originalPrice: '$299',
     description: 'For established hospitality businesses',
     highlighted: true,
     savings: 'Dual AI: Claude + GPT-4 Turbo',
     features: [
       'Everything in Starter, plus:',
       'Dual AI: Claude Sonnet + GPT-4 Turbo',
-      'Unlimited conversations',
+      '5,000 conversations/month',
       'English & Japanese support',
       'Booking system integration',
       'CRM integration',
@@ -194,7 +194,7 @@ export const pricingTiers: PricingTier[] = [
       'API access',
       'Unlimited knowledge base',
       '⚡ Instant activation after payment',
-      '💰 Pay annually: $990/year (save $198)'
+      '💰 Pay annually: $1,490/year (save $298)'
     ]
   },
   {
