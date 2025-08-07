@@ -85,7 +85,7 @@ export default function RealtimeDashboard() {
 
   const fetchMetrics = async () => {
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('token')
       const response = await fetch('/api/admin/realtime', {
         headers: {
           'Authorization': `Bearer ${token}`

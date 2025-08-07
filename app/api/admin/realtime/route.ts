@@ -12,6 +12,17 @@ export async function GET(request: NextRequest) {
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+    
+    // Decode token to check if it's an admin
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key-change-in-production') as any
+      // Allow access if it's an admin or a regular user (for now)
+      // In production, you might want to restrict this to admins only
+      console.log('Token decoded:', decoded.email, 'isAdmin:', decoded.isAdmin)
+    } catch (error) {
+      console.error('Token verification failed:', error)
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+    }
 
     // Get real-time metrics
     const now = new Date()

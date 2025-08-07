@@ -32,7 +32,8 @@ export default function LoginPage() {
 
     try {
       console.log('Sending login request...')
-      const response = await fetch('/api/auth/login', {
+      // Use admin-login endpoint which handles both admin and regular users
+      const response = await fetch('/api/auth/admin-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,12 +64,17 @@ export default function LoginPage() {
       }
 
       console.log('Login successful, saving auth data...')
-      // Store token and business data using auth utility
-      setAuthData(data.token, data.business)
+      // Store token and appropriate user data
+      if (data.isAdmin) {
+        localStorage.setItem('adminToken', data.token)
+        localStorage.setItem('adminUser', JSON.stringify(data.user))
+      } else {
+        setAuthData(data.token, data.business)
+      }
 
-      console.log('Redirecting to admin...')
+      console.log(`Redirecting to ${data.redirectTo || '/dashboard'}...`)
       // Use window.location for a hard redirect to ensure middleware picks up the cookie
-      window.location.href = '/admin'
+      window.location.href = data.redirectTo || '/dashboard'
     } catch (err) {
       console.error('Login error details:', err)
       if (err instanceof Error) {
