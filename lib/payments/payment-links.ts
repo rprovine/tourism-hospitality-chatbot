@@ -9,7 +9,7 @@ export const PAYMENT_LINKS = {
     interval: 'monthly'
   },
   professional_monthly: {
-    url: 'PASTE_YOUR_PROFESSIONAL_MONTHLY_LINK_HERE',
+    url: 'https://app-na2.hubspot.com/payments/zXbRjHGbPfr?referrer=PAYMENT_LINK',
     amount: 149,
     interval: 'monthly'
   },
@@ -24,19 +24,19 @@ export const PAYMENT_LINKS = {
     interval: 'monthly'
   },
   
-  // Yearly Plans (create these if you have them, or we can calculate discount)
+  // Yearly Plans (using monthly links - customer can choose annual in HubSpot)
   starter_yearly: {
-    url: 'PASTE_YOUR_STARTER_YEARLY_LINK_HERE', // Or use monthly link with note about annual billing
+    url: 'https://app-na2.hubspot.com/payments/GGGZKG9b2jt7vtZ7?referrer=PAYMENT_LINK', // Same as monthly
     amount: 290,
     interval: 'yearly'
   },
   professional_yearly: {
-    url: 'PASTE_YOUR_PROFESSIONAL_YEARLY_LINK_HERE',
+    url: 'https://app-na2.hubspot.com/payments/zXbRjHGbPfr?referrer=PAYMENT_LINK', // Same as monthly
     amount: 1490,
     interval: 'yearly'
   },
   premium_yearly: {
-    url: 'PASTE_YOUR_PREMIUM_YEARLY_LINK_HERE',
+    url: 'https://app-na2.hubspot.com/payments/fmmQJJHmxtnTJPt?referrer=PAYMENT_LINK', // Same as monthly
     amount: 2990,
     interval: 'yearly'
   }
