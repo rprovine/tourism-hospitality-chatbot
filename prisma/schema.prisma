@@ -31,6 +31,10 @@ model Business {
   guestProfiles      GuestProfile[]
   triggerMessages    TriggerMessage[]
   guestInteractions  GuestInteraction[]
+  channelConfigs     ChannelConfig[]
+  messageQueues      MessageQueue[]
+  channelSessions    ChannelSession[]
+  messageTemplates   MessageTemplate[]
 }
 
 model Subscription {
@@ -71,6 +75,7 @@ model Conversation {
   business          Business              @relation(fields: [businessId], references: [id], onDelete: Cascade)
   messages          Message[]
   contexts          ConversationContext[]
+  channelSessions   ChannelSession[]
 
   @@index([businessId])
   @@index([sessionId])
@@ -177,6 +182,7 @@ model GuestProfile {
   business           Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
   contexts           ConversationContext[]
   interactions       GuestInteraction[]
+  channelSessions    ChannelSession[]
 
   @@index([businessId])
   @@index([email])
@@ -238,4 +244,91 @@ model GuestInteraction {
 
   @@index([guestProfileId])
   @@index([businessId])
+}
+
+model ChannelConfig {
+  id            String   @id @default(cuid())
+  businessId    String
+  channel       String   // 'whatsapp', 'sms', 'instagram', 'facebook', 'telegram'
+  isActive      Boolean  @default(false)
+  config        Json?    @default("{}") // Store API keys, tokens, etc
+  webhookUrl    String?
+  webhookSecret String?
+  rateLimits    Json?    @default("{}")
+  metadata      Json?    @default("{}")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@index([channel])
+}
+
+model MessageQueue {
+  id           String    @id @default(cuid())
+  businessId   String
+  channel      String
+  recipient    String    // phone number, whatsapp id, instagram handle, etc
+  message      String
+  mediaUrl     String?
+  status       String    @default("pending") // 'pending', 'sending', 'sent', 'delivered', 'failed'
+  priority     Int       @default(0)
+  scheduledFor DateTime?
+  sentAt       DateTime?
+  deliveredAt  DateTime?
+  error        String?
+  retries      Int       @default(0)
+  metadata     Json?     @default("{}")
+  createdAt    DateTime  @default(now())
+  business     Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@index([status])
+  @@index([scheduledFor])
+}
+
+model ChannelSession {
+  id             String        @id @default(cuid())
+  businessId     String
+  channel        String
+  externalId     String        // WhatsApp conversation ID, SMS thread, etc
+  recipient      String
+  guestProfileId String?
+  conversationId String?
+  status         String        @default("active") // 'active', 'expired', 'closed'
+  lastMessageAt  DateTime?
+  metadata       Json?         @default("{}")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  business       Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  guestProfile   GuestProfile? @relation(fields: [guestProfileId], references: [id], onDelete: SetNull)
+  conversation   Conversation? @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+
+  @@index([businessId])
+  @@index([channel])
+  @@index([externalId])
+  @@index([guestProfileId])
+}
+
+model MessageTemplate {
+  id             String   @id @default(cuid())
+  businessId     String
+  name           String
+  channel        String
+  category       String   // 'marketing', 'utility', 'authentication'
+  language       String   @default("en")
+  content        String
+  variables      String[] @default([])
+  mediaUrl       String?
+  buttons        Json?    @default("[]")
+  externalId     String?  // WhatsApp template ID, etc
+  approvalStatus String   @default("pending") // 'pending', 'approved', 'rejected'
+  isActive       Boolean  @default(true)
+  usageCount     Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@index([channel])
 }
