@@ -18,6 +18,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Login attempt:', formData.email)
     setIsLoading(true)
     setError('')
 
@@ -30,12 +31,15 @@ export default function LoginPage() {
         body: JSON.stringify(formData),
       })
 
+      console.log('Response status:', response.status)
       const data = await response.json()
 
       if (!response.ok) {
+        console.error('Login error:', data)
         throw new Error(data.error || 'Login failed')
       }
 
+      console.log('Login successful')
       // Store token and business data
       localStorage.setItem('token', data.token)
       localStorage.setItem('business', JSON.stringify(data.business))
@@ -43,6 +47,7 @@ export default function LoginPage() {
       // Redirect to admin dashboard
       router.push('/admin')
     } catch (err) {
+      console.error('Login error:', err)
       setError(err instanceof Error ? err.message : 'Something went wrong')
     } finally {
       setIsLoading(false)
@@ -121,6 +126,13 @@ export default function LoginPage() {
                 type="submit"
                 className="w-full bg-cyan-700 hover:bg-cyan-800 text-white"
                 disabled={isLoading}
+                onClick={(e) => {
+                  console.log('Button clicked')
+                  if (!formData.email || !formData.password) {
+                    e.preventDefault()
+                    setError('Please enter email and password')
+                  }
+                }}
               >
                 {isLoading ? 'Signing in...' : 'Sign In'}
                 <ArrowRight className="ml-2 h-4 w-4" />
