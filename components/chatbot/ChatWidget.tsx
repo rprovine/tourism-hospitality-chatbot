@@ -140,15 +140,21 @@ export default function ChatWidget({
     const lowerQuery = query.toLowerCase()
     const business = mockBusinessData[tierLevel as keyof typeof mockBusinessData]
     const realTime = mockRealTimeData[tierLevel as keyof typeof mockRealTimeData]
-    const knowledge = mockKnowledgeBase[tierLevel as keyof typeof mockKnowledgeBase]
+    const knowledge = mockKnowledgeBase[tierLevel as keyof typeof mockRealTimeData]
     
     // Add demo mode disclaimer
     const disclaimer = "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
     
     if (tierLevel === 'starter') {
-      // Starter: Basic FAQ only, English only
+      // Starter: Basic FAQ only, NO integrations
+      if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
+        return `❌ **Booking Integration Not Available in Starter Plan**\n\nTo make a reservation, please call ${business.contact}.\n\n💡 Upgrade to Professional to enable instant bookings right from the chat!${disclaimer}`
+      }
       if (lowerQuery.includes('room') || lowerQuery.includes('availability')) {
-        return `We have rooms available. Please call ${business.contact} to check availability and make a reservation.${disclaimer}`
+        return `We have rooms available. Please call ${business.contact} to check specific dates.\n\n⚠️ Real-time availability requires Professional plan or higher.${disclaimer}`
+      }
+      if (lowerQuery.includes('my') || lowerQuery.includes('history') || lowerQuery.includes('stayed')) {
+        return `❌ **CRM Integration Not Available**\n\nWe cannot access guest history in the Starter plan. Please call ${business.contact} for assistance.\n\n💡 Professional plan includes full CRM integration!${disclaimer}`
       }
       if (lowerQuery.includes('check')) {
         return `Check-in time is ${business.checkIn} and check-out is ${business.checkOut}.${disclaimer}`
@@ -156,22 +162,18 @@ export default function ChatWidget({
       if (lowerQuery.includes('price') || lowerQuery.includes('rate')) {
         return `Our rates vary by season. Please call ${business.contact} for current pricing.${disclaimer}`
       }
-      if (lowerQuery.includes('cancel')) {
-        return `For cancellation policy, please call ${business.contact}.${disclaimer}`
-      }
       // Starter limitation - can't handle complex queries
-      return `I can only answer basic questions about check-in/out times and contact info. For other inquiries, please call ${business.contact}.${disclaimer}`
+      return `I can only answer basic questions. For bookings or guest services, please call ${business.contact}.\n\n⚠️ Limited to basic Q&A in Starter plan.${disclaimer}`
     } 
     
     else if (tierLevel === 'professional') {
-      // Professional: Booking capability, 2 languages, real-time data
+      // Professional: Booking + CRM integration
       if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
-        return `I can help you book! We have ${realTime.availableRooms} rooms available tonight at ${business.name}. 
-        
-Ocean View Room: $${business.avgRate}/night
-Garden View Room: $${business.avgRate - 50}/night
-
-Would you like to proceed with a reservation? I can check specific dates for you.${disclaimer}`
+        return `✅ **Live Booking System Connected**\n\n📊 Real-time availability for ${business.name}:\n\n🏨 **Tonight (Dec 15)**\n• Ocean View Room: $${business.avgRate}/night - 3 available\n• Garden View Room: $${business.avgRate - 50}/night - 5 available\n• Suite: $${business.avgRate + 100}/night - 1 available\n\n📅 **Quick Booking**\nClick below to book instantly:\n[Book Ocean View] [Book Garden View] [Book Suite]\n\n✨ Features: Instant confirmation • Secure payment • Mobile check-in${disclaimer}`
+      }
+      
+      if (lowerQuery.includes('my') || lowerQuery.includes('history') || lowerQuery.includes('stayed')) {
+        return `✅ **CRM Integration Active**\n\n👤 **Guest Profile Found**\nWelcome back! I can see you're a valued guest.\n\n📊 **Your History:**\n• Last stay: Ocean View Room (Sept 2024)\n• Total stays: 3 visits\n• Loyalty points: 2,450\n• Preferred room: Ocean View, High floor\n\n🎁 **Special Offer:** As a returning guest, enjoy 15% off your next stay!\n\nWould you like to book your preferred Ocean View room?${disclaimer}`
       }
       
       if (lowerQuery.includes('availability') || lowerQuery.includes('tonight')) {
@@ -212,7 +214,11 @@ How may I assist you?${disclaimer}`
     }
     
     else if (tierLevel === 'premium') {
-      // Premium: Luxury personalization, 5 languages, VIP services
+      // Premium: Advanced CRM + Luxury Booking + Personalization
+      if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
+        return `✅ **Premium Booking Concierge with AI Recommendations**\n\n🤖 **Based on your preferences and past stays:**\n\n⭐ **Recommended for You:**\n• Presidential Suite - $${business.avgRate * 3}/night\n  *Your favorite: Ocean view, high floor, away from elevators*\n  ✨ Includes: Butler service, spa credits, airport transfer\n\n📊 **Alternative Options:**\n• Ocean Villa (93% match) - $${business.avgRate * 2}/night\n• Penthouse (87% match) - $${business.avgRate * 2.5}/night\n\n💳 **One-Click Booking:**\n[Book with Saved Card ****1234] [Use Points (4,850 available)]\n\n🎁 **VIP Perks Included:**\n• Complimentary room upgrade (when available)\n• Early check-in guaranteed (10 AM)\n• Late checkout guaranteed (4 PM)\n• Welcome champagne & local delicacies\n• Private beach cabana reserved${disclaimer}`
+      }
+      
       if (lowerQuery.includes('suite') || lowerQuery.includes('luxury') || lowerQuery.includes('best')) {
         return `Welcome to ${business.name}! For the ultimate luxury experience:
 
@@ -285,8 +291,16 @@ How may I create magic for you today?${disclaimer}`
     }
     
     else {
-      // Enterprise: Multi-property, analytics, full integration
+      // Enterprise: Full integration suite with predictive analytics
       const properties = (business as any).properties || []
+      
+      if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
+        return `✅ **Enterprise Booking Platform - Multi-Property Access**\n\n🏢 **Your Corporate Account (Microsoft - Global Agreement)**\n\n📊 **AI-Powered Recommendations based on your travel patterns:**\n\n**Honolulu (You visit 2x/month)**\n• Saved preference: Ocean Tower, Floor 25+\n• Your rate: $${business.avgRate - 100}/night (Corporate: -40%)\n• Available: 15 rooms in your preferred zone\n\n**Maui (Quarterly visits)**\n• Beachfront Villa - Your usual choice\n• Your rate: $${business.avgRate * 1.5}/night (Corporate rate)\n• Team booking available (up to 20 rooms)\n\n💼 **Quick Actions:**\n[Book Honolulu] [Book Maui] [Book Team Retreat] [View All 12 Properties]\n\n📈 **Your Company Stats:**\n• Annual savings: $124,000 vs public rates\n• 2024 nights booked: 487 across all properties\n• Carbon offset: Automatically included\n\n🔗 **Integrated Services:**\n✓ Direct billing to Microsoft (PO #48291)\n✓ Expense reports auto-generated\n✓ Travel policy compliant\n✓ Concur integration active${disclaimer}`
+      }
+      
+      if (lowerQuery.includes('team') || lowerQuery.includes('group') || lowerQuery.includes('conference')) {
+        return `✅ **Enterprise Group Booking System**\n\n🏢 **Multi-Property Conference Planning**\n\n📊 **Checking availability across all properties...**\n\n✅ **Available for 200 people (March 15-20):**\n\n**Option 1: Maui Grand Resort**\n• Ballroom: 500 capacity (divisible)\n• Room block: 200 ocean view rooms\n• Total: $${200 * business.avgRate * 5} (includes meeting space)\n• ✨ Can add team building on private beach\n\n**Option 2: Honolulu Business Hotel**\n• Conference center: 1000 capacity\n• Room block: 200 city view rooms\n• Total: $${180 * business.avgRate * 5}\n• ✨ Walking distance to 50+ restaurants\n\n**Option 3: Big Island Retreat**\n• Exclusive property buyout available\n• 150 rooms + 50 villas\n• Total: $${250 * business.avgRate * 5}\n• ✨ Perfect for executive retreats\n\n📱 **One-Click Actions:**\n[Send RFP to All] [Schedule Site Visits] [Hold Dates]\n\n💼 **Included in Corporate Package:**\n• Dedicated event manager\n• AV equipment and tech support\n• Custom F&B menus\n• Airport group transfers\n• Instant contract generation${disclaimer}`
+      }
       
       if (lowerQuery.includes('group') || lowerQuery.includes('conference') || lowerQuery.includes('meeting')) {
         return `**${business.name} Group Booking System**
@@ -356,6 +370,10 @@ Full analytics dashboard with drill-down available in your portal.${disclaimer}`
 I can look up any member, process upgrades, or analyze loyalty metrics. What do you need?${disclaimer}`
       }
       
+      if (lowerQuery.includes('my') || lowerQuery.includes('profile') || lowerQuery.includes('history')) {
+        return `✅ **Enterprise CRM - Complete 360° Guest View**\n\n👤 **Executive Profile: John Smith (Microsoft)**\n\n📊 **Lifetime Analytics:**\n• Customer since: 2019\n• Total stays: 127 nights across 8 properties\n• Lifetime value: $487,000\n• Status: Diamond Elite + Corporate VIP\n• Next stay: Maui (Dec 20-27) - Already checked in online\n\n🏆 **Preferences (AI-learned):**\n• Room: High floor, away from elevators, ocean view\n• Bed: King, firm pillows (2), extra blankets\n• Amenities: Gym access 5:30 AM, espresso machine\n• Dietary: Gluten-free, no shellfish\n• Transport: Tesla Model S preferred\n\n👥 **Travel Patterns:**\n• Usually travels with: Sarah Smith (spouse)\n• Team trips: Quarterly with 5-8 people\n• Booking window: 14 days advance average\n\n🎯 **Predictive Services:**\n• Pre-arrival: Room pre-cooled to 68°F\n• Mini-bar: Stocked with Pellegrino, dark chocolate\n• Spa: Friday 3 PM massage auto-suggested\n• Restaurant: Sushi bar reservation recommended\n\n💼 **Corporate Benefits:**\n• Direct billing active\n• Expense integration: Concur\n• CO2 offset: 12.4 tons offset YTD\n• Savings vs public rate: $47,000 YTD${disclaimer}`
+      }
+      
       // Show off language capabilities
       if (lowerQuery.includes('language')) {
         return `**Language Support Demonstration:**
@@ -374,9 +392,7 @@ I can look up any member, process upgrades, or analyze loyalty metrics. What do 
 Each language includes cultural customization and local payment methods.${disclaimer}`
       }
       
-      return `**${business.name} Enterprise Command Center**
-
-I'm your AI-powered enterprise assistant with access to:
+      return `**${business.name} Enterprise AI Platform**\n\n🚀 **Full Integration Suite Active:**\n\n✅ **Booking Engine**: Real-time across ${properties.length} properties\n✅ **CRM Integration**: Salesforce, HubSpot, Microsoft Dynamics\n✅ **Property Management**: Oracle Opera, Infor HMS\n✅ **Revenue Management**: Dynamic pricing AI active\n✅ **Analytics Platform**: PowerBI, Tableau dashboards\n✅ **Marketing Automation**: Personalized campaigns running\n\n📊 **Live Performance Metrics:**\n• Occupancy right now: ${realTime.systemOccupancy}% system-wide\n• Revenue today: $${(realTime.revenueToday / 1000).toFixed(0)}K\n• Bookings in last hour: 47\n• Average response time: 0.3 seconds\n\nI'm your AI-powered enterprise assistant with access to:
 
 🏨 **${properties.length} Properties** - ${(business as any).totalRooms} total rooms
 💰 **Revenue Management** - Real-time pricing optimization

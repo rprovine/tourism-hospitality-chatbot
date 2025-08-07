@@ -8,433 +8,589 @@
    - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 1547ms
+ ✓ Ready in 1484ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 3.3s (1464 modules)
+ GET /login 200 in 3532ms
+ GET /login 200 in 51ms
+ ✓ Compiled /favicon.ico in 196ms (817 modules)
+ GET /favicon.ico 200 in 273ms
+ ✓ Compiled /register in 311ms (1478 modules)
+ GET /register 200 in 526ms
+ ○ Compiling /api/auth/register ...
+ ✓ Compiled /api/auth/register in 503ms (1616 modules)
+Registration error: Error [PrismaClientValidationError]: 
+Invalid `prisma.subscription.create()` invocation:
+
+{
+  data: {
+    businessId: "cme10nd0h0000s3nbw097l6wb",
+    tier: "professional",
+    status: "active",
+    currentPeriodStart: new Date("2025-08-07T06:28:38.948Z"),
+    currentPeriodEnd: new Date("2025-09-07T06:28:38.948Z"),
++   startDate: DateTime
+  }
+}
+
+Argument `startDate` is missing.
+    at async POST (app/api/auth/register/route.ts:72:4)
+  70 |     endDate.setMonth(endDate.getMonth() + 1)
+  71 |     
+> 72 |     await prisma.subscription.create({
+     |    ^
+  73 |       data: {
+  74 |         businessId: business.id,
+  75 |         tier: validatedData.tier, {
+  clientVersion: '6.13.0'
+}
+ POST /api/auth/register 500 in 845ms
+ ✓ Compiled in 186ms (1628 modules)
+ GET /register 200 in 76ms
+ POST /api/auth/register 400 in 62ms
+ GET /login 200 in 199ms
+ ✓ Compiled /api/auth/login in 210ms (1616 modules)
+ POST /api/auth/login 401 in 355ms
+ POST /api/auth/login 200 in 118ms
+ ✓ Compiled /admin in 337ms (1651 modules)
+ GET /admin 200 in 402ms
+ GET /login 200 in 19ms
+ GET /login 200 in 12ms
+ GET /register 200 in 151ms
+ POST /api/auth/register 400 in 74ms
+ POST /api/auth/register 400 in 19ms
+ ✓ Compiled in 180ms (669 modules)
+ GET /register 200 in 21ms
+ ✓ Compiled in 104ms (669 modules)
+ GET /register 200 in 14ms
+ GET /register 200 in 47ms
+ ✓ Compiled /favicon.ico in 179ms (826 modules)
+ GET /favicon.ico 200 in 226ms
+ GET /login 200 in 217ms
+ ✓ Compiled /api/auth/login in 115ms (977 modules)
+ POST /api/auth/login 200 in 267ms
+ ✓ Compiled /admin in 152ms (996 modules)
+ GET /admin 200 in 236ms
+ GET /login 200 in 19ms
+ GET /login 200 in 10ms
+ ✓ Compiled in 524ms (1663 modules)
+ GET /login 200 in 66ms
+ POST /api/auth/login 200 in 156ms
+ GET /admin 200 in 23ms
+ ○ Compiling /admin/knowledge-base ...
+ ✓ Compiled /admin/knowledge-base in 551ms (1508 modules)
+ GET /admin/knowledge-base 200 in 668ms
+ GET /admin/knowledge-base 200 in 9ms
+ ⨯ ./app/api/knowledge-base/route.ts:4:1
+Module not found: Can't resolve '@/lib/auth/jwt'
+  2 | import { PrismaClient } from '@prisma/client'
+  3 | import { z } from 'zod'
+> 4 | import { verifyToken } from '@/lib/auth/jwt'
+    | ^
+  5 | import { checkKnowledgeBaseLimit, isLanguageSupported, getSupportedLanguages } from '@/lib/tier-limits'
+  6 |
+  7 | const prisma = new PrismaClient()
+
+https://nextjs.org/docs/messages/module-not-found
+ ⨯ ./app/api/knowledge-base/route.ts:4:1
+Module not found: Can't resolve '@/lib/auth/jwt'
+  2 | import { PrismaClient } from '@prisma/client'
+  3 | import { z } from 'zod'
+> 4 | import { verifyToken } from '@/lib/auth/jwt'
+    | ^
+  5 | import { checkKnowledgeBaseLimit, isLanguageSupported, getSupportedLanguages } from '@/lib/tier-limits'
+  6 |
+  7 | const prisma = new PrismaClient()
+
+https://nextjs.org/docs/messages/module-not-found
+ ○ Compiling /_not-found ...
+ ⨯ ./app/api/knowledge-base/route.ts:4:1
+Module not found: Can't resolve '@/lib/auth/jwt'
+  2 | import { PrismaClient } from '@prisma/client'
+  3 | import { z } from 'zod'
+> 4 | import { verifyToken } from '@/lib/auth/jwt'
+    | ^
+  5 | import { checkKnowledgeBaseLimit, isLanguageSupported, getSupportedLanguages } from '@/lib/tier-limits'
+  6 |
+  7 | const prisma = new PrismaClient()
+
+https://nextjs.org/docs/messages/module-not-found
+ ⨯ ./app/api/knowledge-base/route.ts:4:1
+Module not found: Can't resolve '@/lib/auth/jwt'
+  2 | import { PrismaClient } from '@prisma/client'
+  3 | import { z } from 'zod'
+> 4 | import { verifyToken } from '@/lib/auth/jwt'
+    | ^
+  5 | import { checkKnowledgeBaseLimit, isLanguageSupported, getSupportedLanguages } from '@/lib/tier-limits'
+  6 |
+  7 | const prisma = new PrismaClient()
+
+https://nextjs.org/docs/messages/module-not-found
+ GET /api/knowledge-base 500 in 2456ms
+ GET /admin/knowledge-base 500 in 550ms
+ GET /api/knowledge-base 500 in 113ms
+ GET /admin/knowledge-base 500 in 114ms
+ GET /admin/knowledge-base 500 in 25ms
+ GET /admin 500 in 8ms
+ ⨯ ./app/api/knowledge-base/route.ts:4:1
+Module not found: Can't resolve '@/lib/auth/jwt'
+  2 | import { PrismaClient } from '@prisma/client'
+  3 | import { z } from 'zod'
+> 4 | import { verifyToken } from '@/lib/auth/jwt'
+    | ^
+  5 | import { checkKnowledgeBaseLimit, isLanguageSupported, getSupportedLanguages } from '@/lib/tier-limits'
+  6 |
+  7 | const prisma = new PrismaClient()
+
+https://nextjs.org/docs/messages/module-not-found
+ ⨯ ./app/api/knowledge-base/route.ts:4:1
+Module not found: Can't resolve '@/lib/auth/jwt'
+  2 | import { PrismaClient } from '@prisma/client'
+  3 | import { z } from 'zod'
+> 4 | import { verifyToken } from '@/lib/auth/jwt'
+    | ^
+  5 | import { checkKnowledgeBaseLimit, isLanguageSupported, getSupportedLanguages } from '@/lib/tier-limits'
+  6 |
+  7 | const prisma = new PrismaClient()
+
+https://nextjs.org/docs/messages/module-not-found
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /_next/static/webpack/f010cf786ea269ab.webpack.hot-update.json 500 in 277ms
+ GET /admin 500 in 10ms
+ GET /login 500 in 13ms
+ GET /admin 500 in 23ms
+ GET /login 500 in 27ms
+ GET /register 500 in 14ms
+ GET /login 500 in 16ms
+ GET /login 500 in 24ms
+ ⨯ ./app/api/knowledge-base/route.ts:4:1
+Module not found: Can't resolve '@/lib/auth/jwt'
+  2 | import { PrismaClient } from '@prisma/client'
+  3 | import { z } from 'zod'
+> 4 | import { verifyToken } from '@/lib/auth/jwt'
+    | ^
+  5 | import { checkKnowledgeBaseLimit, isLanguageSupported, getSupportedLanguages } from '@/lib/tier-limits'
+  6 |
+  7 | const prisma = new PrismaClient()
+
+https://nextjs.org/docs/messages/module-not-found
+ ✓ Compiled /favicon.ico in 279ms (2020 modules)
+ GET /admin 200 in 254ms
+ GET /admin 200 in 50ms
+ GET /admin/knowledge-base 200 in 39ms
+ GET /api/knowledge-base 200 in 73ms
+ GET /api/knowledge-base 200 in 8ms
+ GET /admin/conversations 404 in 39ms
+ GET /admin/conversations 404 in 38ms
+ GET /admin 200 in 61ms
+ GET /admin/settings 404 in 44ms
+ GET /admin/settings 404 in 37ms
+ GET /admin 200 in 52ms
+ ○ Compiling /admin/widget ...
+ ✓ Compiled /admin/widget in 808ms (2021 modules)
+ GET /admin/widget 200 in 913ms
+ GET /admin/widget 200 in 10ms
+ ✓ Compiled in 510ms (1867 modules)
+ GET /admin 200 in 153ms
+ ✓ Compiled in 148ms (835 modules)
+ GET /admin 200 in 20ms
+ ✓ Compiled in 488ms (1867 modules)
+ GET /admin 200 in 83ms
+ ⨯ ./app/admin/knowledge-base/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/app/admin/knowledge-base/page.tsx[0m:614:1]
+ [2m611[0m |       )}
+ [2m612[0m |     </div>
+ [2m613[0m |   )
+ [2m614[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/app/admin/knowledge-base/page.tsx[0m:614:1]
+ [2m611[0m |       )}
+ [2m612[0m |     </div>
+ [2m613[0m |   )
+ [2m614[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/admin/knowledge-base/page.tsx
+ GET /admin 500 in 17ms
+ GET /admin 500 in 7ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 722ms (1880 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /_next/static/webpack/f010cf786ea269ab.webpack.hot-update.json 404 in 897ms
+ GET /admin 200 in 45ms
+ ✓ Compiled in 163ms (840 modules)
+ GET /admin 200 in 52ms
+ GET /admin 200 in 51ms
+ ✓ Compiled in 450ms (1863 modules)
+ GET /admin 200 in 77ms
+ ✓ Compiled in 180ms (840 modules)
+ GET /admin 200 in 44ms
+ GET /admin 200 in 85ms
+ ✓ Compiled in 292ms (1863 modules)
+ GET /admin 200 in 73ms
+ ✓ Compiled in 574ms (1877 modules)
+ GET /admin 200 in 56ms
+ ⨯ ./app/admin/widget/page.tsx
+Error:   [31mx[0m Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+     ,-[[36;1;4m/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/app/admin/widget/page.tsx[0m:360:1]
+ [2m357[0m |       </div>
+ [2m358[0m |     </div>
+ [2m359[0m |   )
+ [2m360[0m | }
+     : [35;1m^[0m
+     `----
+  [31mx[0m Unexpected eof
+     ,-[[36;1;4m/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/app/admin/widget/page.tsx[0m:360:1]
+ [2m357[0m |       </div>
+ [2m358[0m |     </div>
+ [2m359[0m |   )
+ [2m360[0m | }
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/admin/widget/page.tsx
+ GET /admin 500 in 11ms
+ GET /admin 500 in 8ms
+ ✓ Compiled /_not-found in 414ms (1866 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /_next/static/webpack/f010cf786ea269ab.webpack.hot-update.json 404 in 598ms
+ GET /admin 200 in 47ms
+ GET /admin/knowledge-base 200 in 46ms
+ ✓ Compiled /api/knowledge-base in 405ms (1205 modules)
+ GET /api/knowledge-base 200 in 535ms
+ GET /api/knowledge-base 200 in 7ms
+ ✓ Compiled /admin/conversations in 487ms (2046 modules)
+ GET /admin/conversations 200 in 587ms
+ GET /admin/conversations 200 in 22ms
+ GET /admin 200 in 37ms
+ GET /admin/knowledge-base 200 in 43ms
+ GET /api/knowledge-base 200 in 65ms
+ GET /api/knowledge-base 200 in 8ms
+ GET /admin/conversations 200 in 39ms
+ ✓ Compiled /admin/settings in 320ms (2063 modules)
+ GET /admin/settings 200 in 397ms
+ GET /admin 200 in 37ms
+ ✓ Compiled in 197ms (853 modules)
+ GET /admin 404 in 66ms
+ GET /admin 200 in 141ms
+ ✓ Compiled in 147ms (853 modules)
+ GET /admin 200 in 19ms
+ ✓ Compiled in 110ms (853 modules)
+ GET /admin 200 in 14ms
+ ✓ Compiled in 105ms (853 modules)
+ GET /admin 200 in 13ms
+ GET /admin 200 in 57ms
+ GET /admin/settings 200 in 33ms
+ GET /admin/widget 200 in 53ms
+ ○ Compiling /admin/api-access ...
+ ✓ Compiled /admin/api-access in 684ms (1508 modules)
+ GET /admin/api-access 200 in 820ms
+ ✓ Compiled /api/admin/api-key in 203ms (1607 modules)
+ GET /api/admin/api-key 200 in 312ms
+ GET /api/admin/api-key 200 in 7ms
+ GET /admin 200 in 93ms
+ ✓ Compiled in 230ms (861 modules)
+ GET /admin 200 in 58ms
+ ✓ Compiled /login in 426ms (1047 modules)
+ GET /login 200 in 548ms
+ ✓ Compiled /api/auth/login in 266ms (1206 modules)
+ POST /api/auth/login 200 in 486ms
+ GET /admin 200 in 54ms
+ ✓ Compiled in 552ms (1901 modules)
+ GET /admin 200 in 197ms
+ ⨯ ./app/admin/page.tsx
+Error:   [31mx[0m Expected '</', got 'numeric literal (1, 1)'
+     ,-[[36;1;4m/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/app/admin/page.tsx[0m:497:1]
+ [2m494[0m |                         <Check className="h-4 w-4 text-green-600 mt-0.5" />
+ [2m495[0m |                         <div>
+ [2m496[0m |                           <div className="font-medium text-gray-900">Priority Support</div>
+ [2m497[0m |                           <div className="text-xs text-gray-600">< 1 hour response</div>
+     : [35;1m                                                                   ^[0m
+ [2m498[0m |                         </div>
+ [2m499[0m |                       </div>
+ [2m500[0m |                     </>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/admin/page.tsx
+ GET /admin 500 in 18ms
+ GET /admin 500 in 10ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 778ms (1890 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /_next/static/webpack/f010cf786ea269ab.webpack.hot-update.json 404 in 952ms
+ GET /admin 200 in 53ms
+ ✓ Compiled in 487ms (1904 modules)
+ GET /admin 200 in 102ms
+ ✓ Compiled /admin/knowledge-base in 427ms (1054 modules)
+ GET /admin/knowledge-base 200 in 509ms
+ ✓ Compiled /api/knowledge-base in 339ms (1219 modules)
+ GET /api/knowledge-base 200 in 472ms
+ GET /api/knowledge-base 200 in 8ms
+ GET /admin 200 in 91ms
+ GET /admin/knowledge-base 200 in 30ms
+ GET /api/knowledge-base 200 in 12ms
+ GET /api/knowledge-base 200 in 14ms
+ ✓ Compiled in 876ms (1889 modules)
+ GET /admin/knowledge-base 200 in 661ms
+ GET /admin/knowledge-base 200 in 14ms
+ ✓ Compiled in 331ms (1903 modules)
+ GET /admin/knowledge-base 200 in 48ms
+ ✓ Compiled in 409ms (1903 modules)
+ GET /admin/knowledge-base 200 in 71ms
+ ✓ Compiled /api/knowledge-base in 261ms (1903 modules)
+ ✓ Compiled in 1ms (1209 modules)
+ GET /api/knowledge-base 200 in 849ms
+ GET /admin/knowledge-base 200 in 752ms
+ GET /admin 200 in 57ms
+ ✓ Compiled in 486ms (2070 modules)
+ GET /admin 200 in 59ms
+ ✓ Compiled in 784ms (1908 modules)
+ GET /admin 200 in 113ms
+ GET /admin 200 in 120ms
+ ✓ Compiled /admin/reports in 383ms (1913 modules)
+ GET /admin/reports 200 in 456ms
+ GET /admin 200 in 34ms
+ GET /admin/knowledge-base 200 in 54ms
+ ✓ Compiled /api/knowledge-base in 199ms (1213 modules)
+ GET /api/knowledge-base 200 in 335ms
+ GET /api/knowledge-base 200 in 7ms
+ ✓ Compiled in 531ms (2084 modules)
+ GET /admin/knowledge-base 200 in 61ms
+ GET /admin 200 in 119ms
+ GET /admin/knowledge-base 200 in 41ms
+ GET /api/knowledge-base 200 in 39ms
+ GET /api/knowledge-base 200 in 9ms
+ ✓ Compiled in 627ms (2084 modules)
+ GET /admin/knowledge-base 200 in 65ms
+ ✓ Compiled in 491ms (1917 modules)
+ GET /admin/knowledge-base 200 in 171ms
+ ✓ Compiled in 321ms (1917 modules)
+ GET /admin/knowledge-base 200 in 59ms
+ ✓ Compiled in 253ms (1917 modules)
+ GET /admin/knowledge-base 200 in 36ms
+ ✓ Compiled in 337ms (1917 modules)
+ GET /admin/knowledge-base 200 in 58ms
+ ✓ Compiled in 435ms (1917 modules)
+ GET /admin/knowledge-base 200 in 52ms
+ ✓ Compiled in 281ms (1917 modules)
+ GET /admin/knowledge-base 200 in 42ms
+ GET /admin/knowledge-base 200 in 126ms
+ ○ Compiling /api/knowledge-base ...
+ ✓ Compiled /api/knowledge-base in 588ms (1213 modules)
+ GET /api/knowledge-base 200 in 740ms
+ ✓ Compiled in 419ms (871 modules)
+ GET /admin/knowledge-base 200 in 94ms
+ ✓ Compiled in 125ms (871 modules)
+ GET /admin/knowledge-base 200 in 19ms
+ ✓ Compiled in 146ms (871 modules)
+ GET /admin/knowledge-base 200 in 18ms
+ ✓ Compiled in 147ms (871 modules)
+ GET /admin/knowledge-base 200 in 17ms
+ ✓ Compiled in 139ms (871 modules)
+ GET /admin/knowledge-base 200 in 16ms
+ ✓ Compiled in 116ms (871 modules)
+ GET /admin/knowledge-base 200 in 14ms
+ ✓ Compiled in 151ms (871 modules)
+ GET /admin/knowledge-base 200 in 16ms
+ ✓ Compiled in 112ms (871 modules)
+ GET /admin/knowledge-base 200 in 17ms
+ GET /admin/knowledge-base 200 in 117ms
+ GET /api/knowledge-base 200 in 16ms
+ GET /admin 200 in 23ms
+ ✓ Compiled in 124ms (871 modules)
+ GET /admin 200 in 16ms
+ ✓ Compiled in 117ms (871 modules)
+ GET /admin 200 in 16ms
+ GET /login 200 in 51ms
+ ✓ Compiled /api/auth/login in 347ms (1212 modules)
+ POST /api/auth/login 401 in 431ms
+ POST /api/auth/login 401 in 17ms
+ POST /api/auth/login 200 in 99ms
+ GET /admin 200 in 41ms
+ GET /admin/knowledge-base 200 in 70ms
+ ✓ Compiled /api/knowledge-base in 206ms (1216 modules)
+ GET /api/knowledge-base 200 in 256ms
+ GET /api/knowledge-base 200 in 8ms
+ GET /admin/knowledge-base 200 in 135ms
+ GET /api/knowledge-base 200 in 9ms
+ GET /admin 200 in 38ms
+ GET /admin/knowledge-base 200 in 34ms
+ GET /api/knowledge-base 200 in 18ms
+ GET /api/knowledge-base 200 in 9ms
+ ✓ Compiled in 692ms (2084 modules)
+ GET /admin/knowledge-base 200 in 55ms
+ GET /api/knowledge-base 200 in 26ms
+ ✓ Compiled in 282ms (2084 modules)
+ GET /admin/knowledge-base 200 in 37ms
+ ✓ Compiled in 268ms (2084 modules)
+ GET /admin/knowledge-base 200 in 38ms
+ ✓ Compiled in 635ms (1917 modules)
+ GET /admin/knowledge-base 200 in 110ms
+ ✓ Compiled in 259ms (1917 modules)
+ GET /admin/knowledge-base 200 in 58ms
+ ✓ Compiled in 253ms (1917 modules)
+ GET /admin/knowledge-base 200 in 39ms
+ ✓ Compiled /api/knowledge-base in 174ms (1213 modules)
+ GET /api/knowledge-base 200 in 294ms
+ ✓ Compiled in 278ms (2084 modules)
+ ✓ Compiled in 0ms (1213 modules)
+ ✓ Compiled in 0ms (1213 modules)
+ ✓ Compiled in 1ms (1213 modules)
+ GET /api/knowledge-base 200 in 509ms
+ GET /admin/knowledge-base 200 in 634ms
+ ✓ Compiled in 558ms (2084 modules)
+ GET /admin/knowledge-base 200 in 54ms
+ ✓ Compiled in 369ms (2084 modules)
+ GET /admin/knowledge-base 200 in 87ms
+ ✓ Compiled in 199ms (871 modules)
+ GET /admin/knowledge-base 200 in 34ms
+ ✓ Compiled in 122ms (871 modules)
+ GET /admin/knowledge-base 200 in 18ms
+ ✓ Compiled in 110ms (871 modules)
+ GET /admin/knowledge-base 200 in 15ms
+ GET /admin 200 in 53ms
+ GET /admin/knowledge-base 200 in 163ms
+ GET /api/knowledge-base 200 in 56ms
+ GET /admin 200 in 29ms
+ GET /admin 200 in 103ms
+ ○ Compiling /admin/settings ...
+ ✓ Compiled /admin/settings in 509ms (1223 modules)
+ GET /admin/settings 200 in 562ms
+ ✓ Compiled in 450ms (1915 modules)
+ GET /admin/settings 200 in 108ms
+ GET /admin 200 in 35ms
+ ✓ Compiled in 271ms (1915 modules)
+ GET /admin 200 in 56ms
+ ✓ Compiled in 239ms (1915 modules)
+ GET /admin 200 in 34ms
+ ✓ Compiled in 377ms (1915 modules)
+ GET /admin 200 in 50ms
+ GET /admin 200 in 126ms
+ GET /admin/settings 200 in 34ms
+ GET /admin 200 in 26ms
+ GET /admin 200 in 58ms
+ ✓ Compiled in 364ms (871 modules)
+ GET /admin 200 in 31ms
+ ✓ Compiled in 128ms (871 modules)
+ GET /admin 200 in 17ms
+ ✓ Compiled in 118ms (871 modules)
+ GET /admin 200 in 15ms
+ ✓ Compiled in 112ms (871 modules)
+ GET /admin 200 in 13ms
+ ✓ Compiled in 118ms (871 modules)
+ GET /admin 200 in 17ms
+ ✓ Compiled in 113ms (871 modules)
+ GET /admin 200 in 13ms
+ ✓ Compiled in 126ms (871 modules)
+ GET /admin 200 in 17ms
+ ✓ Compiled in 405ms (871 modules)
+ GET /admin 200 in 32ms
  ○ Compiling / ...
- ✓ Compiled / in 1667ms (1476 modules)
- GET / 200 in 2218ms
- GET / 200 in 109ms
- ✓ Compiled /favicon.ico in 198ms (832 modules)
- GET /favicon.ico 200 in 290ms
- GET / 200 in 290ms
- GET /favicon.ico 200 in 9ms
- ✓ Compiled /register in 442ms (1510 modules)
- GET / 200 in 237ms
- GET /register 200 in 700ms
- GET / 200 in 149ms
- ○ Compiling /api/chat ...
- ✓ Compiled /api/chat in 526ms (1612 modules)
- POST /api/chat 200 in 3647ms
- POST /api/chat 200 in 3812ms
- POST /api/chat 200 in 3350ms
- POST /api/chat 200 in 3210ms
- ✓ Compiled in 150ms (669 modules)
- GET / 200 in 202ms
- ✓ Compiled in 207ms (669 modules)
- GET / 200 in 34ms
- POST /api/chat 200 in 3606ms
- POST /api/chat 200 in 4207ms
- POST /api/chat 200 in 4525ms
- POST /api/chat 200 in 4905ms
- POST /api/chat 200 in 3381ms
- POST /api/chat 200 in 5212ms
- POST /api/chat 200 in 4608ms
- POST /api/chat 200 in 4913ms
- POST /api/chat 200 in 4018ms
- POST /api/chat 200 in 4327ms
- POST /api/chat 200 in 4475ms
- POST /api/chat 200 in 4339ms
- POST /api/chat 200 in 4424ms
- POST /api/chat 200 in 4721ms
- POST /api/chat 200 in 3362ms
- POST /api/chat 200 in 5235ms
- ✓ Compiled in 248ms (669 modules)
- GET / 200 in 75ms
- ✓ Compiled in 111ms (669 modules)
- GET / 200 in 21ms
- POST /api/chat 200 in 5015ms
- POST /api/chat 200 in 5386ms
- POST /api/chat 200 in 2833ms
- POST /api/chat 200 in 5458ms
- ✓ Compiled in 204ms (669 modules)
- ✓ Compiled in 430ms (669 modules)
- ✓ Compiled in 90ms (669 modules)
- ✓ Compiled in 207ms (1480 modules)
- ✓ Compiled in 113ms (669 modules)
- ✓ Compiled in 123ms (1480 modules)
- ✓ Compiled in 94ms (669 modules)
- ✓ Compiled in 136ms (1480 modules)
- ✓ Compiled in 113ms (669 modules)
- ✓ Compiled in 139ms (1480 modules)
- ✓ Compiled in 108ms (669 modules)
- ✓ Compiled in 134ms (1480 modules)
- ✓ Compiled in 89ms (669 modules)
- ✓ Compiled in 145ms (669 modules)
- ✓ Compiled in 81ms (669 modules)
- ✓ Compiled in 85ms (669 modules)
- ✓ Compiled in 79ms (669 modules)
- ✓ Compiled in 92ms (669 modules)
- ✓ Compiled in 97ms (669 modules)
- ✓ Compiled in 76ms (669 modules)
- ✓ Compiled in 163ms (1480 modules)
- ✓ Compiled in 96ms (669 modules)
- ✓ Compiled in 134ms (1480 modules)
- ✓ Compiled in 103ms (669 modules)
- ✓ Compiled in 134ms (669 modules)
- ✓ Compiled in 108ms (1480 modules)
- ✓ Compiled in 151ms (669 modules)
- ✓ Compiled in 155ms (1480 modules)
- ✓ Compiled in 92ms (669 modules)
- ✓ Compiled in 88ms (669 modules)
- ✓ Compiled in 100ms (669 modules)
- ✓ Compiled in 94ms (669 modules)
- ✓ Compiled in 81ms (669 modules)
- ✓ Compiled in 162ms (669 modules)
- ✓ Compiled in 134ms (669 modules)
- ✓ Compiled /api/chat in 404ms (958 modules)
-Knowledge base search error: Error [PrismaClientValidationError]: 
-Invalid `prisma.knowledgeBase.findMany()` invocation:
-
-{
-  where: {
-    businessId: "cme0rig9j0000s3vzacvjpmvu",
-    isActive: true,
-    language: "en",
-    ~~~~~~~~
-?   AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   OR?: KnowledgeBaseWhereInput[],
-?   NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   id?: StringFilter | String,
-?   category?: StringFilter | String,
-?   question?: StringFilter | String,
-?   answer?: StringFilter | String,
-?   keywords?: StringFilter | String,
-?   createdAt?: DateTimeFilter | DateTime,
-?   updatedAt?: DateTimeFilter | DateTime,
-?   business?: BusinessScalarRelationFilter | BusinessWhereInput
-  },
-  orderBy: [
-    {
-      priority: "desc"
-    },
-    {
-      usageCount: "desc"
-    }
-  ]
-}
-
-Unknown argument `language`. Available options are marked with ?.
-    at async searchKnowledgeBase (lib/ai/knowledge-base-search.ts:20:18)
-    at async POST (app/api/chat/route.ts:78:29)
-  18 |   try {
-  19 |     // Get all active knowledge base items for the business
-> 20 |     const items = await prisma.knowledgeBase.findMany({
-     |                  ^
-  21 |       where: {
-  22 |         businessId,
-  23 |         isActive: true, {
-  clientVersion: '6.13.0'
-}
- POST /api/chat 200 in 5037ms
-Knowledge base search error: Error [PrismaClientValidationError]: 
-Invalid `prisma.knowledgeBase.findMany()` invocation:
-
-{
-  where: {
-    businessId: "cme0rig9j0000s3vzacvjpmvu",
-    isActive: true,
-    language: "en",
-    ~~~~~~~~
-?   AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   OR?: KnowledgeBaseWhereInput[],
-?   NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   id?: StringFilter | String,
-?   category?: StringFilter | String,
-?   question?: StringFilter | String,
-?   answer?: StringFilter | String,
-?   keywords?: StringFilter | String,
-?   createdAt?: DateTimeFilter | DateTime,
-?   updatedAt?: DateTimeFilter | DateTime,
-?   business?: BusinessScalarRelationFilter | BusinessWhereInput
-  },
-  orderBy: [
-    {
-      priority: "desc"
-    },
-    {
-      usageCount: "desc"
-    }
-  ]
-}
-
-Unknown argument `language`. Available options are marked with ?.
-    at async searchKnowledgeBase (lib/ai/knowledge-base-search.ts:20:18)
-    at async POST (app/api/chat/route.ts:78:29)
-  18 |   try {
-  19 |     // Get all active knowledge base items for the business
-> 20 |     const items = await prisma.knowledgeBase.findMany({
-     |                  ^
-  21 |       where: {
-  22 |         businessId,
-  23 |         isActive: true, {
-  clientVersion: '6.13.0'
-}
- POST /api/chat 200 in 4728ms
- ✓ Compiled in 162ms (669 modules)
- ✓ Compiled in 124ms (1613 modules)
- ✓ Compiled in 545ms (1494 modules)
- ✓ Compiled in 183ms (1494 modules)
- ✓ Compiled in 182ms (1494 modules)
- ✓ Compiled in 157ms (1494 modules)
- ✓ Compiled in 150ms (1494 modules)
- ✓ Compiled in 171ms (1494 modules)
- ✓ Compiled in 217ms (1494 modules)
- GET / 200 in 365ms
- ✓ Compiled /favicon.ico in 279ms (842 modules)
- GET /favicon.ico 200 in 355ms
- ✓ Compiled in 205ms (669 modules)
- GET / 200 in 71ms
- ✓ Compiled /api/chat in 258ms (958 modules)
-Knowledge base search error: Error [PrismaClientValidationError]: 
-Invalid `prisma.knowledgeBase.findMany()` invocation:
-
-{
-  where: {
-    businessId: "cme0rig9j0000s3vzacvjpmvu",
-    isActive: true,
-    language: "en",
-    ~~~~~~~~
-?   AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   OR?: KnowledgeBaseWhereInput[],
-?   NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   id?: StringFilter | String,
-?   category?: StringFilter | String,
-?   question?: StringFilter | String,
-?   answer?: StringFilter | String,
-?   keywords?: StringFilter | String,
-?   createdAt?: DateTimeFilter | DateTime,
-?   updatedAt?: DateTimeFilter | DateTime,
-?   business?: BusinessScalarRelationFilter | BusinessWhereInput
-  },
-  orderBy: [
-    {
-      priority: "desc"
-    },
-    {
-      usageCount: "desc"
-    }
-  ]
-}
-
-Unknown argument `language`. Available options are marked with ?.
-    at async searchKnowledgeBase (lib/ai/knowledge-base-search.ts:20:18)
-    at async POST (app/api/chat/route.ts:78:29)
-  18 |   try {
-  19 |     // Get all active knowledge base items for the business
-> 20 |     const items = await prisma.knowledgeBase.findMany({
-     |                  ^
-  21 |       where: {
-  22 |         businessId,
-  23 |         isActive: true, {
-  clientVersion: '6.13.0'
-}
- POST /api/chat 200 in 3140ms
-Knowledge base search error: Error [PrismaClientValidationError]: 
-Invalid `prisma.knowledgeBase.findMany()` invocation:
-
-{
-  where: {
-    businessId: "cme0rig9j0000s3vzacvjpmvu",
-    isActive: true,
-    language: "en",
-    ~~~~~~~~
-?   AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   OR?: KnowledgeBaseWhereInput[],
-?   NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   id?: StringFilter | String,
-?   category?: StringFilter | String,
-?   question?: StringFilter | String,
-?   answer?: StringFilter | String,
-?   keywords?: StringFilter | String,
-?   createdAt?: DateTimeFilter | DateTime,
-?   updatedAt?: DateTimeFilter | DateTime,
-?   business?: BusinessScalarRelationFilter | BusinessWhereInput
-  },
-  orderBy: [
-    {
-      priority: "desc"
-    },
-    {
-      usageCount: "desc"
-    }
-  ]
-}
-
-Unknown argument `language`. Available options are marked with ?.
-    at async searchKnowledgeBase (lib/ai/knowledge-base-search.ts:20:18)
-    at async POST (app/api/chat/route.ts:78:29)
-  18 |   try {
-  19 |     // Get all active knowledge base items for the business
-> 20 |     const items = await prisma.knowledgeBase.findMany({
-     |                  ^
-  21 |       where: {
-  22 |         businessId,
-  23 |         isActive: true, {
-  clientVersion: '6.13.0'
-}
- POST /api/chat 200 in 2491ms
- ✓ Compiled in 375ms (1494 modules)
- GET / 200 in 134ms
- ✓ Compiled in 647ms (1494 modules)
- GET / 200 in 79ms
- ✓ Compiled /api/chat in 129ms (958 modules)
-Knowledge base search error: Error [PrismaClientValidationError]: 
-Invalid `prisma.knowledgeBase.findMany()` invocation:
-
-{
-  where: {
-    businessId: "cme0rig9j0000s3vzacvjpmvu",
-    isActive: true,
-    language: "en",
-    ~~~~~~~~
-?   AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   OR?: KnowledgeBaseWhereInput[],
-?   NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
-?   id?: StringFilter | String,
-?   category?: StringFilter | String,
-?   question?: StringFilter | String,
-?   answer?: StringFilter | String,
-?   keywords?: StringFilter | String,
-?   createdAt?: DateTimeFilter | DateTime,
-?   updatedAt?: DateTimeFilter | DateTime,
-?   business?: BusinessScalarRelationFilter | BusinessWhereInput
-  },
-  orderBy: [
-    {
-      priority: "desc"
-    },
-    {
-      usageCount: "desc"
-    }
-  ]
-}
-
-Unknown argument `language`. Available options are marked with ?.
-    at async searchKnowledgeBase (lib/ai/knowledge-base-search.ts:20:18)
-    at async POST (app/api/chat/route.ts:78:29)
-  18 |   try {
-  19 |     // Get all active knowledge base items for the business
-> 20 |     const items = await prisma.knowledgeBase.findMany({
-     |                  ^
-  21 |       where: {
-  22 |         businessId,
-  23 |         isActive: true, {
-  clientVersion: '6.13.0'
-}
- POST /api/chat 200 in 3960ms
- GET / 200 in 325ms
- ✓ Compiled /favicon.ico in 183ms (842 modules)
- GET /favicon.ico 200 in 229ms
- ✓ Compiled in 304ms (1511 modules)
- GET / 200 in 92ms
- ✓ Compiled in 236ms (669 modules)
- GET / 200 in 18ms
- ✓ Compiled in 92ms (669 modules)
- GET / 200 in 13ms
- ✓ Compiled in 82ms (669 modules)
- GET / 200 in 15ms
- ✓ Compiled in 83ms (669 modules)
- GET / 200 in 13ms
- ✓ Compiled in 85ms (669 modules)
- GET / 200 in 15ms
- ✓ Compiled in 89ms (669 modules)
- GET / 200 in 13ms
- ✓ Compiled in 102ms (669 modules)
- GET / 200 in 14ms
- GET / 200 in 285ms
- GET /favicon.ico 200 in 19ms
- ✓ Compiled in 448ms (1480 modules)
- GET / 200 in 121ms
- ✓ Compiled in 104ms (669 modules)
- GET / 200 in 21ms
- ✓ Compiled in 100ms (669 modules)
- GET / 200 in 15ms
- GET / 200 in 52ms
- ✓ Compiled in 185ms (1480 modules)
- GET / 200 in 83ms
- ✓ Compiled in 106ms (669 modules)
- GET / 200 in 15ms
- ✓ Compiled in 259ms (669 modules)
- GET / 200 in 36ms
- ✓ Compiled in 170ms (669 modules)
- GET / 200 in 16ms
- ✓ Compiled in 96ms (669 modules)
- GET / 200 in 15ms
- GET / 200 in 50ms
- ✓ Compiled in 126ms (1480 modules)
- GET / 200 in 67ms
- ✓ Compiled in 91ms (669 modules)
- GET / 200 in 20ms
- GET / 200 in 49ms
- ✓ Compiled in 128ms (1480 modules)
- GET / 200 in 63ms
- ✓ Compiled in 118ms (669 modules)
- GET / 200 in 14ms
- ✓ Compiled in 229ms (1480 modules)
- GET / 200 in 234ms
- GET / 200 in 10ms
- ✓ Compiled in 106ms (669 modules)
- GET / 200 in 15ms
- GET / 200 in 52ms
- ✓ Compiled in 120ms (1480 modules)
- GET / 200 in 58ms
- ✓ Compiled in 100ms (669 modules)
- GET / 200 in 20ms
- ✓ Compiled in 167ms (669 modules)
- GET / 200 in 17ms
- ✓ Compiled in 238ms (1480 modules)
- GET / 200 in 295ms
- GET / 200 in 13ms
- ✓ Compiled in 147ms (669 modules)
- GET / 200 in 17ms
- GET / 200 in 289ms
- ✓ Compiled /favicon.ico in 203ms (842 modules)
- GET /favicon.ico 200 in 292ms
- ✓ Compiled in 147ms (669 modules)
- GET / 200 in 72ms
- ✓ Compiled in 174ms (669 modules)
- GET / 200 in 17ms
- ✓ Compiled in 241ms (1480 modules)
- GET / 200 in 339ms
- GET / 200 in 10ms
- ✓ Compiled in 123ms (669 modules)
- GET / 200 in 20ms
- GET / 200 in 48ms
- ✓ Compiled in 122ms (1480 modules)
- GET / 200 in 60ms
- ✓ Compiled in 105ms (669 modules)
- GET / 200 in 23ms
- GET / 200 in 52ms
- ✓ Compiled in 129ms (1480 modules)
- GET / 200 in 64ms
- ✓ Compiled in 104ms (669 modules)
- GET / 200 in 20ms
- GET / 200 in 54ms
- ✓ Compiled in 141ms (1480 modules)
- GET / 200 in 89ms
- ✓ Compiled in 147ms (669 modules)
- GET / 200 in 14ms
- ✓ Compiled in 248ms (669 modules)
+ ✓ Compiled / in 808ms (1927 modules)
+ GET / 200 in 1083ms
+ ✓ Compiled in 546ms (1935 modules)
+ GET /admin 200 in 111ms
+ GET / 200 in 112ms
+ GET / 200 in 192ms
+ ✓ Compiled in 576ms (1935 modules)
+ GET /admin 200 in 44ms
+ GET / 200 in 57ms
+ GET / 200 in 151ms
+ ✓ Compiled in 747ms (1935 modules)
+ GET /admin 200 in 47ms
+ GET / 200 in 69ms
+ ✓ Compiled in 279ms (1935 modules)
+ GET / 200 in 57ms
+ GET /admin 200 in 57ms
+ ✓ Compiled in 250ms (882 modules)
+ GET /admin 200 in 30ms
  GET / 200 in 30ms
- ✓ Compiled in 96ms (669 modules)
- GET / 200 in 17ms
- ✓ Compiled in 88ms (669 modules)
- GET / 200 in 15ms
- ✓ Compiled in 95ms (669 modules)
- GET / 200 in 13ms
- ✓ Compiled in 109ms (669 modules)
- GET / 200 in 22ms
- ✓ Compiled in 111ms (669 modules)
- GET / 200 in 16ms
- ✓ Compiled in 473ms (1480 modules)
- GET / 200 in 349ms
- GET / 200 in 10ms
+ ✓ Compiled in 196ms (882 modules)
+ GET /admin 200 in 31ms
+ GET / 200 in 30ms
+ ✓ Compiled in 982ms (1935 modules)
+ GET /admin 200 in 62ms
+ GET / 200 in 62ms
+ ✓ Compiled in 402ms (1941 modules)
+ GET /admin 200 in 102ms
+ GET / 200 in 103ms
+ ✓ Compiled in 156ms (885 modules)
+ GET /admin 200 in 22ms
+ GET / 200 in 24ms
+ ✓ Compiled in 481ms (1947 modules)
+ GET /admin 200 in 60ms
+ GET / 200 in 61ms
+ GET / 200 in 238ms
+ ✓ Compiled in 769ms (1947 modules)
+ GET /admin 200 in 46ms
+ GET / 200 in 59ms
+ ✓ Compiled in 259ms (1947 modules)
+ GET /admin 200 in 40ms
+ GET / 200 in 56ms
+ ✓ Compiled in 296ms (1947 modules)
+ GET /admin 200 in 52ms
+ GET / 200 in 56ms
+ ✓ Compiled in 626ms (1947 modules)
+ GET / 200 in 47ms
+ GET /admin 200 in 62ms
+ ✓ Compiled in 292ms (1947 modules)
+ GET /admin 200 in 55ms
+ GET / 200 in 55ms
+ ✓ Compiled in 252ms (1947 modules)
+ GET /admin 200 in 42ms
+ GET / 200 in 55ms
+ ✓ Compiled in 599ms (1947 modules)
+ GET / 200 in 89ms
+ GET /admin 200 in 89ms
+ ✓ Compiled /register in 442ms (1068 modules)
+ GET /register 200 in 637ms
+ GET / 200 in 167ms
+ ✓ Compiled in 579ms (1944 modules)
+ GET /admin 200 in 60ms
+ GET / 200 in 60ms
+ ✓ Compiled in 276ms (1944 modules)
+ GET /admin 200 in 55ms
+ GET / 200 in 55ms
+ ✓ Compiled in 548ms (1944 modules)
+ GET /admin 200 in 77ms
+ GET / 200 in 77ms
+ GET / 200 in 356ms
+ GET /register 200 in 79ms
+ GET / 200 in 137ms
+ GET /register 200 in 65ms
+ GET / 200 in 129ms
+ ✓ Compiled in 407ms (888 modules)
+ GET /admin 200 in 53ms
+ GET / 200 in 55ms
+ ✓ Compiled in 135ms (888 modules)
+ GET /admin 200 in 24ms
+ GET / 200 in 24ms
+ ✓ Compiled in 271ms (888 modules)
+ GET / 200 in 30ms
+ GET /admin 200 in 32ms
+ ✓ Compiled in 601ms (1944 modules)
+ GET /admin 200 in 76ms
+ GET / 200 in 95ms
+ ✓ Compiled in 151ms (888 modules)
+ GET /admin 200 in 27ms
+ GET / 200 in 28ms
+ ✓ Compiled in 128ms (888 modules)
+ GET /admin 200 in 25ms
+ GET / 200 in 24ms
+ ✓ Compiled in 502ms (888 modules)
+ GET /admin 200 in 60ms
+ GET / 200 in 59ms

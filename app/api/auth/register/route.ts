@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
+import { sendWelcomeEmail } from '@/lib/email/sendgrid'
 
 const prisma = new PrismaClient()
 
@@ -67,17 +68,36 @@ export async function POST(request: NextRequest) {
     // Create subscription record
     const startDate = new Date()
     const endDate = new Date()
-    endDate.setMonth(endDate.getMonth() + 1)
+    
+    // Set end date based on billing cycle
+    if (validatedData.billingCycle === 'annual') {
+      endDate.setFullYear(endDate.getFullYear() + 1)
+    } else {
+      endDate.setMonth(endDate.getMonth() + 1)
+    }
     
     await prisma.subscription.create({
       data: {
         businessId: business.id,
         tier: validatedData.tier,
         status: 'active',
-        currentPeriodStart: startDate,
-        currentPeriodEnd: endDate
+        billingCycle: validatedData.billingCycle,
+        startDate: startDate,
+        endDate: endDate
       }
     })
+    
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(
+        validatedData.email,
+        validatedData.businessName,
+        validatedData.tier
+      )
+    } catch (emailError) {
+      console.error('Failed to send welcome email:', emailError)
+      // Don't fail registration if email fails
+    }
     
     return NextResponse.json({
       token,

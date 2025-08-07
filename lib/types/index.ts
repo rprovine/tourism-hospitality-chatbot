@@ -9,9 +9,12 @@ export interface TierFeature {
 export interface PricingTier {
   name: string
   price: string
+  originalPrice?: string
   description: string
   features: string[]
   highlighted?: boolean
+  savings?: string
+  alternativePricing?: string
 }
 
 export interface ChatMessage {

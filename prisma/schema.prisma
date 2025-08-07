@@ -55,6 +55,7 @@ model Subscription {
   
   tier             String          // starter, professional, premium, enterprise
   status           String          // active, pending, canceled, past_due
+  billingCycle     String          @default("monthly") // monthly, annual
   
   // Payment provider info
   paymentMethod    String          @default("hubspot") // hubspot, stripe, manual

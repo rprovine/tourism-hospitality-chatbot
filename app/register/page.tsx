@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Bot, Hotel, MapPin, Home, ArrowRight } from 'lucide-react'
+import { Bot, Hotel, MapPin, Home, ArrowRight, Check, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -14,7 +14,8 @@ export default function RegisterPage() {
     password: '',
     businessName: '',
     businessType: 'hotel',
-    tier: 'starter'
+    tier: 'starter',
+    billingCycle: 'monthly' as 'monthly' | 'annual'
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -168,8 +169,51 @@ export default function RegisterPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Billing Cycle
+                </label>
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, billingCycle: 'monthly' })}
+                    className={`p-2 rounded-lg font-medium transition-all ${
+                      formData.billingCycle === 'monthly'
+                        ? 'bg-cyan-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, billingCycle: 'annual' })}
+                    className={`p-2 rounded-lg font-medium transition-all relative ${
+                      formData.billingCycle === 'annual'
+                        ? 'bg-cyan-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Annual
+                    <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">
+                      Save up to 25%
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Choose Your Plan
                 </label>
+                {formData.billingCycle === 'annual' && (
+                  <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4 text-green-600" />
+                      <span className="text-sm font-medium text-green-800">
+                        Annual billing saves you up to $7,498/year!
+                      </span>
+                    </div>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <div
                     onClick={() => setFormData({ ...formData, tier: 'starter' })}
@@ -182,9 +226,20 @@ export default function RegisterPage() {
                     <div className="flex justify-between items-center">
                       <div>
                         <div className="font-semibold">Starter</div>
-                        <div className="text-sm text-gray-600">$299/month after trial</div>
+                        <div className="text-sm text-gray-600">
+                          {formData.billingCycle === 'annual' 
+                            ? '$2,390/year (save $598)' 
+                            : '$299/month'}
+                        </div>
                       </div>
-                      <div className="text-2xl font-bold">$299</div>
+                      <div>
+                        <div className="text-2xl font-bold">
+                          {formData.billingCycle === 'annual' ? '$199' : '$299'}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {formData.billingCycle === 'annual' ? '/month' : '/month'}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -201,9 +256,20 @@ export default function RegisterPage() {
                           Professional
                           <span className="bg-cyan-600 text-white text-xs px-2 py-0.5 rounded-full">Popular</span>
                         </div>
-                        <div className="text-sm text-gray-600">$899/month after trial</div>
+                        <div className="text-sm text-gray-600">
+                          {formData.billingCycle === 'annual' 
+                            ? '$5,590/year (save $1,798)' 
+                            : <><s className="text-gray-400">$899</s> $699/month</>}
+                        </div>
                       </div>
-                      <div className="text-2xl font-bold">$899</div>
+                      <div>
+                        <div className="text-2xl font-bold">
+                          {formData.billingCycle === 'annual' ? '$466' : '$699'}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {formData.billingCycle === 'annual' ? '/month' : '/month'}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -219,9 +285,20 @@ export default function RegisterPage() {
                         <div className="font-semibold flex items-center gap-2">
                           Premium <span className="text-lg">✨</span>
                         </div>
-                        <div className="text-sm text-gray-600">$2,499/month after trial</div>
+                        <div className="text-sm text-gray-600">
+                          {formData.billingCycle === 'annual' 
+                            ? '$22,490/year (save $7,498)' 
+                            : '$2,499/month'}
+                        </div>
                       </div>
-                      <div className="text-2xl font-bold">$2,499</div>
+                      <div>
+                        <div className="text-2xl font-bold">
+                          {formData.billingCycle === 'annual' ? '$1,874' : '$2,499'}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {formData.billingCycle === 'annual' ? '/month' : '/month'}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -237,9 +314,13 @@ export default function RegisterPage() {
                         <div className="font-semibold flex items-center gap-2">
                           Enterprise <span className="text-lg">🏢</span>
                         </div>
-                        <div className="text-sm text-gray-600">Custom pricing</div>
+                        <div className="text-sm text-gray-600">
+                          {formData.billingCycle === 'annual' 
+                            ? 'Volume discounts available' 
+                            : 'Custom pricing'}
+                        </div>
                       </div>
-                      <div className="text-xl font-bold">Custom</div>
+                      <div className="text-xl font-bold">Contact Us</div>
                     </div>
                   </div>
                 </div>

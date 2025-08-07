@@ -18,6 +18,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import ChatWidget from '@/components/chatbot/ChatWidget'
+import ROICalculator from '@/components/pricing/ROICalculator'
+import CompetitiveAdvantage from '@/components/pricing/CompetitiveAdvantage'
 import { tierComparison, pricingTiers, useCases, sampleQuestions } from '@/lib/data/pricing'
 
 export default function LandingPage() {
@@ -158,13 +160,18 @@ export default function LandingPage() {
                   <th className="text-center py-6 px-4 bg-white min-w-[150px]">
                     <div className="font-bold text-lg text-gray-900">Starter</div>
                     <div className="text-2xl font-extrabold text-gray-900 mt-2">$299<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                    <div className="text-xs text-green-600 mt-1">Save 2-3 hrs/day</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-cyan-50 min-w-[150px]">
                     <div className="inline-flex items-center gap-2 mb-2">
                       <span className="font-bold text-lg text-gray-900">Professional</span>
                       <span className="bg-gradient-to-r from-cyan-600 to-cyan-700 text-white text-xs px-2 py-1 rounded-full font-bold uppercase">Popular</span>
                     </div>
-                    <div className="text-2xl font-extrabold text-cyan-700">$899<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                    <div className="relative">
+                      <span className="text-lg text-gray-400 line-through">$899</span>
+                      <div className="text-2xl font-extrabold text-cyan-700">$699<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                    </div>
+                    <div className="text-xs text-green-600 mt-1">Save $4K+/mo</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-purple-50 min-w-[150px]">
                     <div className="inline-flex items-center gap-2 mb-2">
@@ -172,6 +179,7 @@ export default function LandingPage() {
                       <span className="text-2xl">✨</span>
                     </div>
                     <div className="text-2xl font-extrabold text-purple-700">$2,499<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                    <div className="text-xs text-green-600 mt-1">+30% bookings</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-gray-100 min-w-[150px]">
                     <div className="inline-flex items-center gap-2 mb-2">
@@ -179,6 +187,7 @@ export default function LandingPage() {
                       <span className="text-2xl">🏢</span>
                     </div>
                     <div className="text-2xl font-extrabold text-gray-900">Custom</div>
+                    <div className="text-xs text-green-600 mt-1">ROI guaranteed</div>
                   </th>
                 </tr>
               </thead>
@@ -234,6 +243,25 @@ export default function LandingPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+          
+          {/* Value Proposition Banner */}
+          <div className="mt-8 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl p-6 text-white max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div>
+                <h3 className="text-xl font-bold mb-2">🎉 Limited Time: Professional Tier Now $699</h3>
+                <p className="text-cyan-100">
+                  Save $200/month with Claude Sonnet AI • Annual discounts available • 14-day free trial
+                </p>
+              </div>
+              <Button 
+                className="bg-white text-cyan-700 hover:bg-cyan-50 font-semibold px-6 py-3"
+                onClick={() => window.location.href = '/register'}
+              >
+                Start Free Trial
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -386,9 +414,17 @@ export default function LandingPage() {
                     <CardTitle className="text-2xl">{tier.name}</CardTitle>
                     <CardDescription className="text-gray-700">{tier.description}</CardDescription>
                     <div className="mt-4">
+                      {tier.originalPrice && (
+                        <span className="text-2xl text-gray-400 line-through mr-2">{tier.originalPrice}</span>
+                      )}
                       <span className="text-4xl font-bold text-gray-900">{tier.price}</span>
                       <span className="text-gray-700 font-medium">/month</span>
                     </div>
+                    {tier.savings && (
+                      <div className="mt-2 text-sm font-semibold text-green-600">
+                        {tier.savings}
+                      </div>
+                    )}
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
@@ -414,6 +450,12 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Competitive Advantage */}
+      <CompetitiveAdvantage />
+
+      {/* ROI Calculator */}
+      <ROICalculator />
 
       {/* Demo Section */}
       <section id="demo" className="container mx-auto px-6 py-20">
@@ -456,21 +498,62 @@ export default function LandingPage() {
         <Card className="max-w-4xl mx-auto">
           <CardHeader>
             <CardTitle>
-              {selectedTier === 'starter' ? 'Starter Tier' : 
-               selectedTier === 'professional' ? 'Professional Tier' : 
-               selectedTier === 'premium' ? 'Premium Tier 👑' : 
-               'Enterprise Tier 🏢'} Capabilities
+              {selectedTier === 'starter' ? 'Starter Tier - Basic Q&A Only' : 
+               selectedTier === 'professional' ? 'Professional Tier - CRM & Booking Enabled ✅' : 
+               selectedTier === 'premium' ? 'Premium Tier - Full Personalization & VIP 👑' : 
+               'Enterprise Tier - Complete Integration Suite 🏢'} 
             </CardTitle>
             <CardDescription>
-              Try these sample questions to see the AI in action
+              {selectedTier === 'starter' ? '❌ No integrations - Manual processes only' : 
+               selectedTier === 'professional' ? '✅ CRM + Booking system connected' : 
+               selectedTier === 'premium' ? '✨ AI personalization + VIP services' : 
+               '🚀 Full enterprise stack with predictive analytics'}
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Integration Status */}
+            <div className="mb-6 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className={selectedTier !== 'starter' ? 'text-green-600' : 'text-gray-400'}>
+                    {selectedTier !== 'starter' ? '✅' : '❌'}
+                  </div>
+                  <span className={selectedTier !== 'starter' ? 'font-semibold' : 'text-gray-500'}>
+                    Booking System
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={selectedTier !== 'starter' ? 'text-green-600' : 'text-gray-400'}>
+                    {selectedTier !== 'starter' ? '✅' : '❌'}
+                  </div>
+                  <span className={selectedTier !== 'starter' ? 'font-semibold' : 'text-gray-500'}>
+                    CRM Integration
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={selectedTier === 'premium' || selectedTier === 'enterprise' ? 'text-green-600' : 'text-gray-400'}>
+                    {selectedTier === 'premium' || selectedTier === 'enterprise' ? '✅' : '❌'}
+                  </div>
+                  <span className={selectedTier === 'premium' || selectedTier === 'enterprise' ? 'font-semibold' : 'text-gray-500'}>
+                    AI Personalization
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={selectedTier === 'enterprise' ? 'text-green-600' : 'text-gray-400'}>
+                    {selectedTier === 'enterprise' ? '✅' : '❌'}
+                  </div>
+                  <span className={selectedTier === 'enterprise' ? 'font-semibold' : 'text-gray-500'}>
+                    Multi-Property
+                  </span>
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {sampleQuestions[selectedTier].map((question, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
+                  className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors border border-gray-200 hover:border-cyan-500"
                   onClick={() => {
                     setSelectedQuestion(question)
                     setShowDemo(true)

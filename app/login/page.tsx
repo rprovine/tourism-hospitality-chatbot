@@ -37,7 +37,7 @@ export default function LoginPage() {
       }
 
       // Store token and business data
-      localStorage.setItem('auth_token', data.token)
+      localStorage.setItem('token', data.token)
       localStorage.setItem('business', JSON.stringify(data.business))
 
       // Redirect to admin dashboard

@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+*.test.js
+*.spec.js
 
 # next.js
 /.next/
@@ -19,6 +21,7 @@
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
@@ -30,8 +33,47 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# environment variables - NEVER commit these
+.env
+.env.*
+.env.local
+.env.development
+.env.test
+.env.production
+!.env.example
+
+# database
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+/prisma/dev.db
+/prisma/dev.db-journal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+.project
+.classpath
+.settings/
+
+# logs
+logs/
+*.log
+server.log
+
+# security
+*.key
+*.cert
+*.crt
+*.pem
+*.p12
+secrets/
+private/
 
 # vercel
 .vercel
@@ -40,4 +82,38 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/lib/generated/prisma
+# generated files
+/lib/generated/
+/public/sw.js
+/public/workbox-*.js
+
+# temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# backups
+*.backup
+*.bak
+*.old
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# package files
+*.tgz
+*.tar.gz
+*.zip
+
+# monitoring
+.sentryclirc
+
+# payment
+stripe-cli/
+
+# documentation build
+docs/_build/
+docs/.vuepress/dist/

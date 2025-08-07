@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import AdminNav from '@/components/admin/AdminNav'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { 
@@ -94,7 +95,9 @@ export default function ApiAccessPage() {
 
   if (!hasApiAccess) {
     return (
-      <div className="container mx-auto p-6 max-w-4xl">
+      <div className="min-h-screen bg-gray-50">
+        <AdminNav />
+        <div className="container mx-auto p-6 max-w-4xl">
         <Card className="border-2 border-orange-200 bg-orange-50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -142,14 +145,17 @@ export default function ApiAccessPage() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto p-6 max-w-6xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">API Access</h1>
+    <div className="min-h-screen bg-gray-50">
+      <AdminNav />
+      <div className="container mx-auto p-6 max-w-6xl">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">API Access</h1>
         <p className="text-gray-600">
           Integrate your chatbot with external systems using our REST API
         </p>
@@ -367,6 +373,7 @@ export default function ApiAccessPage() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   )
 }

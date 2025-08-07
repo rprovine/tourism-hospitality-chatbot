@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import AdminNav from '@/components/admin/AdminNav'
 import { 
   Plus, 
   Search, 
@@ -12,7 +13,11 @@ import {
   Filter,
   X,
   Save,
-  AlertCircle
+  AlertCircle,
+  FileText,
+  Brain,
+  Sparkles,
+  Globe
 } from 'lucide-react'
 
 interface KnowledgeBaseItem {
@@ -42,7 +47,7 @@ const CATEGORIES = [
   'faq'
 ]
 
-const LANGUAGES = [
+const ALL_LANGUAGES = [
   { code: 'en', name: 'English' },
   { code: 'ja', name: 'Japanese' },
   { code: 'zh', name: 'Chinese' },
@@ -50,7 +55,9 @@ const LANGUAGES = [
   { code: 'ko', name: 'Korean' },
   { code: 'fr', name: 'French' },
   { code: 'de', name: 'German' },
-  { code: 'pt', name: 'Portuguese' }
+  { code: 'pt', name: 'Portuguese' },
+  { code: 'ru', name: 'Russian' },
+  { code: 'ar', name: 'Arabic' }
 ]
 
 export default function KnowledgeBasePage() {
@@ -61,6 +68,7 @@ export default function KnowledgeBasePage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedLanguage, setSelectedLanguage] = useState('en')
   const [showModal, setShowModal] = useState(false)
+  const [showImportModal, setShowImportModal] = useState(false)
   const [editingItem, setEditingItem] = useState<KnowledgeBaseItem | null>(null)
   const [formData, setFormData] = useState({
     category: 'general',
@@ -73,9 +81,46 @@ export default function KnowledgeBasePage() {
   })
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [importType, setImportType] = useState<'csv' | 'pdf' | 'website'>('csv')
+  const [importData, setImportData] = useState('')
+  const [importing, setImporting] = useState(false)
+  const [businessTier, setBusinessTier] = useState<string>('starter')
+
+  // Get available languages based on tier
+  const getAvailableLanguages = () => {
+    switch (businessTier) {
+      case 'starter':
+        return [{ code: 'en', name: 'English' }]
+      case 'professional':
+        return [
+          { code: 'en', name: 'English' },
+          { code: 'ja', name: 'Japanese' }
+        ]
+      case 'premium':
+        // Premium can choose any 5 languages, default to these
+        return ALL_LANGUAGES.slice(0, 5)
+      case 'enterprise':
+        // Enterprise gets all 10 languages
+        return ALL_LANGUAGES
+      default:
+        return [{ code: 'en', name: 'English' }]
+    }
+  }
+
+  const availableLanguages = getAvailableLanguages()
 
   useEffect(() => {
     fetchKnowledgeBase()
+    // Get business tier from localStorage
+    const businessData = localStorage.getItem('business')
+    if (businessData) {
+      try {
+        const parsed = JSON.parse(businessData)
+        setBusinessTier(parsed.tier || 'starter')
+      } catch (e) {
+        console.error('Error parsing business data:', e)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -272,10 +317,12 @@ export default function KnowledgeBasePage() {
   }
 
   return (
-    <div className="container mx-auto px-6 py-8">
-      <div className="bg-white rounded-lg shadow-lg">
-        {/* Header */}
-        <div className="border-b px-6 py-4">
+    <div className="min-h-screen bg-gray-50">
+      <AdminNav />
+      <div className="container mx-auto px-6 py-8">
+        <div className="bg-white rounded-lg shadow-lg">
+          {/* Header */}
+          <div className="border-b px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BookOpen className="h-6 w-6 text-cyan-700" />
@@ -285,16 +332,26 @@ export default function KnowledgeBasePage() {
               </span>
             </div>
             <div className="flex gap-2">
-              <label className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium cursor-pointer transition-colors flex items-center gap-2">
-                <Upload className="h-4 w-4" />
-                Import
-                <input
-                  type="file"
-                  accept=".csv,.json"
-                  onChange={handleImport}
-                  className="hidden"
-                />
-              </label>
+              {(businessTier === 'premium' || businessTier === 'enterprise') ? (
+                <button
+                  onClick={() => setShowImportModal(true)}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                >
+                  <Brain className="h-4 w-4" />
+                  AI Training Import
+                </button>
+              ) : (
+                <label className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium cursor-pointer transition-colors flex items-center gap-2">
+                  <Upload className="h-4 w-4" />
+                  Import CSV
+                  <input
+                    type="file"
+                    accept=".csv,.json"
+                    onChange={handleImport}
+                    className="hidden"
+                  />
+                </label>
+              )}
               <button
                 onClick={() => handleExport('csv')}
                 className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
@@ -358,12 +415,41 @@ export default function KnowledgeBasePage() {
               className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="all">All Languages</option>
-              {LANGUAGES.map(lang => (
+              {availableLanguages.map(lang => (
                 <option key={lang.code} value={lang.code}>{lang.name}</option>
               ))}
             </select>
           </div>
         </div>
+
+        {/* Tier Limitation Notice */}
+        {(businessTier === 'starter' || businessTier === 'professional') && (
+          <div className="mx-6 mt-4 bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-amber-900">
+                  {businessTier === 'starter' ? 'Starter Tier - Manual Q&A Only' : 'Professional Tier - Limited AI Features'}
+                </h4>
+                <p className="text-sm text-amber-700 mt-1">
+                  {businessTier === 'starter' 
+                    ? 'Your plan requires manual Q&A pair creation. Upgrade to Premium for AI training that learns from your documents directly.'
+                    : 'You have API access but limited AI training. Upgrade to Premium for full AI document learning capabilities.'}
+                </p>
+                {businessTier === 'starter' && (
+                  <p className="text-xs text-amber-600 mt-2">
+                    Maximum 100 knowledge base items • English only
+                  </p>
+                )}
+                {businessTier === 'professional' && (
+                  <p className="text-xs text-amber-600 mt-2">
+                    English and Japanese only • API access included
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Alerts */}
         {error && (
@@ -400,7 +486,7 @@ export default function KnowledgeBasePage() {
                           {item.category}
                         </span>
                         <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">
-                          {LANGUAGES.find(l => l.code === item.language)?.name}
+                          {ALL_LANGUAGES.find(l => l.code === item.language)?.name}
                         </span>
                         {item.priority > 0 && (
                           <span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">
@@ -496,7 +582,7 @@ export default function KnowledgeBasePage() {
                     className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     required
                   >
-                    {LANGUAGES.map(lang => (
+                    {availableLanguages.map(lang => (
                       <option key={lang.code} value={lang.code}>{lang.name}</option>
                     ))}
                   </select>
@@ -606,6 +692,313 @@ export default function KnowledgeBasePage() {
           </div>
         </div>
       )}
+
+      {/* AI Training Import Modal */}
+      {showImportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b px-6 py-4">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                  <Brain className="h-5 w-5 text-purple-600" />
+                  AI Custom Training (Premium)
+                </h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  Train your AI directly on your documents - no Q&A pairs needed
+                </p>
+              </div>
+              <button
+                onClick={() => setShowImportModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {/* Premium Feature Notice */}
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <Sparkles className="h-5 w-5 text-purple-600 mt-0.5" />
+                  <div>
+                    <h4 className="font-medium text-purple-900">How Premium AI Training Works</h4>
+                    <p className="text-sm text-purple-700 mt-1">
+                      Unlike basic Q&A systems, your Premium AI learns directly from your documents. 
+                      Just upload your content and the AI understands the context - it can answer any 
+                      guest question naturally, even if that exact Q&A wasn't explicitly defined.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Import Type Selection */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Choose Import Type
+                </label>
+                <div className="grid grid-cols-3 gap-4">
+                  <button
+                    onClick={() => setImportType('csv')}
+                    className={`p-6 rounded-lg border-2 transition-all text-center ${
+                      importType === 'csv' 
+                        ? 'border-purple-600 bg-purple-50 shadow-md' 
+                        : 'border-gray-200 hover:border-purple-300 hover:shadow-sm bg-white'
+                    }`}
+                  >
+                    <FileText className={`h-10 w-10 mx-auto mb-3 ${
+                      importType === 'csv' ? 'text-purple-600' : 'text-gray-500'
+                    }`} />
+                    <div className={`font-semibold text-base mb-1 ${
+                      importType === 'csv' ? 'text-purple-900' : 'text-gray-900'
+                    }`}>CSV/Excel</div>
+                    <div className={`text-xs ${
+                      importType === 'csv' ? 'text-purple-700' : 'text-gray-600'
+                    }`}>Upload FAQ spreadsheet</div>
+                  </button>
+
+                  <button
+                    onClick={() => setImportType('pdf')}
+                    className={`p-6 rounded-lg border-2 transition-all text-center ${
+                      importType === 'pdf' 
+                        ? 'border-purple-600 bg-purple-50 shadow-md' 
+                        : 'border-gray-200 hover:border-purple-300 hover:shadow-sm bg-white'
+                    }`}
+                  >
+                    <FileText className={`h-10 w-10 mx-auto mb-3 ${
+                      importType === 'pdf' ? 'text-purple-600' : 'text-gray-500'
+                    }`} />
+                    <div className={`font-semibold text-base mb-1 ${
+                      importType === 'pdf' ? 'text-purple-900' : 'text-gray-900'
+                    }`}>PDF Documents</div>
+                    <div className={`text-xs ${
+                      importType === 'pdf' ? 'text-purple-700' : 'text-gray-600'
+                    }`}>Extract from manuals</div>
+                  </button>
+
+                  <button
+                    onClick={() => setImportType('website')}
+                    className={`p-6 rounded-lg border-2 transition-all text-center ${
+                      importType === 'website' 
+                        ? 'border-purple-600 bg-purple-50 shadow-md' 
+                        : 'border-gray-200 hover:border-purple-300 hover:shadow-sm bg-white'
+                    }`}
+                  >
+                    <Globe className={`h-10 w-10 mx-auto mb-3 ${
+                      importType === 'website' ? 'text-purple-600' : 'text-gray-500'
+                    }`} />
+                    <div className={`font-semibold text-base mb-1 ${
+                      importType === 'website' ? 'text-purple-900' : 'text-gray-900'
+                    }`}>Website</div>
+                    <div className={`text-xs ${
+                      importType === 'website' ? 'text-purple-700' : 'text-gray-600'
+                    }`}>Scrape FAQ pages</div>
+                  </button>
+                </div>
+              </div>
+
+              {/* Import Content Based on Type */}
+              {importType === 'csv' && (
+                <div className="space-y-4">
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <Sparkles className="h-5 w-5 text-purple-600 mt-0.5" />
+                      <div>
+                        <h4 className="font-medium text-purple-900">Direct AI Training</h4>
+                        <p className="text-sm text-purple-700 mt-1">
+                          Upload your data and the AI will learn from it directly. No need to create Q&A pairs - the AI understands context and can answer questions naturally.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Upload Training Data
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-purple-400 transition-colors">
+                      <Upload className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                      <p className="text-gray-600 mb-2">Upload property info, policies, amenities lists, etc.</p>
+                      <input
+                        type="file"
+                        accept=".csv,.xlsx"
+                        className="hidden"
+                        id="csv-upload"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            setImportData(file.name)
+                          }
+                        }}
+                      />
+                      <label
+                        htmlFor="csv-upload"
+                        className="inline-block px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg cursor-pointer transition-colors"
+                      >
+                        Choose File
+                      </label>
+                      {importData && (
+                        <p className="mt-3 text-sm text-gray-600">
+                          Selected: {importData}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {importType === 'pdf' && (
+                <div className="space-y-4">
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <Brain className="h-5 w-5 text-purple-600 mt-0.5" />
+                      <div>
+                        <h4 className="font-medium text-purple-900">AI Document Understanding</h4>
+                        <p className="text-sm text-purple-700 mt-1">
+                          Upload your documents and the AI learns from them. When guests ask questions, the AI uses this knowledge to provide accurate, contextual answers.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Upload PDF Documents
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-purple-400 transition-colors">
+                      <FileText className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                      <p className="text-gray-600 mb-2">Upload property manuals, guides, or brochures</p>
+                      <input
+                        type="file"
+                        accept=".pdf"
+                        multiple
+                        className="hidden"
+                        id="pdf-upload"
+                        onChange={(e) => {
+                          const files = Array.from(e.target.files || [])
+                          if (files.length > 0) {
+                            setImportData(`${files.length} PDF file(s) selected`)
+                          }
+                        }}
+                      />
+                      <label
+                        htmlFor="pdf-upload"
+                        className="inline-block px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg cursor-pointer transition-colors"
+                      >
+                        Choose PDFs
+                      </label>
+                      {importData && (
+                        <p className="mt-3 text-sm text-gray-600">
+                          {importData}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {importType === 'website' && (
+                <div className="space-y-4">
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <Globe className="h-5 w-5 text-green-600 mt-0.5" />
+                      <div>
+                        <h4 className="font-medium text-green-900">Website Content Learning</h4>
+                        <p className="text-sm text-green-700 mt-1">
+                          Point to your website and the AI will learn from all your content - no manual extraction needed
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Website URL
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://your-website.com/faq"
+                      value={importData}
+                      onChange={(e) => setImportData(e.target.value)}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Enter the URL of your FAQ page or documentation
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Scraping Options
+                    </label>
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-2">
+                        <input type="checkbox" className="rounded text-purple-600" defaultChecked />
+                        <span className="text-sm">Extract FAQ sections</span>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input type="checkbox" className="rounded text-purple-600" defaultChecked />
+                        <span className="text-sm">Extract contact information</span>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        <input type="checkbox" className="rounded text-purple-600" />
+                        <span className="text-sm">Extract pricing information</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex justify-between items-center mt-6 pt-6 border-t">
+                <div className="text-sm text-gray-600">
+                  {importType === 'pdf' && 'AI processing may take 2-3 minutes'}
+                  {importType === 'website' && 'Website scraping typically takes 30-60 seconds'}
+                  {importType === 'csv' && 'CSV import is instant'}
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setShowImportModal(false)
+                      setImportData('')
+                    }}
+                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={async () => {
+                      setImporting(true)
+                      // Simulate import process
+                      setTimeout(() => {
+                        setSuccess(`Successfully imported training data from ${importType}`)
+                        setShowImportModal(false)
+                        setImportData('')
+                        setImporting(false)
+                        fetchKnowledgeBase()
+                      }, 2000)
+                    }}
+                    disabled={!importData || importing}
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
+                  >
+                    {importing ? (
+                      <>
+                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <Brain className="h-4 w-4" />
+                        Start Import
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
     </div>
   )
 }
