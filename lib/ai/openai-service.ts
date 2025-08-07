@@ -1,5 +1,4 @@
 import OpenAI from 'openai'
-import { encode } from 'gpt-3-encoder'
 
 interface ChatMessage {
   role: 'system' | 'user' | 'assistant'
@@ -163,15 +162,22 @@ export class OpenAIService {
     }
   }
   
-  // Count Tokens
+  // Count Tokens - Simple estimation method
+  // More accurate counting would require tiktoken but it has build issues
   countTokens(text: string): number {
-    try {
-      return encode(text).length
-    } catch (error) {
-      console.error('Token counting error:', error)
-      // Rough estimate: 1 token ≈ 4 characters
-      return Math.ceil(text.length / 4)
-    }
+    // Rough estimate based on OpenAI's guidelines:
+    // - 1 token ≈ 4 characters for English text
+    // - Adjust for whitespace and punctuation
+    const words = text.split(/\s+/).length
+    const chars = text.length
+    
+    // Use a combination of word and character count for better estimation
+    // Average English word is ~4-5 characters, ~1.3 tokens
+    const tokensByWords = Math.ceil(words * 1.3)
+    const tokensByChars = Math.ceil(chars / 4)
+    
+    // Return the average of both methods for better accuracy
+    return Math.ceil((tokensByWords + tokensByChars) / 2)
   }
   
   // Estimate Cost
