@@ -205,13 +205,20 @@ export default function AdminDashboard() {
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
-                className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
               >
                 <option value="1d">Today</option>
                 <option value="7d">Last 7 days</option>
                 <option value="30d">Last 30 days</option>
                 <option value="90d">Last 90 days</option>
               </select>
+              <Link
+                href="/analytics"
+                className="flex items-center gap-2 px-4 py-2 bg-cyan-50 hover:bg-cyan-100 rounded-lg text-sm font-medium text-cyan-700 transition-colors"
+              >
+                <BarChart3 className="h-4 w-4" />
+                Analytics
+              </Link>
               <button
                 onClick={() => exportData('csv')}
                 className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors"

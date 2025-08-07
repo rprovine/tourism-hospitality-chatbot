@@ -822,3 +822,10 @@ Import trace for requested module:
  ✓ Compiled in 470ms (1943 modules)
  ✓ Compiled in 465ms (1943 modules)
  ✓ Compiled in 519ms (1943 modules)
+   Reload env: .env.local
+ ✓ Compiled in 389ms (1929 modules)
+   Reload env: .env.local
+ ✓ Compiled in 321ms (1929 modules)
+ ✓ Compiled in 487ms (1943 modules)
+ ✓ Compiled in 255ms (888 modules)
+ ✓ Compiled in 308ms (1943 modules)
