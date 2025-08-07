@@ -8,26 +8,29 @@ datasource db {
 }
 
 model Business {
-  id                 String          @id @default(cuid())
-  email              String          @unique
+  id                 String            @id @default(cuid())
+  email              String            @unique
   password           String
   name               String
   type               String
-  tier               String          @default("starter")
-  subscriptionStatus String          @default("trial")
-  primaryColor       String          @default("#0891b2")
+  tier               String            @default("starter")
+  subscriptionStatus String            @default("trial")
+  primaryColor       String            @default("#0891b2")
   logo               String?
-  welcomeMessage     String          @default("Aloha! How can I help you today?")
+  welcomeMessage     String            @default("Aloha! How can I help you today?")
   businessInfo       Json?
-  apiKey             String?         @unique @default(cuid())
+  apiKey             String?           @unique @default(cuid())
   apiKeyCreatedAt    DateTime?
   webhookUrl         String?
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
   analytics          Analytics[]
   conversations      Conversation[]
   knowledgeBase      KnowledgeBase[]
   subscription       Subscription?
+  guestProfiles      GuestProfile[]
+  triggerMessages    TriggerMessage[]
+  guestInteractions  GuestInteraction[]
 }
 
 model Subscription {
@@ -54,19 +57,20 @@ model Subscription {
 }
 
 model Conversation {
-  id                String    @id @default(cuid())
+  id                String                @id @default(cuid())
   businessId        String
   sessionId         String
   userLocation      String?
-  userLanguage      String    @default("en")
+  userLanguage      String                @default("en")
   satisfactionScore Int?
   resolutionTime    Int?
-  escalated         Boolean   @default(false)
+  escalated         Boolean               @default(false)
   metadata          Json?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  business          Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  business          Business              @relation(fields: [businessId], references: [id], onDelete: Cascade)
   messages          Message[]
+  contexts          ConversationContext[]
 
   @@index([businessId])
   @@index([sessionId])
@@ -151,4 +155,87 @@ model AdminUser {
   lastLogin DateTime?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model GuestProfile {
+  id                 String               @id @default(cuid())
+  businessId         String
+  email              String?
+  phone              String?
+  name               String?
+  preferences        Json?                @default("{}")
+  tags               String[]             @default([])
+  languagePreference String               @default("en")
+  lastVisit          DateTime?
+  totalConversations Int                  @default(0)
+  totalBookings      Int                  @default(0)
+  lifetimeValue      Decimal              @default(0)
+  notes              String?
+  metadata           Json?                @default("{}")
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  business           Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  contexts           ConversationContext[]
+  interactions       GuestInteraction[]
+
+  @@index([businessId])
+  @@index([email])
+  @@index([phone])
+}
+
+model ConversationContext {
+  id             String        @id @default(cuid())
+  conversationId String
+  guestProfileId String?
+  context        Json?         @default("{}")
+  bookingIntent  Json?
+  lastTopic      String?
+  abandonedAt    DateTime?
+  completedAt    DateTime?
+  followUpSent   Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  conversation   Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  guestProfile   GuestProfile? @relation(fields: [guestProfileId], references: [id], onDelete: SetNull)
+
+  @@index([conversationId])
+  @@index([guestProfileId])
+}
+
+model TriggerMessage {
+  id              String   @id @default(cuid())
+  businessId      String
+  name            String
+  triggerType     String   // 'abandonment', 'welcome_back', 'post_stay', 'upsell'
+  conditions      Json?    @default("{}")
+  message         String
+  delay           Int      @default(0) // delay in minutes
+  channel         String   @default("email") // 'email', 'sms', 'whatsapp', 'web'
+  isActive        Boolean  @default(true)
+  sentCount       Int      @default(0)
+  clickCount      Int      @default(0)
+  conversionCount Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  business        Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+}
+
+model GuestInteraction {
+  id             String       @id @default(cuid())
+  guestProfileId String
+  businessId     String
+  interactionType String      // 'chat', 'email', 'booking', 'review', 'complaint'
+  channel        String
+  content        String?
+  sentiment      Decimal?    // -1 to 1 scale
+  outcome        String?
+  metadata       Json?        @default("{}")
+  createdAt      DateTime     @default(now())
+  guestProfile   GuestProfile @relation(fields: [guestProfileId], references: [id], onDelete: Cascade)
+  business       Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([guestProfileId])
+  @@index([businessId])
 }
