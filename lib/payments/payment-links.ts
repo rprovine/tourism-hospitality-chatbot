@@ -31,7 +31,7 @@ export const PAYMENT_LINKS = {
     interval: 'yearly'
   },
   professional_yearly: {
-    url: 'https://app-na2.hubspot.com/payments/zXbRjHGbPfr?referrer=PAYMENT_LINK', // Same as monthly
+    url: 'https://app-na2.hubspot.com/payments/GPz7Y4zvWDPV4Wjy?referrer=PAYMENT_LINK',
     amount: 1490,
     interval: 'yearly'
   },
