@@ -19,11 +19,19 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Login attempt:', formData.email)
+    console.log('Form submitted with:', formData)
+    
+    // Validate form data
+    if (!formData.email || !formData.password) {
+      setError('Please enter both email and password')
+      return
+    }
+    
     setIsLoading(true)
     setError('')
 
     try {
+      console.log('Sending login request...')
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
@@ -33,22 +41,41 @@ export default function LoginPage() {
       })
 
       console.log('Response status:', response.status)
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Response is not JSON:', contentType)
+        throw new Error('Server error - invalid response format')
+      }
+      
       const data = await response.json()
+      console.log('Response data:', data)
 
       if (!response.ok) {
-        console.error('Login error:', data)
-        throw new Error(data.error || 'Login failed')
+        console.error('Login failed:', data)
+        throw new Error(data.error || data.message || 'Login failed')
       }
 
-      console.log('Login successful')
+      if (!data.token) {
+        console.error('No token in response:', data)
+        throw new Error('Invalid server response - no token')
+      }
+
+      console.log('Login successful, saving auth data...')
       // Store token and business data using auth utility
       setAuthData(data.token, data.business)
 
-      // Redirect to admin dashboard
-      router.push('/admin')
+      console.log('Redirecting to admin...')
+      // Use window.location for a hard redirect to ensure middleware picks up the cookie
+      window.location.href = '/admin'
     } catch (err) {
-      console.error('Login error:', err)
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      console.error('Login error details:', err)
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -126,16 +153,9 @@ export default function LoginPage() {
                 type="submit"
                 className="w-full bg-cyan-700 hover:bg-cyan-800 text-white"
                 disabled={isLoading}
-                onClick={(e) => {
-                  console.log('Button clicked')
-                  if (!formData.email || !formData.password) {
-                    e.preventDefault()
-                    setError('Please enter email and password')
-                  }
-                }}
               >
                 {isLoading ? 'Signing in...' : 'Sign In'}
-                <ArrowRight className="ml-2 h-4 w-4" />
+                {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
               </Button>
 
               <div className="text-center text-sm text-gray-600">
@@ -145,6 +165,14 @@ export default function LoginPage() {
                 </a>
               </div>
             </form>
+            
+            {/* Test credentials info */}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg text-xs text-blue-700">
+              <p className="font-semibold mb-1">Test Accounts:</p>
+              <p>• premium@demo.com / demo123</p>
+              <p>• professional@demo.com / demo123</p>
+              <p>• admin@lenilani.com / LeniLani2025!</p>
+            </div>
           </CardContent>
         </Card>
 
