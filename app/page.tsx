@@ -238,6 +238,127 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Deployment Timeline Section */}
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Fast Deployment, Tailored to Your Needs</h2>
+            <p className="text-lg text-gray-700">Get your AI chatbot up and running based on your tier</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <Card className="h-full border-2 border-green-200 bg-green-50">
+                <CardHeader>
+                  <div className="text-4xl mb-3">⚡</div>
+                  <CardTitle className="text-xl">Starter</CardTitle>
+                  <div className="text-2xl font-bold text-green-700 mt-2">Instant</div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">Automated deployment</p>
+                  <p className="text-sm text-gray-600 mt-2">Start using immediately after payment</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <Card className="h-full border-2 border-green-200 bg-green-50">
+                <CardHeader>
+                  <div className="text-4xl mb-3">⚡</div>
+                  <CardTitle className="text-xl">Professional</CardTitle>
+                  <div className="text-2xl font-bold text-green-700 mt-2">Instant</div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">Automated deployment</p>
+                  <p className="text-sm text-gray-600 mt-2">Full features active immediately</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <Card className="h-full border-2 border-blue-200 bg-blue-50">
+                <CardHeader>
+                  <div className="text-4xl mb-3">🎯</div>
+                  <CardTitle className="text-xl">Premium</CardTitle>
+                  <div className="text-2xl font-bold text-blue-700 mt-2">2-3 Days</div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">Custom setup required</p>
+                  <p className="text-sm text-gray-600 mt-2">AI training on your data & integrations</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <Card className="h-full border-2 border-purple-200 bg-purple-50">
+                <CardHeader>
+                  <div className="text-4xl mb-3">🏢</div>
+                  <CardTitle className="text-xl">Enterprise</CardTitle>
+                  <div className="text-2xl font-bold text-purple-700 mt-2">5-10 Days</div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">Full integration process</p>
+                  <p className="text-sm text-gray-600 mt-2">Multi-property setup, training & SSO</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+          
+          <div className="mt-12 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg p-8 max-w-4xl mx-auto">
+            <div className="text-center">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">What Happens After Payment?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <span className="text-green-600">✓</span> Starter & Professional
+                  </h4>
+                  <ul className="space-y-1 text-sm text-gray-700">
+                    <li>• Instant access to dashboard</li>
+                    <li>• Widget code ready to embed</li>
+                    <li>• Pre-configured knowledge base</li>
+                    <li>• Start chatting immediately</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <span className="text-blue-600">✓</span> Premium & Enterprise
+                  </h4>
+                  <ul className="space-y-1 text-sm text-gray-700">
+                    <li>• Dedicated onboarding specialist</li>
+                    <li>• Custom AI training sessions</li>
+                    <li>• Integration with your systems</li>
+                    <li>• Staff training & documentation</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Cards */}
       <section id="pricing" className="bg-gradient-to-b from-white to-gray-100 py-20">
         <div className="container mx-auto px-6">

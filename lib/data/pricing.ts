@@ -126,6 +126,20 @@ export const tierComparison: TierFeature[] = [
     professional: 'Basic',
     premium: 'Advanced',
     enterprise: 'Full RBAC'
+  },
+  {
+    name: 'Setup Time',
+    starter: 'Instant (automated)',
+    professional: 'Instant (automated)',
+    premium: '2-3 business days',
+    enterprise: '5-10 business days'
+  },
+  {
+    name: 'Deployment Method',
+    starter: 'Self-service',
+    professional: 'Self-service',
+    premium: 'Assisted onboarding',
+    enterprise: 'White-glove setup'
   }
 ]
 
@@ -141,7 +155,8 @@ export const pricingTiers: PricingTier[] = [
       'Custom branding',
       'Email support',
       '50 custom Q&As',
-      'Mobile responsive'
+      'Mobile responsive',
+      '⚡ Instant activation after payment'
     ]
   },
   {
@@ -158,7 +173,8 @@ export const pricingTiers: PricingTier[] = [
       'Advanced analytics & insights',
       '24/7 priority support',
       'API access',
-      'Unlimited knowledge base'
+      'Unlimited knowledge base',
+      '⚡ Instant activation after payment'
     ]
   },
   {
@@ -176,7 +192,8 @@ export const pricingTiers: PricingTier[] = [
       'Quarterly business reviews',
       '99.9% SLA guarantee',
       'Executive analytics dashboard',
-      'White-glove onboarding'
+      'White-glove onboarding',
+      '🎯 2-3 days setup with customization'
     ]
   },
   {
@@ -196,7 +213,8 @@ export const pricingTiers: PricingTier[] = [
       'Compliance & audit logs',
       'Custom contract & billing',
       'Strategic advisory services',
-      'Priority roadmap influence'
+      'Priority roadmap influence',
+      '🏢 5-10 days full integration & training'
     ]
   }
 ]

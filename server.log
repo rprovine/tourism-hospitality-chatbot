@@ -188,3 +188,146 @@ Unknown argument `language`. Available options are marked with ?.
  ✓ Compiled in 150ms (1494 modules)
  ✓ Compiled in 171ms (1494 modules)
  ✓ Compiled in 217ms (1494 modules)
+ GET / 200 in 365ms
+ ✓ Compiled /favicon.ico in 279ms (842 modules)
+ GET /favicon.ico 200 in 355ms
+ ✓ Compiled in 205ms (669 modules)
+ GET / 200 in 71ms
+ ✓ Compiled /api/chat in 258ms (958 modules)
+Knowledge base search error: Error [PrismaClientValidationError]: 
+Invalid `prisma.knowledgeBase.findMany()` invocation:
+
+{
+  where: {
+    businessId: "cme0rig9j0000s3vzacvjpmvu",
+    isActive: true,
+    language: "en",
+    ~~~~~~~~
+?   AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
+?   OR?: KnowledgeBaseWhereInput[],
+?   NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
+?   id?: StringFilter | String,
+?   category?: StringFilter | String,
+?   question?: StringFilter | String,
+?   answer?: StringFilter | String,
+?   keywords?: StringFilter | String,
+?   createdAt?: DateTimeFilter | DateTime,
+?   updatedAt?: DateTimeFilter | DateTime,
+?   business?: BusinessScalarRelationFilter | BusinessWhereInput
+  },
+  orderBy: [
+    {
+      priority: "desc"
+    },
+    {
+      usageCount: "desc"
+    }
+  ]
+}
+
+Unknown argument `language`. Available options are marked with ?.
+    at async searchKnowledgeBase (lib/ai/knowledge-base-search.ts:20:18)
+    at async POST (app/api/chat/route.ts:78:29)
+  18 |   try {
+  19 |     // Get all active knowledge base items for the business
+> 20 |     const items = await prisma.knowledgeBase.findMany({
+     |                  ^
+  21 |       where: {
+  22 |         businessId,
+  23 |         isActive: true, {
+  clientVersion: '6.13.0'
+}
+ POST /api/chat 200 in 3140ms
+Knowledge base search error: Error [PrismaClientValidationError]: 
+Invalid `prisma.knowledgeBase.findMany()` invocation:
+
+{
+  where: {
+    businessId: "cme0rig9j0000s3vzacvjpmvu",
+    isActive: true,
+    language: "en",
+    ~~~~~~~~
+?   AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
+?   OR?: KnowledgeBaseWhereInput[],
+?   NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
+?   id?: StringFilter | String,
+?   category?: StringFilter | String,
+?   question?: StringFilter | String,
+?   answer?: StringFilter | String,
+?   keywords?: StringFilter | String,
+?   createdAt?: DateTimeFilter | DateTime,
+?   updatedAt?: DateTimeFilter | DateTime,
+?   business?: BusinessScalarRelationFilter | BusinessWhereInput
+  },
+  orderBy: [
+    {
+      priority: "desc"
+    },
+    {
+      usageCount: "desc"
+    }
+  ]
+}
+
+Unknown argument `language`. Available options are marked with ?.
+    at async searchKnowledgeBase (lib/ai/knowledge-base-search.ts:20:18)
+    at async POST (app/api/chat/route.ts:78:29)
+  18 |   try {
+  19 |     // Get all active knowledge base items for the business
+> 20 |     const items = await prisma.knowledgeBase.findMany({
+     |                  ^
+  21 |       where: {
+  22 |         businessId,
+  23 |         isActive: true, {
+  clientVersion: '6.13.0'
+}
+ POST /api/chat 200 in 2491ms
+ ✓ Compiled in 375ms (1494 modules)
+ GET / 200 in 134ms
+ ✓ Compiled in 647ms (1494 modules)
+ GET / 200 in 79ms
+ ✓ Compiled /api/chat in 129ms (958 modules)
+Knowledge base search error: Error [PrismaClientValidationError]: 
+Invalid `prisma.knowledgeBase.findMany()` invocation:
+
+{
+  where: {
+    businessId: "cme0rig9j0000s3vzacvjpmvu",
+    isActive: true,
+    language: "en",
+    ~~~~~~~~
+?   AND?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
+?   OR?: KnowledgeBaseWhereInput[],
+?   NOT?: KnowledgeBaseWhereInput | KnowledgeBaseWhereInput[],
+?   id?: StringFilter | String,
+?   category?: StringFilter | String,
+?   question?: StringFilter | String,
+?   answer?: StringFilter | String,
+?   keywords?: StringFilter | String,
+?   createdAt?: DateTimeFilter | DateTime,
+?   updatedAt?: DateTimeFilter | DateTime,
+?   business?: BusinessScalarRelationFilter | BusinessWhereInput
+  },
+  orderBy: [
+    {
+      priority: "desc"
+    },
+    {
+      usageCount: "desc"
+    }
+  ]
+}
+
+Unknown argument `language`. Available options are marked with ?.
+    at async searchKnowledgeBase (lib/ai/knowledge-base-search.ts:20:18)
+    at async POST (app/api/chat/route.ts:78:29)
+  18 |   try {
+  19 |     // Get all active knowledge base items for the business
+> 20 |     const items = await prisma.knowledgeBase.findMany({
+     |                  ^
+  21 |       where: {
+  22 |         businessId,
+  23 |         isActive: true, {
+  clientVersion: '6.13.0'
+}
+ POST /api/chat 200 in 3960ms
