@@ -22,11 +22,15 @@ export async function POST(request: NextRequest) {
     console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL)
     
     // Initialize Prisma with connection parameters
+    let dbUrl = process.env.DATABASE_URL || ''
+    if (!dbUrl.includes('pgbouncer')) {
+      const separator = dbUrl.includes('?') ? '&' : '?'
+      dbUrl = dbUrl + separator + 'pgbouncer=true&connection_limit=1'
+    }
+    
     prisma = new PrismaClient({
       datasources: {
-        db: {
-          url: process.env.DATABASE_URL + '?pgbouncer=true&connection_limit=1'
-        }
+        db: { url: dbUrl }
       }
     })
     

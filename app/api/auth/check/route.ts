@@ -16,10 +16,20 @@ export async function GET() {
   
   // Test 1: Simple connection with pgbouncer
   try {
-    const dbUrl = process.env.DATABASE_URL?.includes('pgbouncer') 
-      ? process.env.DATABASE_URL 
-      : process.env.DATABASE_URL + '?pgbouncer=true&connection_limit=1'
-      
+    let dbUrl = process.env.DATABASE_URL || ''
+    
+    // Check if URL already has query parameters
+    if (!dbUrl.includes('pgbouncer')) {
+      // Parse the URL to add parameters correctly
+      const separator = dbUrl.includes('?') ? '&' : '?'
+      dbUrl = dbUrl + separator + 'pgbouncer=true&connection_limit=1'
+    }
+    
+    info.tests.push({
+      name: 'URL construction',
+      urlUsed: dbUrl.replace(/Chi3ft%40n5527/, '[PASSWORD]').substring(0, 100) + '...'
+    })
+    
     const prisma = new PrismaClient({
       datasources: {
         db: { url: dbUrl }
@@ -64,7 +74,8 @@ export async function GET() {
     info.tests.push({
       name: 'Database connection',
       success: false,
-      error: error.message
+      error: error.message,
+      errorType: error.constructor.name
     })
   }
   
