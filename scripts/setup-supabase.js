@@ -57,7 +57,7 @@ async function main() {
       console.log('\n👤 Creating demo account...')
       
       const { PrismaClient } = require('@prisma/client')
-      const bcrypt = require('bcrypt')
+      const bcrypt = require('bcryptjs')
       const prisma = new PrismaClient()
 
       try {

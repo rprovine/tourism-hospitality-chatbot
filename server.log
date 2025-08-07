@@ -695,3 +695,14 @@ Import trace for requested module:
  ✓ Compiled in 249ms (1930 modules)
  GET / 200 in 55ms
  GET /admin 200 in 56ms
+ ✓ Compiled in 255ms (888 modules)
+ GET /admin 200 in 22ms
+ GET / 200 in 23ms
+ ✓ Compiled in 129ms (888 modules)
+ GET /admin 200 in 14ms
+ ✓ Compiled in 115ms (888 modules)
+ GET /admin 200 in 15ms
+ ✓ Compiled in 123ms (888 modules)
+ GET /admin 200 in 14ms
+ ✓ Compiled in 338ms (1944 modules)
+ GET /admin 200 in 43ms

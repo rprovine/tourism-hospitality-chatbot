@@ -24,7 +24,6 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/nodemailer": "^6.4.17",
     "axios": "^1.11.0",
-    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "cookies-next": "^6.1.0",
