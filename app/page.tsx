@@ -50,7 +50,7 @@ export default function LandingPage() {
               <a href="/login" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors">Login</a>
               <Button 
                 className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold shadow-md"
-                onClick={() => window.location.href = '/register'}
+                onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
               >
                 Get Started
               </Button>
@@ -416,7 +416,7 @@ export default function LandingPage() {
               </div>
               <Button 
                 className="bg-white text-cyan-700 hover:bg-cyan-50 font-semibold px-6 py-3"
-                onClick={() => window.location.href = '/register'}
+                onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
               >
                 Start Free Trial
                 <ChevronRight className="ml-2 h-4 w-4" />
@@ -598,7 +598,7 @@ export default function LandingPage() {
                     <Button 
                       className={tier.highlighted ? 'w-full mt-6 bg-cyan-600 hover:bg-cyan-700' : 'w-full mt-6'}
                       variant={tier.highlighted ? 'default' : 'outline'}
-                      onClick={() => window.location.href = '/register'}
+                      onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
                     >
                       Get Started
                       <ChevronRight className="ml-2 h-4 w-4" />
@@ -754,7 +754,7 @@ export default function LandingPage() {
             <Button 
               size="lg" 
               className="bg-white text-cyan-700 hover:bg-gray-50 font-semibold"
-              onClick={() => window.location.href = '/register'}
+              onClick={() => window.location.href = '/checkout?plan=professional&interval=monthly'}
             >
               Start Free Trial
               <ArrowRight className="ml-2 h-4 w-4" />

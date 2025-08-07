@@ -6,8 +6,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const checkoutSchema = z.object({
-  businessId: z.string(),
-  planId: z.enum(['starter_monthly', 'professional_monthly', 'premium_monthly', 'enterprise_monthly']),
+  planId: z.string(), // Accept any plan ID including yearly
   email: z.string().email(),
   businessName: z.string(),
   contactName: z.string().optional(),
@@ -19,15 +18,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = checkoutSchema.parse(body)
 
-    // Get business from database
-    const business = await prisma.business.findUnique({
-      where: { id: validatedData.businessId }
-    })
-
-    if (!business) {
+    // Check if plan exists
+    const plan = SUBSCRIPTION_PLANS[validatedData.planId]
+    if (!plan) {
       return NextResponse.json(
-        { error: 'Business not found' },
-        { status: 404 }
+        { error: 'Invalid plan selected' },
+        { status: 400 }
       )
     }
 
@@ -38,7 +34,7 @@ export async function POST(request: NextRequest) {
       lastname: validatedData.contactName?.split(' ').slice(1).join(' '),
       company: validatedData.businessName,
       phone: validatedData.phone,
-      tier: SUBSCRIPTION_PLANS[validatedData.planId].tier
+      tier: plan.tier
     })
 
     // Create payment link

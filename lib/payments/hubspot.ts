@@ -28,12 +28,12 @@ export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
     id: 'starter_monthly',
     name: 'Starter Plan',
     tier: 'starter',
-    price: 299,
+    price: 29,
     interval: 'monthly',
     features: [
       '1,000 conversations/month',
-      'Basic FAQ responses',
-      'English only',
+      'Claude Haiku AI',
+      'Basic analytics dashboard',
       'Email support'
     ]
   },
@@ -41,39 +41,82 @@ export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
     id: 'professional_monthly',
     name: 'Professional Plan',
     tier: 'professional',
-    price: 899,
+    price: 149,
     interval: 'monthly',
     features: [
-      'Unlimited conversations',
-      'Real-time booking',
-      '2 languages',
-      'Priority support'
+      '5,000 conversations/month',
+      'Dual AI: Claude + GPT-4',
+      'Advanced analytics',
+      '24/7 priority support'
     ]
   },
   premium_monthly: {
     id: 'premium_monthly',
     name: 'Premium Plan',
     tier: 'premium',
-    price: 2499,
+    price: 299,
     interval: 'monthly',
     features: [
-      'Luxury concierge AI',
+      'Unlimited conversations',
+      'Enhanced Dual AI + Self-Learning',
       '5 languages',
-      'VIP experiences',
-      'Dedicated manager'
+      'Dedicated success manager'
     ]
   },
   enterprise_monthly: {
     id: 'enterprise_monthly',
     name: 'Enterprise Plan',
     tier: 'enterprise',
-    price: 0, // Custom pricing
+    price: 999, // Starting price
     interval: 'monthly',
     features: [
+      'Custom AI Blend',
       'Multi-property support',
       '10+ languages',
+      'Enterprise API'
+    ]
+  },
+  // Yearly plans with discounts
+  starter_yearly: {
+    id: 'starter_yearly',
+    name: 'Starter Plan (Annual)',
+    tier: 'starter',
+    price: 290, // Save $58
+    interval: 'yearly',
+    features: [
+      '1,000 conversations/month',
+      'Claude Haiku AI',
+      'Basic analytics dashboard',
+      'Email support',
+      '💰 Save $58/year'
+    ]
+  },
+  professional_yearly: {
+    id: 'professional_yearly',
+    name: 'Professional Plan (Annual)',
+    tier: 'professional',
+    price: 1490, // Save $298
+    interval: 'yearly',
+    features: [
+      '5,000 conversations/month',
+      'Dual AI: Claude + GPT-4',
       'Advanced analytics',
-      'Custom integrations'
+      '24/7 priority support',
+      '💰 Save $298/year'
+    ]
+  },
+  premium_yearly: {
+    id: 'premium_yearly',
+    name: 'Premium Plan (Annual)',
+    tier: 'premium',
+    price: 2990, // Save $598
+    interval: 'yearly',
+    features: [
+      'Unlimited conversations',
+      'Enhanced Dual AI + Self-Learning',
+      '5 languages',
+      'Dedicated success manager',
+      '💰 Save $598/year'
     ]
   }
 }
