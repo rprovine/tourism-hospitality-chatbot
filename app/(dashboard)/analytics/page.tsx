@@ -185,8 +185,8 @@ export default function AnalyticsPage() {
       <div className="container mx-auto px-6 py-8 space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
-            <p className="text-muted-foreground">Track your chatbot performance and user engagement</p>
+            <h1 className="text-3xl font-bold text-gray-900">Analytics Dashboard</h1>
+            <p className="text-gray-600 mt-1">Track your chatbot performance and user engagement</p>
         </div>
         <div className="flex gap-2">
           <select
