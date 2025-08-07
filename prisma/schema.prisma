@@ -31,20 +31,26 @@ model Business {
 }
 
 model Subscription {
-  id                String   @id @default(cuid())
-  businessId        String   @unique
+  id                String    @id @default(cuid())
+  businessId        String    @unique
   tier              String
   status            String
-  billingCycle      String   @default("monthly")
-  paymentMethod     String   @default("hubspot")
-  paymentStatus     String   @default("pending")
+  billingCycle      String    @default("monthly")
+  paymentMethod     String    @default("hubspot")
+  paymentStatus     String    @default("pending")
   startDate         DateTime
   endDate           DateTime
-  cancelAtPeriodEnd Boolean  @default(false)
+  cancelAtPeriodEnd Boolean   @default(false)
+  cancelledAt       DateTime?
+  paymentFailedAt   DateTime?
+  gracePeriodEnds   DateTime?
+  accessRevokedAt   DateTime?
+  lastPaymentAttempt DateTime?
+  paymentAttempts   Int       @default(0)
   metadata          Json?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  business          Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  business          Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
 }
 
 model Conversation {
@@ -134,4 +140,15 @@ model ApiLog {
 
   @@index([businessId])
   @@index([createdAt])
+}
+
+model AdminUser {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String
+  role      String    @default("admin")
+  lastLogin DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
