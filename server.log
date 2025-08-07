@@ -350,3 +350,16 @@ Unknown argument `language`. Available options are marked with ?.
  GET / 200 in 13ms
  ✓ Compiled in 102ms (669 modules)
  GET / 200 in 14ms
+ GET / 200 in 285ms
+ GET /favicon.ico 200 in 19ms
+ ✓ Compiled in 448ms (1480 modules)
+ GET / 200 in 121ms
+ ✓ Compiled in 104ms (669 modules)
+ GET / 200 in 21ms
+ ✓ Compiled in 100ms (669 modules)
+ GET / 200 in 15ms
+ GET / 200 in 52ms
+ ✓ Compiled in 185ms (1480 modules)
+ GET / 200 in 83ms
+ ✓ Compiled in 106ms (669 modules)
+ GET / 200 in 15ms
