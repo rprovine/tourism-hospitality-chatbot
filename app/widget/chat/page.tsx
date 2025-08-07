@@ -4,6 +4,9 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import ChatWidget from '@/components/chatbot/ChatWidget'
 
+// Force dynamic rendering for widget
+export const dynamic = 'force-dynamic'
+
 function WidgetContent() {
   const searchParams = useSearchParams()
   const businessId = searchParams.get('businessId')
