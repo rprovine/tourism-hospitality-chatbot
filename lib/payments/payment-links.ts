@@ -4,7 +4,7 @@
 export const PAYMENT_LINKS = {
   // Monthly Plans
   starter_monthly: {
-    url: 'PASTE_YOUR_STARTER_MONTHLY_LINK_HERE', // e.g., https://buy.stripe.com/xxx or HubSpot payment link
+    url: 'https://app-na2.hubspot.com/payments/GGGZKG9b2jt7vtZ7?referrer=PAYMENT_LINK',
     amount: 29,
     interval: 'monthly'
   },
