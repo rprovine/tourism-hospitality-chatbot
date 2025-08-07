@@ -838,3 +838,172 @@ Import trace for requested module:
  ✓ Compiled in 152ms (888 modules)
  ✓ Compiled in 411ms (1943 modules)
  ✓ Compiled in 282ms (1943 modules)
+ ✓ Compiled /api/health in 464ms (1949 modules)
+ GET /api/health 503 in 787ms
+ ✓ Compiled /api/auth/login in 367ms (1166 modules)
+Login attempt for: test@hotel.com
+DATABASE_URL exists: true
+Login error: Error [PrismaClientInitializationError]: error: Error validating datasource `db`: the URL must start with the protocol `file:`.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "sqlite"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+    at <unknown> (-->  schema.prisma:10)
+    at async POST (app/api/auth/login/route.ts:38:4)
+  36 |     
+  37 |     // Test connection
+> 38 |     await prisma.$connect()
+     |    ^
+  39 |     console.log('Database connected successfully')
+  40 |     
+  41 |     // Find business {
+  clientVersion: '6.13.0',
+  errorCode: 'P1012',
+  retryable: undefined
+}
+Error stack: PrismaClientInitializationError: error: Error validating datasource `db`: the URL must start with the protocol `file:`.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "sqlite"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+    at r (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/@prisma/client/runtime/library.js:112:2770)
+    at async POST (webpack-internal:///(rsc)/./app/api/auth/login/route.ts:44:9)
+    at async AppRouteRouteModule.do (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:5:38782)
+    at async AppRouteRouteModule.handle (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:5:45984)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2Flogin%2Froute&page=%2Fapi%2Fauth%2Flogin%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2Flogin%2Froute.ts&appDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:1:183692)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2Flogin%2Froute&page=%2Fapi%2Fauth%2Flogin%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2Flogin%2Froute.ts&appDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2Flogin%2Froute&page=%2Fapi%2Fauth%2Flogin%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2Flogin%2Froute.ts&appDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async doRender (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:1592:34)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:1934:13)
+    at async DevServer.renderPageComponent (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:2400:24)
+    at async DevServer.renderToResponseImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:2440:32)
+    at async DevServer.pipeImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:1035:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/next-server.js:393:17)
+    at async DevServer.handleRequestImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:925:17)
+    at async /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/dev/next-dev-server.js:398:20
+    at async Span.traceAsyncFn (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/dev/next-dev-server.js:394:24)
+    at async invokeRender (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-server.js:239:21)
+    at async handleRequest (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-server.js:436:24)
+    at async requestHandlerImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-server.js:464:13)
+    at async Server.requestListener (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/start-server.js:218:13)
+Error type: PrismaClientInitializationError
+Error message: error: Error validating datasource `db`: the URL must start with the protocol `file:`.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "sqlite"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+ POST /api/auth/login 500 in 531ms
+Login attempt for: demo@example.com
+DATABASE_URL exists: true
+Login error: Error [PrismaClientInitializationError]: error: Error validating datasource `db`: the URL must start with the protocol `file:`.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "sqlite"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+    at <unknown> (-->  schema.prisma:10)
+    at async POST (app/api/auth/login/route.ts:38:4)
+  36 |     
+  37 |     // Test connection
+> 38 |     await prisma.$connect()
+     |    ^
+  39 |     console.log('Database connected successfully')
+  40 |     
+  41 |     // Find business {
+  clientVersion: '6.13.0',
+  errorCode: 'P1012',
+  retryable: undefined
+}
+Error stack: PrismaClientInitializationError: error: Error validating datasource `db`: the URL must start with the protocol `file:`.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "sqlite"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+    at r (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/@prisma/client/runtime/library.js:112:2770)
+    at async POST (webpack-internal:///(rsc)/./app/api/auth/login/route.ts:44:9)
+    at async AppRouteRouteModule.do (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:5:38782)
+    at async AppRouteRouteModule.handle (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:5:45984)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2Flogin%2Froute&page=%2Fapi%2Fauth%2Flogin%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2Flogin%2Froute.ts&appDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:1:183692)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2Flogin%2Froute&page=%2Fapi%2Fauth%2Flogin%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2Flogin%2Froute.ts&appDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2Flogin%2Froute&page=%2Fapi%2Fauth%2Flogin%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2Flogin%2Froute.ts&appDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2FUsers%2Frenoprovine%2FDevelopment%2Flenilani-projects%2Ftourism-hospitality-chatbot&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async doRender (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:1592:34)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:1934:13)
+    at async DevServer.renderPageComponent (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:2400:24)
+    at async DevServer.renderToResponseImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:2440:32)
+    at async DevServer.pipeImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:1035:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/next-server.js:393:17)
+    at async DevServer.handleRequestImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/base-server.js:925:17)
+    at async /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/dev/next-dev-server.js:398:20
+    at async Span.traceAsyncFn (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/trace/trace.js:157:20)
+    at async DevServer.handleRequest (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/dev/next-dev-server.js:394:24)
+    at async invokeRender (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-server.js:239:21)
+    at async handleRequest (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-server.js:436:24)
+    at async requestHandlerImpl (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-server.js:464:13)
+    at async Server.requestListener (/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/start-server.js:218:13)
+Error type: PrismaClientInitializationError
+Error message: error: Error validating datasource `db`: the URL must start with the protocol `file:`.
+  -->  schema.prisma:10
+   | 
+ 9 |   provider = "sqlite"
+10 |   url      = env("DATABASE_URL")
+   | 
+
+Validation Error Count: 1
+ POST /api/auth/login 500 in 72ms
+[Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/client-development/5.pack.gz'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/client-development/5.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/client-development/5.pack.gz'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/client-development/5.pack.gz'
+}
+ ⨯ unhandledRejection:  [Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/client-development/5.pack.gz'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/client-development/5.pack.gz'
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/client-development/5.pack.gz'
+[Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/server-development/7.pack.gz'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/server-development/7.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/server-development/7.pack.gz'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/server-development/7.pack.gz'
+}
+ ⨯ unhandledRejection:  [Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/server-development/7.pack.gz'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/server-development/7.pack.gz'
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/server-development/7.pack.gz'
+ ✓ Compiled in 557ms (1929 modules)
+ ✓ Compiled in 156ms (888 modules)
