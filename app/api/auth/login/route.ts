@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'  // Changed from 'bcrypt' to 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
-
-const prisma = new PrismaClient()
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -14,11 +12,27 @@ const loginSchema = z.object({
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
 
 export async function POST(request: NextRequest) {
+  let prisma: PrismaClient | null = null
+  
   try {
     const body = await request.json()
     const validatedData = loginSchema.parse(body)
     
     console.log('Login attempt for:', validatedData.email)
+    console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL)
+    
+    // Initialize Prisma with connection parameters
+    prisma = new PrismaClient({
+      datasources: {
+        db: {
+          url: process.env.DATABASE_URL + '?pgbouncer=true&connection_limit=1'
+        }
+      }
+    })
+    
+    // Test connection
+    await prisma.$connect()
+    console.log('Database connected successfully')
     
     // Find business
     const business = await prisma.business.findUnique({
@@ -71,6 +85,8 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Login error:', error)
     console.error('Error stack:', error.stack)
+    console.error('Error type:', error.constructor.name)
+    console.error('Error message:', error.message)
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -79,18 +95,32 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Return more detailed error in development
-    const isDev = process.env.NODE_ENV === 'development'
+    // Check for Prisma connection errors
+    if (error.message?.includes("Can't reach database server")) {
+      return NextResponse.json(
+        { 
+          error: 'Database connection failed',
+          message: 'Unable to connect to database. Please try again later.',
+          details: error.message
+        },
+        { status: 503 }
+      )
+    }
     
+    // Return detailed error for debugging
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        ...(isDev && { 
-          message: error.message,
-          type: error.constructor.name 
-        })
+        message: error.message,
+        type: error.constructor.name,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
       },
       { status: 500 }
     )
+  } finally {
+    // Always disconnect Prisma
+    if (prisma) {
+      await prisma.$disconnect()
+    }
   }
 }
