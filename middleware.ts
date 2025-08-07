@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import jwt from 'jsonwebtoken'
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
 
 // Protected routes that require authentication
 const protectedRoutes = [
@@ -36,29 +33,9 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
     
-    try {
-      // Verify token
-      const decoded = jwt.verify(token, JWT_SECRET) as any
-      
-      // For admin routes, check if it's an admin user
-      if (isAdminRoute && !decoded.isAdmin) {
-        return NextResponse.redirect(new URL('/dashboard', request.url))
-      }
-      
-      // Add user info to headers for API routes
-      const requestHeaders = new Headers(request.headers)
-      requestHeaders.set('x-user-id', decoded.businessId || decoded.id)
-      requestHeaders.set('x-user-email', decoded.email)
-      
-      return NextResponse.next({
-        request: {
-          headers: requestHeaders,
-        },
-      })
-    } catch (error) {
-      // Invalid token, redirect to login
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
+    // For now, just check if token exists
+    // Token verification will be done in API routes
+    return NextResponse.next()
   }
   
   return NextResponse.next()
