@@ -1,26 +1,4 @@
-import nodemailer from 'nodemailer'
-import { pricingTiers } from '@/lib/data/pricing'
-
-// Email configuration
-const transporter = nodemailer.createTransporter({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false, // true for 465, false for other ports
-  auth: process.env.SMTP_USER ? {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  } : undefined,
-  // For development, use Ethereal Email
-  ...(!process.env.SMTP_USER && {
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-      user: 'ethereal.user@ethereal.email',
-      pass: 'ethereal.pass'
-    }
-  })
-})
-
+// Email service - SendGrid only
 const FROM_EMAIL = process.env.EMAIL_FROM || 'LeniLani AI <noreply@lenilani.com>'
 
 // Email templates
@@ -282,22 +260,21 @@ export const emailTemplates = {
   })
 }
 
-// Send email function
+// Import SendGrid email service
+async function sendEmailWithSendGrid(to: string, template: { subject: string; html: string }) {
+  const { sendEmail } = await import('./sendgrid')
+  return sendEmail(to, template)
+}
+
+// Send email function - SendGrid only
 export async function sendEmail(to: string, template: { subject: string; html: string }) {
   try {
-    if (!process.env.SMTP_USER) {
-      console.log('📧 Email (dev mode):', { to, subject: template.subject })
+    if (!process.env.SENDGRID_API_KEY) {
+      console.log('📧 Email (dev mode - no SendGrid key):', { to, subject: template.subject })
       return { success: true, messageId: 'dev-mode' }
     }
 
-    const info = await transporter.sendMail({
-      from: FROM_EMAIL,
-      to,
-      subject: template.subject,
-      html: template.html,
-    })
-
-    return { success: true, messageId: info.messageId }
+    return await sendEmailWithSendGrid(to, template)
   } catch (error) {
     console.error('Email send error:', error)
     return { success: false, error }

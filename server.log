@@ -639,3 +639,15 @@ Import trace for requested module:
  ✓ Compiled in 196ms (1930 modules)
  GET /admin 200 in 52ms
  GET / 200 in 54ms
+ ✓ Compiled in 511ms (888 modules)
+ GET /admin 200 in 30ms
+ GET / 200 in 31ms
+ ✓ Compiled in 139ms (888 modules)
+ GET / 200 in 26ms
+ GET /admin 200 in 26ms
+ ✓ Compiled in 198ms (888 modules)
+ GET /admin 200 in 24ms
+ GET / 200 in 23ms
+ ✓ Compiled in 362ms (1944 modules)
+ GET /admin 200 in 63ms
+ GET / 200 in 64ms
