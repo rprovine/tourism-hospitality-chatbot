@@ -14,7 +14,7 @@ export const PAYMENT_LINKS = {
     interval: 'monthly'
   },
   premium_monthly: {
-    url: 'PASTE_YOUR_PREMIUM_MONTHLY_LINK_HERE',
+    url: 'https://app-na2.hubspot.com/payments/fmmQJJHmxtnTJPt?referrer=PAYMENT_LINK',
     amount: 299,
     interval: 'monthly'
   },
