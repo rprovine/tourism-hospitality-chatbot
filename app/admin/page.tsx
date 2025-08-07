@@ -214,7 +214,7 @@ export default function AdminDashboard() {
                 <option value="90d">Last 90 days</option>
               </select>
               <Link
-                href="/admin/reports"
+                href="/admin/analytics"
                 className="flex items-center gap-2 px-4 py-2 bg-cyan-50 hover:bg-cyan-100 rounded-lg text-sm font-medium text-cyan-700 transition-colors"
               >
                 <BarChart3 className="h-4 w-4" />
@@ -244,7 +244,7 @@ export default function AdminDashboard() {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-900">Analytics Overview</h2>
           <Link
-            href="/admin/reports"
+            href="/admin/analytics"
             className="text-sm text-cyan-600 hover:text-cyan-700 font-medium flex items-center gap-1"
           >
             View Full Analytics

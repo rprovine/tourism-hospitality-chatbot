@@ -1007,3 +1007,6 @@ Validation Error Count: 1
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/cache/webpack/server-development/7.pack.gz'
  ✓ Compiled in 557ms (1929 modules)
  ✓ Compiled in 156ms (888 modules)
+ ✓ Compiled in 659ms (1929 modules)
+ ✓ Compiled in 282ms (1943 modules)
+ ✓ Compiled in 257ms (1943 modules)
