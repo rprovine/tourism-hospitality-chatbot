@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { createOrUpdateContact, createPaymentLink, SUBSCRIPTION_PLANS } from '@/lib/payments/hubspot'
+import { createOrUpdateContact, SUBSCRIPTION_PLANS } from '@/lib/payments/hubspot'
+import { getCheckoutUrl } from '@/lib/payments/payment-links'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -37,35 +38,20 @@ export async function POST(request: NextRequest) {
       tier: plan.tier
     })
 
-    // Create payment link
-    const paymentLink = await createPaymentLink({
-      planId: validatedData.planId,
-      businessEmail: validatedData.email,
-      businessName: validatedData.businessName,
-      redirectUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success`
-    })
+    // Get checkout URL from payment links configuration
+    const checkoutUrl = getCheckoutUrl(
+      validatedData.planId,
+      validatedData.email,
+      validatedData.businessName
+    )
 
-    // Store payment intent in database
-    await prisma.subscription.create({
-      data: {
-        businessId: validatedData.businessId,
-        tier: SUBSCRIPTION_PLANS[validatedData.planId].tier,
-        status: 'pending',
-        startDate: new Date(),
-        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days trial
-        paymentMethod: 'hubspot',
-        paymentStatus: 'pending',
-        metadata: {
-          hubspotContactId: contact.id,
-          planId: validatedData.planId
-        }
-      }
-    })
+    // Note: We'll create the subscription after payment is confirmed via webhook
+    // For now, just track the contact in HubSpot
 
     return NextResponse.json({
       success: true,
-      checkoutUrl: paymentLink.url,
-      isCustomQuote: paymentLink.isCustomQuote
+      checkoutUrl: checkoutUrl,
+      isCustomQuote: checkoutUrl.includes('contact-sales')
     })
   } catch (error) {
     console.error('Checkout error:', error)

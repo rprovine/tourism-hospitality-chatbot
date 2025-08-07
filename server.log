@@ -1024,3 +1024,12 @@ Validation Error Count: 1
  ✓ Compiled in 133ms (888 modules)
  ✓ Compiled in 512ms (1943 modules)
  ✓ Compiled in 338ms (1943 modules)
+   Reload env: .env.local
+ ✓ Compiled in 401ms (1929 modules)
+ ✓ Compiled in 278ms (888 modules)
+ ✓ Compiled in 243ms (888 modules)
+ ✓ Compiled in 142ms (888 modules)
+ ✓ Compiled in 156ms (888 modules)
+ ✓ Compiled in 132ms (888 modules)
+   Reload env: .env.local
+ ✓ Compiled in 2.9s (1961 modules)
