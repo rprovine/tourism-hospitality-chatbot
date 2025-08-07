@@ -462,7 +462,7 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
                       className={cn(
                         'max-w-[80%] rounded-lg px-4 py-2',
                         message.role === 'user'
-                          ? 'bg-cyan-600 text-white'
+                          ? 'bg-cyan-700 text-white'
                           : 'bg-white text-gray-800 shadow-sm'
                       )}
                     >
@@ -470,7 +470,7 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
                       <div 
                         className={cn(
                           'mt-1 text-xs',
-                          message.role === 'user' ? 'text-cyan-100' : 'text-gray-500'
+                          message.role === 'user' ? 'text-cyan-50 opacity-90' : 'text-gray-500'
                         )}
                       >
                         {new Date(message.timestamp).toLocaleTimeString()}

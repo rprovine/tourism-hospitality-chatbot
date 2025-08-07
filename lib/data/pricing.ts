@@ -25,9 +25,9 @@ export const tierComparison: TierFeature[] = [
   {
     name: 'Languages Supported',
     starter: 'English only',
-    professional: '10+ languages',
-    premium: '20+ languages',
-    enterprise: '30+ languages'
+    professional: '2 languages',
+    premium: '5 languages',
+    enterprise: '10+ languages'
   },
   {
     name: 'Properties/Locations',
@@ -70,13 +70,6 @@ export const tierComparison: TierFeature[] = [
     professional: 'Unlimited',
     premium: 'AI-trained on your data',
     enterprise: 'Multi-property AI training'
-  },
-  {
-    name: 'Response Time',
-    starter: '< 3 seconds',
-    professional: '< 1 second',
-    premium: 'Instant',
-    enterprise: 'Instant + Priority'
   },
   {
     name: 'Support',
@@ -159,7 +152,7 @@ export const pricingTiers: PricingTier[] = [
     features: [
       'Everything in Starter, plus:',
       'Unlimited conversations',
-      'Multi-language support (10+)',
+      'Multi-language support (2 languages)',
       'Booking system integration',
       'CRM integration',
       'Advanced analytics & insights',
@@ -174,6 +167,7 @@ export const pricingTiers: PricingTier[] = [
     description: 'Luxury tier for 5-star resorts & exclusive tours',
     features: [
       'Everything in Professional, plus:',
+      'Multi-language support (5 languages)',
       'Claude 3.5 Sonnet (1000 tokens)',
       'Dedicated account manager',
       'Custom AI training on your data',
@@ -191,6 +185,7 @@ export const pricingTiers: PricingTier[] = [
     description: 'For hotel chains & resort groups',
     features: [
       'Everything in Premium, plus:',
+      'Multi-language support (10+ languages)',
       'Multi-property support',
       'Centralized management console',
       'SSO/SAML authentication',

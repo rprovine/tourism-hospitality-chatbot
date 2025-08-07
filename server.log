@@ -181,3 +181,10 @@ Unknown argument `language`. Available options are marked with ?.
  POST /api/chat 200 in 4728ms
  ✓ Compiled in 162ms (669 modules)
  ✓ Compiled in 124ms (1613 modules)
+ ✓ Compiled in 545ms (1494 modules)
+ ✓ Compiled in 183ms (1494 modules)
+ ✓ Compiled in 182ms (1494 modules)
+ ✓ Compiled in 157ms (1494 modules)
+ ✓ Compiled in 150ms (1494 modules)
+ ✓ Compiled in 171ms (1494 modules)
+ ✓ Compiled in 217ms (1494 modules)
