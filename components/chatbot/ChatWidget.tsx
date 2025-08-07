@@ -92,7 +92,7 @@ export default function ChatWidget({
           message: input,
           sessionId: sessionId,
           tier: tier,
-          ...(conversationId && { conversationId: conversationId })
+          conversationId: conversationId
         })
       })
 

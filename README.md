@@ -4,7 +4,7 @@
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.4-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1-38B2AC)](https://tailwindcss.com/)
 [![Prisma](https://img.shields.io/badge/Prisma-6.13-2D3748)](https://www.prisma.io/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
@@ -14,14 +14,15 @@ LeniLani Tourism & Hospitality AI Chatbot is a white-label SaaS solution designe
 
 ### Key Features
 
-- 🤖 **Claude AI Integration** - Powered by Anthropic's Claude for sophisticated, context-aware responses
+- 🤖 **Claude AI Integration** - Powered by Anthropic's Claude 3.5 Sonnet/Haiku for sophisticated, context-aware responses
 - 💼 **Multi-Tenant Architecture** - Supports multiple businesses with data isolation
 - 🎨 **Customizable Branding** - White-label solution with custom colors and messaging
 - 📊 **Analytics Dashboard** - Track conversations, satisfaction, and metrics
 - 🔐 **Secure Authentication** - JWT-based auth with bcrypt password hashing
-- 💳 **Tiered Pricing** - Starter ($299/mo) and Professional ($899/mo) plans
-- 🌏 **Multi-Language Support** - Ready for international guests
+- 💳 **4-Tier Pricing** - Starter, Professional, Premium, and Enterprise plans
+- 🌏 **Multi-Language Support** - Up to 10+ languages depending on tier
 - 📱 **Responsive Design** - Works seamlessly on all devices
+- ✨ **Interactive Demos** - Live tier demonstrations with mock business data
 
 ## 🚀 Quick Start
 
@@ -29,12 +30,13 @@ LeniLani Tourism & Hospitality AI Chatbot is a white-label SaaS solution designe
 
 - Node.js 18+ and npm
 - Git
+- Anthropic API Key (recommended for enhanced AI responses)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/tourism-hospitality-chatbot.git
+   git clone https://github.com/rprovine/tourism-hospitality-chatbot.git
    cd tourism-hospitality-chatbot
    ```
 
@@ -51,6 +53,7 @@ LeniLani Tourism & Hospitality AI Chatbot is a white-label SaaS solution designe
    ```env
    DATABASE_URL="file:./dev.db"
    JWT_SECRET="your-secret-key-here"
+   ANTHROPIC_API_KEY="your-claude-api-key"
    ```
 
 4. **Initialize the database**
@@ -80,13 +83,14 @@ tourism-hospitality-chatbot/
 │   ├── admin/              # Admin dashboard
 │   ├── login/              # Login page
 │   ├── register/           # Registration page
-│   └── page.tsx            # Landing page
+│   └── page.tsx            # Landing page with interactive demos
 ├── components/              # React components
 │   ├── chatbot/            # Chat widget components
 │   └── ui/                 # Reusable UI components
 ├── lib/                     # Utility libraries
+│   ├── ai/                 # Claude AI integration
 │   ├── auth/               # Authentication utilities
-│   ├── data/               # Static data
+│   ├── data/               # Static data & mock business data
 │   ├── types/              # TypeScript types
 │   └── utils/              # Helper functions
 ├── prisma/                  # Database schema
@@ -97,22 +101,56 @@ tourism-hospitality-chatbot/
 
 ## 💼 Pricing Tiers
 
-### Starter Plan - $299/month
+### 🌟 Starter Plan - $299/month
 - ✅ Up to 1,000 conversations/month
-- ✅ Basic AI responses
+- ✅ Basic FAQ responses
+- ✅ English only
 - ✅ Email support
 - ✅ Standard analytics
-- ✅ Single language
+- ⚠️ Limited AI capabilities - directs complex queries to phone support
 
-### Professional Plan - $899/month
+### 🚀 Professional Plan - $899/month *(Most Popular)*
 - ✅ Unlimited conversations
+- ✅ Real-time booking assistance
+- ✅ 2 languages (English + Japanese)
 - ✅ Advanced AI with context awareness
 - ✅ Priority phone & email support
 - ✅ Advanced analytics & insights
-- ✅ Multi-language support
-- ✅ Custom integrations
-- ✅ API access
-- ✅ White-label options
+- ✅ Restaurant reservations
+- ✅ Activity recommendations
+
+### ✨ Premium Plan - $2,499/month
+- ✅ Everything in Professional, plus:
+- ✅ Luxury concierge-level service
+- ✅ 5 languages (English, Japanese, Chinese, Spanish, Korean)
+- ✅ VIP guest experiences (yacht charters, helicopter tours)
+- ✅ Personalized recommendations
+- ✅ Suite and luxury accommodation booking
+- ✅ Private chef and spa arrangements
+- ✅ White-glove service coordination
+
+### 🏢 Enterprise Plan - Custom Pricing
+- ✅ Everything in Premium, plus:
+- ✅ Multi-property management across 7+ locations
+- ✅ 10+ languages with cultural customization
+- ✅ Group and conference booking management
+- ✅ Corporate travel arrangements
+- ✅ Real-time business analytics (RevPAR, ADR, occupancy)
+- ✅ Loyalty program integration (125,000+ members)
+- ✅ Advanced revenue optimization
+- ✅ Dedicated account management
+- ✅ Custom integrations and API access
+
+## 🎭 Interactive Demos
+
+The landing page features live demonstrations of each tier's capabilities:
+
+- **Demo Disclaimer**: All responses clearly indicate they're using sample data
+- **Realistic Mock Data**: Shows actual hotel scenarios (budget inn → luxury resort → hotel chain)
+- **Language Capabilities**: Demonstrates multilingual support for each tier
+- **Business Intelligence**: Enterprise tier shows real-time analytics and revenue data
+
+Try the demos at [http://localhost:3000](http://localhost:3000) - click on different tier demo buttons to see the capabilities in action!
 
 ## 🔧 Configuration
 
@@ -128,6 +166,13 @@ tourism-hospitality-chatbot/
 | `SMTP_PORT` | Email server port | No |
 | `SMTP_USER` | Email username | No |
 | `SMTP_PASS` | Email password | No |
+
+### AI Models by Tier
+
+- **Starter**: Claude 3.5 Haiku (fast, economical, 200 tokens)
+- **Professional**: Claude 3.5 Sonnet (balanced, 500 tokens)
+- **Premium**: Claude 3.5 Sonnet (advanced, 1000 tokens)
+- **Enterprise**: Claude 3.5 Sonnet (maximum capability, 2000 tokens)
 
 ### Database Schema
 
@@ -169,7 +214,7 @@ npm run type-check   # Run TypeScript compiler check
 - `PATCH /api/auth/profile` - Update profile
 
 #### Chat
-- `POST /api/chat` - Send message and get AI response
+- `POST /api/chat` - Send message and get AI response (supports all 4 tiers)
 - `GET /api/conversations` - Get conversations
 - `PATCH /api/conversations` - Update conversation (satisfaction, resolved status)
 
@@ -208,16 +253,33 @@ npm run start
 
 ## 📈 Roadmap
 
+### In Progress
+- [x] 4-tier pricing system with realistic demos
+- [x] Multi-language support (up to 10+ languages)
+- [x] Claude AI integration with tier-specific models
+- [x] Interactive demo system with mock business data
+
+### Upcoming Features
 - [ ] Stripe payment integration
 - [ ] Email notifications
 - [ ] Advanced knowledge base management
 - [ ] Conversation export (CSV/PDF)
-- [ ] Mobile app (React Native)
+- [ ] Real-time chat features with WebSockets
+- [ ] Mobile-responsive PWA
+- [ ] Advanced analytics dashboard
+- [ ] Webhook support for integrations
 - [ ] Voice assistant integration
-- [ ] Webhook support
-- [ ] Advanced AI training interface
 - [ ] Multi-tenant admin portal
-- [ ] Real-time collaboration features
+
+## 🎯 Demo Mode Features
+
+The application includes a comprehensive demo system that showcases tier differences:
+
+- **Mock Business Data**: Realistic hotel, resort, and hotel chain data
+- **Tier-Specific Responses**: Each tier demonstrates different capabilities
+- **Demo Disclaimers**: Clear messaging that production uses actual business data
+- **Language Demonstrations**: Shows multilingual capabilities per tier
+- **Business Intelligence**: Enterprise tier includes analytics and revenue data
 
 ## 🤝 Contributing
 
@@ -236,9 +298,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Built for Hawaii's hospitality industry
-- Powered by Next.js and OpenAI
+- Powered by Next.js 15 and Anthropic Claude 3.5
 - UI components from shadcn/ui
 - Icons from Lucide React
+- Animations by Framer Motion
 
 ## 📞 Support
 
