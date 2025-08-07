@@ -6,17 +6,23 @@ export const PAYMENT_LINKS = {
   starter_monthly: {
     url: 'https://app-na2.hubspot.com/payments/GGGZKG9b2jt7vtZ7?referrer=PAYMENT_LINK',
     amount: 29,
-    interval: 'monthly'
+    interval: 'monthly',
+    trialDays: 14,
+    trialText: '14-day free trial'
   },
   professional_monthly: {
     url: 'https://app-na2.hubspot.com/payments/zXbRjHGbPfr?referrer=PAYMENT_LINK',
     amount: 149,
-    interval: 'monthly'
+    interval: 'monthly',
+    trialDays: 14,
+    trialText: '14-day free trial'
   },
   premium_monthly: {
     url: 'https://app-na2.hubspot.com/payments/fmmQJJHmxtnTJPt?referrer=PAYMENT_LINK',
     amount: 299,
-    interval: 'monthly'
+    interval: 'monthly',
+    trialDays: 30,
+    trialText: '30-day money-back guarantee'
   },
   enterprise_monthly: {
     url: 'CUSTOM_QUOTE', // Special handling for enterprise
@@ -28,17 +34,23 @@ export const PAYMENT_LINKS = {
   starter_yearly: {
     url: 'https://app-na2.hubspot.com/payments/FXTWhqGsWc4sMw?referrer=PAYMENT_LINK',
     amount: 290,
-    interval: 'yearly'
+    interval: 'yearly',
+    trialDays: 14,
+    trialText: '14-day free trial + Save $58/year'
   },
   professional_yearly: {
     url: 'https://app-na2.hubspot.com/payments/GPz7Y4zvWDPV4Wjy?referrer=PAYMENT_LINK',
     amount: 1490,
-    interval: 'yearly'
+    interval: 'yearly',
+    trialDays: 14,
+    trialText: '14-day free trial + Save $298/year'
   },
   premium_yearly: {
     url: 'https://app-na2.hubspot.com/payments/wQcwWQrtYdV?referrer=PAYMENT_LINK',
     amount: 2990,
-    interval: 'yearly'
+    interval: 'yearly',
+    trialDays: 30,
+    trialText: '30-day guarantee + Save $598/year'
   }
 }
 

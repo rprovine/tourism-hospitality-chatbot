@@ -52,7 +52,7 @@ export default function LandingPage() {
                 className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold shadow-md"
                 onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
               >
-                Get Started
+                Start 14-Day Free Trial
               </Button>
             </div>
           </div>
@@ -320,6 +320,7 @@ export default function LandingPage() {
                   <th className="text-center py-6 px-4 bg-white min-w-[150px]">
                     <div className="font-bold text-lg text-gray-900">Starter</div>
                     <div className="text-2xl font-extrabold text-gray-900 mt-2">$29<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                    <div className="text-xs text-green-600 font-medium mt-1">14-day free trial</div>
                     <div className="text-xs text-green-600 mt-1">Perfect for small businesses</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-cyan-50 min-w-[150px]">
@@ -331,6 +332,7 @@ export default function LandingPage() {
                       <span className="text-lg text-gray-400 line-through">$199</span>
                       <div className="text-2xl font-extrabold text-cyan-700">$149<span className="text-sm font-normal text-gray-600">/mo</span></div>
                     </div>
+                    <div className="text-xs text-green-600 font-medium">14-day free trial</div>
                     <div className="text-xs text-green-600 mt-1">Best value with dual AI</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-purple-50 min-w-[150px]">
@@ -339,6 +341,7 @@ export default function LandingPage() {
                       <span className="text-2xl">✨</span>
                     </div>
                     <div className="text-2xl font-extrabold text-purple-700">$299<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                    <div className="text-xs text-green-600 font-medium">30-day money-back guarantee</div>
                     <div className="text-xs text-green-600 mt-1">Full AI suite + analytics</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-gray-100 min-w-[150px]">
@@ -409,9 +412,9 @@ export default function LandingPage() {
           <div className="mt-8 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl p-6 text-white max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div>
-                <h3 className="text-xl font-bold mb-2">🎉 Limited Time: Professional Tier Now $699</h3>
+                <h3 className="text-xl font-bold mb-2">🎉 Limited Time: Professional Tier Now $149</h3>
                 <p className="text-cyan-100">
-                  Save $200/month with Claude Sonnet AI • Annual discounts available • 14-day free trial
+                  Save $50/month with Dual AI Power • Annual discounts available • 14-day free trial
                 </p>
               </div>
               <Button 
@@ -600,7 +603,7 @@ export default function LandingPage() {
                       variant={tier.highlighted ? 'default' : 'outline'}
                       onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
                     >
-                      Get Started
+                      Start 14-Day Free Trial
                       <ChevronRight className="ml-2 h-4 w-4" />
                     </Button>
                   </CardContent>

@@ -134,16 +134,23 @@ export default function CheckoutPage() {
                       onChange={(e) => setSelectedPlan(e.target.value)}
                       className="sr-only"
                     />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{p.name}</h3>
-                        <p className="text-sm text-gray-600">
-                          {p.tier === 'enterprise' ? 'Starting at' : ''} ${p.price}/{p.interval === 'yearly' ? 'year' : 'month'}
-                        </p>
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-semibold text-gray-900">{p.name}</h3>
+                          <p className="text-sm text-gray-600">
+                            {p.tier === 'enterprise' ? 'Starting at' : ''} ${p.price}/{p.interval === 'yearly' ? 'year' : 'month'}
+                          </p>
+                          {p.trialText && (
+                            <p className="text-xs text-green-600 font-medium mt-1">
+                              ✨ {p.trialText}
+                            </p>
+                          )}
+                        </div>
+                        {selectedPlan === key && (
+                          <Check className="h-5 w-5 text-cyan-600" />
+                        )}
                       </div>
-                      {selectedPlan === key && (
-                        <Check className="h-5 w-5 text-cyan-600" />
-                      )}
                     </div>
                   </label>
                 ))}
@@ -231,6 +238,25 @@ export default function CheckoutPage() {
                 </div>
               )}
 
+              {/* Trial Information Banner */}
+              {plan && plan.trialDays && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-600 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-green-900">
+                        {plan.trialDays === 14 ? '14-Day Free Trial' : '30-Day Money-Back Guarantee'}
+                      </p>
+                      <p className="text-sm text-green-700 mt-1">
+                        {plan.trialDays === 14 
+                          ? 'Try risk-free for 14 days. Cancel anytime, no questions asked.'
+                          : 'Full refund within 30 days if you\'re not completely satisfied.'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <button
                 type="submit"
                 disabled={loading || !selectedPlan}
@@ -243,15 +269,17 @@ export default function CheckoutPage() {
                   </>
                 ) : (
                   <>
-                    Continue to Payment
+                    {plan?.trialDays ? 'Start Free Trial' : 'Continue to Payment'}
                     <ArrowRight className="h-5 w-5" />
                   </>
                 )}
               </button>
 
               <p className="text-xs text-gray-500 text-center">
+                {plan?.trialDays ? (
+                  <>No payment required for {plan.trialDays} days. Cancel anytime.<br/></>
+                ) : null}
                 By continuing, you agree to our Terms of Service and Privacy Policy.
-                Your payment will be processed securely through HubSpot Payments.
               </p>
             </form>
           </div>
