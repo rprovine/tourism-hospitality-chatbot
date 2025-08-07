@@ -18,7 +18,7 @@ import {
 import { Button } from '@/components/ui/button'
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: Home },
+  { href: '/admin', label: 'Overview', icon: Home },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/admin/revenue', label: 'Revenue', icon: TrendingUp },
   { href: '/admin/guests', label: 'Guests', icon: Users },
@@ -53,6 +53,7 @@ export default function DashboardNav() {
               {navItems.map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href || 
+                  (item.href === '/admin' && pathname === '/dashboard') ||
                   (item.href === '/admin/analytics' && pathname?.includes('/analytics'))
                 
                 return (
