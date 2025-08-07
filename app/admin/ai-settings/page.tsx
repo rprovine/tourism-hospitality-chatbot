@@ -89,7 +89,7 @@ export default function AISettingsPage() {
                       value={settings.apiKey}
                       onChange={(e) => setSettings({ ...settings, apiKey: e.target.value })}
                       placeholder="sk-ant-api..."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     />
                     <p className="text-xs text-gray-500 mt-1">
                       Get your API key from{' '}
@@ -106,7 +106,7 @@ export default function AISettingsPage() {
                     <select
                       value={settings.modelPreference}
                       onChange={(e) => setSettings({ ...settings, modelPreference: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     >
                       <option value="haiku">Claude 3 Haiku (Fast & Economical)</option>
                       <option value="sonnet">Claude 3 Sonnet (Balanced)</option>
