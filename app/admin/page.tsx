@@ -1,276 +1,375 @@
 'use client'
 
-import { useState } from 'react'
-import { 
-  BarChart3, 
-  MessageSquare, 
-  Users, 
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import {
+  BarChart3,
+  MessageSquare,
+  Users,
   TrendingUp,
   Calendar,
-  DollarSign,
-  Settings,
-  ChevronDown,
-  Bot,
+  Globe,
   Star,
-  Clock
+  Clock,
+  BookOpen,
+  Settings,
+  Download,
+  LogOut,
+  ChevronRight,
+  Activity,
+  Bot
 } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import AnalyticsChart from '@/components/analytics/AnalyticsChart'
-import ConversationsList from '@/components/dashboard/ConversationsList'
-import SettingsPanel from '@/components/dashboard/SettingsPanel'
 
-type TabType = 'overview' | 'conversations' | 'analytics' | 'settings'
+interface DashboardStats {
+  totalConversations: number
+  todayConversations: number
+  averageSatisfaction: number
+  activeUsers: number
+  topQuestions: Array<{ question: string; count: number }>
+  languageBreakdown: Record<string, number>
+  weeklyTrend: Array<{ date: string; count: number }>
+  responseTime: number
+}
+
+interface Business {
+  id: string
+  name: string
+  tier: string
+  subscriptionStatus: string
+}
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState<TabType>('overview')
-  const [selectedBusiness] = useState('Demo Resort Hawaii')
-  const [dateRange] = useState('7d')
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState<DashboardStats | null>(null)
+  const [business, setBusiness] = useState<Business | null>(null)
+  const [dateRange, setDateRange] = useState('7d')
 
-  const stats = {
-    totalConversations: 2847,
-    activeUsers: 423,
-    satisfactionScore: 4.8,
-    revenue: 15420,
-    responseTime: 1.2,
-    resolutionRate: 92
+  useEffect(() => {
+    fetchDashboardData()
+  }, [dateRange])
+
+  const fetchDashboardData = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      
+      if (!token) {
+        router.push('/login')
+        return
+      }
+
+      // Use mock data for demo
+      setStats({
+        totalConversations: 1247,
+        todayConversations: 43,
+        averageSatisfaction: 4.6,
+        activeUsers: 186,
+        topQuestions: [
+          { question: 'What time is check-in?', count: 89 },
+          { question: 'Do you have parking?', count: 67 },
+          { question: 'Is breakfast included?', count: 54 },
+          { question: 'What are your pool hours?', count: 48 },
+          { question: 'How far from the beach?', count: 41 }
+        ],
+        languageBreakdown: {
+          English: 65,
+          Japanese: 20,
+          Chinese: 10,
+          Spanish: 5
+        },
+        weeklyTrend: [
+          { date: 'Mon', count: 145 },
+          { date: 'Tue', count: 178 },
+          { date: 'Wed', count: 203 },
+          { date: 'Thu', count: 189 },
+          { date: 'Fri', count: 224 },
+          { date: 'Sat', count: 267 },
+          { date: 'Sun', count: 241 }
+        ],
+        responseTime: 1.2
+      })
+      setBusiness({
+        id: '1',
+        name: 'Demo Resort Hawaii',
+        tier: 'professional',
+        subscriptionStatus: 'active'
+      })
+      setLoading(false)
+    } catch (error) {
+      console.error('Dashboard error:', error)
+      setLoading(false)
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    router.push('/login')
+  }
+
+  const exportData = async (format: 'csv' | 'json') => {
+    // Mock export for demo
+    const data = JSON.stringify(stats, null, 2)
+    const blob = new Blob([data], { type: format === 'csv' ? 'text/csv' : 'application/json' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `analytics-${dateRange}.${format}`
+    a.click()
+    window.URL.revokeObjectURL(url)
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-700"></div>
+      </div>
+    )
+  }
+
+  const getTierBadgeColor = (tier: string) => {
+    switch (tier) {
+      case 'enterprise': return 'bg-purple-100 text-purple-700'
+      case 'premium': return 'bg-amber-100 text-amber-700'
+      case 'professional': return 'bg-cyan-100 text-cyan-700'
+      default: return 'bg-gray-100 text-gray-700'
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b">
-        <div className="px-6 py-4">
+      <header className="bg-white shadow-sm border-b">
+        <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Bot className="h-8 w-8 text-cyan-600" />
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Hospitality AI Admin</h1>
-                <p className="text-sm text-gray-600">Manage your chatbot and view analytics</p>
+                <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+                {business && (
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getTierBadgeColor(business.tier)}`}>
+                      {business.tier.toUpperCase()}
+                    </span>
+                    <span className="text-sm text-gray-600">{business.name}</span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                Last {dateRange === '7d' ? '7 days' : dateRange === '30d' ? '30 days' : '90 days'}
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" className="flex items-center gap-2">
-                {selectedBusiness}
-                <ChevronDown className="h-4 w-4" />
-              </Button>
+              <select
+                value={dateRange}
+                onChange={(e) => setDateRange(e.target.value)}
+                className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              >
+                <option value="1d">Today</option>
+                <option value="7d">Last 7 days</option>
+                <option value="30d">Last 30 days</option>
+                <option value="90d">Last 90 days</option>
+              </select>
+              <button
+                onClick={() => exportData('csv')}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors"
+              >
+                <Download className="h-4 w-4" />
+                Export
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </button>
             </div>
           </div>
-        </div>
-        
-        {/* Tabs */}
-        <div className="px-6 border-t">
-          <nav className="flex gap-6">
-            {[
-              { id: 'overview', label: 'Overview', icon: BarChart3 },
-              { id: 'conversations', label: 'Conversations', icon: MessageSquare },
-              { id: 'analytics', label: 'Analytics', icon: TrendingUp },
-              { id: 'settings', label: 'Settings', icon: Settings }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as TabType)}
-                className={`flex items-center gap-2 py-3 px-1 border-b-2 transition-colors ${
-                  activeTab === tab.id
-                    ? 'border-cyan-600 text-cyan-600'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                <tab.icon className="h-4 w-4" />
-                <span className="font-medium">{tab.label}</span>
-              </button>
-            ))}
-          </nav>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="p-6">
-        {activeTab === 'overview' && (
-          <div className="space-y-6">
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-sm font-medium">Total Conversations</CardTitle>
-                  <MessageSquare className="h-4 w-4 text-gray-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{stats.totalConversations.toLocaleString()}</div>
-                  <p className="text-xs text-green-600">+12% from last period</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-                  <Users className="h-4 w-4 text-gray-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{stats.activeUsers}</div>
-                  <p className="text-xs text-green-600">+8% from last period</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-sm font-medium">Satisfaction Score</CardTitle>
-                  <Star className="h-4 w-4 text-gray-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{stats.satisfactionScore}/5.0</div>
-                  <p className="text-xs text-green-600">+0.2 from last period</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-sm font-medium">Revenue Generated</CardTitle>
-                  <DollarSign className="h-4 w-4 text-gray-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">${stats.revenue.toLocaleString()}</div>
-                  <p className="text-xs text-green-600">+24% from last period</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-sm font-medium">Avg Response Time</CardTitle>
-                  <Clock className="h-4 w-4 text-gray-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{stats.responseTime}s</div>
-                  <p className="text-xs text-green-600">-0.3s from last period</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-sm font-medium">Resolution Rate</CardTitle>
-                  <TrendingUp className="h-4 w-4 text-gray-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{stats.resolutionRate}%</div>
-                  <p className="text-xs text-green-600">+3% from last period</p>
-                </CardContent>
-              </Card>
+      <div className="container mx-auto px-6 py-8">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between mb-2">
+              <MessageSquare className="h-8 w-8 text-cyan-600" />
+              <span className="text-xs text-green-600 font-medium">
+                +{stats?.todayConversations || 0} today
+              </span>
             </div>
+            <div className="text-2xl font-bold text-gray-900">
+              {stats?.totalConversations.toLocaleString() || 0}
+            </div>
+            <div className="text-sm text-gray-600">Total Conversations</div>
+          </div>
 
-            {/* Charts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Conversation Volume</CardTitle>
-                  <CardDescription>Daily conversations over the selected period</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <AnalyticsChart type="conversations" />
-                </CardContent>
-              </Card>
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Users className="h-8 w-8 text-blue-600" />
+              <span className="text-xs text-gray-500">Active now</span>
+            </div>
+            <div className="text-2xl font-bold text-gray-900">
+              {stats?.activeUsers || 0}
+            </div>
+            <div className="text-sm text-gray-600">Active Users</div>
+          </div>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Top Questions</CardTitle>
-                  <CardDescription>Most frequently asked questions</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {[
-                      { question: 'What are your check-in times?', count: 342 },
-                      { question: 'Do you have parking available?', count: 298 },
-                      { question: 'How far are you from the beach?', count: 256 },
-                      { question: 'What amenities do you offer?', count: 231 },
-                      { question: 'Can I book a room?', count: 189 }
-                    ].map((item, index) => (
-                      <div key={index} className="flex items-center justify-between">
-                        <span className="text-sm text-gray-700">{item.question}</span>
-                        <span className="text-sm font-medium text-gray-900">{item.count}</span>
-                      </div>
-                    ))}
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Star className="h-8 w-8 text-yellow-600" />
+              <span className="text-xs text-gray-500">/5.0</span>
+            </div>
+            <div className="text-2xl font-bold text-gray-900">
+              {stats?.averageSatisfaction.toFixed(1) || 0}
+            </div>
+            <div className="text-sm text-gray-600">Avg Satisfaction</div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Clock className="h-8 w-8 text-green-600" />
+              <span className="text-xs text-gray-500">seconds</span>
+            </div>
+            <div className="text-2xl font-bold text-gray-900">
+              {stats?.responseTime.toFixed(1) || 0}
+            </div>
+            <div className="text-sm text-gray-600">Avg Response Time</div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Weekly Trend Chart */}
+          <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-cyan-600" />
+              Conversation Trend
+            </h2>
+            <div className="relative h-64">
+              <div className="absolute inset-0 flex items-end justify-between gap-2">
+                {stats?.weeklyTrend.map((day, index) => {
+                  const height = (day.count / Math.max(...stats.weeklyTrend.map(d => d.count))) * 100
+                  return (
+                    <div key={index} className="flex-1 flex flex-col items-center">
+                      <div className="text-xs text-gray-600 mb-1">{day.count}</div>
+                      <div
+                        className="w-full bg-gradient-to-t from-cyan-600 to-cyan-400 rounded-t"
+                        style={{ height: `${height}%` }}
+                      />
+                      <div className="text-xs text-gray-600 mt-2">{day.date}</div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Language Breakdown */}
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Globe className="h-5 w-5 text-cyan-600" />
+              Languages
+            </h2>
+            <div className="space-y-3">
+              {stats && Object.entries(stats.languageBreakdown).map(([lang, percentage]) => (
+                <div key={lang}>
+                  <div className="flex items-center justify-between text-sm mb-1">
+                    <span className="text-gray-700">{lang}</span>
+                    <span className="text-gray-900 font-medium">{percentage}%</span>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-gradient-to-r from-cyan-600 to-cyan-400 h-2 rounded-full"
+                      style={{ width: `${percentage}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-
-            {/* Recent Conversations */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Conversations</CardTitle>
-                <CardDescription>Latest customer interactions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ConversationsList limit={5} />
-              </CardContent>
-            </Card>
           </div>
-        )}
+        </div>
 
-        {activeTab === 'conversations' && (
-          <Card>
-            <CardHeader>
-              <CardTitle>All Conversations</CardTitle>
-              <CardDescription>View and manage all customer conversations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ConversationsList />
-            </CardContent>
-          </Card>
-        )}
-
-        {activeTab === 'analytics' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Conversation Trends</CardTitle>
-                <CardDescription>Volume and patterns over time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <AnalyticsChart type="trends" />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>User Satisfaction</CardTitle>
-                <CardDescription>Customer satisfaction metrics</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <AnalyticsChart type="satisfaction" />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Language Distribution</CardTitle>
-                <CardDescription>Conversations by language</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <AnalyticsChart type="languages" />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Conversion Funnel</CardTitle>
-                <CardDescription>From inquiry to booking</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <AnalyticsChart type="funnel" />
-              </CardContent>
-            </Card>
+        {/* Top Questions & Quick Actions */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          {/* Top Questions */}
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <MessageSquare className="h-5 w-5 text-cyan-600" />
+              Top Questions
+            </h2>
+            <div className="space-y-3">
+              {stats?.topQuestions.map((q, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <span className="text-sm text-gray-700 truncate flex-1 mr-4">
+                    {q.question}
+                  </span>
+                  <span className="text-sm font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded">
+                    {q.count}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-        )}
 
-        {activeTab === 'settings' && (
-          <SettingsPanel businessName={selectedBusiness} />
-        )}
-      </main>
+          {/* Quick Actions */}
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+            <div className="space-y-2">
+              <Link
+                href="/admin/knowledge-base"
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <BookOpen className="h-5 w-5 text-cyan-600" />
+                  <span className="text-gray-700">Manage Knowledge Base</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
+              </Link>
+              <Link
+                href="/admin/conversations"
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <MessageSquare className="h-5 w-5 text-cyan-600" />
+                  <span className="text-gray-700">View Conversations</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
+              </Link>
+              <Link
+                href="/admin/settings"
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Settings className="h-5 w-5 text-cyan-600" />
+                  <span className="text-gray-700">Settings & Customization</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
+              </Link>
+              <Link
+                href="/admin/widget"
+                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <BarChart3 className="h-5 w-5 text-cyan-600" />
+                  <span className="text-gray-700">Widget Installation</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Demo Notice */}
+        <div className="mt-8 bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <Activity className="h-5 w-5 text-cyan-600 mt-0.5" />
+            <div>
+              <h3 className="font-medium text-cyan-900">Demo Mode Active</h3>
+              <p className="text-sm text-cyan-700 mt-1">
+                This dashboard is showing sample data. In production, you'll see real-time analytics from your actual customer interactions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
