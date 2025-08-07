@@ -68,17 +68,17 @@ export default function LandingPage() {
         >
           <div className="inline-flex items-center gap-2 bg-cyan-700 text-white px-4 py-2 rounded-full mb-6 border border-cyan-600 shadow-md">
             <Sparkles className="h-4 w-4" />
-            <span className="text-sm font-bold">GPT-4 + Sentiment Analysis + Revenue Optimization</span>
+            <span className="text-sm font-bold">Claude AI + GPT-4 + Dual AI Intelligence</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Next-Gen AI Platform with{' '}
+            Dual AI Platform:{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-700 to-blue-700">
-              GPT-4 & Self-Learning Intelligence
+              Claude + GPT-4 Intelligence
             </span>
           </h1>
           <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-            Revolutionary AI chatbot with GPT-4, real-time sentiment analysis, dynamic pricing, 
-            intelligent upselling, and abandonment recovery. Boost revenue by 23% with self-learning AI.
+            The ONLY platform combining Claude's conversational excellence with GPT-4's analytical power. 
+            Plus sentiment analysis, dynamic pricing, and self-learning AI. Boost revenue by 23%.
           </p>
           <div className="flex gap-4 justify-center">
             <Button 
@@ -142,14 +142,14 @@ export default function LandingPage() {
               className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-600 transition-all"
             >
               <Brain className="h-12 w-12 text-cyan-400 mb-4" />
-              <h3 className="text-xl font-bold mb-2">GPT-4 Powered Conversations</h3>
+              <h3 className="text-xl font-bold mb-2">Dual AI: Claude + GPT-4</h3>
               <p className="text-gray-400 mb-4">
-                Natural language understanding with streaming responses, context awareness, and multi-turn conversations
+                Claude for natural conversations, GPT-4 for analysis. Best of both AI worlds in one platform.
               </p>
               <ul className="text-sm text-gray-500 space-y-1">
-                <li>• Token optimization</li>
-                <li>• Cost tracking</li>
-                <li>• Model selection</li>
+                <li>• Claude for chat</li>
+                <li>• GPT-4 for insights</li>
+                <li>• Auto model selection</li>
               </ul>
             </motion.div>
 
@@ -319,35 +319,35 @@ export default function LandingPage() {
                   <th className="text-left py-4 px-4 font-medium text-gray-900 min-w-[200px]">Features</th>
                   <th className="text-center py-6 px-4 bg-white min-w-[150px]">
                     <div className="font-bold text-lg text-gray-900">Starter</div>
-                    <div className="text-2xl font-extrabold text-gray-900 mt-2">$299<span className="text-sm font-normal text-gray-600">/mo</span></div>
-                    <div className="text-xs text-green-600 mt-1">Save 2-3 hrs/day</div>
+                    <div className="text-2xl font-extrabold text-gray-900 mt-2">$29<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                    <div className="text-xs text-green-600 mt-1">Perfect for small businesses</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-cyan-50 min-w-[150px]">
                     <div className="inline-flex items-center gap-2 mb-2">
                       <span className="font-bold text-lg text-gray-900">Professional</span>
-                      <span className="bg-gradient-to-r from-cyan-600 to-cyan-700 text-white text-xs px-2 py-1 rounded-full font-bold uppercase">Popular</span>
+                      <span className="bg-gradient-to-r from-cyan-600 to-cyan-700 text-white text-xs px-2 py-1 rounded-full font-bold uppercase">Most Popular</span>
                     </div>
                     <div className="relative">
-                      <span className="text-lg text-gray-400 line-through">$899</span>
-                      <div className="text-2xl font-extrabold text-cyan-700">$699<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                      <span className="text-lg text-gray-400 line-through">$199</span>
+                      <div className="text-2xl font-extrabold text-cyan-700">$99<span className="text-sm font-normal text-gray-600">/mo</span></div>
                     </div>
-                    <div className="text-xs text-green-600 mt-1">Save $4K+/mo</div>
+                    <div className="text-xs text-green-600 mt-1">Best value with dual AI</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-purple-50 min-w-[150px]">
                     <div className="inline-flex items-center gap-2 mb-2">
                       <span className="font-bold text-lg text-gray-900">Premium</span>
                       <span className="text-2xl">✨</span>
                     </div>
-                    <div className="text-2xl font-extrabold text-purple-700">$2,499<span className="text-sm font-normal text-gray-600">/mo</span></div>
-                    <div className="text-xs text-green-600 mt-1">+30% bookings</div>
+                    <div className="text-2xl font-extrabold text-purple-700">$299<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                    <div className="text-xs text-green-600 mt-1">Full AI suite + analytics</div>
                   </th>
                   <th className="text-center py-6 px-4 bg-gray-100 min-w-[150px]">
                     <div className="inline-flex items-center gap-2 mb-2">
                       <span className="font-bold text-lg text-gray-900">Enterprise</span>
                       <span className="text-2xl">🏢</span>
                     </div>
-                    <div className="text-2xl font-extrabold text-gray-900">Custom</div>
-                    <div className="text-xs text-green-600 mt-1">ROI guaranteed</div>
+                    <div className="text-2xl font-extrabold text-gray-900">$999+</div>
+                    <div className="text-xs text-green-600 mt-1">Custom AI models</div>
                   </th>
                 </tr>
               </thead>

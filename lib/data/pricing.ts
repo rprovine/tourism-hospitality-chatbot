@@ -17,10 +17,10 @@ export const tierComparison: TierFeature[] = [
   },
   {
     name: 'AI Model & Intelligence',
-    starter: 'Claude Haiku by Anthropic - Superior to generic chatbots, fast responses (200 tokens)',
-    professional: 'Claude 3.5 Sonnet - Industry-leading AI, outperforms GPT-4 for hospitality (500 tokens)',
-    premium: 'Claude 3.5 Sonnet Enhanced - Document learning + business intelligence (1000 tokens)',
-    enterprise: 'Claude 3.5 Sonnet Enterprise - Custom models per property, unlimited potential (2000 tokens)'
+    starter: 'Claude Haiku - Fast, efficient AI for basic queries',
+    professional: 'Dual AI: Claude Sonnet + GPT-4 Turbo - Best of both worlds',
+    premium: 'Dual AI Enhanced + Self-Learning - Improves with every conversation',
+    enterprise: 'Custom AI Blend - Claude + GPT-4 + Your proprietary data'
   },
   {
     name: 'Languages Supported',
@@ -160,11 +160,11 @@ export const tierComparison: TierFeature[] = [
 export const pricingTiers: PricingTier[] = [
   {
     name: 'Starter',
-    price: '$299',
+    price: '$29',
     description: 'Perfect for small hotels and tour operators',
-    savings: 'Save 2-3 staff hours daily',
+    savings: 'Claude Haiku - Fast & efficient',
     features: [
-      'AI-powered guest assistance',
+      'Claude Haiku AI assistant',
       '1,000 conversations/month',
       'Basic analytics dashboard',
       'Custom branding',
@@ -172,18 +172,19 @@ export const pricingTiers: PricingTier[] = [
       '50 custom Q&As',
       'Mobile responsive',
       '⚡ Instant activation after payment',
-      '💰 Pay annually: $2,390/year (save $598)'
+      '💰 Pay annually: $290/year (save $58)'
     ]
   },
   {
     name: 'Professional',
-    price: '$699',
-    originalPrice: '$899',
+    price: '$99',
+    originalPrice: '$199',
     description: 'For established hospitality businesses',
     highlighted: true,
-    savings: 'Save $4,000+/month in staff costs',
+    savings: 'Dual AI: Claude + GPT-4 Turbo',
     features: [
       'Everything in Starter, plus:',
+      'Dual AI: Claude Sonnet + GPT-4 Turbo',
       'Unlimited conversations',
       'English & Japanese support',
       'Booking system integration',
@@ -193,18 +194,18 @@ export const pricingTiers: PricingTier[] = [
       'API access',
       'Unlimited knowledge base',
       '⚡ Instant activation after payment',
-      '💰 Pay annually: $5,590/year (save $1,798)'
+      '💰 Pay annually: $990/year (save $198)'
     ]
   },
   {
     name: 'Premium',
-    price: '$2,499',
+    price: '$299',
     description: 'Luxury tier for 5-star resorts & exclusive tours',
-    savings: '15-30% increase in direct bookings',
+    savings: 'Enhanced Dual AI + Self-Learning',
     features: [
       'Everything in Professional, plus:',
+      'Enhanced Dual AI + Self-Learning Engine',
       '5 language support (choose from 10)',
-      'Claude 3.5 Sonnet (1000 tokens)',
       'Dedicated account manager',
       'Custom AI training on your data',
       'Bespoke integrations',
@@ -217,16 +218,17 @@ export const pricingTiers: PricingTier[] = [
       'Custom AI training workshop for your team',
       'Priority feature development',
       '🎯 2-3 days setup with full customization',
-      '💰 Pay annually: $22,490/year (save $7,498)'
+      '💰 Pay annually: $2,990/year (save $598)'
     ]
   },
   {
     name: 'Enterprise',
-    price: 'Custom',
+    price: '$999+',
     description: 'For hotel chains & resort groups',
-    savings: 'ROI within 60 days guaranteed',
+    savings: 'Custom AI Blend + Proprietary Models',
     features: [
       'Everything in Premium, plus:',
+      'Custom AI Blend: Claude + GPT-4 + Your Data',
       'Multi-language support (10+ languages)',
       'Multi-property support',
       'Centralized management console',
