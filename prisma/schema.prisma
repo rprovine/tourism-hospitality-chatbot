@@ -35,6 +35,9 @@ model Business {
   messageQueues      MessageQueue[]
   channelSessions    ChannelSession[]
   messageTemplates   MessageTemplate[]
+  feedbacks          ConversationFeedback[]
+  learningPatterns   LearningPattern[]
+  aiInsights         AIInsight[]
 }
 
 model Subscription {
@@ -76,6 +79,7 @@ model Conversation {
   messages          Message[]
   contexts          ConversationContext[]
   channelSessions   ChannelSession[]
+  feedbacks         ConversationFeedback[]
 
   @@index([businessId])
   @@index([sessionId])
@@ -331,4 +335,57 @@ model MessageTemplate {
 
   @@index([businessId])
   @@index([channel])
+}
+
+model ConversationFeedback {
+  id             String       @id @default(cuid())
+  conversationId String
+  businessId     String
+  feedback       String       // 'positive', 'negative', 'neutral'
+  rating         Int?         // 1-5 star rating
+  comment        String?
+  context        Json?        @default("{}")
+  timestamp      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  business       Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([businessId])
+}
+
+model LearningPattern {
+  id            String   @id @default(cuid())
+  businessId    String
+  pattern       String
+  frequency     Int      @default(1)
+  successRate   Decimal  @default(0.5)
+  avgSentiment  Decimal  @default(0)
+  lastSeen      DateTime @default(now())
+  responses     Json?    @default("[]") // Successful response examples
+  metadata      Json?    @default("{}")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@index([pattern])
+}
+
+model AIInsight {
+  id             String   @id @default(cuid())
+  businessId     String
+  type           String   // 'improvement', 'issue', 'opportunity', 'trend'
+  title          String
+  description    String
+  impact         String   // 'high', 'medium', 'low'
+  recommendation String
+  metrics        Json?    @default("{}")
+  status         String   @default("active") // 'active', 'resolved', 'dismissed'
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  business       Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@index([type])
+  @@index([status])
 }
