@@ -1,0 +1,10 @@
+LENILANI TOURISM HOSPITALITY CHATBOT
+=====================================
+This is the correct deployment.
+Project: Tourism & Hospitality AI Chatbot
+Company: LeniLani Consulting
+Version: 1.0.0
+Test Accounts:
+- starter@demo.com / demo123
+- professional@demo.com / demo123  
+- premium@demo.com / demo123
