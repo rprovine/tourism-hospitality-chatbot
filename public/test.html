@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #0070f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #0051cc;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #000;
+            color: #0f0;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 100px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        .info {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 API Endpoint Tester</h1>
+        
+        <div class="info">
+            <strong>Instructions:</strong> Click each button in order to test API endpoints.
+            This is a simple HTML page with no framework dependencies.
+        </div>
+
+        <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="premium@demo.com">
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" value="demo123">
+        </div>
+
+        <div>
+            <button onclick="testPing()">1. Test /api/ping</button>
+            <button onclick="testDebug()">2. Test /api/debug</button>
+            <button onclick="testHealth()">3. Test /api/health</button>
+            <button onclick="testSimpleLogin()">4. Test Simple Login</button>
+            <button onclick="testFullLogin()">5. Test Full Login</button>
+            <button onclick="clearResult()">Clear</button>
+        </div>
+
+        <div id="result">Click a button to test an endpoint...</div>
+    </div>
+
+    <script>
+        const result = document.getElementById('result');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        function showResult(text) {
+            result.textContent = text;
+        }
+
+        function clearResult() {
+            result.textContent = 'Ready to test...';
+        }
+
+        async function testPing() {
+            showResult('Testing /api/ping...');
+            try {
+                const response = await fetch('/api/ping');
+                const text = await response.text();
+                showResult(`PING RESULT:\nStatus: ${response.status}\nResponse: ${text}`);
+            } catch (error) {
+                showResult(`PING ERROR:\n${error.message}\n\nThis means API routes are not accessible.`);
+            }
+        }
+
+        async function testDebug() {
+            showResult('Testing /api/debug...');
+            try {
+                const response = await fetch('/api/debug');
+                const text = await response.text();
+                try {
+                    const json = JSON.parse(text);
+                    showResult(`DEBUG RESULT:\nStatus: ${response.status}\n\n${JSON.stringify(json, null, 2)}`);
+                } catch {
+                    showResult(`DEBUG RESULT:\nStatus: ${response.status}\nRaw: ${text}`);
+                }
+            } catch (error) {
+                showResult(`DEBUG ERROR:\n${error.message}`);
+            }
+        }
+
+        async function testHealth() {
+            showResult('Testing /api/health...');
+            try {
+                const response = await fetch('/api/health');
+                const text = await response.text();
+                try {
+                    const json = JSON.parse(text);
+                    showResult(`HEALTH RESULT:\nStatus: ${response.status}\n\n${JSON.stringify(json, null, 2)}`);
+                } catch {
+                    showResult(`HEALTH RESULT:\nStatus: ${response.status}\nRaw: ${text}`);
+                }
+            } catch (error) {
+                showResult(`HEALTH ERROR:\n${error.message}`);
+            }
+        }
+
+        async function testSimpleLogin() {
+            showResult('Testing /api/auth/test-login...');
+            try {
+                const response = await fetch('/api/auth/test-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: emailInput.value,
+                        password: passwordInput.value
+                    })
+                });
+                const text = await response.text();
+                try {
+                    const json = JSON.parse(text);
+                    showResult(`SIMPLE LOGIN RESULT:\nStatus: ${response.status}\n\n${JSON.stringify(json, null, 2)}`);
+                } catch {
+                    showResult(`SIMPLE LOGIN RESULT:\nStatus: ${response.status}\nRaw: ${text}`);
+                }
+            } catch (error) {
+                showResult(`SIMPLE LOGIN ERROR:\n${error.message}`);
+            }
+        }
+
+        async function testFullLogin() {
+            showResult('Testing /api/auth/login...');
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: emailInput.value,
+                        password: passwordInput.value
+                    })
+                });
+                const text = await response.text();
+                try {
+                    const json = JSON.parse(text);
+                    showResult(`FULL LOGIN RESULT:\nStatus: ${response.status}\n\n${JSON.stringify(json, null, 2)}`);
+                    
+                    if (response.ok && json.token) {
+                        showResult(showResult.textContent + '\n\n✅ LOGIN SUCCESSFUL! Token received.');
+                        localStorage.setItem('token', json.token);
+                        localStorage.setItem('business', JSON.stringify(json.business));
+                    }
+                } catch {
+                    showResult(`FULL LOGIN RESULT:\nStatus: ${response.status}\nRaw: ${text}`);
+                }
+            } catch (error) {
+                showResult(`FULL LOGIN ERROR:\n${error.message}`);
+            }
+        }
+
+        // Test ping on load
+        window.addEventListener('load', () => {
+            showResult('Page loaded. Click buttons to test API endpoints.');
+        });
+    </script>
+</body>
+</html>
