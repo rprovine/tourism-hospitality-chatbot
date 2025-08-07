@@ -213,7 +213,7 @@ export default function AdminDashboard() {
                 <option value="90d">Last 90 days</option>
               </select>
               <Link
-                href="/analytics"
+                href="/admin/reports"
                 className="flex items-center gap-2 px-4 py-2 bg-cyan-50 hover:bg-cyan-100 rounded-lg text-sm font-medium text-cyan-700 transition-colors"
               >
                 <BarChart3 className="h-4 w-4" />
