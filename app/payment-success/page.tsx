@@ -8,6 +8,9 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { motion } from 'framer-motion'
 
+// Force dynamic rendering to avoid static generation issues
+export const dynamic = 'force-dynamic'
+
 function PaymentSuccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
