@@ -597,3 +597,45 @@ Import trace for requested module:
  ✓ Compiled in 477ms (888 modules)
  GET /admin 200 in 58ms
  GET / 200 in 58ms
+ ✓ Compiled in 482ms (888 modules)
+ GET /admin 200 in 98ms
+ GET / 200 in 99ms
+   Reload env: .env.local
+ ✓ Compiled in 654ms (1930 modules)
+ GET /admin 200 in 77ms
+ GET / 200 in 102ms
+ ✓ Compiled in 146ms (888 modules)
+ GET /admin 200 in 23ms
+ GET / 200 in 23ms
+   Reload env: .env.local
+ ✓ Compiled in 391ms (1930 modules)
+ GET /admin 200 in 108ms
+ GET / 200 in 109ms
+   Reload env: .env.local
+ ✓ Compiled in 4.3s (1962 modules)
+ GET /admin 200 in 123ms
+ GET / 200 in 124ms
+   Reload env: .env.local
+ ✓ Compiled in 436ms (1930 modules)
+ GET /admin 200 in 70ms
+ GET / 200 in 89ms
+   Reload env: .env.local
+ ✓ Compiled in 206ms (1930 modules)
+ GET /admin 200 in 40ms
+ GET / 200 in 54ms
+   Reload env: .env
+ ✓ Compiled in 199ms (1930 modules)
+ GET /admin 200 in 54ms
+ GET / 200 in 55ms
+   Reload env: .env
+ ✓ Compiled in 252ms (1930 modules)
+ GET /admin 200 in 56ms
+ GET / 200 in 57ms
+   Reload env: .env
+ ✓ Compiled in 188ms (1930 modules)
+ GET /admin 200 in 52ms
+ GET / 200 in 53ms
+   Reload env: .env.local
+ ✓ Compiled in 196ms (1930 modules)
+ GET /admin 200 in 52ms
+ GET / 200 in 54ms

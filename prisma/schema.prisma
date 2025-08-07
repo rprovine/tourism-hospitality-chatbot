@@ -1,16 +1,16 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// This is your Prisma schema file for PostgreSQL (Vercel/Production)
+// Copy this to schema.prisma when deploying to production
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// Business/Organization model
+// Business model (the main tenant/customer)
 model Business {
   id               String          @id @default(cuid())
   email            String          @unique
@@ -28,20 +28,16 @@ model Business {
   welcomeMessage   String          @default("Aloha! How can I help you today?")
   businessInfo     Json?           // address, phone, hours, etc.
   
-  // Usage tracking
-  monthlyConversationCount Int     @default(0)
-  lastConversationReset    DateTime @default(now())
-  
-  // API Access
-  apiKey           String?         @unique
+  // Integrations
+  apiKey           String?         @unique @default(cuid())
   apiKeyCreatedAt  DateTime?
+  webhookUrl       String?
   
   // Relations
   conversations    Conversation[]
   knowledgeBase    KnowledgeBase[]
-  subscription     Subscription?
   analytics        Analytics[]
-  apiLogs          ApiLog[]
+  subscription     Subscription?
   
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
@@ -80,13 +76,18 @@ model Conversation {
   business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
   
   sessionId        String
-  userId           String?         // Optional user identifier
+  userLocation     String?
+  userLanguage     String          @default("en")
   
+  // Analytics data
+  satisfactionScore Int?
+  resolutionTime   Int?            // in seconds
+  escalated        Boolean         @default(false)
+  
+  // Relations
   messages         Message[]
-  metadata         Json?           // userLocation, language, etc.
   
-  satisfaction     Int?            // 1-5 rating
-  resolved         Boolean         @default(false)
+  metadata         Json?           // Additional conversation data
   
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
@@ -102,8 +103,12 @@ model Message {
   conversation     Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   
   role             String          // user, assistant, system
-  content          String
-  metadata         Json?
+  content          String          @db.Text
+  
+  // Optional metadata
+  intent           String?         // detected intent
+  confidence       Float?          // AI confidence score
+  language         String          @default("en")
   
   createdAt        DateTime        @default(now())
   
@@ -116,17 +121,20 @@ model KnowledgeBase {
   businessId       String
   business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
   
-  category         String          // general, booking, amenities, policies, local_info, etc.
-  question         String
-  answer           String          // SQLite stores String as TEXT anyway
-  keywords         String          // Comma-separated keywords for matching
+  category         String          // general, amenities, booking, location, etc.
+  question         String          @db.Text
+  answer           String          @db.Text
+  keywords         String          // comma-separated keywords for better matching
+  
+  language         String          @default("en")
   priority         Int             @default(0) // Higher priority items shown first
-  language         String          @default("en") // Language code
-  isActive         Boolean         @default(true)
   
   // Usage tracking
   usageCount       Int             @default(0)
   lastUsed         DateTime?
+  
+  // Status
+  isActive         Boolean         @default(true)
   
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
@@ -142,35 +150,49 @@ model Analytics {
   businessId       String
   business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
   
-  date             DateTime
+  date             DateTime        @db.Date
   
+  // Metrics
   totalConversations Int           @default(0)
   uniqueUsers      Int             @default(0)
-  avgResponseTime  Float           @default(0)
-  avgSatisfaction  Float           @default(0)
-  bookingsGenerated Int            @default(0)
+  avgResponseTime  Float           @default(0) // in seconds
+  avgSatisfaction  Float?          // 1-5 scale
   
-  topQuestions     Json?           // Array of {question, count}
-  languageBreakdown Json?          // {en: 60, ja: 20, ...}
+  // Language breakdown (stored as JSON)
+  languageStats    Json?           // { "en": 50, "ja": 30, "zh": 20 }
+  
+  // Top questions (stored as JSON)
+  topQuestions     Json?           // [{ question: "...", count: 10 }]
+  
+  // Peak hours (stored as JSON)
+  peakHours        Json?           // { "14": 50, "15": 60, ... }
   
   createdAt        DateTime        @default(now())
   
   @@unique([businessId, date])
   @@index([businessId])
+  @@index([date])
 }
 
-// API usage tracking
+// API Log model for tracking API usage
 model ApiLog {
   id               String          @id @default(cuid())
   businessId       String
-  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
   
   endpoint         String
   method           String
   statusCode       Int
   responseTime     Int             // in milliseconds
   
+  // Request/Response data (be careful with sensitive data)
+  requestBody      Json?
+  responseBody     Json?
+  
+  // Error tracking
+  error            String?
+  
   createdAt        DateTime        @default(now())
   
-  @@index([businessId, createdAt])
+  @@index([businessId])
+  @@index([createdAt])
 }
