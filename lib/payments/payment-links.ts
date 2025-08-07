@@ -24,9 +24,9 @@ export const PAYMENT_LINKS = {
     interval: 'monthly'
   },
   
-  // Yearly Plans (using monthly links - customer can choose annual in HubSpot)
+  // Yearly Plans with discounts
   starter_yearly: {
-    url: 'https://app-na2.hubspot.com/payments/GGGZKG9b2jt7vtZ7?referrer=PAYMENT_LINK', // Same as monthly
+    url: 'https://app-na2.hubspot.com/payments/FXTWhqGsWc4sMw?referrer=PAYMENT_LINK',
     amount: 290,
     interval: 'yearly'
   },
