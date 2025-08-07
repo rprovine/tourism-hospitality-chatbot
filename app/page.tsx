@@ -13,7 +13,13 @@ import {
   ArrowRight,
   Sparkles,
   Bot,
-  ChevronRight
+  ChevronRight,
+  Brain,
+  TrendingUp,
+  DollarSign,
+  BarChart3,
+  Activity,
+  Target
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -62,17 +68,17 @@ export default function LandingPage() {
         >
           <div className="inline-flex items-center gap-2 bg-cyan-700 text-white px-4 py-2 rounded-full mb-6 border border-cyan-600 shadow-md">
             <Sparkles className="h-4 w-4" />
-            <span className="text-sm font-bold">AI-Powered Guest Experience Platform</span>
+            <span className="text-sm font-bold">GPT-4 + Sentiment Analysis + Revenue Optimization</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Transform Your Hospitality Business with{' '}
+            Next-Gen AI Platform with{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-700 to-blue-700">
-              Intelligent AI Chatbots
+              GPT-4 & Self-Learning Intelligence
             </span>
           </h1>
           <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-            24/7 guest assistance, instant bookings, and personalized recommendations. 
-            Perfect for hotels, tour operators, and vacation rentals in Hawaii.
+            Revolutionary AI chatbot with GPT-4, real-time sentiment analysis, dynamic pricing, 
+            intelligent upselling, and abandonment recovery. Boost revenue by 23% with self-learning AI.
           </p>
           <div className="flex gap-4 justify-center">
             <Button 
@@ -97,10 +103,10 @@ export default function LandingPage() {
           className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-20"
         >
           {[
-            { label: 'Response Time', value: '<1 sec', icon: Zap },
-            { label: 'Languages', value: '10+', icon: Globe },
-            { label: 'Uptime', value: '99.9%', icon: Shield },
-            { label: 'Support', value: '24/7', icon: HeadphonesIcon }
+            { label: 'Revenue Increase', value: '+23%', icon: TrendingUp },
+            { label: 'Automation Rate', value: '85%', icon: Brain },
+            { label: 'ROI Average', value: '400%', icon: DollarSign },
+            { label: 'Recovery Rate', value: '25%', icon: Target }
           ].map((stat, index) => (
             <Card key={index} className="text-center border-gray-200 shadow-md hover:shadow-lg transition-shadow">
               <CardContent className="pt-6">
@@ -111,6 +117,160 @@ export default function LandingPage() {
             </Card>
           ))}
         </motion.div>
+      </section>
+
+      {/* New Advanced Features Section */}
+      <section className="bg-gradient-to-b from-gray-900 to-gray-800 py-20 text-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-4 py-2 rounded-full mb-6">
+              <Brain className="h-4 w-4" />
+              <span className="text-sm font-bold uppercase tracking-wider">Advanced AI Features</span>
+            </div>
+            <h2 className="text-4xl font-bold mb-4">Enterprise-Grade AI Technology</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Industry-leading features that set us apart from basic chatbots
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* GPT-4 Integration */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-600 transition-all"
+            >
+              <Brain className="h-12 w-12 text-cyan-400 mb-4" />
+              <h3 className="text-xl font-bold mb-2">GPT-4 Powered Conversations</h3>
+              <p className="text-gray-400 mb-4">
+                Natural language understanding with streaming responses, context awareness, and multi-turn conversations
+              </p>
+              <ul className="text-sm text-gray-500 space-y-1">
+                <li>• Token optimization</li>
+                <li>• Cost tracking</li>
+                <li>• Model selection</li>
+              </ul>
+            </motion.div>
+
+            {/* Sentiment Analysis */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-purple-600 transition-all"
+            >
+              <Activity className="h-12 w-12 text-purple-400 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Real-Time Sentiment Analysis</h3>
+              <p className="text-gray-400 mb-4">
+                Detect emotions instantly: joy, anger, sadness, fear, surprise, and disgust with urgency assessment
+              </p>
+              <ul className="text-sm text-gray-500 space-y-1">
+                <li>• Emotion detection</li>
+                <li>• Urgency alerts</li>
+                <li>• Human handoff triggers</li>
+              </ul>
+            </motion.div>
+
+            {/* Self-Learning */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-600 transition-all"
+            >
+              <Sparkles className="h-12 w-12 text-green-400 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Self-Learning Engine</h3>
+              <p className="text-gray-400 mb-4">
+                AI that improves continuously from every interaction with pattern recognition and feedback learning
+              </p>
+              <ul className="text-sm text-gray-500 space-y-1">
+                <li>• Pattern recognition</li>
+                <li>• Response optimization</li>
+                <li>• Insight generation</li>
+              </ul>
+            </motion.div>
+
+            {/* Dynamic Pricing */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-yellow-600 transition-all"
+            >
+              <DollarSign className="h-12 w-12 text-yellow-400 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Dynamic Pricing Engine</h3>
+              <p className="text-gray-400 mb-4">
+                AI-driven price optimization based on demand, seasonality, events, and competitor monitoring
+              </p>
+              <ul className="text-sm text-gray-500 space-y-1">
+                <li>• Demand forecasting</li>
+                <li>• Event-based pricing</li>
+                <li>• Last-minute deals</li>
+              </ul>
+            </motion.div>
+
+            {/* Intelligent Upselling */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-orange-600 transition-all"
+            >
+              <TrendingUp className="h-12 w-12 text-orange-400 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Intelligent Upselling</h3>
+              <p className="text-gray-400 mb-4">
+                Personalized offers at the perfect moment with bundle recommendations and cross-sell opportunities
+              </p>
+              <ul className="text-sm text-gray-500 space-y-1">
+                <li>• Room upgrades</li>
+                <li>• Experience packages</li>
+                <li>• Smart bundling</li>
+              </ul>
+            </motion.div>
+
+            {/* Journey Mapping */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-blue-600 transition-all"
+            >
+              <BarChart3 className="h-12 w-12 text-blue-400 mb-4" />
+              <h3 className="text-xl font-bold mb-2">Customer Journey Analytics</h3>
+              <p className="text-gray-400 mb-4">
+                Complete visualization of guest experience with ROI calculator and conversion funnel analysis
+              </p>
+              <ul className="text-sm text-gray-500 space-y-1">
+                <li>• Journey mapping</li>
+                <li>• Drop-off analysis</li>
+                <li>• 5-year ROI projections</li>
+              </ul>
+            </motion.div>
+          </div>
+
+          {/* Multi-Channel Support */}
+          <div className="mt-16 max-w-4xl mx-auto">
+            <div className="bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl p-8">
+              <h3 className="text-2xl font-bold mb-4 text-center">Omnichannel Messaging Platform</h3>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-6">
+                {['WhatsApp', 'SMS/MMS', 'Instagram', 'Web Chat', 'Email'].map((channel) => (
+                  <div key={channel} className="bg-white/10 rounded-lg px-4 py-3 text-center font-medium backdrop-blur">
+                    {channel}
+                  </div>
+                ))}
+              </div>
+              <p className="text-center mt-6 text-cyan-100">
+                Unified inbox for all channels with message queuing and delivery tracking
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Use Cases */}
