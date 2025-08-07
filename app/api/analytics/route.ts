@@ -1,54 +1,82 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
+import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient()
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
-    const businessId = searchParams.get('businessId')
-    const startDate = searchParams.get('startDate')
-    const endDate = searchParams.get('endDate')
-    
-    if (!businessId) {
+    // Get auth token
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json(
-        { error: 'businessId required' },
-        { status: 400 }
+        { error: 'Unauthorized' },
+        { status: 401 }
       )
     }
+    
+    const token = authHeader.replace('Bearer ', '')
+    let businessId: string
+    
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as any
+      businessId = decoded.businessId
+    } catch (error) {
+      return NextResponse.json(
+        { error: 'Invalid token' },
+        { status: 401 }
+      )
+    }
+    
+    const searchParams = request.nextUrl.searchParams
+    const range = searchParams.get('range') || '7d'
+    const startDate = searchParams.get('startDate')
+    const endDate = searchParams.get('endDate')
     
     // Get date range (default to last 30 days)
     const end = endDate ? new Date(endDate) : new Date()
     const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
     
-    // Get analytics data
-    const analytics = await prisma.analytics.findMany({
-      where: {
-        businessId,
-        date: {
-          gte: start,
-          lte: end
-        }
-      },
-      orderBy: { date: 'asc' }
-    })
+    // Try to get analytics data (may not exist yet)
+    let analytics = []
+    let conversations = []
     
-    // Get conversation stats
-    const conversations = await prisma.conversation.findMany({
-      where: {
-        businessId,
-        createdAt: {
-          gte: start,
-          lte: end
+    try {
+      analytics = await prisma.analytics.findMany({
+        where: {
+          businessId,
+          date: {
+            gte: start,
+            lte: end
+          }
+        },
+        orderBy: { date: 'asc' }
+      })
+    } catch (e) {
+      console.log('No analytics data yet')
+    }
+    
+    try {
+      // Get conversation stats
+      conversations = await prisma.conversation.findMany({
+        where: {
+          businessId,
+          createdAt: {
+            gte: start,
+            lte: end
+          }
+        },
+        include: {
+          messages: true,
+          _count: {
+            select: { messages: true }
+          }
         }
-      },
-      include: {
-        messages: true,
-        _count: {
-          select: { messages: true }
-        }
-      }
-    })
+      })
+    } catch (e) {
+      console.log('No conversation data yet')
+    }
     
     // Calculate metrics
     const totalConversations = conversations.length
