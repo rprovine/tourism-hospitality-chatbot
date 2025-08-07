@@ -14,6 +14,12 @@ export interface ConversationContext {
     role: 'user' | 'assistant'
     content: string
   }>
+  knowledgeBase?: Array<{
+    question: string
+    answer: string
+    category: string
+    score: number
+  }>
 }
 
 export async function generateClaudeResponse(
@@ -89,6 +95,16 @@ export async function generateClaudeResponse(
 }
 
 function createSystemPrompt(context: ConversationContext): string {
+  // Include knowledge base context if available
+  let knowledgeContext = ''
+  if (context.knowledgeBase && context.knowledgeBase.length > 0) {
+    knowledgeContext = '\n\nRelevant Information from Knowledge Base:\n'
+    context.knowledgeBase.forEach(item => {
+      knowledgeContext += `\nQ: ${item.question}\nA: ${item.answer}\n`
+    })
+    knowledgeContext += '\nUse the above knowledge base information to provide accurate, business-specific answers when relevant.\n'
+  }
+
   const basePrompt = `You are an AI assistant for ${context.businessName}, a ${context.businessType.replace('_', ' ')} in Hawaii.
 
 Your role is to provide helpful, friendly, and accurate information to guests and potential customers.
@@ -100,7 +116,7 @@ Business Context:
 - Business Type: ${context.businessType}
 - Service Tier: ${context.tier}
 ${context.businessInfo ? `- Business Info: ${JSON.stringify(context.businessInfo)}` : ''}
-
+${knowledgeContext}
 Guidelines:
 1. Always be warm, welcoming, and professional
 2. Use "Aloha" spirit in your responses

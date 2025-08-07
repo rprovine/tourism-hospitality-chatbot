@@ -19,6 +19,9 @@ model Business {
   type             String          // hotel, tour_operator, vacation_rental
   tier             String          @default("starter") // starter, professional, premium, enterprise
   
+  // Subscription status
+  subscriptionStatus String        @default("trial") // trial, active, cancelled, expired
+  
   // Customization
   primaryColor     String          @default("#0891b2")
   logo             String?
@@ -42,13 +45,19 @@ model Subscription {
   business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
   
   tier             String          // starter, professional, premium, enterprise
-  status           String          // active, canceled, past_due
-  stripeCustomerId String?
-  stripeSubscriptionId String?
+  status           String          // active, pending, canceled, past_due
   
-  currentPeriodStart DateTime
-  currentPeriodEnd   DateTime
-  cancelAtPeriodEnd  Boolean       @default(false)
+  // Payment provider info
+  paymentMethod    String          @default("hubspot") // hubspot, stripe, manual
+  paymentStatus    String          @default("pending") // pending, paid, failed
+  
+  // Dates
+  startDate        DateTime
+  endDate          DateTime
+  cancelAtPeriodEnd Boolean        @default(false)
+  
+  // Metadata for payment providers
+  metadata         Json?           // Store provider-specific data
   
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
@@ -97,16 +106,24 @@ model KnowledgeBase {
   businessId       String
   business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
   
-  category         String
+  category         String          // general, booking, amenities, policies, local_info, etc.
   question         String
-  answer           String
-  keywords         String          // Comma-separated keywords
+  answer           String          // SQLite stores String as TEXT anyway
+  keywords         String          // Comma-separated keywords for matching
+  priority         Int             @default(0) // Higher priority items shown first
+  language         String          @default("en") // Language code
   isActive         Boolean         @default(true)
+  
+  // Usage tracking
+  usageCount       Int             @default(0)
+  lastUsed         DateTime?
   
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   
   @@index([businessId])
+  @@index([category])
+  @@index([language])
 }
 
 // Analytics model

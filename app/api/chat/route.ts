@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { z } from 'zod'
 import { generateClaudeResponse } from '@/lib/ai/claude'
+import { searchKnowledgeBase } from '@/lib/ai/knowledge-base-search'
 
 const prisma = new PrismaClient()
 
@@ -73,7 +74,15 @@ export async function POST(request: NextRequest) {
       take: 10 // Last 10 messages for context
     })
     
-    // Generate AI response using Claude
+    // Search knowledge base for relevant information
+    const knowledgeMatches = await searchKnowledgeBase(
+      conversation.business.id,
+      validatedData.message,
+      'en', // TODO: Get language from conversation metadata
+      3
+    )
+    
+    // Generate AI response using Claude with knowledge base context
     const aiResponse = await generateClaudeResponse(
       validatedData.message,
       {
@@ -85,7 +94,8 @@ export async function POST(request: NextRequest) {
         previousMessages: previousMessages.map(m => ({
           role: m.role as 'user' | 'assistant',
           content: m.content
-        }))
+        })),
+        knowledgeBase: knowledgeMatches
       }
     )
     
