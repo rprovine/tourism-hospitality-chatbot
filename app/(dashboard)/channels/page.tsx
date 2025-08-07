@@ -391,10 +391,10 @@ export default function ChannelsPage() {
                   <div className="flex gap-2">
                     <Input
                       readOnly
-                      value={`${window.location.origin}/api/channels/sms/webhook/status`}
+                      value={`${window.location.origin}/api/channels/sms/status`}
                     />
                     <Button onClick={() => {
-                      navigator.clipboard.writeText(`${window.location.origin}/api/channels/sms/webhook/status`)
+                      navigator.clipboard.writeText(`${window.location.origin}/api/channels/sms/status`)
                       alert('Status webhook URL copied!')
                     }} size="sm">
                       <Copy className="h-4 w-4" />

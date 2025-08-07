@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { Bot, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { setAuthData } from '@/lib/auth-client'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -40,9 +41,8 @@ export default function LoginPage() {
       }
 
       console.log('Login successful')
-      // Store token and business data
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('business', JSON.stringify(data.business))
+      // Store token and business data using auth utility
+      setAuthData(data.token, data.business)
 
       // Redirect to admin dashboard
       router.push('/admin')

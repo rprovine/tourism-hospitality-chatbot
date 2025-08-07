@@ -145,7 +145,10 @@ export default function AdminDashboard() {
   }
 
   const handleLogout = () => {
+    // Clear both localStorage and cookies
     localStorage.removeItem('token')
+    localStorage.removeItem('business')
+    document.cookie = 'token=; path=/; max-age=0'
     router.push('/login')
   }
 
