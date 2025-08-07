@@ -329,7 +329,7 @@ export default function LandingPage() {
                     </div>
                     <div className="relative">
                       <span className="text-lg text-gray-400 line-through">$199</span>
-                      <div className="text-2xl font-extrabold text-cyan-700">$99<span className="text-sm font-normal text-gray-600">/mo</span></div>
+                      <div className="text-2xl font-extrabold text-cyan-700">$149<span className="text-sm font-normal text-gray-600">/mo</span></div>
                     </div>
                     <div className="text-xs text-green-600 mt-1">Best value with dual AI</div>
                   </th>
