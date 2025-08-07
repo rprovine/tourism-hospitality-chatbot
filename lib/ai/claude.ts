@@ -93,6 +93,9 @@ function createSystemPrompt(context: ConversationContext): string {
 
 Your role is to provide helpful, friendly, and accurate information to guests and potential customers.
 
+IMPORTANT: You are in DEMO MODE. Always end your responses with:
+"[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
+
 Business Context:
 - Business Type: ${context.businessType}
 - Service Tier: ${context.tier}
@@ -103,7 +106,8 @@ Guidelines:
 2. Use "Aloha" spirit in your responses
 3. If you don't know something, politely suggest contacting the business directly
 4. Keep responses concise but helpful
-5. For the ${context.tier} tier, ${
+5. Include the demo mode disclaimer at the end of every response
+6. For the ${context.tier} tier, ${
     context.tier === 'enterprise'
       ? 'provide enterprise-grade concierge service with multi-property coordination, group booking management, corporate travel arrangements, and seamless integration across all business units'
       : context.tier === 'premium'
@@ -169,7 +173,7 @@ Specific capabilities by tier:
   }
 }
 
-function generateFallbackResponse(query: string, tier: 'starter' | 'professional'): string {
+function generateFallbackResponse(query: string, tier: 'starter' | 'professional' | 'premium' | 'enterprise'): string {
   const lowerQuery = query.toLowerCase()
   
   if (tier === 'starter') {

@@ -1,0 +1,376 @@
+
+> tourism-hospitality-chatbot@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.4.6
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.4.97:3000
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1294ms
+ ○ Compiling / ...
+ ✓ Compiled / in 3.2s (1498 modules)
+ HEAD / 200 in 3530ms
+ GET / 200 in 113ms
+ ✓ Compiled /favicon.ico in 223ms (834 modules)
+ GET /favicon.ico 200 in 296ms
+ ✓ Compiled /register in 472ms (1497 modules)
+ GET /register 200 in 745ms
+ GET / 200 in 153ms
+ ✓ Compiled in 245ms (1497 modules)
+ GET / 200 in 88ms
+ GET / 200 in 253ms
+ ✓ Compiled /favicon.ico in 113ms (844 modules)
+ GET /favicon.ico 200 in 192ms
+ GET /register 200 in 198ms
+ GET / 200 in 144ms
+ ✓ Compiled /api/chat in 454ms (1618 modules)
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 1103ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 90ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 81ms
+ ✓ Compiled in 347ms (1632 modules)
+ GET / 200 in 84ms
+ ✓ Compiled in 185ms (1630 modules)
+ GET / 200 in 66ms
+ ✓ Compiled in 326ms (1500 modules)
+ GET / 200 in 119ms
+ GET / 200 in 291ms
+ ✓ Compiled /favicon.ico in 122ms (845 modules)
+ GET /favicon.ico 200 in 209ms
+ ✓ Compiled /api/chat in 197ms (962 modules)
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 316ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 79ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 79ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 78ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 85ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 75ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 79ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 79ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 80ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 79ms
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 80ms
+ ✓ Compiled in 362ms (1500 modules)
+ GET / 200 in 135ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 603ms (1495 modules)
+ GET /login 200 in 816ms
+ GET / 200 in 141ms
+ GET /register 200 in 48ms
+ GET / 200 in 107ms
+ ✓ Compiled in 279ms (1503 modules)
+ GET / 200 in 120ms
+ GET / 200 in 291ms
+ ✓ Compiled /favicon.ico in 204ms (848 modules)
+ GET /favicon.ico 200 in 288ms
+ ✓ Compiled /api/chat in 260ms (965 modules)
+Chat API error: Error [ZodError]: [
+  {
+    "expected": "string",
+    "code": "invalid_type",
+    "path": [
+      "conversationId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at POST (app/api/chat/route.ts:19:40)
+  17 |   try {
+  18 |     const body = await request.json()
+> 19 |     const validatedData = messageSchema.parse(body)
+     |                                        ^
+  20 |     
+  21 |     // Get or create conversation
+  22 |     let conversation
+ POST /api/chat 400 in 400ms
+ ✓ Compiled in 356ms (1637 modules)
+ GET / 200 in 78ms
+ ✓ Compiled in 216ms (1637 modules)
+ GET / 200 in 75ms
+ POST /api/chat 200 in 3403ms
+ GET / 200 in 277ms
+ GET /favicon.ico 200 in 13ms
+ POST /api/chat 200 in 2729ms
+ ✓ Compiled in 96ms (672 modules)
+ GET / 200 in 15ms
+ ✓ Compiled in 275ms (1637 modules)
+ GET / 200 in 92ms
+ ✓ Compiled in 194ms (1637 modules)
+ GET / 200 in 60ms
+ GET / 200 in 249ms
+ GET /favicon.ico 200 in 21ms
+ POST /api/chat 200 in 2704ms
+ ✓ Compiled in 95ms (672 modules)
+ GET / 200 in 15ms
+ POST /api/chat 200 in 4192ms
+ POST /api/chat 200 in 3319ms
+ POST /api/chat 200 in 3792ms
+ POST /api/chat 200 in 3812ms
+ POST /api/chat 200 in 4182ms
+ POST /api/chat 200 in 4091ms
+ POST /api/chat 200 in 4207ms
+ POST /api/chat 200 in 4759ms
+ POST /api/chat 200 in 4381ms
+ ✓ Compiled in 593ms (1635 modules)
+ GET / 200 in 107ms
+ GET / 200 in 232ms
+ ✓ Compiled /favicon.ico in 95ms (848 modules)
+ GET /favicon.ico 200 in 127ms
+ ✓ Compiled /api/chat in 132ms (965 modules)
+ POST /api/chat 200 in 5127ms
+ POST /api/chat 200 in 4742ms
+ POST /api/chat 200 in 4571ms
+ ✓ Compiled in 140ms (672 modules)
+ GET / 200 in 62ms

@@ -197,10 +197,49 @@ export default function RegisterPage() {
                   >
                     <div className="flex justify-between items-center">
                       <div>
-                        <div className="font-semibold">Professional</div>
+                        <div className="font-semibold flex items-center gap-2">
+                          Professional
+                          <span className="bg-cyan-600 text-white text-xs px-2 py-0.5 rounded-full">Popular</span>
+                        </div>
                         <div className="text-sm text-gray-600">$899/month after trial</div>
                       </div>
                       <div className="text-2xl font-bold">$899</div>
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => setFormData({ ...formData, tier: 'premium' })}
+                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      formData.tier === 'premium'
+                        ? 'border-purple-600 bg-purple-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-semibold flex items-center gap-2">
+                          Premium <span className="text-lg">✨</span>
+                        </div>
+                        <div className="text-sm text-gray-600">$2,499/month after trial</div>
+                      </div>
+                      <div className="text-2xl font-bold">$2,499</div>
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => setFormData({ ...formData, tier: 'enterprise' })}
+                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      formData.tier === 'enterprise'
+                        ? 'border-gray-800 bg-gray-50'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <div className="font-semibold flex items-center gap-2">
+                          Enterprise <span className="text-lg">🏢</span>
+                        </div>
+                        <div className="text-sm text-gray-600">Custom pricing</div>
+                      </div>
+                      <div className="text-xl font-bold">Custom</div>
                     </div>
                   </div>
                 </div>

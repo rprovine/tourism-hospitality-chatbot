@@ -9,8 +9,8 @@ const messageSchema = z.object({
   message: z.string().min(1),
   sessionId: z.string(),
   businessId: z.string().optional(),
-  tier: z.enum(['starter', 'professional']).default('starter'),
-  conversationId: z.string().optional()
+  tier: z.enum(['starter', 'professional', 'premium', 'enterprise']).default('starter'),
+  conversationId: z.string().nullable().optional()
 })
 
 export async function POST(request: NextRequest) {

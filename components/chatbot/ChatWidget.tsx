@@ -6,9 +6,10 @@ import { MessageCircle, X, Send, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { ChatMessage } from '@/lib/types'
 import { getOrCreateSessionId } from '@/lib/utils/session'
+import { mockBusinessData, mockKnowledgeBase, mockRealTimeData } from '@/lib/data/mock-business-data'
 
 interface ChatWidgetProps {
-  tier: 'starter' | 'professional'
+  tier: 'starter' | 'professional' | 'premium' | 'enterprise'
   businessName?: string
   primaryColor?: string
   welcomeMessage?: string
@@ -91,7 +92,7 @@ export default function ChatWidget({
           message: input,
           sessionId: sessionId,
           tier: tier,
-          conversationId: conversationId
+          ...(conversationId && { conversationId: conversationId })
         })
       })
 
@@ -106,10 +107,16 @@ export default function ChatWidget({
         setConversationId(data.conversationId)
       }
       
+      // Add demo disclaimer if not already present
+      const disclaimer = "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
+      const messageContent = data.message.includes('[🔸 Demo Mode') 
+        ? data.message 
+        : data.message + disclaimer
+      
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.message,
+        content: messageContent,
         timestamp: new Date()
       }
       setMessages(prev => [...prev, assistantMessage])
@@ -129,38 +136,262 @@ export default function ChatWidget({
     }
   }
 
-  const generateResponse = (query: string, tier: string) => {
+  const generateResponse = (query: string, tierLevel: string) => {
     const lowerQuery = query.toLowerCase()
+    const business = mockBusinessData[tierLevel as keyof typeof mockBusinessData]
+    const realTime = mockRealTimeData[tierLevel as keyof typeof mockRealTimeData]
+    const knowledge = mockKnowledgeBase[tierLevel as keyof typeof mockKnowledgeBase]
     
-    if (tier === 'starter') {
-      if (lowerQuery.includes('check') && lowerQuery.includes('in')) {
-        return 'Check-in time is 3:00 PM and check-out is 11:00 AM. Early check-in may be available upon request.'
+    // Add demo mode disclaimer
+    const disclaimer = "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
+    
+    if (tierLevel === 'starter') {
+      // Starter: Basic FAQ only, English only
+      if (lowerQuery.includes('room') || lowerQuery.includes('availability')) {
+        return `We have rooms available. Please call ${business.contact} to check availability and make a reservation.${disclaimer}`
       }
-      if (lowerQuery.includes('parking')) {
-        return 'We offer both self-parking ($25/day) and valet parking ($35/day). Electric vehicle charging stations are available.'
+      if (lowerQuery.includes('check')) {
+        return `Check-in time is ${business.checkIn} and check-out is ${business.checkOut}.${disclaimer}`
       }
-      if (lowerQuery.includes('breakfast') || lowerQuery.includes('food')) {
-        return 'Continental breakfast is served from 6:30 AM to 10:30 AM in our Ocean View Restaurant.'
+      if (lowerQuery.includes('price') || lowerQuery.includes('rate')) {
+        return `Our rates vary by season. Please call ${business.contact} for current pricing.${disclaimer}`
       }
-      if (lowerQuery.includes('wifi') || lowerQuery.includes('internet')) {
-        return 'Complimentary high-speed WiFi is available throughout the property.'
+      if (lowerQuery.includes('cancel')) {
+        return `For cancellation policy, please call ${business.contact}.${disclaimer}`
       }
-      return "I'd be happy to help! For specific questions, please contact our front desk at (808) 555-0100."
-    } else {
-      // Professional tier with more advanced responses
+      // Starter limitation - can't handle complex queries
+      return `I can only answer basic questions about check-in/out times and contact info. For other inquiries, please call ${business.contact}.${disclaimer}`
+    } 
+    
+    else if (tierLevel === 'professional') {
+      // Professional: Booking capability, 2 languages, real-time data
       if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
-        return "I can help you make a reservation! What dates were you looking to stay with us? I can check availability and provide you with our best rates."
+        return `I can help you book! We have ${realTime.availableRooms} rooms available tonight at ${business.name}. 
+        
+Ocean View Room: $${business.avgRate}/night
+Garden View Room: $${business.avgRate - 50}/night
+
+Would you like to proceed with a reservation? I can check specific dates for you.${disclaimer}`
       }
-      if (lowerQuery.includes('recommend') || lowerQuery.includes('what to do')) {
-        return "Based on your interests, I'd recommend visiting Pearl Harbor in the morning, followed by lunch at Rainbow Drive-In. In the afternoon, enjoy snorkeling at Hanauma Bay. Would you like me to help arrange any of these activities?"
+      
+      if (lowerQuery.includes('availability') || lowerQuery.includes('tonight')) {
+        return `Live Availability at ${business.name}:
+• Tonight: ${realTime.availableRooms} rooms available
+• Current occupancy: ${realTime.occupancy}%
+• Check-ins today: ${realTime.todayCheckIns}
+• Check-outs today: ${realTime.todayCheckOuts}
+
+Our best rate tonight is $${business.avgRate}. Shall I reserve a room for you?${disclaimer}`
       }
-      if (lowerQuery.includes('weather')) {
-        return "Today's forecast shows sunny skies with a high of 82°F (28°C) and gentle trade winds. Perfect beach weather! UV index is high, so don't forget sunscreen."
+      
+      if (lowerQuery.includes('japanese') || lowerQuery.includes('日本語')) {
+        return `はい、日本語でお手伝いできます。${business.name}へようこそ。
+        
+本日の空室状況：${realTime.availableRooms}室
+料金：$${business.avgRate}より
+
+ご予約をご希望ですか？${disclaimer}`
       }
-      if (lowerQuery.includes('restaurant')) {
-        return "I'd be happy to make restaurant recommendations! For fine dining, try La Mer or Orchids. For local cuisine, Helena's Hawaiian Food is excellent. Would you like me to make a reservation?"
+      
+      if (lowerQuery.includes('restaurant') || lowerQuery.includes('dining')) {
+        return `${business.name} has ${business.restaurants} restaurants:
+• Sunset Grill (American) - Open 7am-10pm
+• Kai Lounge (Hawaiian) - Open 5pm-midnight
+
+I can make reservations for you. Which would you prefer?${disclaimer}`
       }
-      return "I understand you're asking about " + query + ". Let me provide you with detailed information and help you with that right away."
+      
+      return `Welcome to ${business.name}! I can help with:
+• Real-time room availability (${realTime.availableRooms} rooms tonight)
+• Direct booking at best rates
+• Restaurant reservations
+• Activity recommendations
+• Support in English and Japanese
+
+How may I assist you?${disclaimer}`
+    }
+    
+    else if (tierLevel === 'premium') {
+      // Premium: Luxury personalization, 5 languages, VIP services
+      if (lowerQuery.includes('suite') || lowerQuery.includes('luxury') || lowerQuery.includes('best')) {
+        return `Welcome to ${business.name}! For the ultimate luxury experience:
+
+🏆 **Presidential Suite** - $${business.avgRate * 3}/night
+• 2,400 sq ft with panoramic ocean views
+• Private butler service 24/7
+• Complimentary spa credits ($500 value)
+• Private beach cabana included
+
+🌟 **Ocean Villa** - $${business.avgRate * 2}/night
+• 1,800 sq ft, private plunge pool
+• Daily champagne breakfast
+• Priority restaurant reservations
+
+Currently ${realTime.availableSuites} luxury suites available. With ${realTime.vipArrivals} VIP arrivals today, I recommend booking immediately. 
+
+Shall I reserve the Presidential Suite for you?${disclaimer}`
+      }
+      
+      if (lowerQuery.includes('chinese') || lowerQuery.includes('中文')) {
+        return `欢迎来到${business.name}！
+
+豪华套房：${realTime.availableSuites}间可用
+今晚特价：$${business.avgRate}起
+VIP礼遇：免费机场接送、水疗积分、私人管家
+
+需要我为您预订吗？${disclaimer}`
+      }
+      
+      if (lowerQuery.includes('spanish') || lowerQuery.includes('español')) {
+        return `¡Bienvenido a ${business.name}!
+
+Suites de lujo disponibles: ${realTime.availableSuites}
+Tarifa desde: $${business.avgRate}/noche
+Servicios VIP incluidos
+
+¿Le gustaría hacer una reserva?${disclaimer}`
+      }
+      
+      if (lowerQuery.includes('special') || lowerQuery.includes('vip') || lowerQuery.includes('exclusive')) {
+        return `As a premium guest at ${business.name}, you have access to:
+
+**Exclusive Experiences:**
+• Private yacht charter (3 yachts available)
+• Helicopter tour with champagne landing
+• Private chef dining (Michelin-starred)
+• After-hours shopping at luxury boutiques
+• Golf at ${business.golfCourses} championship courses
+
+**Complimentary VIP Services:**
+• Rolls-Royce airport transfer
+• 24/7 personal butler
+• Priority access to all ${business.restaurants} restaurants
+• Private beach club membership
+
+Your preferences are saved for personalized service. How may I enhance your stay?${disclaimer}`
+      }
+      
+      return `Welcome to ${business.name} - Hawaii's premier luxury destination.
+
+With ${realTime.occupancy}% occupancy and ${realTime.vipArrivals} VIP arrivals today, our exclusive services are in high demand.
+
+I provide personalized assistance in English, Japanese, Chinese, Spanish, and Korean. I have access to your preferences and can arrange:
+• Luxury suite bookings
+• Private experiences
+• Michelin-star dining
+• Yacht and helicopter charters
+
+How may I create magic for you today?${disclaimer}`
+    }
+    
+    else {
+      // Enterprise: Multi-property, analytics, full integration
+      const properties = (business as any).properties || []
+      
+      if (lowerQuery.includes('group') || lowerQuery.includes('conference') || lowerQuery.includes('meeting')) {
+        return `**${business.name} Group Booking System**
+
+📊 **Multi-Property Availability:**
+${properties.slice(0, 3).map((p: string) => `• ${p}: 85-120 rooms`).join('\n')}
+
+**Total Portfolio Capacity:**
+• ${(business as any).totalRooms} rooms across ${properties.length} properties
+• 15 conference centers (150,000 sq ft)
+• Largest ballroom: 1,200 guests
+
+**Current Group Bookings:**
+• Tech Summit (Oct 15-20): 450 rooms - $580K
+• Medical Conference (Nov 5-8): 320 rooms - $385K
+
+**Your Group Benefits:**
+• 15% off for 50+ rooms
+• 20% off for 100+ rooms
+• Dedicated event coordinator
+• Custom F&B packages
+
+I can coordinate across all properties. What are your group requirements?${disclaimer}`
+      }
+      
+      if (lowerQuery.includes('analytics') || lowerQuery.includes('performance') || lowerQuery.includes('revenue')) {
+        return `**Real-Time Business Intelligence Dashboard**
+
+📈 **System-Wide Performance:**
+• Occupancy: ${realTime.systemOccupancy}% (↑3% vs last week)
+• ADR: $${business.avgRate} (↑$15 vs last month)
+• RevPAR: $${Math.round(business.avgRate * realTime.systemOccupancy / 100)}
+• Revenue Today: $${(realTime.revenueToday / 1000000).toFixed(1)}M
+
+**Property Performance:**
+${properties.slice(0, 3).map((p: string, i: number) => 
+  `• ${p}: ${85 + i * 3}% occupancy, ADR $${business.avgRate + i * 25}`
+).join('\n')}
+
+**Predictive Insights:**
+• Peak demand expected next week (+12%)
+• Recommend 8% rate increase for optimal yield
+• Group booking pipeline: $4.2M (next 90 days)
+
+Full analytics dashboard with drill-down available in your portal.${disclaimer}`
+      }
+      
+      if (lowerQuery.includes('loyalty') || lowerQuery.includes('member')) {
+        return `**Paradise Rewards Program Management**
+
+👥 **Program Overview:**
+• Total Members: ${(business as any).loyaltyMembers.toLocaleString()}
+• Diamond Elite: 850 members
+• Point Redemptions Today: 1,250 across all properties
+
+**Member Benefits Across Properties:**
+• Diamond: Guaranteed upgrades, club access, 30% discount
+• Platinum: Priority check-in, 20% discount
+• Gold: Late checkout, 15% discount
+
+**Cross-Property Integration:**
+• Points valid at all ${properties.length} properties
+• Partner airlines: Hawaiian, United, Delta
+• Partner car rentals: Hertz, Avis
+• Dining partners: 50+ restaurants
+
+I can look up any member, process upgrades, or analyze loyalty metrics. What do you need?${disclaimer}`
+      }
+      
+      // Show off language capabilities
+      if (lowerQuery.includes('language')) {
+        return `**Language Support Demonstration:**
+
+🌍 English: Full support with natural language processing
+🇯🇵 日本語: 完全な日本語サポート
+🇨🇳 中文: 完整的中文支持
+🇪🇸 Español: Soporte completo en español
+🇰🇷 한국어: 완전한 한국어 지원
+🇫🇷 Français: Support complet en français
+🇩🇪 Deutsch: Vollständige deutsche Unterstützung
+🇵🇹 Português: Suporte completo em português
+🇷🇺 Русский: Полная поддержка на русском
+🇸🇦 العربية: دعم كامل باللغة العربية
+
+Each language includes cultural customization and local payment methods.${disclaimer}`
+      }
+      
+      return `**${business.name} Enterprise Command Center**
+
+I'm your AI-powered enterprise assistant with access to:
+
+🏨 **${properties.length} Properties** - ${(business as any).totalRooms} total rooms
+💰 **Revenue Management** - Real-time pricing optimization
+👥 **${(business as any).loyaltyMembers.toLocaleString()} Loyalty Members** - Full CRM integration
+📊 **Advanced Analytics** - Predictive modeling & forecasting
+🌍 **10+ Languages** - Global guest support
+🤝 **Corporate Accounts** - Microsoft, Amazon, Google contracts
+
+Current system status:
+• ${realTime.availableRooms} rooms available system-wide
+• ${realTime.systemOccupancy}% average occupancy
+• ${realTime.groupArrivals} group arrivals tomorrow
+• $${(realTime.revenueToday / 1000000).toFixed(1)}M revenue today
+
+I can handle any enterprise hospitality need. What would you like to explore?${disclaimer}`
     }
   }
 
@@ -199,17 +430,20 @@ export default function ChatWidget({
                   <Sparkles className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">{businessName}</h3>
-                  <p className="text-xs opacity-90">
-                    {tier === 'professional' ? 'AI Concierge' : 'Virtual Assistant'}
-                  </p>
+                  <div className="font-semibold">{businessName}</div>
+                  <div className="text-xs opacity-90">
+                    {tier === 'starter' && 'Basic Support'}
+                    {tier === 'professional' && 'Professional AI Assistant'}
+                    {tier === 'premium' && 'Premium Concierge AI'}
+                    {tier === 'enterprise' && 'Enterprise AI Platform'}
+                  </div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1 hover:bg-white/20"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 transition-colors hover:bg-white/30"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
@@ -217,10 +451,8 @@ export default function ChatWidget({
             <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
               <div className="space-y-4">
                 {messages.map((message) => (
-                  <motion.div
+                  <div
                     key={message.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
                     className={cn(
                       'flex',
                       message.role === 'user' ? 'justify-end' : 'justify-start'
@@ -228,33 +460,34 @@ export default function ChatWidget({
                   >
                     <div
                       className={cn(
-                        'max-w-[80%] rounded-2xl px-4 py-2',
+                        'max-w-[80%] rounded-lg px-4 py-2',
                         message.role === 'user'
                           ? 'bg-cyan-600 text-white'
                           : 'bg-white text-gray-800 shadow-sm'
                       )}
-                      style={{
-                        backgroundColor: message.role === 'user' ? primaryColor : undefined
-                      }}
                     >
-                      <p className="text-sm">{message.content}</p>
-                    </div>
-                  </motion.div>
-                ))}
-                {isTyping && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="flex justify-start"
-                  >
-                    <div className="bg-white rounded-2xl px-4 py-3 shadow-sm">
-                      <div className="flex gap-1">
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400 animation-delay-0"></span>
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400 animation-delay-200"></span>
-                        <span className="h-2 w-2 animate-bounce rounded-full bg-gray-400 animation-delay-400"></span>
+                      <div className="whitespace-pre-wrap">{message.content}</div>
+                      <div 
+                        className={cn(
+                          'mt-1 text-xs',
+                          message.role === 'user' ? 'text-cyan-100' : 'text-gray-500'
+                        )}
+                      >
+                        {new Date(message.timestamp).toLocaleTimeString()}
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
+                ))}
+                {isTyping && (
+                  <div className="flex justify-start">
+                    <div className="bg-white rounded-lg px-4 py-2 shadow-sm">
+                      <div className="flex gap-1">
+                        <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce" />
+                        <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce delay-100" />
+                        <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce delay-200" />
+                      </div>
+                    </div>
+                  </div>
                 )}
                 <div ref={messagesEndRef} />
               </div>
@@ -262,61 +495,32 @@ export default function ChatWidget({
 
             {/* Input */}
             <div className="border-t bg-white p-4">
-              <div className="flex gap-2">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  handleSend()
+                }}
+                className="flex gap-2"
+              >
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSend()}
                   placeholder="Type your message..."
-                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-500 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-100"
+                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
                 />
                 <button
-                  onClick={handleSend}
-                  disabled={!input.trim()}
-                  className="rounded-lg p-2 text-white transition-colors disabled:opacity-50"
-                  style={{ backgroundColor: primaryColor }}
+                  type="submit"
+                  disabled={!input.trim() || isTyping}
+                  className="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-600 text-white transition-colors hover:bg-cyan-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="h-4 w-4" />
                 </button>
-              </div>
-              {tier === 'professional' && (
-                <div className="mt-2 flex gap-2">
-                  <button className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700 font-medium hover:bg-gray-200">
-                    Book a Room
-                  </button>
-                  <button className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700 font-medium hover:bg-gray-200">
-                    Activities
-                  </button>
-                  <button className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700 font-medium hover:bg-gray-200">
-                    Dining
-                  </button>
-                </div>
-              )}
+              </form>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      <style jsx>{`
-        @keyframes bounce {
-          0%, 80%, 100% {
-            transform: translateY(0);
-          }
-          40% {
-            transform: translateY(-6px);
-          }
-        }
-        .animation-delay-0 {
-          animation-delay: 0ms;
-        }
-        .animation-delay-200 {
-          animation-delay: 200ms;
-        }
-        .animation-delay-400 {
-          animation-delay: 400ms;
-        }
-      `}</style>
     </>
   )
 }
