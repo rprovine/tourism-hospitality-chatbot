@@ -32,6 +32,10 @@ model Business {
   monthlyConversationCount Int     @default(0)
   lastConversationReset    DateTime @default(now())
   
+  // API Access
+  apiKey           String?         @unique
+  apiKeyCreatedAt  DateTime?
+  
   // Relations
   conversations    Conversation[]
   knowledgeBase    KnowledgeBase[]
