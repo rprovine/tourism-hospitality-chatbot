@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
+import DashboardNav from '@/components/dashboard/DashboardNav'
 import { 
   BarChart3, 
   TrendingUp, 
@@ -179,11 +180,13 @@ export default function AnalyticsPage() {
   }
   
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
-          <p className="text-muted-foreground">Track your chatbot performance and user engagement</p>
+    <div className="min-h-screen bg-gray-50">
+      <DashboardNav />
+      <div className="container mx-auto px-6 py-8 space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
+            <p className="text-muted-foreground">Track your chatbot performance and user engagement</p>
         </div>
         <div className="flex gap-2">
           <select
@@ -524,6 +527,7 @@ export default function AnalyticsPage() {
           </Card>
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   )
 }
