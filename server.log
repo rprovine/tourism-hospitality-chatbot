@@ -594,3 +594,6 @@ Import trace for requested module:
  ✓ Compiled in 502ms (888 modules)
  GET /admin 200 in 60ms
  GET / 200 in 59ms
+ ✓ Compiled in 477ms (888 modules)
+ GET /admin 200 in 58ms
+ GET / 200 in 58ms

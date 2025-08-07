@@ -1,0 +1,198 @@
+// This is your Prisma schema file for PostgreSQL (Vercel/Production)
+// Copy this to schema.prisma when deploying to production
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Business model (the main tenant/customer)
+model Business {
+  id               String          @id @default(cuid())
+  email            String          @unique
+  password         String
+  name             String
+  type             String          // hotel, tour_operator, vacation_rental
+  tier             String          @default("starter") // starter, professional, premium, enterprise
+  
+  // Subscription status
+  subscriptionStatus String        @default("trial") // trial, active, cancelled, expired
+  
+  // Customization
+  primaryColor     String          @default("#0891b2")
+  logo             String?
+  welcomeMessage   String          @default("Aloha! How can I help you today?")
+  businessInfo     Json?           // address, phone, hours, etc.
+  
+  // Integrations
+  apiKey           String?         @unique @default(cuid())
+  apiKeyCreatedAt  DateTime?
+  webhookUrl       String?
+  
+  // Relations
+  conversations    Conversation[]
+  knowledgeBase    KnowledgeBase[]
+  analytics        Analytics[]
+  subscription     Subscription?
+  
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+// Subscription model
+model Subscription {
+  id               String          @id @default(cuid())
+  businessId       String          @unique
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  tier             String          // starter, professional, premium, enterprise
+  status           String          // active, pending, canceled, past_due
+  billingCycle     String          @default("monthly") // monthly, annual
+  
+  // Payment provider info
+  paymentMethod    String          @default("hubspot") // hubspot, stripe, manual
+  paymentStatus    String          @default("pending") // pending, paid, failed
+  
+  // Dates
+  startDate        DateTime
+  endDate          DateTime
+  cancelAtPeriodEnd Boolean        @default(false)
+  
+  // Metadata for payment providers
+  metadata         Json?           // Store provider-specific data
+  
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+}
+
+// Conversation model
+model Conversation {
+  id               String          @id @default(cuid())
+  businessId       String
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  sessionId        String
+  userLocation     String?
+  userLanguage     String          @default("en")
+  
+  // Analytics data
+  satisfactionScore Int?
+  resolutionTime   Int?            // in seconds
+  escalated        Boolean         @default(false)
+  
+  // Relations
+  messages         Message[]
+  
+  metadata         Json?           // Additional conversation data
+  
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  
+  @@index([businessId])
+  @@index([sessionId])
+}
+
+// Message model
+model Message {
+  id               String          @id @default(cuid())
+  conversationId   String
+  conversation     Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  role             String          // user, assistant, system
+  content          String          @db.Text
+  
+  // Optional metadata
+  intent           String?         // detected intent
+  confidence       Float?          // AI confidence score
+  language         String          @default("en")
+  
+  createdAt        DateTime        @default(now())
+  
+  @@index([conversationId])
+}
+
+// Knowledge Base model
+model KnowledgeBase {
+  id               String          @id @default(cuid())
+  businessId       String
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  category         String          // general, amenities, booking, location, etc.
+  question         String          @db.Text
+  answer           String          @db.Text
+  keywords         String          // comma-separated keywords for better matching
+  
+  language         String          @default("en")
+  priority         Int             @default(0) // Higher priority items shown first
+  
+  // Usage tracking
+  usageCount       Int             @default(0)
+  lastUsed         DateTime?
+  
+  // Status
+  isActive         Boolean         @default(true)
+  
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  
+  @@index([businessId])
+  @@index([category])
+  @@index([language])
+}
+
+// Analytics model
+model Analytics {
+  id               String          @id @default(cuid())
+  businessId       String
+  business         Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  date             DateTime        @db.Date
+  
+  // Metrics
+  totalConversations Int           @default(0)
+  uniqueUsers      Int             @default(0)
+  avgResponseTime  Float           @default(0) // in seconds
+  avgSatisfaction  Float?          // 1-5 scale
+  
+  // Language breakdown (stored as JSON)
+  languageStats    Json?           // { "en": 50, "ja": 30, "zh": 20 }
+  
+  // Top questions (stored as JSON)
+  topQuestions     Json?           // [{ question: "...", count: 10 }]
+  
+  // Peak hours (stored as JSON)
+  peakHours        Json?           // { "14": 50, "15": 60, ... }
+  
+  createdAt        DateTime        @default(now())
+  
+  @@unique([businessId, date])
+  @@index([businessId])
+  @@index([date])
+}
+
+// API Log model for tracking API usage
+model ApiLog {
+  id               String          @id @default(cuid())
+  businessId       String
+  
+  endpoint         String
+  method           String
+  statusCode       Int
+  responseTime     Int             // in milliseconds
+  
+  // Request/Response data (be careful with sensitive data)
+  requestBody      Json?
+  responseBody     Json?
+  
+  // Error tracking
+  error            String?
+  
+  createdAt        DateTime        @default(now())
+  
+  @@index([businessId])
+  @@index([createdAt])
+}
