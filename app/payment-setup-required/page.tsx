@@ -1,9 +1,10 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { AlertCircle } from 'lucide-react'
 
-export default function PaymentSetupRequired() {
+function PaymentSetupContent() {
   const searchParams = useSearchParams()
   const plan = searchParams.get('plan')
 
@@ -32,5 +33,17 @@ export default function PaymentSetupRequired() {
         </button>
       </div>
     </div>
+  )
+}
+
+export default function PaymentSetupRequired() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-500">Loading...</div>
+      </div>
+    }>
+      <PaymentSetupContent />
+    </Suspense>
   )
 }
