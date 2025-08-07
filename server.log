@@ -331,3 +331,8 @@ Unknown argument `language`. Available options are marked with ?.
   clientVersion: '6.13.0'
 }
  POST /api/chat 200 in 3960ms
+ GET / 200 in 325ms
+ ✓ Compiled /favicon.ico in 183ms (842 modules)
+ GET /favicon.ico 200 in 229ms
+ ✓ Compiled in 304ms (1511 modules)
+ GET / 200 in 92ms

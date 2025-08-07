@@ -507,7 +507,7 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your message..."
-                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 bg-white focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
                 />
                 <button
                   type="submit"
