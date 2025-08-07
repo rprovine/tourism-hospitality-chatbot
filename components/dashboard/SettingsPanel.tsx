@@ -89,7 +89,7 @@ export default function SettingsPanel({ }: SettingsPanelProps) {
             <textarea
               value={settings.welcomeMessage}
               onChange={(e) => setSettings({ ...settings, welcomeMessage: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white"
               rows={3}
             />
           </div>
@@ -113,7 +113,7 @@ export default function SettingsPanel({ }: SettingsPanelProps) {
             <select
               value={settings.language}
               onChange={(e) => setSettings({ ...settings, language: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white"
             >
               <option value="en">English</option>
               <option value="ja">Japanese</option>
@@ -145,7 +145,7 @@ export default function SettingsPanel({ }: SettingsPanelProps) {
               type="text"
               value={settings.businessHours}
               onChange={(e) => setSettings({ ...settings, businessHours: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white"
             />
           </div>
         </CardContent>
@@ -311,7 +311,7 @@ export default function SettingsPanel({ }: SettingsPanelProps) {
             </label>
             <textarea
               placeholder="example.com&#10;app.example.com"
-              className="w-full px-3 py-2 border rounded-lg"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white"
               rows={3}
             />
           </div>

@@ -19,7 +19,8 @@ import {
   ChevronRight,
   Activity,
   Bot,
-  Check
+  Check,
+  ArrowRight
 } from 'lucide-react'
 
 interface DashboardStats {
@@ -239,6 +240,18 @@ export default function AdminDashboard() {
       </header>
 
       <div className="container mx-auto px-6 py-8">
+        {/* Analytics Summary Header */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-900">Analytics Overview</h2>
+          <Link
+            href="/admin/reports"
+            className="text-sm text-cyan-600 hover:text-cyan-700 font-medium flex items-center gap-1"
+          >
+            View Full Analytics
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-sm p-6">

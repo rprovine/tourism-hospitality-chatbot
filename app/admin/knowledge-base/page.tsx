@@ -400,7 +400,7 @@ export default function KnowledgeBasePage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="all">All Categories</option>
               {CATEGORIES.map(cat => (
@@ -412,7 +412,7 @@ export default function KnowledgeBasePage() {
             <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="all">All Languages</option>
               {availableLanguages.map(lang => (
