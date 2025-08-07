@@ -8,22 +8,29 @@ datasource db {
 }
 
 model Business {
-  id                 String            @id @default(cuid())
-  email              String            @unique
-  password           String
-  name               String
-  type               String
-  tier               String            @default("starter")
-  subscriptionStatus String            @default("trial")
-  primaryColor       String            @default("#0891b2")
-  logo               String?
-  welcomeMessage     String            @default("Aloha! How can I help you today?")
-  businessInfo       Json?
-  apiKey             String?           @unique @default(cuid())
-  apiKeyCreatedAt    DateTime?
-  webhookUrl         String?
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
+  id                    String            @id @default(cuid())
+  email                 String            @unique
+  password              String
+  name                  String
+  type                  String
+  tier                  String            @default("starter")
+  subscriptionStatus    String            @default("trial")
+  subscriptionTier      String?
+  trialStartDate        DateTime?
+  trialEndDate          DateTime?
+  subscriptionStartDate DateTime?
+  subscriptionEndDate   DateTime?
+  hubspotDealId         String?
+  hubspotContactId      String?
+  primaryColor          String            @default("#0891b2")
+  logo                  String?
+  welcomeMessage        String            @default("Aloha! How can I help you today?")
+  businessInfo          Json?
+  apiKey                String?           @unique @default(cuid())
+  apiKeyCreatedAt       DateTime?
+  webhookUrl            String?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
   analytics          Analytics[]
   conversations      Conversation[]
   knowledgeBase      KnowledgeBase[]
