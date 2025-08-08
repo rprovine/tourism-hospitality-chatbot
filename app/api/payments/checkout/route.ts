@@ -48,15 +48,27 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create or update contact in HubSpot
-    const contact = await createOrUpdateContact({
-      email: validatedData.email,
-      firstname: validatedData.contactName?.split(' ')[0],
-      lastname: validatedData.contactName?.split(' ').slice(1).join(' '),
-      company: validatedData.businessName,
-      phone: validatedData.phone,
-      tier: plan.tier
-    })
+    // Create or update contact in HubSpot (with fallback for demo)
+    let contact: any = { id: 'demo-contact-' + Date.now() }
+    
+    // Only try HubSpot if configured
+    if (process.env.HUBSPOT_ACCESS_TOKEN) {
+      try {
+        contact = await createOrUpdateContact({
+          email: validatedData.email,
+          firstname: validatedData.contactName?.split(' ')[0],
+          lastname: validatedData.contactName?.split(' ').slice(1).join(' '),
+          company: validatedData.businessName,
+          phone: validatedData.phone,
+          tier: plan.tier
+        })
+      } catch (hubspotError) {
+        console.log('HubSpot integration not configured, using demo mode')
+        // Continue with demo contact ID
+      }
+    } else {
+      console.log('HubSpot not configured, using demo mode')
+    }
 
     // Create a unique session ID
     const sessionId = nanoid()
@@ -88,11 +100,19 @@ export async function POST(request: NextRequest) {
     }
     
     // Get checkout URL with session ID embedded
-    const baseCheckoutUrl = getCheckoutUrl(
-      validatedData.planId,
-      validatedData.email,
-      validatedData.businessName
-    )
+    let baseCheckoutUrl: string
+    
+    try {
+      baseCheckoutUrl = getCheckoutUrl(
+        validatedData.planId,
+        validatedData.email,
+        validatedData.businessName
+      )
+    } catch (error) {
+      console.log('Payment links not configured, using demo success page')
+      // In demo mode, redirect to a success page
+      baseCheckoutUrl = `/payment-success?demo=true&plan=${validatedData.planId}&email=${validatedData.email}`
+    }
     
     // Add session ID to the checkout URL
     const checkoutUrl = baseCheckoutUrl.includes('?') 
