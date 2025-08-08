@@ -18,13 +18,12 @@ import {
   MessageSquare,
   Brain,
   Hash,
-  BarChart3,
   Phone,
   Building,
   Sparkles
 } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import Link from 'next/link'
+// import Link from 'next/link'
 
 const planDetails = {
   starter: {
@@ -93,7 +92,7 @@ const planDetails = {
 }
 
 export default function BillingPage() {
-  const [subscription, setSubscription] = useState<any>(null)
+  const [subscription, setSubscription] = useState<Record<string, unknown> | null>(null)
   const [businessTier, setBusinessTier] = useState<string>('starter')
   const [loading, setLoading] = useState(true)
   const [cancelling, setCancelling] = useState(false)
@@ -184,7 +183,7 @@ export default function BillingPage() {
   const currentPlan = planDetails[businessTier as keyof typeof planDetails] || planDetails.starter
   const PlanIcon = currentPlan.icon
 
-  const statusColors: any = {
+  const statusColors: Record<string, string> = {
     active: 'text-green-600',
     demo: 'text-blue-600',
     past_due: 'text-yellow-600',
@@ -201,12 +200,12 @@ export default function BillingPage() {
         <p className="text-gray-600">Manage your subscription and unlock more features</p>
       </div>
 
-      {subscription?.warning && (
+      {subscription && (subscription as any).warning && (
         <Alert className="border-yellow-500">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Payment Issue</AlertTitle>
           <AlertDescription>
-            Your payment has failed. You have until {new Date(subscription.gracePeriodEnds).toLocaleDateString()} 
+            Your payment has failed. You have until {new Date((subscription as any).gracePeriodEnds).toLocaleDateString()} 
             to update your payment method before your access is suspended.
           </AlertDescription>
         </Alert>
@@ -568,14 +567,14 @@ export default function BillingPage() {
         <Card className="border-red-200">
           <CardHeader>
             <CardTitle>Cancel Subscription</CardTitle>
-            <CardDescription>We're sorry to see you go</CardDescription>
+            <CardDescription>We&apos;re sorry to see you go</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Before you cancel</AlertTitle>
               <AlertDescription>
-                You'll lose access to all premium features. Your data will be retained for 30 days.
+                You&apos;ll lose access to all premium features. Your data will be retained for 30 days.
               </AlertDescription>
             </Alert>
             

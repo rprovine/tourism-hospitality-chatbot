@@ -1,31 +1,32 @@
-# LeniLani Tourism & Hospitality AI Chatbot Platform 🌺
+# 🌺 LeniLani AI - Tourism & Hospitality Chatbot Platform
 
-[![Next.js](https://img.shields.io/badge/Next.js-15.4-black)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-6.13-green)](https://www.prisma.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.0-2D3748)](https://www.prisma.io/)
+[![Claude](https://img.shields.io/badge/Claude-Anthropic-purple)](https://www.anthropic.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-orange)](https://openai.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
 ## 🎯 Overview
 
-A comprehensive, enterprise-ready AI chatbot platform designed specifically for the tourism and hospitality industry. Built with cutting-edge AI technology including GPT-4, sentiment analysis, and self-learning capabilities to help hotels, resorts, and travel businesses automate customer service, increase bookings, and maximize revenue.
+A powerful AI-powered chatbot platform specifically designed for the tourism and hospitality industry, with special focus on the Hawaiian market. Features dual AI intelligence (Claude + GPT-4), multi-language support including Hawaiian Pidgin and ʻŌlelo Hawaiʻi, revenue optimization, and seamless integration with popular messaging platforms.
 
-### 🏆 Key Achievements
-- **85% Automation Rate** - Handle most guest inquiries automatically
-- **23% Conversion Increase** - AI-driven conversion optimization
-- **400% ROI** - Average return on investment
-- **95% Faster Response** - Near-instant guest support
-- **25% Recovery Rate** - Win back abandoned bookings
+### 🏆 Why LeniLani?
+- **Dual AI Intelligence**: Only platform combining Claude's conversational excellence with GPT-4's analytical power
+- **Hawaiian Market Focus**: Native support for Hawaiian Pidgin and ʻŌlelo Hawaiʻi
+- **Revenue Optimization**: Dynamic pricing, intelligent upselling, abandonment recovery
+- **Enterprise Security**: SOC 2 compliant, GDPR ready, comprehensive rate limiting
+- **Self-Learning**: AI improves with every conversation
 
 ## ✨ Core Features
 
-### 🤖 AI-Powered Intelligence
-- **GPT-4 Integration**: Natural, context-aware conversations with streaming support
-- **Sentiment Analysis**: Real-time emotion detection (joy, anger, sadness, fear, surprise, disgust)
+### 🤖 Dual AI Intelligence
+- **Claude (Anthropic)**: Superior conversational understanding and nuanced responses
+- **GPT-4 (OpenAI)**: Advanced analytical capabilities and pattern recognition
+- **Sentiment Analysis**: Real-time emotion detection for better guest understanding
 - **Self-Learning Engine**: Continuously improves from feedback and patterns
-- **Multi-Language Support**: Communicate in 10+ languages
-- **Intent Recognition**: Understand booking intent and customer needs
-- **Personalized Responses**: Context-aware messaging based on guest history
+- **Multi-Language Support**: 8 languages including Hawaiian Pidgin & ʻŌlelo Hawaiʻi
+- **Context Awareness**: Maintains conversation history for personalized interactions
 
 ### 📱 Multi-Channel Messaging
 - **Web Chat Widget**: Embeddable on any website

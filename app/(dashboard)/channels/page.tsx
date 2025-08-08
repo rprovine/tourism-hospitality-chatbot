@@ -13,25 +13,20 @@ import {
   Instagram, 
   Facebook,
   Send,
-  Settings,
-  Check,
-  X,
   AlertCircle,
   Loader2,
   Copy,
   ExternalLink,
-  Code,
-  Globe,
-  Palette
+  Globe
 } from 'lucide-react'
 
 interface ChannelConfig {
   id: string
   channel: string
   isActive: boolean
-  config: any
+  config: Record<string, unknown>
   webhookUrl?: string
-  metadata?: any
+  metadata?: Record<string, unknown>
 }
 
 export default function ChannelsPage() {
@@ -89,7 +84,7 @@ export default function ChannelsPage() {
     }
   }
 
-  const saveChannel = async (channel: string, config: any, isActive: boolean) => {
+  const saveChannel = async (channel: string, config: Record<string, unknown>, isActive: boolean) => {
     setSaving(true)
     try {
       const response = await fetch('/api/channels', {
@@ -413,7 +408,7 @@ export default function ChannelsPage() {
                     <div>
                       <p className="font-medium text-gray-900">Copy the installation code</p>
                       <p className="text-sm text-gray-600 mt-1">
-                        Click the "Copy Code" button above to copy the widget script to your clipboard
+                        Click the &quot;Copy Code&quot; button above to copy the widget script to your clipboard
                       </p>
                     </div>
                   </div>
@@ -449,7 +444,7 @@ export default function ChannelsPage() {
                     <div>
                       <p className="text-sm font-medium text-blue-900">Platform-Specific Instructions</p>
                       <div className="text-sm text-blue-800 mt-2 space-y-2">
-                        <p><strong>WordPress:</strong> Add to your theme's footer.php or use a plugin like "Insert Headers and Footers"</p>
+                        <p><strong>WordPress:</strong> Add to your theme&apos;s footer.php or use a plugin like &quot;Insert Headers and Footers&quot;</p>
                         <p><strong>Shopify:</strong> Go to Online Store → Themes → Actions → Edit Code → theme.liquid</p>
                         <p><strong>Wix:</strong> Use the Tracking & Analytics feature to add custom code</p>
                         <p><strong>Squarespace:</strong> Settings → Advanced → Code Injection → Footer</p>

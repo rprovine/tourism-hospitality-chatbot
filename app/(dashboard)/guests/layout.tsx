@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Lock, Users } from 'lucide-react'
@@ -35,7 +35,7 @@ export default function GuestsLayout({
             <div className="space-y-2">
               <h3 className="font-semibold flex items-center gap-2">
                 <Users className="h-5 w-5 text-cyan-600" />
-                What you'll get with Guest Intelligence:
+                What you&apos;ll get with Guest Intelligence:
               </h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• Detailed guest profiles and history</li>

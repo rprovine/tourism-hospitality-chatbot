@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Lock, Hash } from 'lucide-react'
@@ -35,7 +35,7 @@ export default function ChannelsLayout({
             <div className="space-y-2">
               <h3 className="font-semibold flex items-center gap-2">
                 <Hash className="h-5 w-5 text-cyan-600" />
-                What you'll get with Multi-Channel:
+                What you&apos;ll get with Multi-Channel:
               </h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• WhatsApp Business integration</li>

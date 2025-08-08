@@ -52,7 +52,7 @@ export default function RevenueLayout({
             <div className="space-y-2">
               <h3 className="font-semibold flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-cyan-600" />
-                What you'll get with Revenue Optimization:
+                What you&apos;ll get with Revenue Optimization:
               </h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• Dynamic pricing recommendations</li>

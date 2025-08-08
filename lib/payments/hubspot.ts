@@ -46,6 +46,7 @@ export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
     features: [
       '5,000 conversations/month',
       'Dual AI: Claude + GPT-4',
+      '2 languages of your choice',
       'Advanced analytics',
       '24/7 priority support'
     ]
@@ -100,6 +101,7 @@ export const SUBSCRIPTION_PLANS: Record<string, SubscriptionPlan> = {
     features: [
       '5,000 conversations/month',
       'Dual AI: Claude + GPT-4',
+      '2 languages of your choice',
       'Advanced analytics',
       '24/7 priority support',
       '💰 Save $298/year'

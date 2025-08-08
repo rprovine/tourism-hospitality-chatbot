@@ -287,7 +287,7 @@ export default function KnowledgeBasePage() {
             <div>
               <p className="font-semibold text-gray-900">Knowledge Base Limit</p>
               <p className="text-sm text-gray-800 font-medium">
-                You're using {items.length} of {itemLimit} available items in your {businessTier} plan.
+                You&apos;re using {items.length} of {itemLimit} available items in your {businessTier} plan.
                 {items.length >= itemLimit * 0.8 && ' Consider upgrading for more capacity.'}
               </p>
             </div>

@@ -294,7 +294,7 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Chatbot Configuration</CardTitle>
-              <CardDescription>Customize your chatbot's behavior and appearance</CardDescription>
+              <CardDescription>Customize your chatbot&apos;s behavior and appearance</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">

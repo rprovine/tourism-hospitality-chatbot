@@ -4,18 +4,15 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { LoadingState } from '@/components/ui/loading-state'
 import { 
-  BarChart3, 
   TrendingUp, 
   Users, 
   MessageSquare,
   Globe,
   Clock,
-  Calendar,
   Download,
-  Filter,
-  ChevronUp,
   ChevronDown,
   Star,
   Target,
@@ -40,13 +37,14 @@ export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [dateRange, setDateRange] = useState('7d')
-  const [compareMode, setCompareMode] = useState(false)
+  // const [compareMode, setCompareMode] = useState(false)
   
   useEffect(() => {
     // Only fetch analytics on client side
     if (typeof window !== 'undefined') {
       fetchAnalytics()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateRange])
   
   const fetchAnalytics = async () => {
@@ -174,10 +172,10 @@ export default function AnalyticsPage() {
     return <LoadingState message="Loading analytics data..." size="lg" />
   }
   
-  const getPercentageChange = (current: number, previous: number) => {
-    const change = ((current - previous) / previous) * 100
-    return change.toFixed(1)
-  }
+  // const getPercentageChange = (current: number, previous: number) => {
+  //   const change = ((current - previous) / previous) * 100
+  //   return change.toFixed(1)
+  // }
   
   return (
     <div className="container mx-auto px-6 py-8 space-y-6">
@@ -506,7 +504,7 @@ export default function AnalyticsPage() {
                   <div>
                     <h4 className="font-semibold text-gray-900">Conversion Opportunity</h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      23.5% of users asking about availability don't complete bookings. Adding a direct booking link in responses could increase conversion by an estimated 8-12%.
+                      23.5% of users asking about availability don&apos;t complete bookings. Adding a direct booking link in responses could increase conversion by an estimated 8-12%.
                     </p>
                   </div>
                 </div>

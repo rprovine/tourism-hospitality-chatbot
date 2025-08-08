@@ -153,7 +153,7 @@ export default function SubscriptionPage() {
           <CardContent className="text-center py-12">
             <AlertCircle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No Active Subscription</h3>
-            <p className="text-gray-600 mb-4">You don't have an active subscription yet</p>
+            <p className="text-gray-600 mb-4">You don&apos;t have an active subscription yet</p>
             <Button 
               onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
               className="bg-cyan-600 hover:bg-cyan-700"
@@ -185,7 +185,7 @@ export default function SubscriptionPage() {
               <div>
                 <h3 className="font-semibold text-yellow-900 mb-2">Demo Account - Limited Features</h3>
                 <p className="text-sm text-yellow-800 mb-3">
-                  You're currently using a demo account with starter tier limitations. 
+                  You&apos;re currently using a demo account with starter tier limitations. 
                   Upgrade to unlock powerful features:
                 </p>
                 <ul className="text-sm text-yellow-800 space-y-1 mb-4">

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Brain, Sparkles, Save, AlertCircle, Check, Bot, MessageSquare, Lock, Globe, Zap, Target, RefreshCw } from 'lucide-react'
+import { Brain, Sparkles, Save, AlertCircle, Check, Bot, MessageSquare, Lock, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -72,8 +72,8 @@ export default function UnifiedAIConfigPage() {
         const data = await response.json()
         setSettings(prevSettings => ({ ...prevSettings, ...data }))
       }
-    } catch (error) {
-      console.error('Failed to load AI settings:', error)
+    } catch {
+      console.error('Failed to load AI settings')
     } finally {
       setLoading(false)
     }
@@ -95,8 +95,8 @@ export default function UnifiedAIConfigPage() {
           lastTrained: data[0]?.createdAt || null
         })
       }
-    } catch (error) {
-      console.error('Failed to fetch training stats:', error)
+    } catch {
+      console.error('Failed to fetch training stats')
     }
   }
 
@@ -120,7 +120,7 @@ export default function UnifiedAIConfigPage() {
       } else {
         setSaveMessage('Error saving settings. Please try again.')
       }
-    } catch (error) {
+    } catch {
       setSaveMessage('Error saving settings. Please try again.')
     } finally {
       setIsSaving(false)
@@ -140,7 +140,7 @@ export default function UnifiedAIConfigPage() {
         alert('AI retraining initiated successfully!')
         fetchTrainingStats()
       }
-    } catch (error) {
+    } catch {
       alert('Failed to initiate retraining')
     }
   }
@@ -170,7 +170,7 @@ export default function UnifiedAIConfigPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">AI Configuration</h1>
-        <p className="text-gray-600 mt-2">Manage your chatbot's AI capabilities, behavior, and training</p>
+        <p className="text-gray-600 mt-2">Manage your chatbot&apos;s AI capabilities, behavior, and training</p>
       </div>
 
       <Tabs defaultValue="provider" className="space-y-4">
@@ -619,7 +619,7 @@ export default function UnifiedAIConfigPage() {
             <CardHeader>
               <CardTitle>Advanced Response Configuration</CardTitle>
               <CardDescription>
-                Fine-tune your AI's response generation
+                Fine-tune your AI&apos;s response generation
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -677,7 +677,7 @@ export default function UnifiedAIConfigPage() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Example: "Always mention our happy hour special from 4-6 PM"
+                  Example: &quot;Always mention our happy hour special from 4-6 PM&quot;
                 </p>
               </div>
             </CardContent>
@@ -709,7 +709,7 @@ export default function UnifiedAIConfigPage() {
               <div className="mt-4 p-3 bg-yellow-50 rounded-lg flex items-start gap-2">
                 <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5" />
                 <div className="text-sm text-yellow-800">
-                  You're using approximately 41% of your estimated monthly budget.
+                  You&apos;re using approximately 41% of your estimated monthly budget.
                 </div>
               </div>
             </CardContent>

@@ -1,103 +1,206 @@
-# Deployment Guide
+# 🚀 Deployment Guide - LeniLani AI Platform
 
-## 🚀 Production Deployment with Vercel
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Environment Setup](#environment-setup)
+- [Deployment Options](#deployment-options)
+  - [Vercel (Recommended)](#vercel-recommended)
+  - [AWS EC2](#aws-ec2)
+  - [Google Cloud Run](#google-cloud-run)
+  - [Azure App Service](#azure-app-service)
+  - [Self-Hosted](#self-hosted)
+- [Post-Deployment](#post-deployment)
+- [Monitoring](#monitoring)
 
-### Prerequisites
-- Vercel account (free tier works)
-- GitHub repository connected
-- Environment variables ready
+## Prerequisites
 
-### Step 1: Deploy to Vercel
+Before deploying, ensure you have:
+- [ ] PostgreSQL database (production-ready)
+- [ ] Claude API key from Anthropic
+- [ ] OpenAI API key
+- [ ] HubSpot account for payments
+- [ ] Twilio account (for SMS)
+- [ ] WhatsApp Business API access
+- [ ] Domain name configured
+- [ ] SSL certificate
 
-1. **Connect Repository**
-   ```bash
-   # Install Vercel CLI
-   npm i -g vercel
-   
-   # Deploy
-   vercel
-   ```
+## Environment Setup
 
-2. **Or use Vercel Dashboard**
-   - Go to [vercel.com](https://vercel.com)
-   - Import your GitHub repository
-   - Configure project settings
+### Required Environment Variables
 
-### Step 2: Environment Variables
+Create a `.env.production` file with:
 
-Add these in Vercel Dashboard → Settings → Environment Variables:
+```bash
+# Database
+DATABASE_URL="postgresql://user:password@host:5432/lenilani_prod"
 
-```env
-# Required
-DATABASE_URL="your-production-database-url"
-JWT_SECRET="generate-secure-random-string"
-ANTHROPIC_API_KEY="your-claude-api-key"
+# Authentication
+JWT_SECRET="<generate-secure-64-char-string>"
+ADMIN_PASSWORD="<strong-admin-password>"
 
-# HubSpot Integration
-HUBSPOT_ACCESS_TOKEN="your-private-app-token"
-HUBSPOT_PORTAL_ID="your-portal-id"
-HUBSPOT_PAYMENT_LINK_ID="your-payment-link-id"
-HUBSPOT_WEBHOOK_SECRET="your-webhook-secret"
+# AI Services
+CLAUDE_API_KEY="sk-ant-api-xxx"
+OPENAI_API_KEY="sk-xxx"
 
-# Optional
-NEXT_PUBLIC_APP_URL="https://your-domain.com"
+# Payment Processing
+HUBSPOT_ACCESS_TOKEN="pat-xxx"
+HUBSPOT_PORTAL_ID="xxx"
+HUBSPOT_STARTER_LINK="https://app.hubspot.com/payments/xxx/starter"
+HUBSPOT_PROFESSIONAL_LINK="https://app.hubspot.com/payments/xxx/professional"
+HUBSPOT_PREMIUM_LINK="https://app.hubspot.com/payments/xxx/premium"
+
+# Communication
+TWILIO_ACCOUNT_SID="ACxxx"
+TWILIO_AUTH_TOKEN="xxx"
+TWILIO_PHONE_NUMBER="+1234567890"
+WHATSAPP_ACCESS_TOKEN="EAAxxx"
+WHATSAPP_PHONE_NUMBER_ID="xxx"
+WHATSAPP_BUSINESS_ACCOUNT_ID="xxx"
+
+# Application
+NEXT_PUBLIC_APP_URL="https://yourdomain.com"
+NODE_ENV="production"
+
+# Security
+CORS_ORIGINS="https://yourdomain.com,https://www.yourdomain.com"
+RATE_LIMIT_ENABLED="true"
 ```
 
-### Step 3: Database Setup
+### Generate Secure Secrets
 
-#### Option A: Vercel Postgres (Recommended)
-1. Add Vercel Postgres from the Vercel Dashboard
-2. Update `DATABASE_URL` with the connection string
-3. Update schema.prisma provider to `postgresql`
+```bash
+# Generate JWT Secret
+openssl rand -base64 64
 
-#### Option B: External Database
-1. Use any PostgreSQL provider (Supabase, Neon, Railway)
-2. Update connection string
-3. Run migrations:
-   ```bash
-   npx prisma migrate deploy
-   ```
+# Generate Admin Password
+openssl rand -base64 32
+```
 
-### Step 4: Configure HubSpot
+## Deployment Options
 
-1. **Create Private App in HubSpot**
-   - Go to Settings → Integrations → Private Apps
-   - Create new app with these scopes:
-     - `crm.objects.contacts.read/write`
-     - `crm.objects.deals.read/write`
-     - `payments`
+### Vercel (Recommended)
 
-2. **Set Up Payment Links**
-   - Enable HubSpot Payments
-   - Create payment links for each tier
-   - Note the payment link IDs
+1. **Install Vercel CLI**
+```bash
+npm i -g vercel
+```
 
-3. **Configure Webhooks**
-   - Add webhook URL: `https://your-domain.com/api/payments/webhook`
-   - Subscribe to payment events
+2. **Connect to Vercel**
+```bash
+vercel login
+```
 
-### Step 5: Post-Deployment
+3. **Configure Project**
+```bash
+vercel
+```
 
-1. **Initialize Database**
-   ```bash
-   npx prisma db push --accept-data-loss
-   ```
+4. **Set Environment Variables**
+```bash
+vercel env add DATABASE_URL production
+vercel env add JWT_SECRET production
+# Add all other environment variables
+```
 
-2. **Test Widget Installation**
-   - Login to admin dashboard
-   - Go to Widget Installation
-   - Test on a staging site first
+5. **Deploy**
+```bash
+vercel --prod
+```
 
-3. **Configure DNS (if custom domain)**
-   - Add CNAME record pointing to Vercel
-   - Configure SSL in Vercel Dashboard
+6. **Configure Domain**
+```bash
+vercel domains add yourdomain.com
+```
 
-## 🐳 Docker Deployment
+### AWS EC2
 
-### Build and Run
+1. **Launch EC2 Instance**
+   - Ubuntu 22.04 LTS
+   - t3.medium or larger
+   - 20GB+ storage
 
+2. **SSH into Instance**
+```bash
+ssh -i your-key.pem ubuntu@your-instance-ip
+```
+
+3. **Install Dependencies**
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install Node.js 18
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Install PostgreSQL
+sudo apt install postgresql postgresql-contrib -y
+
+# Install nginx
+sudo apt install nginx -y
+
+# Install PM2
+sudo npm install -g pm2
+```
+
+4. **Clone Repository**
+```bash
+git clone https://github.com/rprovine/tourism-hospitality-chatbot.git
+cd tourism-hospitality-chatbot
+```
+
+5. **Setup Application**
+```bash
+# Install dependencies
+npm install
+
+# Build application
+npm run build
+
+# Setup database
+npx prisma generate
+npx prisma db push
+
+# Start with PM2
+pm2 start npm --name "lenilani" -- start
+pm2 save
+pm2 startup
+```
+
+6. **Configure Nginx**
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+7. **Setup SSL with Certbot**
+```bash
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d yourdomain.com
+```
+
+### Google Cloud Run
+
+1. **Install Google Cloud SDK**
+```bash
+curl https://sdk.cloud.google.com | bash
+exec -l $SHELL
+gcloud init
+```
+
+2. **Create Dockerfile**
 ```dockerfile
-# Dockerfile
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
@@ -111,113 +214,278 @@ WORKDIR /app
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
+3. **Build and Deploy**
 ```bash
-# Build
-docker build -t lenilani-chatbot .
+# Build container
+gcloud builds submit --tag gcr.io/PROJECT-ID/lenilani
 
-# Run
-docker run -p 3000:3000 --env-file .env lenilani-chatbot
+# Deploy to Cloud Run
+gcloud run deploy lenilani \
+  --image gcr.io/PROJECT-ID/lenilani \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --set-env-vars="NODE_ENV=production"
 ```
 
-## 🔧 Production Checklist
+### Azure App Service
 
-### Security
-- [ ] Change all default passwords
-- [ ] Enable rate limiting
-- [ ] Set up CORS properly
-- [ ] Use HTTPS only
-- [ ] Rotate JWT secrets regularly
-- [ ] Enable CSP headers
+1. **Install Azure CLI**
+```bash
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+az login
+```
 
-### Performance
-- [ ] Enable caching (Redis recommended)
-- [ ] Set up CDN for static assets
-- [ ] Optimize images
-- [ ] Enable compression
-- [ ] Use production builds
+2. **Create Resources**
+```bash
+# Create resource group
+az group create --name lenilani-rg --location eastus
 
-### Monitoring
-- [ ] Set up error tracking (Sentry)
-- [ ] Configure uptime monitoring
-- [ ] Enable application logs
-- [ ] Set up alerts for critical issues
+# Create App Service plan
+az appservice plan create \
+  --name lenilani-plan \
+  --resource-group lenilani-rg \
+  --sku B2 \
+  --is-linux
 
-### Backup
-- [ ] Database backup strategy
-- [ ] Conversation history archival
-- [ ] Knowledge base exports
+# Create web app
+az webapp create \
+  --resource-group lenilani-rg \
+  --plan lenilani-plan \
+  --name lenilani-app \
+  --runtime "NODE|18-lts"
+```
 
-## 📊 Scaling Considerations
+3. **Deploy Application**
+```bash
+# Configure deployment
+az webapp deployment source config-local-git \
+  --name lenilani-app \
+  --resource-group lenilani-rg
 
-### High Traffic
-- Use Vercel Edge Functions for chat API
-- Implement Redis for session management
-- Consider WebSocket server for real-time
+# Push to Azure
+git remote add azure <deployment-url>
+git push azure main
+```
 
-### Multi-Region
-- Deploy to multiple Vercel regions
-- Use edge database replication
-- Implement geo-routing
+### Self-Hosted
 
-### Enterprise
-- Set up VPC for database
-- Implement SSO/SAML
-- Add audit logging
-- Configure data retention policies
+1. **System Requirements**
+   - Ubuntu 20.04+ or CentOS 8+
+   - 4GB+ RAM
+   - 2+ CPU cores
+   - 20GB+ storage
 
-## 🆘 Troubleshooting
+2. **Install Docker**
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+3. **Docker Compose Setup**
+```yaml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.production
+    depends_on:
+      - postgres
+    
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: lenilani
+      POSTGRES_USER: lenilani
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+```
+
+4. **Start Services**
+```bash
+docker-compose up -d
+```
+
+## Post-Deployment
+
+### 1. Database Migration
+```bash
+npx prisma migrate deploy
+```
+
+### 2. Seed Initial Data
+```bash
+npx prisma db seed
+```
+
+### 3. Create Admin User
+```bash
+npm run create-admin
+```
+
+### 4. Configure Webhooks
+- WhatsApp: `https://yourdomain.com/api/channels/whatsapp/webhook`
+- Twilio SMS: `https://yourdomain.com/api/channels/sms/webhook`
+- HubSpot: `https://yourdomain.com/api/payments/webhook`
+
+### 5. Test Deployment
+```bash
+# Health check
+curl https://yourdomain.com/api/health
+
+# Test chat endpoint
+curl -X POST https://yourdomain.com/api/v1/chat \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello", "sessionId": "test-123", "language": "en"}'
+```
+
+## Monitoring
+
+### Setup Monitoring Tools
+
+1. **Application Monitoring**
+   - New Relic
+   - DataDog
+   - Sentry for error tracking
+
+2. **Database Monitoring**
+   - pgAdmin
+   - PostgreSQL logs
+   - Query performance insights
+
+3. **Uptime Monitoring**
+   - UptimeRobot
+   - Pingdom
+   - StatusCake
+
+### Key Metrics to Monitor
+- Response time (<2s target)
+- Error rate (<1%)
+- API usage by tier
+- Conversation limits
+- Database connections
+- Memory usage
+- CPU utilization
+
+### Alerts to Configure
+- High error rate (>5%)
+- Slow response time (>5s)
+- Database connection issues
+- Rate limit violations
+- Payment failures
+- AI API failures
+
+## Security Checklist
+
+- [ ] SSL certificate installed
+- [ ] Environment variables secured
+- [ ] Database backups configured
+- [ ] Rate limiting enabled
+- [ ] CORS properly configured
+- [ ] Security headers enabled
+- [ ] Admin access restricted
+- [ ] API keys rotated regularly
+- [ ] Audit logging enabled
+- [ ] DDoS protection configured
+
+## Backup Strategy
+
+### Database Backups
+```bash
+# Daily backup script
+#!/bin/bash
+DATE=$(date +%Y%m%d_%H%M%S)
+pg_dump $DATABASE_URL > backup_$DATE.sql
+aws s3 cp backup_$DATE.sql s3://your-backup-bucket/
+rm backup_$DATE.sql
+```
+
+### Application Backups
+- Git repository (primary)
+- Docker images
+- Configuration files
+- Environment variables (encrypted)
+
+## Scaling Considerations
+
+### Horizontal Scaling
+- Load balancer (nginx, HAProxy)
+- Multiple app instances
+- Redis for session storage
+- CDN for static assets
+
+### Vertical Scaling
+- Increase server resources
+- Database optimization
+- Connection pooling
+- Query optimization
+
+## Troubleshooting
 
 ### Common Issues
 
-**Database Connection Failed**
+1. **Database Connection Failed**
 ```bash
+# Check PostgreSQL status
+sudo systemctl status postgresql
+
 # Test connection
-npx prisma db pull
+psql $DATABASE_URL
 ```
 
-**Build Fails**
+2. **High Memory Usage**
 ```bash
-# Clear cache and rebuild
-rm -rf .next node_modules
-npm install
-npm run build
+# Check Node.js memory
+pm2 monit
+
+# Increase memory limit
+NODE_OPTIONS="--max-old-space-size=4096" npm start
 ```
 
-**Widget Not Appearing**
-- Check CORS settings
-- Verify domain whitelist
-- Clear browser cache
+3. **Slow Response Times**
+```bash
+# Check database queries
+npx prisma studio
 
-**Payment Integration Issues**
-- Verify HubSpot API credentials
-- Check webhook signatures
-- Review payment link configuration
+# Enable query logging
+export DEBUG="prisma:query"
+```
 
-## 📞 Support
+## Support
 
 For deployment assistance:
-- GitHub Issues: [github.com/rprovine/tourism-hospitality-chatbot/issues](https://github.com/rprovine/tourism-hospitality-chatbot/issues)
-- Documentation: [docs.lenilani.com](https://docs.lenilani.com)
-- Email: support@lenilani.com
+- Documentation: [docs.lenilani.ai](https://docs.lenilani.ai)
+- Email: support@lenilani.ai
+- Enterprise: enterprise@lenilani.ai
 
-## 🎉 Launch Checklist
+---
 
-- [ ] All environment variables set
-- [ ] Database migrated and seeded
-- [ ] Payment integration tested
-- [ ] Widget installation verified
-- [ ] Admin accounts created
-- [ ] Knowledge base populated
-- [ ] Analytics tracking enabled
-- [ ] Backup system configured
-- [ ] Monitoring alerts set up
-- [ ] Documentation reviewed
-
-**Congratulations! Your AI chatbot platform is ready for launch! 🚀**
+**Remember**: Always test in staging before deploying to production!
