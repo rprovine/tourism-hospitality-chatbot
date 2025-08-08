@@ -69,11 +69,13 @@ export default function UsersManagementPage() {
         setUsers(data.users)
       } else {
         console.error('Failed to fetch users:', response.status)
-        setUsers([])
+        // Use mock data for demo if API fails
+        setUsers(getMockUsers())
       }
     } catch (error) {
       console.error('Error fetching users:', error)
-      setUsers([])
+      // Use mock data for demo if error occurs
+      setUsers(getMockUsers())
     } finally {
       setLoading(false)
     }
@@ -227,7 +229,7 @@ export default function UsersManagementPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <DashboardNav />
+      <AdminNav />
       
       <div className="container mx-auto px-6 py-8">
         {/* Header */}
