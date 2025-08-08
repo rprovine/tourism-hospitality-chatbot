@@ -31,7 +31,7 @@ export default function LoginPage() {
     setError('')
 
     try {
-      const endpoint = '/api/auth/admin-login'
+      const endpoint = '/api/auth/simple-admin-login'
       console.log(`Sending login request to ${endpoint}...`)
       console.log('Form data:', formData)
       
