@@ -201,8 +201,8 @@ export default function SettingsPage() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Response Style</label>
-                <select className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                <label className="text-sm font-medium text-gray-700">Response Style</label>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
                   <option>Professional</option>
                   <option>Friendly</option>
                   <option>Casual</option>
@@ -211,23 +211,23 @@ export default function SettingsPage() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Languages</label>
+                <label className="text-sm font-medium text-gray-700">Languages</label>
                 <div className="space-y-2">
                   <label className="flex items-center gap-2">
                     <input type="checkbox" defaultChecked className="rounded" />
-                    <span>English</span>
+                    <span className="text-gray-700">English</span>
                   </label>
                   <label className="flex items-center gap-2">
                     <input type="checkbox" className="rounded" />
-                    <span>Japanese</span>
+                    <span className="text-gray-700">Japanese</span>
                   </label>
                   <label className="flex items-center gap-2">
                     <input type="checkbox" className="rounded" />
-                    <span>Chinese</span>
+                    <span className="text-gray-700">Chinese</span>
                   </label>
                   <label className="flex items-center gap-2">
                     <input type="checkbox" className="rounded" />
-                    <span>Spanish</span>
+                    <span className="text-gray-700">Spanish</span>
                   </label>
                 </div>
               </div>
@@ -250,7 +250,7 @@ export default function SettingsPage() {
               <div className="space-y-3">
                 <label className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium">Email Notifications</div>
+                    <div className="font-medium text-gray-900">Email Notifications</div>
                     <div className="text-sm text-gray-500">Receive updates via email</div>
                   </div>
                   <input
@@ -266,7 +266,7 @@ export default function SettingsPage() {
                 
                 <label className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium">SMS Notifications</div>
+                    <div className="font-medium text-gray-900">SMS Notifications</div>
                     <div className="text-sm text-gray-500">Get text message alerts</div>
                   </div>
                   <input
@@ -282,7 +282,7 @@ export default function SettingsPage() {
                 
                 <label className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium">Weekly Reports</div>
+                    <div className="font-medium text-gray-900">Weekly Reports</div>
                     <div className="text-sm text-gray-500">Receive weekly analytics summary</div>
                   </div>
                   <input
