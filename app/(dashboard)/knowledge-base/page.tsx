@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Alert } from '@/components/ui/alert'
+import { LoadingState } from '@/components/ui/loading-state'
 import { 
   Upload,
   FileText,
@@ -259,13 +260,7 @@ export default function KnowledgeBasePage() {
   const categories = ['all', ...Array.from(new Set(items.map(item => item.category)))]
 
   if (loading) {
-    return (
-      <div className="container mx-auto px-6 py-8">
-        <div className="flex items-center justify-center h-96">
-          <Loader2 className="h-8 w-8 animate-spin text-cyan-600" />
-        </div>
-      </div>
-    )
+    return <LoadingState message="Loading knowledge base..." size="lg" />
   }
 
   return (
@@ -286,12 +281,12 @@ export default function KnowledgeBasePage() {
       
       {/* Tier Limit Alert */}
       {businessTier === 'starter' && (
-        <Alert className="mb-6">
-          <AlertCircle className="h-4 w-4" />
+        <Alert className="mb-6 border-yellow-200 bg-yellow-50">
+          <AlertCircle className="h-4 w-4 text-yellow-600" />
           <div className="flex items-center justify-between w-full">
             <div>
-              <p className="font-medium">Knowledge Base Limit</p>
-              <p className="text-sm text-gray-600">
+              <p className="font-semibold text-gray-900">Knowledge Base Limit</p>
+              <p className="text-sm text-gray-800 font-medium">
                 You're using {items.length} of {itemLimit} available items in your {businessTier} plan.
                 {items.length >= itemLimit * 0.8 && ' Consider upgrading for more capacity.'}
               </p>

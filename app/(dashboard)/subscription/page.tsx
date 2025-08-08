@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { LoadingState } from '@/components/ui/loading-state'
 import { 
   CreditCard, 
   Calendar, 
@@ -142,11 +143,7 @@ export default function SubscriptionPage() {
   }
   
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="h-8 w-8 animate-spin text-cyan-600" />
-      </div>
-    )
+    return <LoadingState message="Loading subscription details..." size="lg" />
   }
   
   if (!subscription) {
