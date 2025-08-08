@@ -278,6 +278,7 @@ export default function SettingsPage() {
                         Logo uploaded successfully
                       </p>
                     )}
+                  </div>
                 </div>
               </div>
               
