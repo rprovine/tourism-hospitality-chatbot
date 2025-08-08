@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { LoadingState } from '@/components/ui/loading-state'
 import { 
   Search, 
   User, 
@@ -140,7 +141,7 @@ export default function GuestsPage() {
   })
 
   if (loading) {
-    return <div className="p-8">Loading guest profiles...</div>
+    return <LoadingState message="Loading guest profiles..." size="lg" />
   }
 
   return (
@@ -150,7 +151,10 @@ export default function GuestsPage() {
           <h1 className="text-3xl font-bold text-gray-900">Guest Profiles</h1>
           <p className="text-gray-600">Track and manage your guest relationships</p>
         </div>
-        <Button onClick={exportGuests}>
+        <Button 
+          onClick={exportGuests}
+          className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold"
+        >
           <Download className="h-4 w-4 mr-2" />
           Export CSV
         </Button>

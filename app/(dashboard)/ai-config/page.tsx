@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Alert } from '@/components/ui/alert'
+import { LoadingState } from '@/components/ui/loading-state'
 import { getTierLimit } from '@/lib/tierRestrictions'
 import Link from 'next/link'
 
@@ -145,7 +146,7 @@ export default function UnifiedAIConfigPage() {
   }
 
   if (loading) {
-    return <div className="p-8">Loading AI settings...</div>
+    return <LoadingState message="Loading AI configuration..." size="lg" />
   }
 
   const responseStyles = ['professional', 'friendly', 'casual', 'concise', 'detailed']

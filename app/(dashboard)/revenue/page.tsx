@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Alert } from '@/components/ui/alert'
+import { LoadingState } from '@/components/ui/loading-state'
 import { 
   DollarSign,
   TrendingUp,
@@ -146,7 +147,7 @@ export default function RevenuePage() {
   }
   
   if (loading) {
-    return <div className="p-8">Loading revenue data...</div>
+    return <LoadingState message="Loading revenue optimization data..." size="lg" />
   }
   
   return (
@@ -154,7 +155,7 @@ export default function RevenuePage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Revenue Optimization</h1>
-          <p className="text-gray-700 font-medium">Dynamic pricing, upselling, and abandonment recovery</p>
+          <p className="text-gray-800 font-semibold text-lg">Dynamic pricing, upselling, and abandonment recovery</p>
         </div>
         <div className="flex gap-2">
           <select

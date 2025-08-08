@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import DashboardNav from '@/components/dashboard/DashboardNav'
+import { LoadingState } from '@/components/ui/loading-state'
 import { 
   Users,
   MessageSquare,
@@ -38,10 +39,7 @@ export default function BusinessDashboard() {
     return (
       <div className="min-h-screen bg-gray-50">
         <DashboardNav />
-        <div className="flex flex-col items-center justify-center h-96 gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-cyan-600"></div>
-          <p className="text-gray-600 font-medium">Loading dashboard...</p>
-        </div>
+        <LoadingState message="Loading your dashboard..." size="lg" />
       </div>
     )
   }

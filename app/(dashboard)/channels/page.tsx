@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { LoadingState } from '@/components/ui/loading-state'
 import { 
   MessageSquare, 
   Phone, 
@@ -18,7 +19,10 @@ import {
   AlertCircle,
   Loader2,
   Copy,
-  ExternalLink
+  ExternalLink,
+  Code,
+  Globe,
+  Palette
 } from 'lucide-react'
 
 interface ChannelConfig {
@@ -150,7 +154,7 @@ export default function ChannelsPage() {
   }
 
   if (loading) {
-    return <div className="p-8">Loading channel configurations...</div>
+    return <LoadingState message="Loading channel configurations..." size="lg" />
   }
 
   const getChannelStatus = (channel: string) => {
@@ -221,13 +225,242 @@ export default function ChannelsPage() {
       </div>
 
       {/* Channel Configuration Tabs */}
-      <Tabs defaultValue="whatsapp" className="space-y-4">
-        <TabsList>
+      <Tabs defaultValue="webchat" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="webchat">Web Widget</TabsTrigger>
           <TabsTrigger value="whatsapp">WhatsApp</TabsTrigger>
           <TabsTrigger value="sms">SMS (Twilio)</TabsTrigger>
           <TabsTrigger value="instagram">Instagram</TabsTrigger>
-          <TabsTrigger value="templates">Message Templates</TabsTrigger>
+          <TabsTrigger value="templates">Templates</TabsTrigger>
         </TabsList>
+
+        {/* Web Chat Widget Configuration */}
+        <TabsContent value="webchat">
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="h-5 w-5 text-cyan-600" />
+                  Web Chat Widget
+                </CardTitle>
+                <CardDescription>
+                  Add an AI-powered chat widget to your website with just a few lines of code
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Widget Preview */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Widget Preview</h3>
+                  <div className="border-2 border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div className="flex justify-end">
+                      <div className="bg-cyan-600 text-white p-3 rounded-full shadow-lg">
+                        <MessageSquare className="h-6 w-6" />
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500 text-right mt-2">Your chat widget will appear here</p>
+                  </div>
+                </div>
+
+                {/* Installation Code */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Installation Code</h3>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Copy and paste this code snippet just before the closing &lt;/body&gt; tag on your website:
+                  </p>
+                  <div className="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                    <pre>{`<!-- LeniLani AI Chat Widget -->
+<script>
+  (function() {
+    var script = document.createElement('script');
+    script.src = '${window.location.origin}/widget.js';
+    script.async = true;
+    script.dataset.businessId = '${localStorage.getItem('business') ? JSON.parse(localStorage.getItem('business') || '{}').id : 'YOUR_BUSINESS_ID'}';
+    script.dataset.position = 'bottom-right';
+    script.dataset.primaryColor = '#0891b2';
+    document.body.appendChild(script);
+  })();
+</script>
+<!-- End LeniLani AI Chat Widget -->`}</pre>
+                  </div>
+                  <Button 
+                    className="mt-3 bg-cyan-600 hover:bg-cyan-700"
+                    onClick={() => {
+                      const code = `<!-- LeniLani AI Chat Widget -->
+<script>
+  (function() {
+    var script = document.createElement('script');
+    script.src = '${window.location.origin}/widget.js';
+    script.async = true;
+    script.dataset.businessId = '${localStorage.getItem('business') ? JSON.parse(localStorage.getItem('business') || '{}').id : 'YOUR_BUSINESS_ID'}';
+    script.dataset.position = 'bottom-right';
+    script.dataset.primaryColor = '#0891b2';
+    document.body.appendChild(script);
+  })();
+</script>
+<!-- End LeniLani AI Chat Widget -->`;
+                      navigator.clipboard.writeText(code);
+                      alert('Widget code copied to clipboard!');
+                    }}
+                  >
+                    <Copy className="h-4 w-4 mr-2" />
+                    Copy Code
+                  </Button>
+                </div>
+
+                {/* Customization Options */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Customization Options</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-gray-700">Widget Position</label>
+                      <select className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                        <option value="bottom-right">Bottom Right</option>
+                        <option value="bottom-left">Bottom Left</option>
+                        <option value="top-right">Top Right</option>
+                        <option value="top-left">Top Left</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm font-medium text-gray-700">Primary Color</label>
+                      <div className="flex gap-2 mt-1">
+                        <input 
+                          type="color" 
+                          defaultValue="#0891b2" 
+                          className="h-10 w-20 border border-gray-300 rounded cursor-pointer"
+                        />
+                        <Input 
+                          defaultValue="#0891b2" 
+                          className="flex-1 text-gray-900"
+                          placeholder="Hex color code"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-700">Welcome Message</label>
+                      <Input 
+                        defaultValue="Aloha! How can I help you today?" 
+                        className="text-gray-900"
+                        placeholder="Enter your welcome message"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium text-gray-700">Auto-Open Delay (seconds)</label>
+                      <Input 
+                        type="number"
+                        defaultValue="5" 
+                        className="text-gray-900"
+                        placeholder="0 to disable"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Automatically open the chat widget after this many seconds (0 to disable)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Advanced Settings */}
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">Advanced Settings</h3>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" defaultChecked className="rounded" />
+                      <span className="text-sm text-gray-700">Show agent avatar</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" defaultChecked className="rounded" />
+                      <span className="text-sm text-gray-700">Play notification sound</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" defaultChecked className="rounded" />
+                      <span className="text-sm text-gray-700">Show typing indicator</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" className="rounded" />
+                      <span className="text-sm text-gray-700">Require email before chat</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button className="bg-cyan-600 hover:bg-cyan-700">
+                    Save Widget Settings
+                  </Button>
+                  <Button variant="outline">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Test Widget
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Integration Guide */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Integration Guide</CardTitle>
+                <CardDescription>
+                  Follow these steps to add the chat widget to your website
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-cyan-100 text-cyan-700 rounded-full flex items-center justify-center font-semibold text-sm">
+                      1
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Copy the installation code</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Click the "Copy Code" button above to copy the widget script to your clipboard
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-cyan-100 text-cyan-700 rounded-full flex items-center justify-center font-semibold text-sm">
+                      2
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Add to your website</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Paste the code just before the closing &lt;/body&gt; tag in your HTML
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-cyan-100 text-cyan-700 rounded-full flex items-center justify-center font-semibold text-sm">
+                      3
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Test the widget</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Visit your website and look for the chat bubble in the corner
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex gap-2">
+                    <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-blue-900">Platform-Specific Instructions</p>
+                      <div className="text-sm text-blue-800 mt-2 space-y-2">
+                        <p><strong>WordPress:</strong> Add to your theme's footer.php or use a plugin like "Insert Headers and Footers"</p>
+                        <p><strong>Shopify:</strong> Go to Online Store → Themes → Actions → Edit Code → theme.liquid</p>
+                        <p><strong>Wix:</strong> Use the Tracking & Analytics feature to add custom code</p>
+                        <p><strong>Squarespace:</strong> Settings → Advanced → Code Injection → Footer</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
 
         {/* WhatsApp Configuration */}
         <TabsContent value="whatsapp">

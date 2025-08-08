@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
+import { LoadingState } from '@/components/ui/loading-state'
 import { 
   BarChart3, 
   TrendingUp, 
@@ -170,7 +171,7 @@ export default function AnalyticsPage() {
   const data = analytics || mockAnalytics
   
   if (loading) {
-    return <div className="p-8">Loading analytics...</div>
+    return <LoadingState message="Loading analytics data..." size="lg" />
   }
   
   const getPercentageChange = (current: number, previous: number) => {
