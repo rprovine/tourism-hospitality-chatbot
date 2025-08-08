@@ -313,14 +313,14 @@ export default function LandingPage() {
                   viewport={{ once: true }}
                   className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2 text-gray-900">
                     <Target className="h-5 w-5 text-green-600" />
                     Dynamic Pricing Engine
                   </h4>
-                  <p className="text-gray-600 mb-3">
+                  <p className="text-gray-700 mb-3">
                     AI adjusts prices in real-time based on demand, events, and competitor rates
                   </p>
-                  <ul className="text-sm text-gray-500 space-y-1">
+                  <ul className="text-sm text-gray-700 space-y-1">
                     <li className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-500" />
                       Seasonal demand forecasting
@@ -343,14 +343,14 @@ export default function LandingPage() {
                   transition={{ delay: 0.1 }}
                   className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2 text-gray-900">
                     <Gift className="h-5 w-5 text-purple-600" />
                     Intelligent Upselling
                   </h4>
-                  <p className="text-gray-600 mb-3">
+                  <p className="text-gray-700 mb-3">
                     Identifies perfect moments to suggest upgrades and add-ons
                   </p>
-                  <ul className="text-sm text-gray-500 space-y-1">
+                  <ul className="text-sm text-gray-700 space-y-1">
                     <li className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-500" />
                       Room upgrade suggestions
@@ -373,14 +373,14 @@ export default function LandingPage() {
                   transition={{ delay: 0.2 }}
                   className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2 text-gray-900">
                     <RefreshCw className="h-5 w-5 text-blue-600" />
                     Abandonment Recovery
                   </h4>
-                  <p className="text-gray-600 mb-3">
+                  <p className="text-gray-700 mb-3">
                     Automatically recovers 25% of abandoned bookings
                   </p>
-                  <ul className="text-sm text-gray-500 space-y-1">
+                  <ul className="text-sm text-gray-700 space-y-1">
                     <li className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-500" />
                       Smart follow-up timing
@@ -417,14 +417,14 @@ export default function LandingPage() {
                   viewport={{ once: true }}
                   className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2 text-gray-900">
                     <User className="h-5 w-5 text-blue-600" />
                     360° Guest Profiles
                   </h4>
-                  <p className="text-gray-600 mb-3">
+                  <p className="text-gray-700 mb-3">
                     Automatically builds rich profiles from every interaction
                   </p>
-                  <ul className="text-sm text-gray-500 space-y-1">
+                  <ul className="text-sm text-gray-700 space-y-1">
                     <li className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-500" />
                       Preferences & dietary needs
@@ -447,14 +447,14 @@ export default function LandingPage() {
                   transition={{ delay: 0.1 }}
                   className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2 text-gray-900">
                     <Activity className="h-5 w-5 text-purple-600" />
                     Behavioral Analytics
                   </h4>
-                  <p className="text-gray-600 mb-3">
+                  <p className="text-gray-700 mb-3">
                     Predict guest needs before they ask
                   </p>
-                  <ul className="text-sm text-gray-500 space-y-1">
+                  <ul className="text-sm text-gray-700 space-y-1">
                     <li className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-500" />
                       Sentiment tracking
@@ -477,14 +477,14 @@ export default function LandingPage() {
                   transition={{ delay: 0.2 }}
                   className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2 text-gray-900">
                     <Sparkles className="h-5 w-5 text-yellow-600" />
                     VIP Recognition
                   </h4>
-                  <p className="text-gray-600 mb-3">
+                  <p className="text-gray-700 mb-3">
                     Automatically identify and prioritize valuable guests
                   </p>
-                  <ul className="text-sm text-gray-500 space-y-1">
+                  <ul className="text-sm text-gray-700 space-y-1">
                     <li className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-500" />
                       Repeat guest detection
