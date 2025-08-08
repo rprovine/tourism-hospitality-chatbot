@@ -19,7 +19,10 @@ import {
   DollarSign,
   BarChart3,
   Activity,
-  Target
+  Target,
+  Gift,
+  RefreshCw,
+  User
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -269,6 +272,283 @@ export default function LandingPage() {
                 Unified inbox for all channels with message queuing and delivery tracking
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Revenue & Guest Intelligence Section */}
+      <section className="bg-gradient-to-b from-white to-gray-50 py-20">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-full mb-6">
+              <DollarSign className="h-4 w-4" />
+              <span className="text-sm font-bold uppercase tracking-wider">Revenue Intelligence</span>
+            </div>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Turn Every Conversation Into Revenue
+            </h2>
+            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+              Not just a chatbot - a complete revenue optimization system that learns, predicts, and maximizes income 24/7
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+            {/* Revenue Section */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <TrendingUp className="h-8 w-8 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">Revenue Optimization</h3>
+                  <p className="text-gray-600">Increase revenue by 15-30% automatically</p>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                    <Target className="h-5 w-5 text-green-600" />
+                    Dynamic Pricing Engine
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    AI adjusts prices in real-time based on demand, events, and competitor rates
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Seasonal demand forecasting
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Event-based pricing spikes
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Last-minute deal optimization
+                    </li>
+                  </ul>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                    <Gift className="h-5 w-5 text-purple-600" />
+                    Intelligent Upselling
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Identifies perfect moments to suggest upgrades and add-ons
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Room upgrade suggestions
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Activity package offers
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Dining & spa recommendations
+                    </li>
+                  </ul>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                    <RefreshCw className="h-5 w-5 text-blue-600" />
+                    Abandonment Recovery
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Automatically recovers 25% of abandoned bookings
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Smart follow-up timing
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Personalized incentives
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Multi-channel recovery
+                    </li>
+                  </ul>
+                </motion.div>
+              </div>
+            </div>
+
+            {/* Guest Intelligence Section */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Users className="h-8 w-8 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">Guest Intelligence</h3>
+                  <p className="text-gray-600">Know every guest like they're family</p>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                    <User className="h-5 w-5 text-blue-600" />
+                    360° Guest Profiles
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Automatically builds rich profiles from every interaction
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Preferences & dietary needs
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Booking history & patterns
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Special occasions tracking
+                    </li>
+                  </ul>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                    <Activity className="h-5 w-5 text-purple-600" />
+                    Behavioral Analytics
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Predict guest needs before they ask
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Sentiment tracking
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Lifetime value calculation
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Churn risk detection
+                    </li>
+                  </ul>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-yellow-600" />
+                    VIP Recognition
+                  </h4>
+                  <p className="text-gray-600 mb-3">
+                    Automatically identify and prioritize valuable guests
+                  </p>
+                  <ul className="text-sm text-gray-500 space-y-1">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Repeat guest detection
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      High-value customer alerts
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-green-500" />
+                      Personalized VIP treatment
+                    </li>
+                  </ul>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+
+          {/* Live Example */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-8 text-white"
+          >
+            <h3 className="text-2xl font-bold mb-6 text-center">See It In Action: Real Guest Journey</h3>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 max-w-6xl mx-auto">
+              {[
+                { step: '1', title: 'Guest Chats', desc: 'Sarah asks about ocean view rooms for anniversary' },
+                { step: '2', title: 'AI Recognizes', desc: 'VIP guest, 3rd stay, prefers premium rooms' },
+                { step: '3', title: 'Smart Pricing', desc: 'Offers 10% loyalty discount on suite upgrade' },
+                { step: '4', title: 'Upsell Success', desc: 'Suggests couples spa package (bought before)' },
+                { step: '5', title: 'Revenue +45%', desc: '$850 booking instead of $580 standard' }
+              ].map((item, index) => (
+                <div key={index} className="text-center">
+                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 text-xl font-bold">
+                    {item.step}
+                  </div>
+                  <h4 className="font-semibold mb-1">{item.title}</h4>
+                  <p className="text-sm text-green-100">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* ROI Stats */}
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            {[
+              { metric: '+23%', label: 'Average Revenue Increase' },
+              { metric: '25%', label: 'Bookings Recovered' },
+              { metric: '3.2x', label: 'Upsell Success Rate' },
+              { metric: '400%', label: 'ROI in 6 Months' }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-3xl font-bold text-green-600">{stat.metric}</div>
+                <div className="text-sm text-gray-600 mt-1">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

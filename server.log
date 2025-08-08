@@ -8,80 +8,42 @@
    - Environments: .env.local, .env
 
  ✓ Starting...
- ✓ Ready in 1487ms
+ ✓ Ready in 1442ms
  ○ Compiling /api/health ...
- ✓ Compiled /api/health in 687ms (284 modules)
- GET /api/health 200 in 1900ms
- GET /api/health 200 in 794ms
- ○ Compiling /api/payments/checkout ...
- ✓ Compiled /api/payments/checkout in 1489ms (3057 modules)
-(node:14022) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
-(Use `node --trace-deprecation ...` to show where the warning was created)
-Error creating/updating HubSpot contact: Error: HTTP-Code: 400
-Message: An error occurred.
-Body: {"status":"error","message":"Property values were not valid: [{\"isValid\":false,\"message\":\"Property \\\"subscription_tier\\\" does not exist\",\"error\":\"PROPERTY_DOESNT_EXIST\",\"name\":\"subscription_tier\",\"localizedErrorMessage\":\"Property \\\"subscription_tier\\\" does not exist\",\"portalId\":242173134},{\"isValid\":false,\"message\":\"Property \\\"lifecycle_stage\\\" does not exist\",\"error\":\"PROPERTY_DOESNT_EXIST\",\"name\":\"lifecycle_stage\",\"localizedErrorMessage\":\"Property \\\"lifecycle_stage\\\" does not exist\",\"portalId\":242173134}]","correlationId":"9d6721ff-8ffd-4a71-8682-54329e89979e","errors":[{"message":"Property \"subscription_tier\" does not exist","code":"PROPERTY_DOESNT_EXIST","context":{"propertyName":["subscription_tier"]}},{"message":"Property \"lifecycle_stage\" does not exist","code":"PROPERTY_DOESNT_EXIST","context":{"propertyName":["lifecycle_stage"]}}],"category":"VALIDATION_ERROR"}
-Headers: {"access-control-allow-credentials":"false","cf-cache-status":"DYNAMIC","cf-ray":"96bc99233976bc6f-HNL","connection":"keep-alive","content-length":"942","content-type":"application/json;charset=utf-8","date":"Fri, 08 Aug 2025 05:26:19 GMT","nel":"{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":604800}","report-to":"{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=rhWyYze86GT5dfeYMwppXp0JV9yoO3lg3wFPlNcONkSCmzVot7S2oK9eE1vc0CFA1jncauePSBAMbX0bCUnGfFc2W8LsAQkcK8djaBka%2F40YPw2jnSfYMejBxmcmNs03\"}],\"group\":\"cf-nel\",\"max_age\":604800}","server":"cloudflare","set-cookie":"__cf_bm=hNl4wNAcQe9De6h0eCoe5c3dE12YC9vIg0.cMstpkHg-1754630779-1.0.1.1-7lZo87XYzV3oS_omva6VwITjhwS2Wss71kXW9ygjcV1q.WDgqriTWKR3IK9.MoY8ACfioNkCgi01L0ZmFjYE44G5EThKxBZ_E.o3I0QAQaQ; path=/; expires=Fri, 08-Aug-25 05:56:19 GMT; domain=.hubapi.com; HttpOnly; Secure; SameSite=None","strict-transport-security":"max-age=31536000; includeSubDomains; preload","vary":"origin, Accept-Encoding","x-content-type-options":"nosniff","x-hubspot-correlation-id":"9d6721ff-8ffd-4a71-8682-54329e89979e","x-hubspot-ratelimit-daily":"625000","x-hubspot-ratelimit-daily-remaining":"624978","x-hubspot-ratelimit-interval-milliseconds":"10000","x-hubspot-ratelimit-max":"190","x-hubspot-ratelimit-remaining":"188","x-hubspot-ratelimit-secondly":"19","x-hubspot-ratelimit-secondly-remaining":"18"}
-    at Generator.next (<anonymous>) {
-  code: 400,
-  body: [Object],
-  headers: [Object]
-}
-Checkout error: Error: HTTP-Code: 400
-Message: An error occurred.
-Body: {"status":"error","message":"Property values were not valid: [{\"isValid\":false,\"message\":\"Property \\\"subscription_tier\\\" does not exist\",\"error\":\"PROPERTY_DOESNT_EXIST\",\"name\":\"subscription_tier\",\"localizedErrorMessage\":\"Property \\\"subscription_tier\\\" does not exist\",\"portalId\":242173134},{\"isValid\":false,\"message\":\"Property \\\"lifecycle_stage\\\" does not exist\",\"error\":\"PROPERTY_DOESNT_EXIST\",\"name\":\"lifecycle_stage\",\"localizedErrorMessage\":\"Property \\\"lifecycle_stage\\\" does not exist\",\"portalId\":242173134}]","correlationId":"9d6721ff-8ffd-4a71-8682-54329e89979e","errors":[{"message":"Property \"subscription_tier\" does not exist","code":"PROPERTY_DOESNT_EXIST","context":{"propertyName":["subscription_tier"]}},{"message":"Property \"lifecycle_stage\" does not exist","code":"PROPERTY_DOESNT_EXIST","context":{"propertyName":["lifecycle_stage"]}}],"category":"VALIDATION_ERROR"}
-Headers: {"access-control-allow-credentials":"false","cf-cache-status":"DYNAMIC","cf-ray":"96bc99233976bc6f-HNL","connection":"keep-alive","content-length":"942","content-type":"application/json;charset=utf-8","date":"Fri, 08 Aug 2025 05:26:19 GMT","nel":"{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":604800}","report-to":"{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=rhWyYze86GT5dfeYMwppXp0JV9yoO3lg3wFPlNcONkSCmzVot7S2oK9eE1vc0CFA1jncauePSBAMbX0bCUnGfFc2W8LsAQkcK8djaBka%2F40YPw2jnSfYMejBxmcmNs03\"}],\"group\":\"cf-nel\",\"max_age\":604800}","server":"cloudflare","set-cookie":"__cf_bm=hNl4wNAcQe9De6h0eCoe5c3dE12YC9vIg0.cMstpkHg-1754630779-1.0.1.1-7lZo87XYzV3oS_omva6VwITjhwS2Wss71kXW9ygjcV1q.WDgqriTWKR3IK9.MoY8ACfioNkCgi01L0ZmFjYE44G5EThKxBZ_E.o3I0QAQaQ; path=/; expires=Fri, 08-Aug-25 05:56:19 GMT; domain=.hubapi.com; HttpOnly; Secure; SameSite=None","strict-transport-security":"max-age=31536000; includeSubDomains; preload","vary":"origin, Accept-Encoding","x-content-type-options":"nosniff","x-hubspot-correlation-id":"9d6721ff-8ffd-4a71-8682-54329e89979e","x-hubspot-ratelimit-daily":"625000","x-hubspot-ratelimit-daily-remaining":"624978","x-hubspot-ratelimit-interval-milliseconds":"10000","x-hubspot-ratelimit-max":"190","x-hubspot-ratelimit-remaining":"188","x-hubspot-ratelimit-secondly":"19","x-hubspot-ratelimit-secondly-remaining":"18"}
-    at Generator.next (<anonymous>) {
-  code: 400,
-  body: [Object],
-  headers: [Object]
-}
- POST /api/payments/checkout 500 in 2835ms
-Token verification failed, proceeding as new signup
-Error creating/updating HubSpot contact: Error: HTTP-Code: 400
-Message: An error occurred.
-Body: {"status":"error","message":"Property values were not valid: [{\"isValid\":false,\"message\":\"Property \\\"subscription_tier\\\" does not exist\",\"error\":\"PROPERTY_DOESNT_EXIST\",\"name\":\"subscription_tier\",\"localizedErrorMessage\":\"Property \\\"subscription_tier\\\" does not exist\",\"portalId\":242173134},{\"isValid\":false,\"message\":\"Property \\\"lifecycle_stage\\\" does not exist\",\"error\":\"PROPERTY_DOESNT_EXIST\",\"name\":\"lifecycle_stage\",\"localizedErrorMessage\":\"Property \\\"lifecycle_stage\\\" does not exist\",\"portalId\":242173134}]","correlationId":"3c8d6f68-5460-4a17-9b9b-5f8ccd615b53","errors":[{"message":"Property \"subscription_tier\" does not exist","code":"PROPERTY_DOESNT_EXIST","context":{"propertyName":["subscription_tier"]}},{"message":"Property \"lifecycle_stage\" does not exist","code":"PROPERTY_DOESNT_EXIST","context":{"propertyName":["lifecycle_stage"]}}],"category":"VALIDATION_ERROR"}
-Headers: {"access-control-allow-credentials":"false","cf-cache-status":"DYNAMIC","cf-ray":"96bc99284bcfbc6f-HNL","connection":"keep-alive","content-length":"942","content-type":"application/json;charset=utf-8","date":"Fri, 08 Aug 2025 05:26:20 GMT","nel":"{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":604800}","report-to":"{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=ZLLpadR8lrzogocUvNg4QNKUiY6o%2B9i8IBkA0yUkMJeJLw1AiwnFej3aTpsoIEv9gJ6aSXo6tDNjBbT5G0NVRgXylE%2F03Fpg7OXU19zJGCheU%2BQpQdXXa%2BN7ECZLEdAu\"}],\"group\":\"cf-nel\",\"max_age\":604800}","server":"cloudflare","set-cookie":"__cf_bm=ZzoCXbnqaxSIoF_muuhwWjZhXN9L_WOOi4Z7W80GycQ-1754630780-1.0.1.1-bOXzIW6aeaChb9tuYo6.ESoQ_D7r64Yy6Ti83s7xHLXX399_wRTUf5Jn66vHD3ipHvVy_2CvuQJluzto8tl13aniV7KrnG0iOqRL8JNbROo; path=/; expires=Fri, 08-Aug-25 05:56:20 GMT; domain=.hubapi.com; HttpOnly; Secure; SameSite=None","strict-transport-security":"max-age=31536000; includeSubDomains; preload","vary":"origin, Accept-Encoding","x-content-type-options":"nosniff","x-hubspot-correlation-id":"3c8d6f68-5460-4a17-9b9b-5f8ccd615b53","x-hubspot-ratelimit-daily":"625000","x-hubspot-ratelimit-daily-remaining":"624976","x-hubspot-ratelimit-interval-milliseconds":"10000","x-hubspot-ratelimit-max":"190","x-hubspot-ratelimit-remaining":"186","x-hubspot-ratelimit-secondly":"19","x-hubspot-ratelimit-secondly-remaining":"18"}
-    at Generator.next (<anonymous>) {
-  code: 400,
-  body: [Object],
-  headers: [Object]
-}
-Checkout error: Error: HTTP-Code: 400
-Message: An error occurred.
-Body: {"status":"error","message":"Property values were not valid: [{\"isValid\":false,\"message\":\"Property \\\"subscription_tier\\\" does not exist\",\"error\":\"PROPERTY_DOESNT_EXIST\",\"name\":\"subscription_tier\",\"localizedErrorMessage\":\"Property \\\"subscription_tier\\\" does not exist\",\"portalId\":242173134},{\"isValid\":false,\"message\":\"Property \\\"lifecycle_stage\\\" does not exist\",\"error\":\"PROPERTY_DOESNT_EXIST\",\"name\":\"lifecycle_stage\",\"localizedErrorMessage\":\"Property \\\"lifecycle_stage\\\" does not exist\",\"portalId\":242173134}]","correlationId":"3c8d6f68-5460-4a17-9b9b-5f8ccd615b53","errors":[{"message":"Property \"subscription_tier\" does not exist","code":"PROPERTY_DOESNT_EXIST","context":{"propertyName":["subscription_tier"]}},{"message":"Property \"lifecycle_stage\" does not exist","code":"PROPERTY_DOESNT_EXIST","context":{"propertyName":["lifecycle_stage"]}}],"category":"VALIDATION_ERROR"}
-Headers: {"access-control-allow-credentials":"false","cf-cache-status":"DYNAMIC","cf-ray":"96bc99284bcfbc6f-HNL","connection":"keep-alive","content-length":"942","content-type":"application/json;charset=utf-8","date":"Fri, 08 Aug 2025 05:26:20 GMT","nel":"{\"success_fraction\":0.01,\"report_to\":\"cf-nel\",\"max_age\":604800}","report-to":"{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=ZLLpadR8lrzogocUvNg4QNKUiY6o%2B9i8IBkA0yUkMJeJLw1AiwnFej3aTpsoIEv9gJ6aSXo6tDNjBbT5G0NVRgXylE%2F03Fpg7OXU19zJGCheU%2BQpQdXXa%2BN7ECZLEdAu\"}],\"group\":\"cf-nel\",\"max_age\":604800}","server":"cloudflare","set-cookie":"__cf_bm=ZzoCXbnqaxSIoF_muuhwWjZhXN9L_WOOi4Z7W80GycQ-1754630780-1.0.1.1-bOXzIW6aeaChb9tuYo6.ESoQ_D7r64Yy6Ti83s7xHLXX399_wRTUf5Jn66vHD3ipHvVy_2CvuQJluzto8tl13aniV7KrnG0iOqRL8JNbROo; path=/; expires=Fri, 08-Aug-25 05:56:20 GMT; domain=.hubapi.com; HttpOnly; Secure; SameSite=None","strict-transport-security":"max-age=31536000; includeSubDomains; preload","vary":"origin, Accept-Encoding","x-content-type-options":"nosniff","x-hubspot-correlation-id":"3c8d6f68-5460-4a17-9b9b-5f8ccd615b53","x-hubspot-ratelimit-daily":"625000","x-hubspot-ratelimit-daily-remaining":"624976","x-hubspot-ratelimit-interval-milliseconds":"10000","x-hubspot-ratelimit-max":"190","x-hubspot-ratelimit-remaining":"186","x-hubspot-ratelimit-secondly":"19","x-hubspot-ratelimit-secondly-remaining":"18"}
-    at Generator.next (<anonymous>) {
-  code: 400,
-  body: [Object],
-  headers: [Object]
-}
- POST /api/payments/checkout 500 in 803ms
- ✓ Compiled /api/subscription in 197ms (3060 modules)
-Token verification failed: Error [JsonWebTokenError]: invalid signature
-    at verifyToken (lib/auth.ts:13:20)
-    at GET (app/api/subscription/route.ts:15:38)
-  11 | export async function verifyToken(token: string): Promise<TokenPayload | null> {
-  12 |   try {
-> 13 |     const decoded = jwt.verify(token, JWT_SECRET) as TokenPayload
-     |                    ^
-  14 |     return decoded
-  15 |   } catch (error) {
-  16 |     console.error('Token verification failed:', error) {
-  constructor: [Function: JsonWebTokenError]
-}
- GET /api/subscription 401 in 273ms
- ✓ Compiled /api/subscription/cancel in 143ms (3062 modules)
-Token verification failed: Error [JsonWebTokenError]: invalid signature
-    at verifyToken (lib/auth.ts:13:20)
-    at POST (app/api/subscription/cancel/route.ts:15:38)
-  11 | export async function verifyToken(token: string): Promise<TokenPayload | null> {
-  12 |   try {
-> 13 |     const decoded = jwt.verify(token, JWT_SECRET) as TokenPayload
-     |                    ^
-  14 |     return decoded
-  15 |   } catch (error) {
-  16 |     console.error('Token verification failed:', error) {
-  constructor: [Function: JsonWebTokenError]
-}
- POST /api/subscription/cancel 401 in 198ms
- ✓ Compiled in 164ms (2876 modules)
+ ✓ Compiled /api/health in 767ms (284 modules)
+ GET /api/health 200 in 1665ms
+ ○ Compiling /api/auth/login ...
+ ✓ Compiled /api/auth/login in 537ms (376 modules)
+Login attempt for: starter@demo.com
+DATABASE_URL exists: true
+Database connected successfully
+Business found, verifying password...
+Password verified, creating token...
+Login successful for: starter@demo.com
+ POST /api/auth/login 200 in 1767ms
+ ✓ Compiled /api/analytics in 79ms (378 modules)
+ GET /api/analytics 200 in 970ms
+Login attempt for: professional@demo.com
+DATABASE_URL exists: true
+Database connected successfully
+Business found, verifying password...
+Password verified, creating token...
+Login successful for: professional@demo.com
+ POST /api/auth/login 200 in 1211ms
+ GET /api/analytics 200 in 321ms
+Login attempt for: premium@demo.com
+DATABASE_URL exists: true
+Database connected successfully
+Business found, verifying password...
+Password verified, creating token...
+Login successful for: premium@demo.com
+ POST /api/auth/login 200 in 1194ms
+ GET /api/analytics 200 in 160ms
+Login attempt for: enterprise@demo.com
+DATABASE_URL exists: true
+Database connected successfully
+Business found, verifying password...
+Password verified, creating token...
+Login successful for: enterprise@demo.com
+ POST /api/auth/login 200 in 1186ms
+ GET /api/analytics 200 in 163ms
