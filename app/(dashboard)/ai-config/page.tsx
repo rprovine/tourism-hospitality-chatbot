@@ -446,7 +446,7 @@ export default function UnifiedAIConfigPage() {
                     <div>
                       <p className="font-semibold text-gray-900">Language Limitation</p>
                       <p className="text-sm text-gray-800 font-medium mt-1">
-                        Your Starter plan includes English only. Upgrade to Professional to unlock 7 additional languages including Hawaiian Pidgin.
+                        Your Starter plan includes English only. Upgrade to Professional to choose any 2 languages, or Premium for any 5 languages.
                       </p>
                       <Link href="/subscription">
                         <Button variant="outline" size="sm" className="mt-2 border-yellow-600 text-yellow-700 hover:bg-yellow-100">

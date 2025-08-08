@@ -60,7 +60,7 @@ const planDetails = {
       { text: 'Web chat + WhatsApp + SMS', included: true },
       { text: '500 knowledge base items', included: true },
       { text: 'Advanced AI models (GPT-4, Claude Sonnet)', included: true },
-      { text: '7 languages (English, Spanish, Japanese, Chinese, French, German + Hawaiian Pidgin 🤙)', included: true },
+      { text: '2 languages of your choice', included: true },
       { text: 'Revenue optimization', included: true },
       { text: 'Guest intelligence & CRM', included: true },
       { text: 'Multi-channel support', included: true },
@@ -81,7 +81,7 @@ const planDetails = {
       { text: 'All channels (Web, WhatsApp, SMS, Instagram, Facebook)', included: true },
       { text: 'Unlimited knowledge base', included: true },
       { text: 'All AI models including GPT-4 Turbo & Claude Opus', included: true },
-      { text: 'All 8 languages including Hawaiian Pidgin & ʻŌlelo Hawaiʻi 🌺', included: true },
+      { text: '5 languages of your choice', included: true },
       { text: 'Advanced revenue optimization', included: true },
       { text: 'Full guest intelligence suite', included: true },
       { text: 'White-label solution', included: true },
@@ -321,7 +321,7 @@ export default function BillingPage() {
                         <span className="font-medium">WhatsApp & SMS</span>
                       </div>
                     </div>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold">
                       Upgrade to Professional
                     </Button>
                   </CardContent>
@@ -364,7 +364,7 @@ export default function BillingPage() {
                         <span className="font-medium">24/7 support</span>
                       </div>
                     </div>
-                    <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold">
                       Upgrade to Premium
                     </Button>
                   </CardContent>
@@ -492,8 +492,8 @@ export default function BillingPage() {
                 <tr className="border-b hover:bg-gray-50">
                   <td className="p-3 text-gray-700">Languages</td>
                   <td className="text-center p-3">English Only</td>
-                  <td className="text-center p-3">7 Languages + Pidgin</td>
-                  <td className="text-center p-3">All + Hawaiian</td>
+                  <td className="text-center p-3">2 Languages (Choose Any)</td>
+                  <td className="text-center p-3">5 Languages (Choose Any)</td>
                 </tr>
                 <tr className="border-b hover:bg-gray-50">
                   <td className="p-3 text-gray-700">Revenue Optimization</td>

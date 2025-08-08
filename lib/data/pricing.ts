@@ -25,7 +25,7 @@ export const tierComparison: TierFeature[] = [
   {
     name: 'Languages Supported',
     starter: 'English only',
-    professional: 'English & Japanese',
+    professional: '2 languages (choose any)',
     premium: '5 languages (choose any)',
     enterprise: '10+ languages'
   },
