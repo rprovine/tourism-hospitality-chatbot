@@ -479,8 +479,7 @@ export default function UnifiedAIConfigPage() {
                         </span>
                       </label>
                     )
-                  }
-                  ))}
+                  })}
                 </div>
               </div>
             </CardContent>
