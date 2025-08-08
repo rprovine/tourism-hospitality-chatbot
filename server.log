@@ -1214,3 +1214,79 @@ Import trace for requested module:
  ✓ Compiled in 156ms (842 modules)
  ✓ Compiled in 402ms (1965 modules)
  ✓ Compiled in 188ms (842 modules)
+ ✓ Compiled in 374ms (842 modules)
+ ○ Compiling /knowledge-base ...
+ ✓ Compiled /knowledge-base in 731ms (1950 modules)
+ GET /knowledge-base 200 in 1016ms
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function] {
+  digest: '4038985770'
+}
+[TypeError: __webpack_modules__[moduleId] is not a function]
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function]
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function] {
+  page: '/knowledge-base'
+}
+ ⨯ Error: Cannot find module './8548.js'
+Require stack:
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/server/webpack-runtime.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/server/app/(dashboard)/knowledge-base/page.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/require.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/load-components.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/utils.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/swc/options.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/swc/index.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/analysis/parse-module.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-server.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/start-server.js
+    at <unknown> (.next/server/pages/_document.js:1:332)
+    at Object.<anonymous> (.next/server/pages/_document.js:1:380) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[TypeError: __webpack_modules__[moduleId] is not a function] {
+  page: '/knowledge-base'
+}
+ ⨯ Error: Cannot find module './8548.js'
+Require stack:
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/server/webpack-runtime.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/server/app/(dashboard)/knowledge-base/page.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/require.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/load-components.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/utils.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/swc/options.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/swc/index.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/analysis/parse-module.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/router-server.js
+- /Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/node_modules/next/dist/server/lib/start-server.js
+    at <unknown> (.next/server/pages/_document.js:1:332)
+    at Object.<anonymous> (.next/server/pages/_document.js:1:380) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: ENOENT: no such file or directory, open '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/fallback-build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/.next/fallback-build-manifest.json'
+}
+ GET /knowledge-base 500 in 1121ms
+ GET /knowledge-base 500 in 251ms
+ ✓ Compiled in 306ms (889 modules)
+ ✓ Compiled in 153ms (889 modules)
+ ✓ Compiled in 326ms (889 modules)
+ ✓ Compiled in 224ms (889 modules)
+ ✓ Compiled in 459ms (889 modules)
+ ✓ Compiled in 179ms (889 modules)
+ ✓ Compiled in 356ms (889 modules)
+ ✓ Compiled in 174ms (889 modules)
+ ✓ Compiled in 334ms (1918 modules)
+ ✓ Compiled in 318ms (889 modules)
+ ✓ Compiled in 705ms (2012 modules)
+ ✓ Compiled in 201ms (889 modules)
+ ✓ Compiled in 183ms (889 modules)
+ ✓ Compiled in 195ms (889 modules)
+ ✓ Compiled in 230ms (2012 modules)

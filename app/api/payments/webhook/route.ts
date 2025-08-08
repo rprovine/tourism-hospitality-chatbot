@@ -85,12 +85,44 @@ export async function POST(request: NextRequest) {
 }
 
 async function handlePaymentSuccess(data: any) {
-  const { contactEmail, planId, subscriptionId } = data
+  const { contactEmail, planId, subscriptionId, sessionId, metadata } = data
   
-  // Find business by email
-  const business = await prisma.business.findUnique({
-    where: { email: contactEmail }
-  })
+  // First try to find by session ID if provided
+  let business: any = null
+  let checkoutSession: any = null
+  
+  if (sessionId || metadata?.session_id) {
+    const sid = sessionId || metadata?.session_id
+    checkoutSession = await prisma.checkoutSession.findUnique({
+      where: { sessionId: sid },
+      include: { business: true }
+    })
+    
+    if (checkoutSession) {
+      business = checkoutSession.business
+      
+      // Update checkout session status
+      await prisma.checkoutSession.update({
+        where: { id: checkoutSession.id },
+        data: {
+          status: 'completed',
+          completedAt: new Date(),
+          hubspotSubscriptionId: subscriptionId,
+          metadata: {
+            ...checkoutSession.metadata,
+            paymentSuccessData: data
+          }
+        }
+      })
+    }
+  }
+  
+  // Fallback to email lookup if no session found
+  if (!business) {
+    business = await prisma.business.findUnique({
+      where: { email: contactEmail }
+    })
+  }
   
   if (business) {
     // Update subscription status
@@ -152,11 +184,41 @@ async function handlePaymentFailed(data: any) {
 }
 
 async function handleSubscriptionCreated(data: any) {
-  const { contactEmail, planId, subscriptionId, startDate, endDate } = data
+  const { contactEmail, planId, subscriptionId, startDate, endDate, sessionId, metadata } = data
   
-  const business = await prisma.business.findUnique({
-    where: { email: contactEmail }
-  })
+  // First try to find by session ID
+  let business: any = null
+  
+  if (sessionId || metadata?.session_id) {
+    const sid = sessionId || metadata?.session_id
+    const checkoutSession = await prisma.checkoutSession.findUnique({
+      where: { sessionId: sid },
+      include: { business: true }
+    })
+    
+    if (checkoutSession) {
+      business = checkoutSession.business
+      
+      // Update session with subscription ID
+      await prisma.checkoutSession.update({
+        where: { id: checkoutSession.id },
+        data: {
+          hubspotSubscriptionId: subscriptionId,
+          metadata: {
+            ...checkoutSession.metadata,
+            subscriptionCreated: true
+          }
+        }
+      })
+    }
+  }
+  
+  // Fallback to email lookup
+  if (!business) {
+    business = await prisma.business.findUnique({
+      where: { email: contactEmail }
+    })
+  }
   
   if (business) {
     await prisma.subscription.create({
@@ -213,9 +275,42 @@ async function handleSubscriptionUpdated(data: any) {
 async function handleSubscriptionCancelled(data: any) {
   const { subscriptionId, contactEmail, cancellationDate } = data
   
-  const business = await prisma.business.findUnique({
-    where: { email: contactEmail }
+  // Try to find business by subscription ID first
+  let business: any = null
+  
+  // Check if we have a checkout session with this subscription ID
+  const checkoutSession = await prisma.checkoutSession.findFirst({
+    where: { hubspotSubscriptionId: subscriptionId },
+    include: { business: true }
   })
+  
+  if (checkoutSession) {
+    business = checkoutSession.business
+  }
+  
+  // Try finding by existing subscription
+  if (!business) {
+    const subscription = await prisma.subscription.findFirst({
+      where: {
+        metadata: {
+          path: ['hubspotSubscriptionId'],
+          equals: subscriptionId
+        }
+      },
+      include: { business: true }
+    })
+    
+    if (subscription) {
+      business = subscription.business
+    }
+  }
+  
+  // Final fallback to email
+  if (!business) {
+    business = await prisma.business.findUnique({
+      where: { email: contactEmail }
+    })
+  }
   
   if (business) {
     await prisma.subscription.updateMany({

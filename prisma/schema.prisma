@@ -46,6 +46,7 @@ model Business {
   feedbacks          ConversationFeedback[]
   learningPatterns   LearningPattern[]
   aiInsights         AIInsight[]
+  checkoutSessions   CheckoutSession[]
 }
 
 model Subscription {
@@ -396,4 +397,28 @@ model AIInsight {
   @@index([businessId])
   @@index([type])
   @@index([status])
+}
+
+model CheckoutSession {
+  id                String    @id @default(cuid())
+  businessId        String
+  sessionId         String    @unique // Unique identifier for this checkout session
+  planId            String    // e.g., 'professional_monthly'
+  status            String    @default("pending") // 'pending', 'completed', 'failed', 'expired'
+  email             String
+  businessName      String
+  contactName       String?
+  phone             String?
+  paymentUrl        String    // The actual payment link with parameters
+  hubspotSubscriptionId String? // Set after successful payment
+  metadata          Json?     @default("{}")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  completedAt       DateTime?
+  business          Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  @@index([businessId])
+  @@index([sessionId])
+  @@index([status])
+  @@index([email])
 }

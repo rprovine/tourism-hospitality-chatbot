@@ -15,8 +15,12 @@ function PaymentSuccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [copied, setCopied] = useState(false)
-  const tier = searchParams.get('tier') || 'professional'
-  const businessId = searchParams.get('businessId') || 'your-business-id'
+  const [sessionData, setSessionData] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  
+  const sessionId = searchParams.get('session_id')
+  const tier = searchParams.get('tier') || sessionData?.planId?.split('_')[0] || 'professional'
+  const businessId = searchParams.get('businessId') || sessionData?.businessId || 'your-business-id'
   
   const embedCode = `<script>
   (function() {
@@ -38,12 +42,33 @@ function PaymentSuccessContent() {
   }
 
   useEffect(() => {
+    // Fetch session data if session_id is provided
+    if (sessionId) {
+      fetchSessionData()
+    } else {
+      setLoading(false)
+    }
+    
     // Trigger celebration animation
     const timer = setTimeout(() => {
       // Could add confetti here
     }, 500)
     return () => clearTimeout(timer)
-  }, [])
+  }, [sessionId])
+  
+  const fetchSessionData = async () => {
+    try {
+      const response = await fetch(`/api/checkout/session?id=${sessionId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setSessionData(data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch session data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const isInstantDeploy = tier === 'starter' || tier === 'professional'
 
@@ -209,7 +234,7 @@ function PaymentSuccessContent() {
           <Button
             size="lg"
             className="bg-cyan-600 hover:bg-cyan-700"
-            onClick={() => router.push('/admin')}
+            onClick={() => router.push('/dashboard')}
           >
             Go to Dashboard
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -217,7 +242,7 @@ function PaymentSuccessContent() {
           <Button
             size="lg"
             variant="outline"
-            onClick={() => router.push('/admin/knowledge-base')}
+            onClick={() => router.push('/knowledge-base')}
           >
             Setup Knowledge Base
           </Button>

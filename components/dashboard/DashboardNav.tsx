@@ -25,6 +25,7 @@ const navItems = [
   { href: '/guests', label: 'Guests', icon: Users },
   { href: '/channels', label: 'Channels', icon: Hash },
   { href: '/ai-settings', label: 'AI Config', icon: Brain },
+  { href: '/subscription', label: 'Subscription', icon: CreditCard },
   { href: '/billing', label: 'Billing', icon: CreditCard },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
