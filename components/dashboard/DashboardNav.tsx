@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button'
 const navItems = [
   { href: '/dashboard', label: 'Overview', icon: Home },
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/knowledge-base', label: 'Knowledge Base', icon: Bot },
   { href: '/revenue', label: 'Revenue', icon: TrendingUp },
   { href: '/guests', label: 'Guests', icon: Users },
   { href: '/channels', label: 'Channels', icon: Hash },
