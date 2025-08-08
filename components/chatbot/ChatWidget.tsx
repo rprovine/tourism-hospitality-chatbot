@@ -82,8 +82,12 @@ export default function ChatWidget({
     setIsTyping(true)
 
     try {
-      // Call the API
-      const response = await fetch('/api/chat', {
+      // Get businessId from URL params or use demo
+      const urlParams = new URLSearchParams(window.location.search)
+      const businessId = urlParams.get('businessId') || 'demo-business-id'
+      
+      // Call the widget API with CORS support
+      const response = await fetch('/api/widget/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +95,7 @@ export default function ChatWidget({
         body: JSON.stringify({
           message: input,
           sessionId: sessionId,
-          tier: tier,
+          businessId: businessId,
           conversationId: conversationId
         })
       })
