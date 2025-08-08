@@ -29,10 +29,19 @@ interface User {
   name: string
   tier: string
   subscriptionStatus: string
+  billingCycle: string
   createdAt: string
   lastActive: string
   totalConversations: number
+  totalGuests: number
   monthlySpend: number
+  subscription: {
+    startDate: string
+    endDate: string
+    cancelledAt?: string
+    paymentFailedAt?: string
+    gracePeriodEnds?: string
+  } | null
 }
 
 export default function UsersManagementPage() {
@@ -59,11 +68,12 @@ export default function UsersManagementPage() {
         const data = await response.json()
         setUsers(data.users)
       } else {
-        // Use mock data for demo
-        setUsers(getMockUsers())
+        console.error('Failed to fetch users:', response.status)
+        setUsers([])
       }
     } catch (error) {
-      setUsers(getMockUsers())
+      console.error('Error fetching users:', error)
+      setUsers([])
     } finally {
       setLoading(false)
     }
