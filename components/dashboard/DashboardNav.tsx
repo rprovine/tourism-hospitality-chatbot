@@ -38,7 +38,7 @@ export default function DashboardNav() {
   }
   
   return (
-    <nav className="sticky top-0 z-40 bg-white border-b border-gray-200">
+    <nav className="sticky top-0 z-40 bg-white border-b border-gray-200 w-full">
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
