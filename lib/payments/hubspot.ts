@@ -141,9 +141,11 @@ export async function createOrUpdateContact(data: {
         lastname: data.lastname || '',
         company: data.company || '',
         phone: data.phone || '',
-        // Use notes field to store tier info if custom properties don't exist
-        hs_lead_status: data.tier || 'starter',
-        lifecyclestage: 'customer' // Standard property name
+        // Use valid HubSpot lead status
+        hs_lead_status: 'NEW',
+        lifecyclestage: 'customer', // Standard property name
+        // Store tier info in notes field
+        hs_content_membership_notes: `Subscription Tier: ${data.tier || 'starter'}`
       }
     }
 
