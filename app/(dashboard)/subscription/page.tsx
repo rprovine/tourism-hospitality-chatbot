@@ -137,6 +137,7 @@ export default function SubscriptionPage() {
   
   const handleUpgrade = (newTier: string) => {
     const interval = subscription?.interval || 'monthly'
+    // For demo accounts or any tier change, go to checkout
     window.location.href = `/checkout?plan=${newTier}&interval=${interval}`
   }
   
@@ -293,67 +294,137 @@ export default function SubscriptionPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {subscription.tier === 'starter' && (
-                <>
-                  <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleUpgrade('professional')}>
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <Shield className="h-8 w-8 text-blue-600" />
-                        <ArrowUpRight className="h-4 w-4 text-gray-400" />
-                      </div>
-                      <h3 className="font-semibold">Professional</h3>
-                      <p className="text-sm text-gray-600 mb-2">1000 conversations/mo</p>
-                      <div className="text-2xl font-bold">$149<span className="text-sm font-normal">/mo</span></div>
-                      <ul className="text-xs text-gray-600 mt-2 space-y-1">
-                        <li>• Revenue optimization</li>
-                        <li>• Guest profiles</li>
-                        <li>• Multi-channel</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-                  <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleUpgrade('premium')}>
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <Crown className="h-8 w-8 text-purple-600" />
-                        <ArrowUpRight className="h-4 w-4 text-gray-400" />
-                      </div>
-                      <h3 className="font-semibold">Premium</h3>
-                      <p className="text-sm text-gray-600 mb-2">Unlimited conversations</p>
-                      <div className="text-2xl font-bold">$299<span className="text-sm font-normal">/mo</span></div>
-                      <ul className="text-xs text-gray-600 mt-2 space-y-1">
-                        <li>• Advanced AI models</li>
-                        <li>• All channels</li>
-                        <li>• API access</li>
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </>
-              )}
-              {subscription.tier === 'professional' && (
-                <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleUpgrade('premium')}>
+              {/* Always show Starter for comparison */}
+              {subscription.tier !== 'starter' && (
+                <Card className={`relative ${subscription.tier === 'starter' ? 'border-cyan-500 border-2' : ''}`}>
                   <CardContent className="p-4">
+                    {subscription.tier === 'starter' && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <Badge className="bg-cyan-600 text-white">Current Plan</Badge>
+                      </div>
+                    )}
                     <div className="flex items-center justify-between mb-2">
-                      <Crown className="h-8 w-8 text-purple-600" />
-                      <ArrowUpRight className="h-4 w-4 text-gray-400" />
+                      <Zap className="h-8 w-8 text-green-600" />
+                      {subscription.tier !== 'starter' && (
+                        <Badge variant="outline" className="text-xs">Downgrade</Badge>
+                      )}
                     </div>
-                    <h3 className="font-semibold">Premium</h3>
-                    <p className="text-sm text-gray-600 mb-2">Advanced AI + VIP Features</p>
-                    <div className="text-2xl font-bold">$299<span className="text-sm font-normal">/mo</span></div>
+                    <h3 className="font-semibold">Starter</h3>
+                    <p className="text-sm text-gray-600 mb-2">100 conversations/mo</p>
+                    <div className="text-2xl font-bold">$29<span className="text-sm font-normal">/mo</span></div>
+                    <ul className="text-xs text-gray-600 mt-2 space-y-1">
+                      <li>• Basic AI models</li>
+                      <li>• Web chat only</li>
+                      <li>• 50 knowledge items</li>
+                    </ul>
+                    {subscription.tier !== 'starter' && (
+                      <Button 
+                        variant="outline" 
+                        className="w-full mt-3 text-xs"
+                        onClick={() => handleUpgrade('starter')}
+                      >
+                        Switch to Starter
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               )}
-              <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => window.location.href = '/contact-sales'}>
+              
+              {/* Professional Plan */}
+              <Card 
+                className={`relative cursor-pointer hover:shadow-lg transition-shadow ${subscription.tier === 'professional' ? 'border-blue-500 border-2' : ''}`}
+                onClick={() => subscription.tier !== 'professional' && handleUpgrade('professional')}
+              >
                 <CardContent className="p-4">
+                  {subscription.tier === 'professional' && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <Badge className="bg-blue-600 text-white">Current Plan</Badge>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between mb-2">
-                    <Building className="h-8 w-8 text-gray-600" />
-                    <ArrowUpRight className="h-4 w-4 text-gray-400" />
+                    <Shield className="h-8 w-8 text-blue-600" />
+                    {subscription.tier !== 'professional' && (
+                      <ArrowUpRight className="h-4 w-4 text-gray-400" />
+                    )}
                   </div>
-                  <h3 className="font-semibold">Enterprise</h3>
-                  <p className="text-sm text-gray-600 mb-2">Custom Solutions</p>
-                  <div className="text-2xl font-bold">Custom</div>
+                  <h3 className="font-semibold">Professional</h3>
+                  <p className="text-sm text-gray-600 mb-2">1000 conversations/mo</p>
+                  <div className="text-2xl font-bold">$149<span className="text-sm font-normal">/mo</span></div>
+                  <ul className="text-xs text-gray-600 mt-2 space-y-1">
+                    <li>• Revenue optimization</li>
+                    <li>• Guest profiles</li>
+                    <li>• Multi-channel</li>
+                    <li>• Advanced AI models</li>
+                    <li>• 500 knowledge items</li>
+                  </ul>
+                  {subscription.tier === 'professional' && (
+                    <div className="mt-3 text-xs text-center text-gray-500">Your current plan</div>
+                  )}
+                </CardContent>
+              </Card>
+              
+              {/* Premium Plan */}
+              <Card 
+                className={`relative cursor-pointer hover:shadow-lg transition-shadow ${subscription.tier === 'premium' ? 'border-purple-500 border-2' : ''}`}
+                onClick={() => subscription.tier !== 'premium' && handleUpgrade('premium')}
+              >
+                <CardContent className="p-4">
+                  {subscription.tier === 'premium' && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <Badge className="bg-purple-600 text-white">Current Plan</Badge>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between mb-2">
+                    <Crown className="h-8 w-8 text-purple-600" />
+                    {subscription.tier !== 'premium' && (
+                      <ArrowUpRight className="h-4 w-4 text-gray-400" />
+                    )}
+                  </div>
+                  <h3 className="font-semibold">Premium</h3>
+                  <p className="text-sm text-gray-600 mb-2">Unlimited conversations</p>
+                  <div className="text-2xl font-bold">$299<span className="text-sm font-normal">/mo</span></div>
+                  <ul className="text-xs text-gray-600 mt-2 space-y-1">
+                    <li>• All Professional features</li>
+                    <li>• Unlimited everything</li>
+                    <li>• API access</li>
+                    <li>• White label options</li>
+                    <li>• Priority support</li>
+                  </ul>
+                  {subscription.tier === 'premium' && (
+                    <div className="mt-3 text-xs text-center text-gray-500">Your current plan</div>
+                  )}
                 </CardContent>
               </Card>
             </div>
+            
+            {/* Enterprise CTA */}
+            <Card className="mt-4 bg-gradient-to-r from-gray-50 to-gray-100 border-gray-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Building className="h-12 w-12 text-gray-700" />
+                    <div>
+                      <h3 className="text-lg font-semibold">Enterprise Solutions</h3>
+                      <p className="text-sm text-gray-600 mt-1">Custom pricing, dedicated support, and tailored features for large organizations</p>
+                      <ul className="text-xs text-gray-600 mt-2 space-x-4 flex flex-wrap">
+                        <li>• Unlimited everything</li>
+                        <li>• Custom integrations</li>
+                        <li>• Dedicated account manager</li>
+                        <li>• SLA guarantees</li>
+                        <li>• On-premise deployment</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <Button 
+                    onClick={() => window.location.href = '/checkout?plan=enterprise&interval=yearly'}
+                    className="bg-gray-800 hover:bg-gray-900 text-white"
+                  >
+                    Contact Sales
+                    <ArrowUpRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </CardContent>
         </Card>
       )}
