@@ -7,8 +7,12 @@ const protectedRoutes = [
   '/settings',
   '/analytics',
   '/knowledge-base',
-  '/api-settings',
-  '/billing'
+  '/ai-settings',
+  '/ai',
+  '/billing',
+  '/channels',
+  '/guests',
+  '/revenue'
 ]
 
 // Admin only routes
@@ -47,8 +51,12 @@ export const config = {
     '/settings/:path*',
     '/analytics/:path*',
     '/knowledge-base/:path*',
-    '/api-settings/:path*',
+    '/ai-settings/:path*',
+    '/ai/:path*',
     '/billing/:path*',
+    '/channels/:path*',
+    '/guests/:path*',
+    '/revenue/:path*',
     '/admin/:path*'
   ]
 }

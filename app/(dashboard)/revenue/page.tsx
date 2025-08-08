@@ -492,7 +492,7 @@ export default function RevenuePage() {
                 <Alert>
                   <Target className="h-4 w-4" />
                   <div>
-                    <p className="font-medium">Opportunity: Weekend Pricing</p>
+                    <p className="font-medium text-gray-900">Opportunity: Weekend Pricing</p>
                     <p className="text-sm text-gray-600 mt-1">
                       Your weekend occupancy is 85%. Consider increasing weekend rates by 20% to maximize revenue without impacting demand.
                     </p>
@@ -502,7 +502,7 @@ export default function RevenuePage() {
                 <Alert>
                   <Gift className="h-4 w-4" />
                   <div>
-                    <p className="font-medium">Upsell Potential: Spa Packages</p>
+                    <p className="font-medium text-gray-900">Upsell Potential: Spa Packages</p>
                     <p className="text-sm text-gray-600 mt-1">
                       Guests who book deluxe rooms are 3x more likely to purchase spa packages. Target them with personalized offers.
                     </p>
@@ -512,7 +512,7 @@ export default function RevenuePage() {
                 <Alert>
                   <AlertCircle className="h-4 w-4" />
                   <div>
-                    <p className="font-medium">Recovery Gap: Mobile Users</p>
+                    <p className="font-medium text-gray-900">Recovery Gap: Mobile Users</p>
                     <p className="text-sm text-gray-600 mt-1">
                       Mobile abandonment rate is 40% higher than desktop. Implement SMS recovery for better mobile engagement.
                     </p>
@@ -523,7 +523,7 @@ export default function RevenuePage() {
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 bg-green-50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium">Revenue Growth</span>
+                    <span className="font-medium text-gray-900">Revenue Growth</span>
                     <ArrowUpRight className="h-5 w-5 text-green-600" />
                   </div>
                   <div className="text-2xl font-bold text-green-700">+24.5%</div>
@@ -532,7 +532,7 @@ export default function RevenuePage() {
                 
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium">Optimization Score</span>
+                    <span className="font-medium text-gray-900">Optimization Score</span>
                     <Target className="h-5 w-5 text-blue-600" />
                   </div>
                   <div className="text-2xl font-bold text-blue-700">78/100</div>
