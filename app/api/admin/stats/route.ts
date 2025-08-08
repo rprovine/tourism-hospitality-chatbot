@@ -52,20 +52,62 @@ export async function GET(request: NextRequest) {
     // Get active subscribers (paid tiers)
     const activeSubscribers = await prisma.business.count({
       where: {
-        tier: { in: ['professional', 'premium'] },
+        tier: { in: ['professional', 'premium', 'enterprise'] },
         subscriptionStatus: 'active'
       }
     })
     
-    // Calculate MRR (Monthly Recurring Revenue)
-    const professionalCount = await prisma.business.count({
-      where: { tier: 'professional', subscriptionStatus: 'active' }
-    })
-    const premiumCount = await prisma.business.count({
-      where: { tier: 'premium', subscriptionStatus: 'active' }
+    // Calculate MRR (Monthly Recurring Revenue) accounting for billing cycles
+    // Get all active subscriptions with their billing details
+    const activeSubscriptions = await prisma.subscription.findMany({
+      where: {
+        status: 'active',
+        business: {
+          tier: { in: ['professional', 'premium', 'enterprise'] }
+        }
+      },
+      include: {
+        business: {
+          select: { tier: true }
+        }
+      }
     })
     
-    const mrr = (professionalCount * 299) + (premiumCount * 599)
+    // Define pricing (monthly rates)
+    const monthlyPricing: Record<string, number> = {
+      professional: 299,
+      premium: 599,
+      enterprise: 1499 // Custom pricing, using placeholder
+    }
+    
+    // Annual discount (20% off = 80% of monthly * 12)
+    const annualMultiplier = 0.8
+    
+    // Calculate MRR
+    let mrr = 0
+    activeSubscriptions.forEach(sub => {
+      const tier = sub.business.tier
+      const monthlyRate = monthlyPricing[tier] || 0
+      
+      if (sub.billingCycle === 'annual') {
+        // For annual subscriptions, calculate the monthly equivalent
+        // Annual price = monthly * 12 * 0.8 (20% discount)
+        // MRR = annual price / 12
+        mrr += monthlyRate * annualMultiplier
+      } else {
+        // Monthly subscriptions contribute full monthly rate
+        mrr += monthlyRate
+      }
+    })
+    
+    mrr = Math.round(mrr)
+    
+    // Calculate ARR (Annual Recurring Revenue)
+    const arr = mrr * 12
+    
+    // Calculate breakdown by billing cycle
+    const monthlySubscribers = activeSubscriptions.filter(s => s.billingCycle === 'monthly').length
+    const annualSubscribers = activeSubscriptions.filter(s => s.billingCycle === 'annual').length
     
     // Get conversation statistics
     const totalConversations = await prisma.conversation.count()
@@ -174,7 +216,10 @@ export async function GET(request: NextRequest) {
       activeSubscribers,
       monthlyRevenue: mrr,
       mrr,
-      arpu: totalUsers > 0 ? Math.round(mrr / totalUsers) : 0,
+      arr,
+      monthlySubscribers,
+      annualSubscribers,
+      arpu: activeSubscribers > 0 ? Math.round(mrr / activeSubscribers) : 0,
       subscriptionStatus: subscriptionStats.reduce((acc: any, curr) => {
         acc[curr.status] = curr._count
         return acc

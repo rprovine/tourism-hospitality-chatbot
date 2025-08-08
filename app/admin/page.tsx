@@ -36,6 +36,9 @@ interface AdminStats {
   activeSubscribers: number
   monthlyRevenue: number
   mrr: number
+  arr: number
+  monthlySubscribers: number
+  annualSubscribers: number
   arpu: number
   subscriptionStatus: Record<string, number>
   
@@ -242,6 +245,9 @@ export default function AdminDashboard() {
               ${stats?.mrr?.toLocaleString() || 0}
             </div>
             <div className="text-sm text-gray-600">Monthly Revenue</div>
+            <div className="text-xs text-gray-500 mt-1">
+              ARR: ${stats?.arr?.toLocaleString() || 0}
+            </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
@@ -291,6 +297,18 @@ export default function AdminDashboard() {
                   <span className="text-sm font-medium text-gray-900">Active Subscribers</span>
                   <span className="text-sm font-bold text-green-600">
                     {stats?.activeSubscribers || 0}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-sm font-medium text-gray-900">Monthly</span>
+                  <span className="text-sm font-bold text-gray-900">
+                    {stats?.monthlySubscribers || 0}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-sm font-medium text-gray-900">Annual</span>
+                  <span className="text-sm font-bold text-gray-900">
+                    {stats?.annualSubscribers || 0}
                   </span>
                 </div>
                 <div className="flex items-center justify-between mt-2">
