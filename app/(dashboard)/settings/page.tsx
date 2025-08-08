@@ -22,13 +22,16 @@ export default function SettingsPage() {
   const [business, setBusiness] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [uploadingLogo, setUploadingLogo] = useState(false)
+  const [logoUrl, setLogoUrl] = useState<string | null>(null)
   
   const [profileData, setProfileData] = useState({
     name: '',
     email: '',
     type: '',
     welcomeMessage: '',
-    primaryColor: '#0891b2'
+    primaryColor: '#0891b2',
+    logo: ''
   })
   
   const [notificationSettings, setNotificationSettings] = useState({
@@ -53,15 +56,68 @@ export default function SettingsPage() {
         email: parsed.email || '',
         type: parsed.type || '',
         welcomeMessage: parsed.welcomeMessage || 'Aloha! How can I help you today?',
-        primaryColor: parsed.primaryColor || '#0891b2'
+        primaryColor: parsed.primaryColor || '#0891b2',
+        logo: parsed.logo || ''
       })
+      setLogoUrl(parsed.logo || null)
     }
     setLoading(false)
+  }
+  
+  const handleLogoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file')
+      return
+    }
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size must be less than 5MB')
+      return
+    }
+    
+    setUploadingLogo(true)
+    
+    try {
+      // Convert to base64 for demo (in production, you'd upload to a CDN)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const base64String = reader.result as string
+        setLogoUrl(base64String)
+        setProfileData({ ...profileData, logo: base64String })
+      }
+      reader.readAsDataURL(file)
+    } catch (error) {
+      console.error('Error uploading logo:', error)
+      alert('Failed to upload logo')
+    } finally {
+      setUploadingLogo(false)
+    }
   }
   
   const saveProfile = async () => {
     setSaving(true)
     try {
+      // Save logo if there's one
+      if (profileData.logo && profileData.logo !== business?.logo) {
+        const logoResponse = await fetch('/api/upload/logo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({ logo: profileData.logo })
+        })
+        
+        if (!logoResponse.ok) {
+          throw new Error('Failed to upload logo')
+        }
+      }
+      
       const response = await fetch('/api/auth/profile', {
         method: 'PUT',
         headers: {
@@ -73,7 +129,7 @@ export default function SettingsPage() {
       
       if (response.ok) {
         const updated = await response.json()
-        localStorage.setItem('business', JSON.stringify(updated))
+        localStorage.setItem('business', JSON.stringify({ ...updated, logo: profileData.logo }))
         alert('Profile updated successfully!')
       }
     } catch (error) {
@@ -149,10 +205,47 @@ export default function SettingsPage() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Logo</label>
                 <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <Upload className="h-8 w-8 text-gray-400" />
+                  <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                    {logoUrl ? (
+                      <img src={logoUrl} alt="Business logo" className="w-full h-full object-cover" />
+                    ) : (
+                      <Upload className="h-8 w-8 text-gray-400" />
+                    )}
                   </div>
-                  <Button variant="outline">Upload Logo</Button>
+                  <div className="flex flex-col gap-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      className="hidden"
+                      id="logo-upload"
+                      disabled={uploadingLogo}
+                    />
+                    <label htmlFor="logo-upload">
+                      <Button 
+                        variant="outline" 
+                        disabled={uploadingLogo}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          document.getElementById('logo-upload')?.click()
+                        }}
+                      >
+                        {uploadingLogo ? 'Uploading...' : 'Upload Logo'}
+                      </Button>
+                    </label>
+                    {logoUrl && (
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => {
+                          setLogoUrl(null)
+                          setProfileData({ ...profileData, logo: '' })
+                        }}
+                      >
+                        Remove Logo
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
               
