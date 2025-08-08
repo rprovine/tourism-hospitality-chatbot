@@ -33,8 +33,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         tier: business.tier,
         status: 'none',
-        billingCycle: null,
-        endDate: null
+        startDate: null,
+        endDate: null,
+        cancelAtPeriodEnd: false,
+        paymentMethod: null,
+        nextBillingDate: null,
+        amount: 0,
+        interval: 'monthly'
       })
     }
     
@@ -54,13 +59,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       tier: business.tier,
       status: subscription.status,
-      billingCycle: subscription.billingCycle,
+      interval: subscription.billingCycle || 'monthly',
       paymentMethod: subscription.paymentMethod,
       paymentStatus: subscription.paymentStatus,
       startDate: subscription.startDate,
       endDate: subscription.endDate,
+      nextBillingDate: subscription.endDate, // Use endDate as nextBillingDate for simplicity
       cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
       cancelledAt: subscription.cancelledAt,
+      amount: 0,
       warning,
       gracePeriodEnds
     })

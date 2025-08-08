@@ -238,7 +238,7 @@ export default function SubscriptionPage() {
                 {isActive ? <CheckCircle className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}
                 {subscription.status === 'demo' ? 'Demo Account' : subscription.status}
               </Badge>
-              {subscription.status !== 'demo' && subscription.status !== 'none' && !subscription.cancelAtPeriodEnd && (
+              {(subscription.status === 'active' || subscription.status === 'trialing' || subscription.status === 'trial') && !subscription.cancelAtPeriodEnd && (
                 <Button 
                   variant="outline" 
                   size="sm"
@@ -468,7 +468,7 @@ export default function SubscriptionPage() {
             </Button>
           </div>
           
-          {subscription.status !== 'demo' && subscription.status !== 'none' && !subscription.cancelAtPeriodEnd && (
+          {(subscription.status === 'active' || subscription.status === 'trialing' || subscription.status === 'trial') && !subscription.cancelAtPeriodEnd && (
             <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
               <div>
                 <h3 className="font-medium text-red-900">Cancel Subscription</h3>
