@@ -430,32 +430,140 @@ export default function BillingPage() {
         </div>
       )}
 
-      {/* Feature Comparison */}
+      {/* Feature Comparison Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Plan Features Comparison</CardTitle>
-          <CardDescription>See what's included in each plan</CardDescription>
+          <CardTitle>Compare Plans</CardTitle>
+          <CardDescription>See the differences between your current plan and available upgrades</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {currentPlan.features.map((feature, index) => (
-              <div key={index} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
-                {feature.included ? (
-                  <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
-                ) : (
-                  <X className="h-5 w-5 text-gray-300 flex-shrink-0" />
-                )}
-                <span className={`${feature.included ? 'text-gray-900' : 'text-gray-400'}`}>
-                  {feature.text}
-                </span>
-                {!feature.included && businessTier !== 'premium' && (
-                  <Badge variant="outline" className="ml-auto text-xs">
-                    {businessTier === 'starter' && feature.text.includes('Revenue') ? 'Pro' : 'Premium'}
-                  </Badge>
-                )}
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left p-3 font-medium text-gray-700">Features</th>
+                  <th className="text-center p-3">
+                    <div className={`font-medium ${businessTier === 'starter' ? 'text-green-600' : 'text-gray-500'}`}>
+                      Starter
+                      {businessTier === 'starter' && (
+                        <div className="text-xs text-gray-500 font-normal mt-1">Current Plan</div>
+                      )}
+                    </div>
+                  </th>
+                  <th className="text-center p-3">
+                    <div className={`font-medium ${businessTier === 'professional' ? 'text-blue-600' : 'text-gray-700'}`}>
+                      Professional
+                      {businessTier === 'professional' && (
+                        <div className="text-xs text-gray-500 font-normal mt-1">Current Plan</div>
+                      )}
+                    </div>
+                  </th>
+                  <th className="text-center p-3">
+                    <div className={`font-medium ${businessTier === 'premium' ? 'text-purple-600' : 'text-gray-700'}`}>
+                      Premium
+                      {businessTier === 'premium' && (
+                        <div className="text-xs text-gray-500 font-normal mt-1">Current Plan</div>
+                      )}
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 font-medium text-gray-700">Monthly Price</td>
+                  <td className="text-center p-3">$29</td>
+                  <td className="text-center p-3">$149</td>
+                  <td className="text-center p-3">$299</td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">Conversations/month</td>
+                  <td className="text-center p-3">100</td>
+                  <td className="text-center p-3">1,000</td>
+                  <td className="text-center p-3">Unlimited</td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">Knowledge Base Items</td>
+                  <td className="text-center p-3">50</td>
+                  <td className="text-center p-3">500</td>
+                  <td className="text-center p-3">Unlimited</td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">AI Models</td>
+                  <td className="text-center p-3">Basic</td>
+                  <td className="text-center p-3">GPT-4, Claude Sonnet</td>
+                  <td className="text-center p-3">All Models + Opus</td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">Languages</td>
+                  <td className="text-center p-3">6 Basic</td>
+                  <td className="text-center p-3">7 + Pidgin</td>
+                  <td className="text-center p-3">All + Hawaiian</td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">Revenue Optimization</td>
+                  <td className="text-center p-3"><X className="h-5 w-5 text-gray-300 mx-auto" /></td>
+                  <td className="text-center p-3"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                  <td className="text-center p-3"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">Guest Intelligence</td>
+                  <td className="text-center p-3"><X className="h-5 w-5 text-gray-300 mx-auto" /></td>
+                  <td className="text-center p-3"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                  <td className="text-center p-3"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">Multi-Channel (WhatsApp, SMS)</td>
+                  <td className="text-center p-3"><X className="h-5 w-5 text-gray-300 mx-auto" /></td>
+                  <td className="text-center p-3"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                  <td className="text-center p-3"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">API Access</td>
+                  <td className="text-center p-3"><X className="h-5 w-5 text-gray-300 mx-auto" /></td>
+                  <td className="text-center p-3">Limited</td>
+                  <td className="text-center p-3">Unlimited</td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">White Label</td>
+                  <td className="text-center p-3"><X className="h-5 w-5 text-gray-300 mx-auto" /></td>
+                  <td className="text-center p-3"><X className="h-5 w-5 text-gray-300 mx-auto" /></td>
+                  <td className="text-center p-3"><Check className="h-5 w-5 text-green-600 mx-auto" /></td>
+                </tr>
+                <tr className="border-b hover:bg-gray-50">
+                  <td className="p-3 text-gray-700">Support</td>
+                  <td className="text-center p-3">Email</td>
+                  <td className="text-center p-3">Priority Email</td>
+                  <td className="text-center p-3">24/7 Phone & Email</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          
+          {/* Upgrade CTA based on current tier */}
+          {businessTier !== 'premium' && (
+            <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold text-gray-900">
+                    {businessTier === 'starter' 
+                      ? 'Unlock Revenue Optimization & Guest Intelligence'
+                      : 'Get Unlimited Everything with Premium'}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {businessTier === 'starter'
+                      ? 'Professional plan gives you 10x more conversations and powerful revenue tools'
+                      : 'Premium removes all limits and adds white-label options'}
+                  </p>
+                </div>
+                <Button 
+                  onClick={() => window.location.href = `/checkout?plan=${businessTier === 'starter' ? 'professional' : 'premium'}&interval=monthly`}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                >
+                  Upgrade Now
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
