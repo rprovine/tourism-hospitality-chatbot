@@ -26,8 +26,25 @@ export async function POST(request: NextRequest) {
       include: { subscription: true }
     })
     
-    if (!business || !business.subscription) {
-      return NextResponse.json({ error: 'No active subscription found' }, { status: 404 })
+    if (!business) {
+      return NextResponse.json({ error: 'Business not found' }, { status: 404 })
+    }
+    
+    // Handle trial accounts (no subscription record)
+    if (!business.subscription) {
+      // For trial accounts, just downgrade to free/demo tier
+      await prisma.business.update({
+        where: { id: business.id },
+        data: {
+          tier: 'none',
+          subscriptionStatus: 'cancelled'
+        }
+      })
+      
+      return NextResponse.json({
+        message: 'Trial account cancelled - access revoked',
+        accessRevokedAt: new Date()
+      })
     }
     
     const subscription = business.subscription
@@ -49,7 +66,7 @@ export async function POST(request: NextRequest) {
       await prisma.business.update({
         where: { id: business.id },
         data: {
-          tier: 'starter',
+          tier: 'none',
           subscriptionStatus: 'cancelled'
         }
       })

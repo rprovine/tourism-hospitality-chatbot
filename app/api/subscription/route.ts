@@ -29,11 +29,12 @@ export async function GET(request: NextRequest) {
     const subscription = business.subscription
     
     if (!subscription) {
-      // No subscription, return basic info
+      // No subscription record - treat as trial account if it has a tier
+      const isTrialAccount = business.tier && business.tier !== 'none'
       return NextResponse.json({
         tier: business.tier,
-        status: 'none',
-        startDate: null,
+        status: isTrialAccount ? 'trial' : 'none',
+        startDate: business.createdAt?.toISOString() || null,
         endDate: null,
         cancelAtPeriodEnd: false,
         paymentMethod: null,
