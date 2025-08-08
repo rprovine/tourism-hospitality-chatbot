@@ -100,22 +100,91 @@ export async function POST(request: NextRequest) {
       3
     )
     
-    // Generate AI response using Claude with knowledge base context
-    const aiResponse = await generateClaudeResponse(
-      validatedData.message,
-      {
-        businessName: conversation.business.name,
-        businessType: conversation.business.type,
-        tier: conversation.business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
-        welcomeMessage: conversation.business.welcomeMessage,
-        businessInfo: conversation.business.businessInfo,
-        previousMessages: previousMessages.map(m => ({
-          role: m.role as 'user' | 'assistant',
-          content: m.content
-        })),
-        knowledgeBase: knowledgeMatches
+    // Get AI settings to determine which provider to use
+    const aiSettings = conversation.business.aiSettings as any || { provider: 'claude' }
+    
+    let aiResponse: string
+    
+    if (aiSettings.provider === 'chatgpt') {
+      // Use OpenAI/ChatGPT
+      const { getOpenAIService } = await import('@/lib/ai/openai-service')
+      const openAI = getOpenAIService()
+      
+      if (openAI.isConfigured()) {
+        try {
+          // Prepare messages for OpenAI format
+          const messages = [
+            {
+              role: 'system' as const,
+              content: `You are an AI assistant for ${conversation.business.name}, a ${conversation.business.type} in Hawaii. ${aiSettings.customPrompt || ''}`
+            },
+            ...previousMessages.map(m => ({
+              role: m.role as 'user' | 'assistant',
+              content: m.content
+            })),
+            {
+              role: 'user' as const,
+              content: validatedData.message
+            }
+          ]
+          
+          const response = await openAI.createCompletion({
+            messages,
+            model: aiSettings.chatgptSettings?.modelPreference || 'gpt-4',
+            temperature: aiSettings.temperature || 0.7,
+            maxTokens: aiSettings.maxTokens || 500
+          })
+          
+          aiResponse = response.content || 'I apologize, but I encountered an issue processing your request.'
+        } catch (error) {
+          console.error('OpenAI error:', error)
+          // Fall back to Claude if OpenAI fails
+          aiResponse = await generateClaudeResponse(validatedData.message, {
+            businessName: conversation.business.name,
+            businessType: conversation.business.type,
+            tier: conversation.business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
+            welcomeMessage: conversation.business.welcomeMessage,
+            businessInfo: conversation.business.businessInfo,
+            previousMessages: previousMessages.map(m => ({
+              role: m.role as 'user' | 'assistant',
+              content: m.content
+            })),
+            knowledgeBase: knowledgeMatches
+          })
+        }
+      } else {
+        // OpenAI not configured, fall back to Claude
+        aiResponse = await generateClaudeResponse(validatedData.message, {
+          businessName: conversation.business.name,
+          businessType: conversation.business.type,
+          tier: conversation.business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
+          welcomeMessage: conversation.business.welcomeMessage,
+          businessInfo: conversation.business.businessInfo,
+          previousMessages: previousMessages.map(m => ({
+            role: m.role as 'user' | 'assistant',
+            content: m.content
+          })),
+          knowledgeBase: knowledgeMatches
+        })
       }
-    )
+    } else {
+      // Default to Claude
+      aiResponse = await generateClaudeResponse(
+        validatedData.message,
+        {
+          businessName: conversation.business.name,
+          businessType: conversation.business.type,
+          tier: conversation.business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
+          welcomeMessage: conversation.business.welcomeMessage,
+          businessInfo: conversation.business.businessInfo,
+          previousMessages: previousMessages.map(m => ({
+            role: m.role as 'user' | 'assistant',
+            content: m.content
+          })),
+          knowledgeBase: knowledgeMatches
+        }
+      )
+    }
     
     // Save AI response
     const assistantMessage = await prisma.message.create({

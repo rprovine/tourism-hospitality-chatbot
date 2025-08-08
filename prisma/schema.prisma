@@ -26,6 +26,7 @@ model Business {
   logo                  String?
   welcomeMessage        String            @default("Aloha! How can I help you today?")
   businessInfo          Json?
+  aiSettings            Json?
   apiKey                String?           @unique @default(cuid())
   apiKeyCreatedAt       DateTime?
   webhookUrl            String?

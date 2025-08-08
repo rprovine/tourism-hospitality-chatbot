@@ -12,34 +12,73 @@ export default function AISettingsPage() {
     provider: 'claude', // 'claude' or 'chatgpt'
     claudeSettings: {
       apiKey: '',
-      modelPreference: 'haiku',
+      modelPreference: 'sonnet',
     },
     chatgptSettings: {
       apiKey: '',
-      modelPreference: 'gpt-3.5-turbo',
+      modelPreference: 'gpt-4',
     },
     temperature: 0.7,
-    maxTokens: 200,
+    maxTokens: 500,
     customPrompt: '',
     knowledgeBaseEnabled: true
   })
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    loadSettings()
+  }, [])
+
+  const loadSettings = async () => {
+    try {
+      const response = await fetch('/api/ai/settings', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setSettings(data)
+      }
+    } catch (error) {
+      console.error('Failed to load AI settings:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSave = async () => {
     setIsSaving(true)
     setSaveMessage('')
     
     try {
-      // In production, this would save to database
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      setSaveMessage('Settings saved successfully!')
-      setTimeout(() => setSaveMessage(''), 3000)
+      const response = await fetch('/api/ai/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(settings)
+      })
+      
+      if (response.ok) {
+        setSaveMessage('Settings saved successfully!')
+        setTimeout(() => setSaveMessage(''), 3000)
+      } else {
+        setSaveMessage('Error saving settings. Please try again.')
+      }
     } catch (error) {
       setSaveMessage('Error saving settings. Please try again.')
     } finally {
       setIsSaving(false)
     }
+  }
+
+  if (loading) {
+    return <div className="p-8">Loading AI settings...</div>
   }
 
   return (
