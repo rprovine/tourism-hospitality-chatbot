@@ -221,8 +221,9 @@ export default function DashboardNav() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setMobileMenuOpen(false)}
+                  className="hover:bg-gray-100 p-2"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-6 w-6 text-gray-700" />
                 </Button>
               </div>
               
@@ -239,10 +240,10 @@ export default function DashboardNav() {
                     return (
                       <div
                         key={item.href}
-                        className="flex items-center gap-3 px-4 py-3 text-gray-400 cursor-not-allowed"
+                        className="flex items-center gap-3 px-4 py-3.5 text-gray-400 cursor-not-allowed bg-gray-50 rounded-lg"
                       >
                         <Icon className="h-5 w-5" />
-                        <span>{item.label}</span>
+                        <span className="text-base">{item.label}</span>
                         <Lock className="h-4 w-4 ml-auto" />
                       </div>
                     )
@@ -254,15 +255,15 @@ export default function DashboardNav() {
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`
-                        flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
+                        flex items-center gap-3 px-4 py-3.5 rounded-lg transition-colors
                         ${isActive 
-                          ? 'bg-cyan-50 text-cyan-700' 
-                          : 'text-gray-700 hover:bg-gray-50'
+                          ? 'bg-cyan-50 text-cyan-700 font-semibold border-l-4 border-cyan-600' 
+                          : 'text-gray-800 hover:bg-gray-50 font-medium'
                         }
                       `}
                     >
-                      <Icon className="h-5 w-5" />
-                      <span className="font-medium">{item.label}</span>
+                      <Icon className="h-5 w-5 flex-shrink-0" />
+                      <span className="text-base">{item.label}</span>
                     </Link>
                   )
                 })}

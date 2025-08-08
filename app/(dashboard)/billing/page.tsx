@@ -177,7 +177,12 @@ export default function BillingPage() {
   }
 
   if (loading) {
-    return <div className="p-8">Loading...</div>
+    return (
+      <div className="flex flex-col items-center justify-center h-96 gap-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-cyan-600"></div>
+        <p className="text-gray-600 font-medium">Loading billing information...</p>
+      </div>
+    )
   }
 
   const currentPlan = planDetails[businessTier as keyof typeof planDetails] || planDetails.starter

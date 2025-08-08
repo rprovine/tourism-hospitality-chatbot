@@ -38,8 +38,9 @@ export default function BusinessDashboard() {
     return (
       <div className="min-h-screen bg-gray-50">
         <DashboardNav />
-        <div className="flex items-center justify-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-700"></div>
+        <div className="flex flex-col items-center justify-center h-96 gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-cyan-600"></div>
+          <p className="text-gray-600 font-medium">Loading dashboard...</p>
         </div>
       </div>
     )
