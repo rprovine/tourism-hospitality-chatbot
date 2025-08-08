@@ -9,27 +9,9 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Allow widget pages to be embedded in iframes
-        source: '/widget/:path*',
+        // Allow widget pages to be embedded in iframes - remove X-Frame-Options entirely
+        source: '/widget/(.*)',
         headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'ALLOWALL'
-          },
-          {
-            key: 'Content-Security-Policy',
-            value: 'frame-ancestors *'
-          }
-        ],
-      },
-      {
-        // Allow widget chat page to be embedded
-        source: '/widget/chat',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'ALLOWALL'
-          },
           {
             key: 'Content-Security-Policy',
             value: 'frame-ancestors *'

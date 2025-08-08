@@ -97,6 +97,14 @@ export default function SubscriptionPage() {
       
       if (response.ok) {
         const data = await response.json()
+        console.log('Subscription API response:', data)
+        console.log('Status check:', { 
+          status: data.status, 
+          isActive: data.status === 'active',
+          isTrialing: data.status === 'trialing', 
+          isTrial: data.status === 'trial',
+          cancelAtPeriodEnd: data.cancelAtPeriodEnd
+        })
         setSubscription(data)
       }
     } catch (error) {
