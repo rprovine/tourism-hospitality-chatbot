@@ -177,7 +177,7 @@ export default function ChannelsPage() {
               {getChannelStatus('whatsapp') ? (
                 <Badge className="bg-green-100 text-green-800">Active</Badge>
               ) : (
-                <Badge variant="outline">Inactive</Badge>
+                <Badge variant="outline" className="text-gray-700 border-gray-300">Inactive</Badge>
               )}
             </div>
           </CardContent>
@@ -193,7 +193,7 @@ export default function ChannelsPage() {
               {getChannelStatus('sms') ? (
                 <Badge className="bg-green-100 text-green-800">Active</Badge>
               ) : (
-                <Badge variant="outline">Inactive</Badge>
+                <Badge variant="outline" className="text-gray-700 border-gray-300">Inactive</Badge>
               )}
             </div>
           </CardContent>
@@ -205,7 +205,7 @@ export default function ChannelsPage() {
             <Instagram className="h-4 w-4 text-pink-600" />
           </CardHeader>
           <CardContent>
-            <Badge variant="outline">Coming Soon</Badge>
+            <Badge variant="outline" className="text-gray-700 border-gray-300">Coming Soon</Badge>
           </CardContent>
         </Card>
 
@@ -215,7 +215,7 @@ export default function ChannelsPage() {
             <Facebook className="h-4 w-4 text-blue-700" />
           </CardHeader>
           <CardContent>
-            <Badge variant="outline">Coming Soon</Badge>
+            <Badge variant="outline" className="text-gray-700 border-gray-300">Coming Soon</Badge>
           </CardContent>
         </Card>
       </div>
