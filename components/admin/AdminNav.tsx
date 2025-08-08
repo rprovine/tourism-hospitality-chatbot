@@ -33,8 +33,14 @@ export default function AdminNav() {
   const pathname = usePathname()
   
   const handleLogout = () => {
+    // Clear all auth data
     localStorage.removeItem('token')
     localStorage.removeItem('adminToken')
+    localStorage.removeItem('adminUser')
+    localStorage.removeItem('business')
+    // Clear cookie
+    document.cookie = 'token=; path=/; max-age=0'
+    // Redirect to login
     window.location.href = '/login'
   }
   

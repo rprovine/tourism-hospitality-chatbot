@@ -69,8 +69,11 @@ export default function LoginPage() {
       console.log('Login successful, saving auth data...')
       // Store token and appropriate user data
       if (data.isAdmin) {
+        // For admin users, still set the cookie for middleware
         localStorage.setItem('adminToken', data.token)
         localStorage.setItem('adminUser', JSON.stringify(data.user))
+        // Set cookie for middleware authentication
+        document.cookie = `token=${data.token}; path=/; max-age=${30 * 24 * 60 * 60}` // 30 days
       } else {
         setAuthData(data.token, data.business)
       }
