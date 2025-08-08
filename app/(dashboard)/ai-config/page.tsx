@@ -151,6 +151,8 @@ export default function UnifiedAIConfigPage() {
   const responseStyles = ['professional', 'friendly', 'casual', 'concise', 'detailed']
   const availableLanguages = [
     { code: 'english', label: 'English', flag: '🇺🇸' },
+    { code: 'pidgin', label: 'Hawaiian Pidgin', flag: '🤙', tier: 'professional' },
+    { code: 'hawaiian', label: 'ʻŌlelo Hawaiʻi', flag: '🌺', tier: 'premium' },
     { code: 'spanish', label: 'Spanish', flag: '🇪🇸' },
     { code: 'japanese', label: 'Japanese', flag: '🇯🇵' },
     { code: 'chinese', label: 'Chinese', flag: '🇨🇳' },
@@ -436,31 +438,48 @@ export default function UnifiedAIConfigPage() {
                   Supported Languages
                 </label>
                 <div className="grid grid-cols-3 gap-2">
-                  {availableLanguages.map((lang) => (
-                    <label
-                      key={lang.code}
-                      className="flex items-center gap-2 p-2 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={settings.languages.includes(lang.code)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSettings({
-                              ...settings,
-                              languages: [...settings.languages, lang.code]
-                            })
-                          } else {
-                            setSettings({
-                              ...settings,
-                              languages: settings.languages.filter(l => l !== lang.code)
-                            })
-                          }
-                        }}
-                        className="rounded"
-                      />
-                      <span className="text-sm text-gray-700">{lang.flag} {lang.label}</span>
-                    </label>
+                  {availableLanguages.map((lang) => {
+                    const isRestricted = lang.tier && 
+                      ((lang.tier === 'professional' && businessTier === 'starter') ||
+                       (lang.tier === 'premium' && businessTier !== 'premium'))
+                    
+                    return (
+                      <label
+                        key={lang.code}
+                        className={`flex items-center gap-2 p-2 rounded border ${
+                          isRestricted 
+                            ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60' 
+                            : 'border-gray-200 hover:bg-gray-50 cursor-pointer'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={settings.languages.includes(lang.code)}
+                          disabled={isRestricted}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSettings({
+                                ...settings,
+                                languages: [...settings.languages, lang.code]
+                              })
+                            } else {
+                              setSettings({
+                                ...settings,
+                                languages: settings.languages.filter(l => l !== lang.code)
+                              })
+                            }
+                          }}
+                          className="rounded"
+                        />
+                        <span className="text-sm text-gray-700 flex items-center gap-1">
+                          {lang.flag} {lang.label}
+                          {isRestricted && (
+                            <Lock className="h-3 w-3 text-gray-400" />
+                          )}
+                        </span>
+                      </label>
+                    )
+                  }
                   ))}
                 </div>
               </div>
