@@ -153,8 +153,8 @@ export default function RevenuePage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Revenue Optimization</h1>
-          <p className="text-muted-foreground">Dynamic pricing, upselling, and abandonment recovery</p>
+          <h1 className="text-3xl font-bold text-gray-900">Revenue Optimization</h1>
+          <p className="text-gray-600">Dynamic pricing, upselling, and abandonment recovery</p>
         </div>
         <div className="flex gap-2">
           <select
@@ -179,13 +179,13 @@ export default function RevenuePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <DollarSign className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-gray-900">
               {formatCurrency(revenueMetrics?.totalRevenue || 0)}
             </div>
-            <p className="text-xs text-muted-foreground flex items-center">
+            <p className="text-xs text-gray-600 flex items-center">
               <TrendingUp className="h-3 w-3 text-green-600 mr-1" />
               +12.5% from last {period}
             </p>
@@ -195,13 +195,13 @@ export default function RevenuePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Avg Order Value</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+            <ShoppingCart className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-gray-900">
               {formatCurrency(revenueMetrics?.averageOrderValue || 0)}
             </div>
-            <p className="text-xs text-muted-foreground flex items-center">
+            <p className="text-xs text-gray-600 flex items-center">
               <ChevronUp className="h-3 w-3 text-green-600 mr-1" />
               +8% improvement
             </p>
@@ -211,13 +211,13 @@ export default function RevenuePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Conversion Rate</CardTitle>
-            <Percent className="h-4 w-4 text-muted-foreground" />
+            <Percent className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-gray-900">
               {formatPercent(revenueMetrics?.conversionRate || 0)}
             </div>
-            <p className="text-xs text-muted-foreground flex items-center">
+            <p className="text-xs text-gray-600 flex items-center">
               <ChevronDown className="h-3 w-3 text-red-600 mr-1" />
               -0.3% vs target
             </p>
@@ -227,13 +227,13 @@ export default function RevenuePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Customer LTV</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-gray-900">
               {formatCurrency(revenueMetrics?.customerLifetimeValue || 0)}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-600">
               {formatPercent(revenueMetrics?.churnRate || 0)} churn
             </p>
           </CardContent>
@@ -261,7 +261,7 @@ export default function RevenuePage() {
                     {pricingRecommendations.map((rec, index) => (
                       <div key={index} className="p-3 border rounded-lg">
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold">{rec.title}</h4>
+                          <h4 className="font-semibold text-gray-900">{rec.title}</h4>
                           <Badge variant="outline">
                             +{(rec.impact * 100).toFixed(0)}% impact
                           </Badge>
@@ -287,19 +287,19 @@ export default function RevenuePage() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <span className="text-sm font-medium">Peak Season</span>
+                    <span className="text-sm font-medium text-gray-700">Peak Season</span>
                     <span className="text-green-700 font-semibold">+30%</span>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                    <span className="text-sm font-medium">Weekend Premium</span>
+                    <span className="text-sm font-medium text-gray-700">Weekend Premium</span>
                     <span className="text-blue-700 font-semibold">+15%</span>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-                    <span className="text-sm font-medium">Local Events</span>
+                    <span className="text-sm font-medium text-gray-700">Local Events</span>
                     <span className="text-yellow-700 font-semibold">+10%</span>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                    <span className="text-sm font-medium">Early Bird Discount</span>
+                    <span className="text-sm font-medium text-gray-700">Early Bird Discount</span>
                     <span className="text-purple-700 font-semibold">-10%</span>
                   </div>
                 </div>
@@ -312,10 +312,10 @@ export default function RevenuePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Upsell Conversion</CardTitle>
+                <CardTitle className="text-sm text-gray-700">Upsell Conversion</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-gray-900">
                   {formatPercent(upsellMetrics?.conversionRate || 0)}
                 </div>
                 <p className="text-xs text-gray-600">
@@ -326,10 +326,10 @@ export default function RevenuePage() {
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Additional Revenue</CardTitle>
+                <CardTitle className="text-sm text-gray-700">Additional Revenue</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-gray-900">
                   {formatCurrency(upsellMetrics?.additionalRevenue || 0)}
                 </div>
                 <p className="text-xs text-gray-600">
@@ -340,7 +340,7 @@ export default function RevenuePage() {
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Top Performers</CardTitle>
+                <CardTitle className="text-sm text-gray-700">Top Performers</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-1">
@@ -363,7 +363,7 @@ export default function RevenuePage() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
-                    <h4 className="font-medium">Room Upgrade Campaign</h4>
+                    <h4 className="font-medium text-gray-900">Room Upgrade Campaign</h4>
                     <p className="text-sm text-gray-600">Ocean view upgrades at 40% off</p>
                   </div>
                   <div className="text-right">
@@ -374,7 +374,7 @@ export default function RevenuePage() {
                 
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
-                    <h4 className="font-medium">Spa Package Bundle</h4>
+                    <h4 className="font-medium text-gray-900">Spa Package Bundle</h4>
                     <p className="text-sm text-gray-600">Relaxation package with 20% savings</p>
                   </div>
                   <div className="text-right">
@@ -385,7 +385,7 @@ export default function RevenuePage() {
                 
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
-                    <h4 className="font-medium">Extended Stay Offer</h4>
+                    <h4 className="font-medium text-gray-900">Extended Stay Offer</h4>
                     <p className="text-sm text-gray-600">25% off additional nights</p>
                   </div>
                   <div className="text-right">
@@ -402,10 +402,10 @@ export default function RevenuePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Recovery Rate</CardTitle>
+                <CardTitle className="text-sm text-gray-700">Recovery Rate</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-gray-900">
                   {formatPercent(recoveryMetrics?.recoveryRate || 0)}
                 </div>
                 <p className="text-xs text-gray-600">
@@ -416,10 +416,10 @@ export default function RevenuePage() {
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Revenue Recovered</CardTitle>
+                <CardTitle className="text-sm text-gray-700">Revenue Recovered</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-gray-900">
                   {formatCurrency(recoveryMetrics?.revenueRecovered || 0)}
                 </div>
                 <p className="text-xs text-gray-600">
@@ -430,10 +430,10 @@ export default function RevenuePage() {
             
             <Card>
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm">Best Channel</CardTitle>
+                <CardTitle className="text-sm text-gray-700">Best Channel</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">Email</div>
+                <div className="text-2xl font-bold text-gray-900">Email</div>
                 <p className="text-xs text-gray-600">
                   {formatPercent(recoveryMetrics?.channelPerformance?.email || 0)} success
                 </p>
@@ -459,7 +459,7 @@ export default function RevenuePage() {
               </div>
               
               <div className="mt-4 pt-4 border-t">
-                <h4 className="font-medium mb-2">Channel Performance</h4>
+                <h4 className="font-medium mb-2 text-gray-900">Channel Performance</h4>
                 <div className="space-y-2">
                   {Object.entries(recoveryMetrics?.channelPerformance || {}).map(([channel, rate]) => (
                     <div key={channel} className="flex items-center justify-between">

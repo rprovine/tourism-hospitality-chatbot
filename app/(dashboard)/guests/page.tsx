@@ -147,8 +147,8 @@ export default function GuestsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Guest Profiles</h1>
-          <p className="text-muted-foreground">Track and manage your guest relationships</p>
+          <h1 className="text-3xl font-bold text-gray-900">Guest Profiles</h1>
+          <p className="text-gray-600">Track and manage your guest relationships</p>
         </div>
         <Button onClick={exportGuests}>
           <Download className="h-4 w-4 mr-2" />
@@ -167,7 +167,7 @@ export default function GuestsPage() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && searchGuests()}
-                className="pl-10"
+                className="pl-10 text-gray-900"
               />
             </div>
             <Button onClick={searchGuests}>Search</Button>
@@ -204,52 +204,52 @@ export default function GuestsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Total Guests</CardTitle>
-            <User className="h-4 w-4 text-muted-foreground" />
+            <User className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900">{guests.length}</div>
-            <p className="text-xs text-muted-foreground">Unique profiles</p>
+            <p className="text-xs text-gray-600">Unique profiles</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">With Bookings</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <Calendar className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-gray-900">
               {guests.filter(g => g.totalBookings > 0).length}
             </div>
-            <p className="text-xs text-muted-foreground">Have made reservations</p>
+            <p className="text-xs text-gray-600">Have made reservations</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">VIP Guests</CardTitle>
-            <Star className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-700">VIP Guests</CardTitle>
+            <Star className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-gray-900">
               {guests.filter(g => getGuestScore(g) >= 4).length}
             </div>
-            <p className="text-xs text-muted-foreground">High-value customers</p>
+            <p className="text-xs text-gray-600">High-value customers</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Lifetime Value</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-700">Avg Lifetime Value</CardTitle>
+            <DollarSign className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-gray-900">
               ${guests.length > 0 
                 ? Math.round(guests.reduce((sum, g) => sum + parseFloat(g.lifetimeValue), 0) / guests.length)
                 : 0}
             </div>
-            <p className="text-xs text-muted-foreground">Per guest</p>
+            <p className="text-xs text-gray-600">Per guest</p>
           </CardContent>
         </Card>
       </div>

@@ -173,6 +173,7 @@ export default function SettingsPage() {
                   value={profileData.name}
                   onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                   placeholder="Your Business Name"
+                  className="text-gray-900"
                 />
               </div>
               
@@ -183,6 +184,7 @@ export default function SettingsPage() {
                   value={profileData.email}
                   onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
                   placeholder="contact@business.com"
+                  className="text-gray-900"
                 />
               </div>
               
@@ -288,7 +290,7 @@ export default function SettingsPage() {
                     value={profileData.primaryColor}
                     onChange={(e) => setProfileData({ ...profileData, primaryColor: e.target.value })}
                     placeholder="#0891b2"
-                    className="w-32"
+                    className="w-32 text-gray-900"
                   />
                 </div>
               </div>
@@ -391,7 +393,7 @@ export default function SettingsPage() {
                 
                 <label className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium">Conversation Alerts</div>
+                    <div className="font-medium text-gray-900">Conversation Alerts</div>
                     <div className="text-sm text-gray-500">Alert when chatbot needs help</div>
                   </div>
                   <input
@@ -407,7 +409,7 @@ export default function SettingsPage() {
                 
                 <label className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium">Payment Alerts</div>
+                    <div className="font-medium text-gray-900">Payment Alerts</div>
                     <div className="text-sm text-gray-500">Billing and subscription updates</div>
                   </div>
                   <input
@@ -438,18 +440,18 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Current Password</label>
-                <Input type="password" placeholder="Enter current password" />
+                <label className="text-sm font-medium text-gray-700">Current Password</label>
+                <Input type="password" placeholder="Enter current password" className="text-gray-900" />
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">New Password</label>
-                <Input type="password" placeholder="Enter new password" />
+                <label className="text-sm font-medium text-gray-700">New Password</label>
+                <Input type="password" placeholder="Enter new password" className="text-gray-900" />
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Confirm New Password</label>
-                <Input type="password" placeholder="Confirm new password" />
+                <label className="text-sm font-medium text-gray-700">Confirm New Password</label>
+                <Input type="password" placeholder="Confirm new password" className="text-gray-900" />
               </div>
               
               <Button>
@@ -463,7 +465,7 @@ export default function SettingsPage() {
                   <div className="flex items-center gap-3">
                     <AlertCircle className="h-5 w-5 text-yellow-600" />
                     <div>
-                      <div className="font-medium">2FA is not enabled</div>
+                      <div className="font-medium text-gray-900">2FA is not enabled</div>
                       <div className="text-sm text-gray-600">Add an extra layer of security</div>
                     </div>
                   </div>
@@ -484,7 +486,7 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium">Current Plan</span>
+                    <span className="font-medium text-gray-700">Current Plan</span>
                     <span className="text-lg font-bold capitalize">{business?.tier || 'Starter'}</span>
                   </div>
                   <div className="text-sm text-gray-600">

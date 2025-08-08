@@ -246,6 +246,7 @@ export default function ChannelsPage() {
                   placeholder="Your WhatsApp Business API access token"
                   value={whatsappConfig.accessToken}
                   onChange={(e) => setWhatsappConfig({ ...whatsappConfig, accessToken: e.target.value })}
+                  className="text-gray-900"
                 />
               </div>
 
@@ -255,6 +256,7 @@ export default function ChannelsPage() {
                   placeholder="WhatsApp phone number ID"
                   value={whatsappConfig.phoneNumberId}
                   onChange={(e) => setWhatsappConfig({ ...whatsappConfig, phoneNumberId: e.target.value })}
+                  className="text-gray-900"
                 />
               </div>
 
@@ -264,6 +266,7 @@ export default function ChannelsPage() {
                   placeholder="WhatsApp business account ID"
                   value={whatsappConfig.businessAccountId}
                   onChange={(e) => setWhatsappConfig({ ...whatsappConfig, businessAccountId: e.target.value })}
+                  className="text-gray-900"
                 />
               </div>
 
@@ -273,6 +276,7 @@ export default function ChannelsPage() {
                   <Input
                     readOnly
                     value={`${window.location.origin}/api/channels/whatsapp/webhook`}
+                    className="text-gray-900 bg-gray-50"
                   />
                   <Button onClick={() => copyWebhookUrl('whatsapp')} size="sm">
                     <Copy className="h-4 w-4" />
@@ -288,6 +292,7 @@ export default function ChannelsPage() {
                 <Input
                   readOnly
                   value={whatsappConfig.webhookVerifyToken}
+                  className="text-gray-900 bg-gray-50"
                 />
                 <p className="text-xs text-gray-500">
                   Use this token when setting up your webhook
@@ -338,6 +343,7 @@ export default function ChannelsPage() {
                   placeholder="Your Twilio Account SID"
                   value={smsConfig.accountSid}
                   onChange={(e) => setSmsConfig({ ...smsConfig, accountSid: e.target.value })}
+                  className="text-gray-900"
                 />
               </div>
 
@@ -348,6 +354,7 @@ export default function ChannelsPage() {
                   placeholder="Your Twilio Auth Token"
                   value={smsConfig.authToken}
                   onChange={(e) => setSmsConfig({ ...smsConfig, authToken: e.target.value })}
+                  className="text-gray-900"
                 />
               </div>
 
@@ -357,6 +364,7 @@ export default function ChannelsPage() {
                   placeholder="+1234567890"
                   value={smsConfig.phoneNumber}
                   onChange={(e) => setSmsConfig({ ...smsConfig, phoneNumber: e.target.value })}
+                  className="text-gray-900"
                 />
                 <p className="text-xs text-gray-500">
                   Your Twilio phone number (with country code)
@@ -369,6 +377,7 @@ export default function ChannelsPage() {
                   placeholder="Messaging Service SID for advanced features"
                   value={smsConfig.messagingServiceSid}
                   onChange={(e) => setSmsConfig({ ...smsConfig, messagingServiceSid: e.target.value })}
+                  className="text-gray-900"
                 />
               </div>
 
@@ -379,6 +388,7 @@ export default function ChannelsPage() {
                     <Input
                       readOnly
                       value={`${window.location.origin}/api/channels/sms/webhook`}
+                      className="text-gray-900 bg-gray-50"
                     />
                     <Button onClick={() => copyWebhookUrl('sms')} size="sm">
                       <Copy className="h-4 w-4" />
@@ -392,6 +402,7 @@ export default function ChannelsPage() {
                     <Input
                       readOnly
                       value={`${window.location.origin}/api/channels/sms/status`}
+                      className="text-gray-900 bg-gray-50"
                     />
                     <Button onClick={() => {
                       navigator.clipboard.writeText(`${window.location.origin}/api/channels/sms/status`)
