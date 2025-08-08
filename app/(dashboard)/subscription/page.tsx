@@ -233,10 +233,22 @@ export default function SubscriptionPage() {
                 </CardDescription>
               </div>
             </div>
-            <Badge className={isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
-              {isActive ? <CheckCircle className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}
-              {subscription.status === 'demo' ? 'Demo Account' : subscription.status}
-            </Badge>
+            <div className="flex items-center gap-3">
+              <Badge className={isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                {isActive ? <CheckCircle className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}
+                {subscription.status === 'demo' ? 'Demo Account' : subscription.status}
+              </Badge>
+              {subscription.status !== 'demo' && subscription.status !== 'none' && !subscription.cancelAtPeriodEnd && (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-red-500 text-red-600 hover:bg-red-50"
+                  onClick={() => setShowCancelModal(true)}
+                >
+                  Cancel Plan
+                </Button>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent>
