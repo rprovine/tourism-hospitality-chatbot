@@ -131,6 +131,7 @@ export async function createOrUpdateContact(data: {
   tier?: string
 }) {
   try {
+    // Only use standard HubSpot properties
     const contactObj = {
       properties: {
         email: data.email,
@@ -138,8 +139,9 @@ export async function createOrUpdateContact(data: {
         lastname: data.lastname || '',
         company: data.company || '',
         phone: data.phone || '',
-        subscription_tier: data.tier || 'starter',
-        lifecycle_stage: 'customer'
+        // Use notes field to store tier info if custom properties don't exist
+        hs_lead_status: data.tier || 'starter',
+        lifecyclestage: 'customer' // Standard property name
       }
     }
 
