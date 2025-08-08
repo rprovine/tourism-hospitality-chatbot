@@ -149,7 +149,7 @@ export default function BusinessDashboard() {
             </Card>
           </Link>
 
-          <Link href="/ai">
+          <Link href="/ai-config">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
                 <div className="flex items-center justify-between">
