@@ -1,0 +1,548 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
+import { Alert } from '@/components/ui/alert'
+import { 
+  DollarSign,
+  TrendingUp,
+  ShoppingCart,
+  Percent,
+  Target,
+  Gift,
+  AlertCircle,
+  ChevronUp,
+  ChevronDown,
+  Calendar,
+  Users,
+  Package,
+  Zap,
+  RefreshCw,
+  ArrowUpRight,
+  ArrowDownRight
+} from 'lucide-react'
+
+interface RevenueMetrics {
+  totalRevenue: number
+  averageOrderValue: number
+  conversionRate: number
+  revenuePerVisitor: number
+  monthlyRecurringRevenue: number
+  customerLifetimeValue: number
+  churnRate: number
+}
+
+interface UpsellMetrics {
+  totalOffers: number
+  acceptedOffers: number
+  rejectedOffers: number
+  conversionRate: number
+  additionalRevenue: number
+  averageUpsellValue: number
+  topPerformingOffers: string[]
+}
+
+interface RecoveryMetrics {
+  totalAbandoned: number
+  totalRecovered: number
+  recoveryRate: number
+  averageRecoveryTime: number
+  revenueRecovered: number
+  topRecoveryReasons: string[]
+  channelPerformance: Record<string, number>
+}
+
+export default function RevenuePage() {
+  const [revenueMetrics, setRevenueMetrics] = useState<RevenueMetrics | null>(null)
+  const [upsellMetrics, setUpsellMetrics] = useState<UpsellMetrics | null>(null)
+  const [recoveryMetrics, setRecoveryMetrics] = useState<RecoveryMetrics | null>(null)
+  const [pricingRecommendations, setPricingRecommendations] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [period, setPeriod] = useState('month')
+  
+  useEffect(() => {
+    fetchRevenueData()
+  }, [period])
+  
+  const fetchRevenueData = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      
+      // Fetch revenue metrics
+      const revenueRes = await fetch(`/api/revenue/pricing?action=metrics&period=${period}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      if (revenueRes.ok) {
+        setRevenueMetrics(await revenueRes.json())
+      }
+      
+      // Fetch upsell metrics
+      const upsellRes = await fetch(`/api/revenue/upsell?type=metrics&period=${period}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      if (upsellRes.ok) {
+        setUpsellMetrics(await upsellRes.json())
+      }
+      
+      // Fetch recovery metrics
+      const recoveryRes = await fetch(`/api/revenue/recovery?type=metrics&period=${period}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      if (recoveryRes.ok) {
+        setRecoveryMetrics(await recoveryRes.json())
+      }
+      
+      // Fetch pricing recommendations
+      const recommendationsRes = await fetch('/api/revenue/pricing?action=recommendations', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      if (recommendationsRes.ok) {
+        const data = await recommendationsRes.json()
+        setPricingRecommendations(data.recommendations || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch revenue data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  
+  const runAutomatedRecovery = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch('/api/revenue/recovery', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ action: 'automate' })
+      })
+      
+      if (response.ok) {
+        alert('Automated recovery process started successfully!')
+        fetchRevenueData()
+      }
+    } catch (error) {
+      console.error('Failed to run automated recovery:', error)
+      alert('Failed to start automated recovery')
+    }
+  }
+  
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value)
+  }
+  
+  const formatPercent = (value: number) => {
+    return `${(value * 100).toFixed(1)}%`
+  }
+  
+  if (loading) {
+    return <div className="p-8">Loading revenue data...</div>
+  }
+  
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">Revenue Optimization</h1>
+          <p className="text-muted-foreground">Dynamic pricing, upselling, and abandonment recovery</p>
+        </div>
+        <div className="flex gap-2">
+          <select
+            value={period}
+            onChange={(e) => setPeriod(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            <option value="day">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="year">This Year</option>
+          </select>
+          <Button onClick={runAutomatedRecovery} variant="outline">
+            <Zap className="h-4 w-4 mr-2" />
+            Run Recovery
+          </Button>
+        </div>
+      </div>
+      
+      {/* Key Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {formatCurrency(revenueMetrics?.totalRevenue || 0)}
+            </div>
+            <p className="text-xs text-muted-foreground flex items-center">
+              <TrendingUp className="h-3 w-3 text-green-600 mr-1" />
+              +12.5% from last {period}
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Avg Order Value</CardTitle>
+            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {formatCurrency(revenueMetrics?.averageOrderValue || 0)}
+            </div>
+            <p className="text-xs text-muted-foreground flex items-center">
+              <ChevronUp className="h-3 w-3 text-green-600 mr-1" />
+              +8% improvement
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
+            <Percent className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {formatPercent(revenueMetrics?.conversionRate || 0)}
+            </div>
+            <p className="text-xs text-muted-foreground flex items-center">
+              <ChevronDown className="h-3 w-3 text-red-600 mr-1" />
+              -0.3% vs target
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Customer LTV</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {formatCurrency(revenueMetrics?.customerLifetimeValue || 0)}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {formatPercent(revenueMetrics?.churnRate || 0)} churn
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <Tabs defaultValue="pricing" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="pricing">Dynamic Pricing</TabsTrigger>
+          <TabsTrigger value="upselling">Upselling</TabsTrigger>
+          <TabsTrigger value="recovery">Abandonment Recovery</TabsTrigger>
+          <TabsTrigger value="insights">Revenue Insights</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="pricing" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Pricing Recommendations</CardTitle>
+                <CardDescription>AI-powered pricing optimization suggestions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {pricingRecommendations.length > 0 ? (
+                  <div className="space-y-3">
+                    {pricingRecommendations.map((rec, index) => (
+                      <div key={index} className="p-3 border rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-semibold">{rec.title}</h4>
+                          <Badge variant="outline">
+                            +{(rec.impact * 100).toFixed(0)}% impact
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-2">{rec.description}</p>
+                        <p className="text-xs text-blue-600">
+                          Implementation: {rec.implementation}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500">No recommendations available</p>
+                )}
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle>Price Factors</CardTitle>
+                <CardDescription>Current pricing adjustments</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                    <span className="text-sm font-medium">Peak Season</span>
+                    <span className="text-green-700 font-semibold">+30%</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                    <span className="text-sm font-medium">Weekend Premium</span>
+                    <span className="text-blue-700 font-semibold">+15%</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                    <span className="text-sm font-medium">Local Events</span>
+                    <span className="text-yellow-700 font-semibold">+10%</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                    <span className="text-sm font-medium">Early Bird Discount</span>
+                    <span className="text-purple-700 font-semibold">-10%</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="upselling" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Upsell Conversion</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {formatPercent(upsellMetrics?.conversionRate || 0)}
+                </div>
+                <p className="text-xs text-gray-600">
+                  {upsellMetrics?.acceptedOffers || 0} of {upsellMetrics?.totalOffers || 0} accepted
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Additional Revenue</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {formatCurrency(upsellMetrics?.additionalRevenue || 0)}
+                </div>
+                <p className="text-xs text-gray-600">
+                  Avg: {formatCurrency(upsellMetrics?.averageUpsellValue || 0)}
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Top Performers</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-1">
+                  {upsellMetrics?.topPerformingOffers?.slice(0, 3).map((offer, i) => (
+                    <div key={i} className="text-xs">
+                      {i + 1}. {offer}
+                    </div>
+                  )) || <span className="text-xs text-gray-500">No data</span>}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Active Upsell Campaigns</CardTitle>
+              <CardDescription>Current upselling strategies in action</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <h4 className="font-medium">Room Upgrade Campaign</h4>
+                    <p className="text-sm text-gray-600">Ocean view upgrades at 40% off</p>
+                  </div>
+                  <div className="text-right">
+                    <Badge className="bg-green-100 text-green-700">Active</Badge>
+                    <p className="text-xs text-gray-500 mt-1">23% conversion</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <h4 className="font-medium">Spa Package Bundle</h4>
+                    <p className="text-sm text-gray-600">Relaxation package with 20% savings</p>
+                  </div>
+                  <div className="text-right">
+                    <Badge className="bg-green-100 text-green-700">Active</Badge>
+                    <p className="text-xs text-gray-500 mt-1">18% conversion</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <h4 className="font-medium">Extended Stay Offer</h4>
+                    <p className="text-sm text-gray-600">25% off additional nights</p>
+                  </div>
+                  <div className="text-right">
+                    <Badge className="bg-yellow-100 text-yellow-700">Paused</Badge>
+                    <p className="text-xs text-gray-500 mt-1">12% conversion</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="recovery" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Recovery Rate</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {formatPercent(recoveryMetrics?.recoveryRate || 0)}
+                </div>
+                <p className="text-xs text-gray-600">
+                  {recoveryMetrics?.totalRecovered || 0} of {recoveryMetrics?.totalAbandoned || 0}
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Revenue Recovered</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {formatCurrency(recoveryMetrics?.revenueRecovered || 0)}
+                </div>
+                <p className="text-xs text-gray-600">
+                  Avg time: {recoveryMetrics?.averageRecoveryTime?.toFixed(1) || 0}h
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm">Best Channel</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">Email</div>
+                <p className="text-xs text-gray-600">
+                  {formatPercent(recoveryMetrics?.channelPerformance?.email || 0)} success
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Abandonment Patterns</CardTitle>
+              <CardDescription>Common reasons for conversation abandonment</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {recoveryMetrics?.topRecoveryReasons?.map((reason, i) => (
+                  <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <span className="text-sm">{reason}</span>
+                    <Badge variant="outline">{20 - i * 5}%</Badge>
+                  </div>
+                )) || (
+                  <p className="text-gray-500">No abandonment data available</p>
+                )}
+              </div>
+              
+              <div className="mt-4 pt-4 border-t">
+                <h4 className="font-medium mb-2">Channel Performance</h4>
+                <div className="space-y-2">
+                  {Object.entries(recoveryMetrics?.channelPerformance || {}).map(([channel, rate]) => (
+                    <div key={channel} className="flex items-center justify-between">
+                      <span className="text-sm capitalize">{channel}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-32 bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full"
+                            style={{ width: `${rate * 100}%` }}
+                          />
+                        </div>
+                        <span className="text-xs">{formatPercent(rate)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="insights" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue Optimization Insights</CardTitle>
+              <CardDescription>AI-generated recommendations to maximize revenue</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <Alert>
+                  <Target className="h-4 w-4" />
+                  <div>
+                    <p className="font-medium">Opportunity: Weekend Pricing</p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Your weekend occupancy is 85%. Consider increasing weekend rates by 20% to maximize revenue without impacting demand.
+                    </p>
+                  </div>
+                </Alert>
+                
+                <Alert>
+                  <Gift className="h-4 w-4" />
+                  <div>
+                    <p className="font-medium">Upsell Potential: Spa Packages</p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Guests who book deluxe rooms are 3x more likely to purchase spa packages. Target them with personalized offers.
+                    </p>
+                  </div>
+                </Alert>
+                
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <div>
+                    <p className="font-medium">Recovery Gap: Mobile Users</p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Mobile abandonment rate is 40% higher than desktop. Implement SMS recovery for better mobile engagement.
+                    </p>
+                  </div>
+                </Alert>
+              </div>
+              
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-medium">Revenue Growth</span>
+                    <ArrowUpRight className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div className="text-2xl font-bold text-green-700">+24.5%</div>
+                  <p className="text-sm text-green-600">vs. last {period}</p>
+                </div>
+                
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-medium">Optimization Score</span>
+                    <Target className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div className="text-2xl font-bold text-blue-700">78/100</div>
+                  <p className="text-sm text-blue-600">Good performance</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
