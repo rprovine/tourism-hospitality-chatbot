@@ -191,33 +191,62 @@ Specific capabilities by tier:
 
 function generateFallbackResponse(query: string, tier: 'starter' | 'professional' | 'premium' | 'enterprise'): string {
   const lowerQuery = query.toLowerCase()
+  const disclaimer = "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
   
+  // Common queries handled differently by tier
+  if (lowerQuery.includes('book') || lowerQuery.includes('reserve') || lowerQuery.includes('availability')) {
+    if (tier === 'starter') {
+      return `❌ **Booking Not Available in Starter Plan**\n\nTo make a reservation, please call us at (808) 555-0100 or visit our website.\n\n⚠️ **Starter Limitation**: No booking integration\n💡 **Upgrade to Professional** for instant booking capabilities!${disclaimer}`
+    } else if (tier === 'professional') {
+      return `✅ **Live Booking System**\n\n📊 **Real-Time Availability**:\n• Ocean View Room: $450/night - 3 available\n• Garden View: $350/night - 5 available\n• Suite: $650/night - 1 available\n\n✨ **Features**: Instant confirmation • Secure payment • Mobile check-in\n\nWhich room would you like to book?${disclaimer}`
+    } else if (tier === 'premium') {
+      return `✨ **VIP Concierge Booking Service**\n\n🤖 **AI-Powered Recommendations** (Based on your preferences):\n\n⭐ **Perfect Match - Presidential Suite**\n• $1,250/night (15% loyalty discount applied)\n• Your preferences: Ocean view ✓ High floor ✓ Away from elevators ✓\n• Includes: Butler service, spa credits, airport transfer\n\n🎁 **Exclusive Perks**:\n• Guaranteed 10 AM early check-in\n• 4 PM late checkout\n• Welcome champagne & local delicacies\n• Private beach cabana\n\n[Book with Saved Card ****1234] [Use 4,850 Points]${disclaimer}`
+    } else {
+      return `🏢 **Enterprise Multi-Property Booking**\n\n📊 **Cross-Property Availability** (7 Properties):\n\n**Waikiki Beach Resort** - 142 rooms available\n• Standard: $380-450/night\n• Suites: $850-2,500/night\n• Group blocks: Up to 200 rooms\n\n**Maui Grand Hotel** - 89 rooms available\n• Standard: $420-550/night\n• Villas: $1,200-3,500/night\n\n**Corporate Travel Program**:\n• Negotiated rates: 35% off BAR\n• Direct billing to cost centers\n• Automated expense reporting\n\n🎯 **Group Coordination**: Handle 50-500+ attendees\n📱 **One-Click Booking**: Across all properties\n\nHow many rooms across which properties?${disclaimer}`
+    }
+  }
+  
+  if (lowerQuery.includes('check') && (lowerQuery.includes('in') || lowerQuery.includes('out'))) {
+    if (tier === 'starter') {
+      return `Check-in time is 3:00 PM and check-out is 11:00 AM.${disclaimer}`
+    } else if (tier === 'professional') {
+      return `Standard check-in is 3:00 PM and check-out is 11:00 AM.\n\n📱 **Mobile Check-In Available**: Skip the front desk!\n⏰ **Early/Late Options**: Subject to availability ($50 fee)${disclaimer}`
+    } else if (tier === 'premium') {
+      return `✨ **VIP Check-In Privileges**:\n• Guaranteed early check-in: 10:00 AM\n• Guaranteed late checkout: 4:00 PM\n• Private check-in lounge with refreshments\n• Luggage service and room escort\n• Welcome amenity waiting in room\n\nNo additional fees - included with your premium booking!${disclaimer}`
+    } else {
+      return `🏢 **Enterprise Flexible Policies**:\n• 24/7 check-in/out available\n• Bulk check-ins for groups\n• Custom times for corporate contracts\n• Automated digital key distribution\n• Dedicated group check-in areas\n\nNeed to coordinate a group arrival?${disclaimer}`
+    }
+  }
+  }
+  
+  if (lowerQuery.includes('my') || lowerQuery.includes('history') || lowerQuery.includes('previous stay')) {
+    if (tier === 'starter') {
+      return `❌ **Guest History Not Available**\n\nStarter plan doesn't include CRM integration. Please call (808) 555-0100 for assistance.\n\n💡 **Upgrade to Professional** for full guest profile access!${disclaimer}`
+    } else if (tier === 'professional') {
+      return `👤 **Guest Profile Found**\n\n📊 Your History:\n• Last stay: Sept 2024 (Ocean View Room)\n• Total stays: 3\n• Loyalty points: 2,450\n• Preferred: High floor, away from elevators\n\n🎁 **Returning Guest Offer**: 15% off your next stay!${disclaimer}`
+    } else if (tier === 'premium') {
+      return `⭐ **VIP Guest Recognition**\n\n🏆 **Platinum Member** - Sarah Johnson\n• Member since: 2019\n• Lifetime stays: 12\n• Total spent: $18,500\n• Points balance: 48,500\n\n✨ **Your Preferences** (Auto-Applied):\n• Room: Ocean view, high floor, king bed\n• Pillow: Memory foam (2)\n• Minibar: Stocked with Fiji water, local fruits\n• Newspaper: WSJ delivered daily\n• Spa: Hot stone massage on Day 2\n\n🎁 **Exclusive Offers**:\n• Complimentary suite upgrade available\n• 25% off spa treatments\n• Private beach dinner setup ($500 value)${disclaimer}`
+    } else {
+      return `🏢 **Enterprise Global Profile**\n\n🌍 **Cross-Property Analytics**:\n• Properties stayed: 23 locations\n• Corporate tier: Executive Diamond\n• 2024 spend: $125,000\n• Department: Marketing (Cost Center: MKT-4521)\n\n📊 **Booking Patterns**:\n• Average stay: 3.2 nights\n• Preferred brands: Luxury & Business\n• Team travelers: 12 frequent colleagues\n\n💼 **Corporate Benefits**:\n• Automatic C-suite upgrades\n• Direct billing enabled\n• Expense report integration\n• Global lounge access\n• 24/7 executive support line${disclaimer}`
+    }
+  }
+  
+  if (lowerQuery.includes('restaurant') || lowerQuery.includes('dining') || lowerQuery.includes('eat')) {
+    if (tier === 'starter') {
+      return `We have 3 restaurants on property. For reservations, please call (808) 555-0100.${disclaimer}`
+    } else if (tier === 'professional') {
+      return `🍽️ **Restaurant Availability**:\n\n**Ocean Terrace** (Fine Dining)\n• Tonight: 6:30 PM, 8:00 PM available\n• Tomorrow: Multiple times\n\n**Sunset Grill** (Casual)\n• Walk-ins welcome\n\n**Pool Bar** (Light Bites)\n• Open until 10 PM\n\nWould you like me to make a reservation?${disclaimer}`
+    } else if (tier === 'premium') {
+      return `🌟 **Curated Dining Experiences**\n\n⭐ **Chef's Table** (Based on your preferences)\n• Private 7-course tasting menu\n• Wine pairing included\n• Meet Chef Nakamura\n• Tonight 7:30 PM - Reserved for you\n\n🦞 **Your Usual Favorites**:\n• Table 12 at Ocean Terrace (your preferred spot)\n• Lobster thermidor (prepared your way)\n• 2018 Caymus Cabernet (we have 3 bottles)\n\n🎁 **VIP Perks**:\n• No reservation needed - always a table\n• 20% off all dining\n• Complimentary champagne\n• Custom menu available${disclaimer}`
+    } else {
+      return `🏢 **Enterprise Dining Network**\n\n📍 **47 Restaurants Across Properties**:\n\n**Fine Dining** (12 locations)\n• Instant reservations at all locations\n• Private dining rooms available\n• Custom menus for groups\n\n**Group Events**:\n• Banquet capacity: Up to 1,000 guests\n• 15 event spaces available\n• Full catering services\n• A/V equipment included\n\n💼 **Corporate Dining**:\n• Direct billing to departments\n• Meal allowance tracking\n• Dietary restriction management\n• VIP client entertainment options\n\nNeed to book for a group or event?${disclaimer}`
+    }
+  }
+  
+  // Default responses by tier
   if (tier === 'starter') {
-    // Basic pattern matching for common questions
-    if (lowerQuery.includes('check') && (lowerQuery.includes('in') || lowerQuery.includes('out'))) {
-      return 'Check-in time is 3:00 PM and check-out is 11:00 AM. Early check-in may be available upon request.'
-    }
-    if (lowerQuery.includes('parking')) {
-      return 'We offer both self-parking ($25/day) and valet parking ($35/day). Electric vehicle charging stations are available.'
-    }
-    if (lowerQuery.includes('breakfast') || lowerQuery.includes('food')) {
-      return 'Continental breakfast is served from 6:30 AM to 10:30 AM in our Ocean View Restaurant.'
-    }
-    if (lowerQuery.includes('wifi') || lowerQuery.includes('internet')) {
-      return 'Complimentary high-speed WiFi is available throughout the property.'
-    }
-    if (lowerQuery.includes('pool') || lowerQuery.includes('swim')) {
-      return 'Our resort features two pools: an infinity pool overlooking the ocean and a family pool with water slides. Both are open from 7 AM to 10 PM.'
-    }
-    if (lowerQuery.includes('gym') || lowerQuery.includes('fitness')) {
-      return 'Our fitness center is open 24/7 and includes cardio equipment, free weights, and yoga mats.'
-    }
-    return "I'd be happy to help! For specific questions, please contact our front desk at (808) 555-0100."
-  } else {
-    // Professional tier fallback responses
-    if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
-      return "I can help you make a reservation! What dates were you looking to stay with us? I can check availability and provide you with our best rates. We currently have ocean view rooms starting at $450/night."
-    }
+    return `I can help with basic information about our property. For specific requests or bookings, please call (808) 555-0100.\n\n⚠️ **Starter Plan**: Limited to basic Q&A${disclaimer}`
+  } else if (tier === 'professional') {
     if (lowerQuery.includes('recommend') || lowerQuery.includes('what to do')) {
       return `Based on popular guest activities, I'd recommend:
 
@@ -228,24 +257,12 @@ function generateFallbackResponse(query: string, tier: 'starter' | 'professional
 
 Would you like me to help arrange any of these activities or make reservations?`
     }
-    if (lowerQuery.includes('weather')) {
-      return "Today's forecast shows sunny skies with a high of 82°F (28°C) and gentle trade winds. Perfect beach weather! UV index is high (9), so sunscreen is essential. Ocean conditions are calm with 1-2 ft waves - ideal for swimming and snorkeling."
     }
-    if (lowerQuery.includes('restaurant')) {
-      return `I'd be happy to make restaurant recommendations!
-
-**Fine Dining**:
-• La Mer - French cuisine with ocean views
-• Orchids - Sunday brunch destination
-
-**Local Favorites**:
-• Helena's Hawaiian Food - James Beard Award winner
-• Ono Seafood - Best poke on the island
-
-Would you like me to make a reservation or provide directions?`
-    }
-    if (lowerQuery.includes('airport') || lowerQuery.includes('transport')) {
-      return `From Honolulu Airport (HNL) to our resort:
+    return `I can help you with bookings, recommendations, and answer questions about our amenities. What would you like to know?${disclaimer}`
+  } else if (tier === 'premium') {
+    return `Welcome to your personal AI concierge! I have access to your preferences, can make instant reservations, coordinate exclusive experiences, and ensure every detail of your stay exceeds expectations. How may I create magic for you today?${disclaimer}`
+  } else {
+    return `Welcome to our enterprise hospitality platform. I can coordinate multi-property bookings, manage group events, handle corporate travel, and provide comprehensive business intelligence. Which property or service would you like to access?${disclaimer}`
 
 • **Taxi/Uber**: $35-45, 25 minutes
 • **Shared Shuttle**: $16/person, 35-45 minutes

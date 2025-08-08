@@ -1098,28 +1098,28 @@ export default function LandingPage() {
             <div>
               <h4 className="text-white font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Features</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Pricing</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Demo</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">API</a></li>
+                <li><a href="#features" className="hover:text-cyan-400 transition-colors text-gray-300">Features</a></li>
+                <li><a href="#pricing" className="hover:text-cyan-400 transition-colors text-gray-300">Pricing</a></li>
+                <li><a href="#demo" className="hover:text-cyan-400 transition-colors text-gray-300">Demo</a></li>
+                <li><a href="#revenue" className="hover:text-cyan-400 transition-colors text-gray-300">Revenue</a></li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">About</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Contact</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Partners</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Careers</a></li>
+                <li><a href="https://lenilani.com/about" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors text-gray-300">About</a></li>
+                <li><a href="https://lenilani.com/contact" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors text-gray-300">Contact</a></li>
+                <li><a href="https://lenilani.com/partners" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors text-gray-300">Partners</a></li>
+                <li><a href="https://lenilani.com/careers" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors text-gray-300">Careers</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Support</h4>
+              <h4 className="text-white font-semibold mb-4">Connect</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Documentation</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Help Center</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Status</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors text-gray-300">Terms</a></li>
+                <li><a href="https://lenilani.com/blog" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors text-gray-300">Blog</a></li>
+                <li><a href="https://lenilani.com/newsletter" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors text-gray-300">Newsletter</a></li>
+                <li><a href="https://lenilani.com/community" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors text-gray-300">Community</a></li>
+                <li><a href="https://lenilani.com" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors text-gray-300">Visit LeniLani.com</a></li>
               </ul>
             </div>
           </div>
