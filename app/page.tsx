@@ -74,16 +74,45 @@ export default function LandingPage() {
             <Sparkles className="h-4 w-4" />
             <span className="text-sm font-bold">Claude AI + GPT-4 + Dual AI Intelligence</span>
           </div>
+          
+          {/* Hawaiian Market Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="mb-6"
+          >
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 p-1 rounded-full shadow-lg">
+              <div className="bg-white rounded-full px-6 py-3 flex items-center gap-2">
+                <span className="text-2xl">🌺</span>
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-purple-600 text-lg">
+                  Built for Hawaiian Hospitality & Tourism
+                </span>
+                <span className="text-2xl">🏝️</span>
+              </div>
+            </div>
+          </motion.div>
+          
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Dual AI Platform:{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-700 to-blue-700">
               Claude + GPT-4 Intelligence
             </span>
           </h1>
-          <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+          <p className="text-xl text-gray-700 mb-4 leading-relaxed">
             The ONLY platform combining Claude's conversational excellence with GPT-4's analytical power. 
             Plus sentiment analysis, dynamic pricing, and self-learning AI. Boost revenue by 23%.
           </p>
+          
+          {/* Hawaiian Market Focus */}
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-lg text-gray-600 mb-8 font-medium"
+          >
+            🌴 Understands local culture • 🗣️ Speaks Pidgin & Hawaiian • 📍 Knows every beach, trail & restaurant
+          </motion.p>
           <div className="flex gap-4 justify-center">
             <Button 
               size="lg" 
