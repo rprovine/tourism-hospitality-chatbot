@@ -62,9 +62,15 @@ export default function KnowledgeBasePage() {
 
   const fetchKnowledgeBase = async () => {
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
+      if (!token) {
+        setLoading(false)
+        return
+      }
+      
       const response = await fetch('/api/knowledge-base', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         }
       })
       
@@ -91,7 +97,7 @@ export default function KnowledgeBasePage() {
       const response = await fetch('/api/knowledge-base/import', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}`
         },
         body: formData
       })
@@ -122,7 +128,7 @@ export default function KnowledgeBasePage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}`
         },
         body: JSON.stringify({ url: fileUrl, type: 'webscrape' })
       })
@@ -153,7 +159,7 @@ export default function KnowledgeBasePage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}`
         },
         body: JSON.stringify(newItem)
       })
@@ -178,7 +184,7 @@ export default function KnowledgeBasePage() {
       const response = await fetch(`/api/knowledge-base?id=${id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}`
         }
       })
 
@@ -197,7 +203,7 @@ export default function KnowledgeBasePage() {
     try {
       const response = await fetch('/api/knowledge-base/export', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}`
         }
       })
 

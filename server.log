@@ -1197,3 +1197,10 @@ Import trace for requested module:
  ✓ Compiled in 152ms (842 modules)
  ✓ Compiled in 151ms (842 modules)
  ✓ Compiled in 202ms (842 modules)
+ ○ Compiling /api/seed-demo ...
+ ✓ Compiled /api/seed-demo in 520ms (1879 modules)
+ GET /api/seed-demo 401 in 874ms
+ ✓ Compiled in 278ms (842 modules)
+ ✓ Compiled in 156ms (842 modules)
+ ✓ Compiled in 178ms (842 modules)
+ ✓ Compiled in 259ms (842 modules)
