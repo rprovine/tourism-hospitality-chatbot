@@ -26,6 +26,7 @@ import { isRouteAccessible } from '@/lib/tierRestrictions'
 const navItems = [
   { href: '/dashboard', label: 'Overview', icon: Home, requiresTier: null },
   { href: '/analytics', label: 'Analytics', icon: BarChart3, requiresTier: null },
+  { href: '/widget', label: 'Widget', icon: MessageSquare, requiresTier: null },
   { href: '/knowledge-base', label: 'Knowledge Base', icon: Bot, requiresTier: null },
   { href: '/revenue', label: 'Revenue', icon: TrendingUp, requiresTier: 'professional' },
   { href: '/guests', label: 'Guests', icon: Users, requiresTier: 'professional' },
