@@ -47,3 +47,5 @@ Password verified, creating token...
 Login successful for: enterprise@demo.com
  POST /api/auth/login 200 in 1186ms
  GET /api/analytics 200 in 163ms
+ ✓ Compiled in 77ms (186 modules)
+ ✓ Compiled in 39ms (186 modules)

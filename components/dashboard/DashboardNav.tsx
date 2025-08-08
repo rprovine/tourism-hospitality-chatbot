@@ -27,7 +27,7 @@ const navItems = [
   { href: '/revenue', label: 'Revenue', icon: TrendingUp, requiresTier: 'professional' },
   { href: '/guests', label: 'Guests', icon: Users, requiresTier: 'professional' },
   { href: '/channels', label: 'Channels', icon: Hash, requiresTier: 'professional' },
-  { href: '/ai-settings', label: 'AI Config', icon: Brain, requiresTier: null },
+  { href: '/ai-config', label: 'AI Config', icon: Brain, requiresTier: null },
   { href: '/subscription', label: 'Subscription', icon: CreditCard, requiresTier: null },
   { href: '/billing', label: 'Billing', icon: CreditCard, requiresTier: null },
   { href: '/settings', label: 'Settings', icon: Settings, requiresTier: null },

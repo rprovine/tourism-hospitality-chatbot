@@ -91,7 +91,9 @@ export default function KnowledgeBasePage() {
       
       if (response.ok) {
         const data = await response.json()
-        setItems(data)
+        // Ensure data is an array
+        const itemsArray = Array.isArray(data) ? data : (data.items || data.data || [])
+        setItems(itemsArray)
       }
     } catch (error) {
       console.error('Failed to fetch knowledge base:', error)
