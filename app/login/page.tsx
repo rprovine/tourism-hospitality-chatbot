@@ -31,9 +31,12 @@ export default function LoginPage() {
     setError('')
 
     try {
-      console.log('Sending login request...')
+      const endpoint = '/api/auth/admin-login'
+      console.log(`Sending login request to ${endpoint}...`)
+      console.log('Form data:', formData)
+      
       // Use admin-login endpoint which handles both admin and regular users
-      const response = await fetch('/api/auth/admin-login', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,6 +107,9 @@ export default function LoginPage() {
             <CardTitle className="text-2xl">Welcome Back</CardTitle>
             <CardDescription>
               Sign in to your LeniLani Hospitality AI account
+              {formData.email === 'admin@lenilani.com' && (
+                <span className="block text-xs text-purple-600 mt-1">Admin mode</span>
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent>
