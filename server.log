@@ -1113,3 +1113,35 @@ Validation Error Count: 1
  ✓ Compiled in 243ms (887 modules)
  ✓ Compiled in 383ms (887 modules)
  ✓ Compiled in 178ms (887 modules)
+ ✓ Compiled in 240ms (887 modules)
+ ✓ Compiled in 168ms (887 modules)
+ ⨯ ./app/admin/page.tsx
+Error:   [31mx[0m Expected ';', '}' or <eof>
+     ,-[[36;1;4m/Users/renoprovine/Development/lenilani-projects/tourism-hospitality-chatbot/app/admin/page.tsx[0m:105:1]
+ [2m102[0m |           const adminStats = await response.json()
+ [2m103[0m |           setStats(adminStats)
+ [2m104[0m |           setIsAdmin(true)
+ [2m105[0m | [35;1m,[0m[35;1m-[0m[35;1m>[0m         topQuestions: [
+ [2m106[0m | [35;1m|[0m             { question: businessInfo.tier === 'premium' ? 'What spa services are available?' : 'What time is check-in?', count: 89 },
+ [2m107[0m | [35;1m|[0m             { question: businessInfo.tier === 'premium' ? 'Can you arrange private dining?' : 'Do you have parking?', count: 67 },
+ [2m108[0m | [35;1m|[0m             { question: businessInfo.tier === 'premium' ? 'What are the VIP benefits?' : 'Is breakfast included?', count: 54 },
+ [2m109[0m | [35;1m|[0m             { question: 'What are your pool hours?', count: 48 },
+ [2m110[0m | [35;1m|[0m             { question: 'How far from the beach?', count: 41 }
+ [2m111[0m | [35;1m|[0m           ],
+ [2m112[0m | [35;1m|[0m[35;1m-[0m[35;1m>[0m         languageBreakdown: 
+     : [35;1m`[0m[35;1m---[0m[33;1m                         ^[0m
+     : [35;1m`[0m[35;1m---[0m[35;1m-[0m [35;1mThis is the expression part of an expression statement[0m
+ [2m113[0m |               businessInfo.tier === 'premium' ? {
+ [2m114[0m |                 English: 40,
+ [2m115[0m |                 Japanese: 25,
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/admin/page.tsx
+ ✓ Compiled in 714ms (1925 modules)
+ ✓ Compiled in 941ms (1942 modules)
+ ✓ Compiled in 185ms (888 modules)
+ ✓ Compiled in 148ms (888 modules)

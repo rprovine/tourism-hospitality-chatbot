@@ -1,11 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
+import { verifyToken } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Add admin authentication check
+    // Verify admin authentication
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { error: 'Unauthorized - No token provided' },
+        { status: 401 }
+      )
+    }
+    
+    const token = authHeader.substring(7)
+    const decoded = await verifyToken(token)
+    
+    if (!decoded || !decoded.isAdmin) {
+      return NextResponse.json(
+        { error: 'Unauthorized - Admin access required' },
+        { status: 401 }
+      )
+    }
     
     const now = new Date()
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
