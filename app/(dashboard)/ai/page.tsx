@@ -546,7 +546,7 @@ export default function AIPage() {
                   <input
                     type="password"
                     placeholder="sk-..."
-                    className="flex-1 px-3 py-2 border rounded-lg"
+                    className="flex-1 px-3 py-2 border rounded-lg text-gray-900 bg-white"
                     defaultValue={aiStatus?.status === 'configured' ? 'sk-...configured' : ''}
                   />
                   <Button variant="outline">

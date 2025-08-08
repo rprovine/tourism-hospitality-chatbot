@@ -18,14 +18,14 @@ import {
 import { Button } from '@/components/ui/button'
 
 const navItems = [
-  { href: '/admin', label: 'Overview', icon: Home },
-  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/admin/revenue', label: 'Revenue', icon: TrendingUp },
-  { href: '/admin/guests', label: 'Guests', icon: Users },
-  { href: '/admin/channels', label: 'Channels', icon: Hash },
-  { href: '/admin/ai', label: 'AI Config', icon: Brain },
-  { href: '/admin/billing', label: 'Billing', icon: CreditCard },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/dashboard', label: 'Overview', icon: Home },
+  { href: '/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/revenue', label: 'Revenue', icon: TrendingUp },
+  { href: '/guests', label: 'Guests', icon: Users },
+  { href: '/channels', label: 'Channels', icon: Hash },
+  { href: '/ai', label: 'AI Config', icon: Brain },
+  { href: '/billing', label: 'Billing', icon: CreditCard },
+  { href: '/settings', label: 'Settings', icon: Settings },
 ]
 
 export default function DashboardNav() {
