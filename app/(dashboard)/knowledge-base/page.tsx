@@ -24,7 +24,8 @@ import {
   File,
   X,
   Edit,
-  Save
+  Save,
+  Activity
 } from 'lucide-react'
 
 interface KnowledgeItem {
@@ -372,7 +373,7 @@ export default function KnowledgeBasePage() {
                   disabled={uploading}
                 />
                 <label htmlFor="file-upload">
-                  <Button as="span" disabled={uploading}>
+                  <Button disabled={uploading} className="cursor-pointer" type="button" onClick={() => document.getElementById('file-upload')?.click()}>
                     {uploading ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />

@@ -3,604 +3,580 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Alert } from '@/components/ui/alert'
 import { 
   Brain,
-  Sparkles,
-  TrendingUp,
-  MessageSquare,
-  Target,
-  Activity,
-  AlertCircle,
+  Upload,
+  FileText,
+  Globe,
+  FileSpreadsheet,
+  Download,
+  Settings,
   CheckCircle,
   XCircle,
-  Lightbulb,
-  BarChart3,
-  Zap,
+  AlertCircle,
+  Loader2,
+  Database,
+  File,
+  Sparkles,
+  Target,
+  TrendingUp,
+  Activity,
   RefreshCw,
-  Download,
-  Settings
+  Zap,
+  MessageSquare
 } from 'lucide-react'
 
-interface AIInsight {
-  id: string
-  type: 'improvement' | 'issue' | 'opportunity' | 'trend'
-  title: string
-  description: string
-  impact: 'high' | 'medium' | 'low'
-  recommendation: string
-  metrics?: any
-  createdAt: string
+interface AIConfig {
+  model: string
+  temperature: number
+  maxTokens: number
+  responseStyle: string
+  languages: string[]
+  personalityTraits: string[]
+  learningEnabled: boolean
 }
 
-interface LearningPattern {
-  id: string
-  pattern: string
-  frequency: number
-  successRate: number
-  avgSentiment: number
-}
+export default function AIConfigPage() {
+  const [config, setConfig] = useState<AIConfig>({
+    model: 'gpt-4-turbo',
+    temperature: 0.7,
+    maxTokens: 500,
+    responseStyle: 'professional',
+    languages: ['en', 'es', 'ja'],
+    personalityTraits: ['helpful', 'friendly', 'knowledgeable'],
+    learningEnabled: true
+  })
+  const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [trainingStats, setTrainingStats] = useState({
+    totalDocuments: 0,
+    totalQuestions: 0,
+    lastTrained: null
+  })
+  const [fileUrl, setFileUrl] = useState('')
 
-export default function AIPage() {
-  const [insights, setInsights] = useState<AIInsight[]>([])
-  const [patterns, setPatterns] = useState<LearningPattern[]>([])
-  const [aiStatus, setAiStatus] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState('overview')
-  
   useEffect(() => {
-    fetchAIData()
+    fetchAIConfig()
+    fetchTrainingStats()
   }, [])
-  
-  const fetchAIData = async () => {
+
+  const fetchAIConfig = async () => {
     try {
-      const token = localStorage.getItem('token')
-      
-      // Fetch AI status
-      const statusRes = await fetch('/api/ai/complete', {
-        headers: { 'Authorization': `Bearer ${token}` }
+      const response = await fetch('/api/ai/config', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       })
-      if (statusRes.ok) {
-        setAiStatus(await statusRes.json())
-      }
       
-      // Fetch insights
-      const insightsRes = await fetch('/api/ai/learn?type=insights', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      if (insightsRes.ok) {
-        const data = await insightsRes.json()
-        setInsights(data.insights || [])
-      }
-      
-      // Fetch patterns
-      const patternsRes = await fetch('/api/ai/learn?type=patterns', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      if (patternsRes.ok) {
-        const data = await patternsRes.json()
-        setPatterns(data.patterns || [])
+      if (response.ok) {
+        const data = await response.json()
+        setConfig(data)
       }
     } catch (error) {
-      console.error('Failed to fetch AI data:', error)
-    } finally {
-      setLoading(false)
+      console.error('Failed to fetch AI config:', error)
     }
   }
-  
-  const generateInsights = async () => {
+
+  const fetchTrainingStats = async () => {
+    try {
+      const response = await fetch('/api/knowledge-base', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setTrainingStats({
+          totalDocuments: data.length,
+          totalQuestions: data.length,
+          lastTrained: data[0]?.createdAt || null
+        })
+      }
+    } catch (error) {
+      console.error('Failed to fetch training stats:', error)
+    }
+  }
+
+  const saveConfig = async () => {
     setLoading(true)
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/ai/learn', {
+      const response = await fetch('/api/ai/config', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ action: 'insights' })
+        body: JSON.stringify(config)
       })
       
       if (response.ok) {
-        const data = await response.json()
-        setInsights(data.insights || [])
-        alert('New insights generated successfully!')
+        alert('AI configuration saved successfully!')
+      } else {
+        alert('Failed to save configuration')
       }
     } catch (error) {
-      console.error('Failed to generate insights:', error)
-      alert('Failed to generate insights')
+      console.error('Save error:', error)
+      alert('Failed to save configuration')
     } finally {
       setLoading(false)
     }
   }
-  
-  const exportLearningData = async () => {
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/ai/learn', {
+      const response = await fetch('/api/knowledge-base/import', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ action: 'export' })
+        body: formData
+      })
+
+      if (response.ok) {
+        alert('Training data uploaded successfully!')
+        await fetchTrainingStats()
+      } else {
+        alert('Failed to upload training data')
+      }
+    } catch (error) {
+      console.error('Upload error:', error)
+      alert('Failed to upload training data')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleUrlImport = async () => {
+    if (!fileUrl) {
+      alert('Please enter a URL')
+      return
+    }
+
+    setUploading(true)
+    try {
+      const response = await fetch('/api/knowledge-base/import', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ url: fileUrl, type: 'webscrape' })
+      })
+
+      if (response.ok) {
+        alert('Website content imported successfully!')
+        setFileUrl('')
+        await fetchTrainingStats()
+      } else {
+        alert('Failed to import website content')
+      }
+    } catch (error) {
+      console.error('Import error:', error)
+      alert('Failed to import website content')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const trainModel = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/ai/train', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       })
       
       if (response.ok) {
-        const data = await response.json()
-        const blob = new Blob([JSON.stringify(data.data, null, 2)], { type: 'application/json' })
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = 'learning-data.json'
-        a.click()
+        alert('AI model training started!')
+        await fetchTrainingStats()
+      } else {
+        alert('Failed to start training')
       }
     } catch (error) {
-      console.error('Failed to export data:', error)
-      alert('Failed to export learning data')
+      console.error('Training error:', error)
+      alert('Failed to start training')
+    } finally {
+      setLoading(false)
     }
   }
-  
-  const getImpactColor = (impact: string) => {
-    switch (impact) {
-      case 'high': return 'text-red-600 bg-red-100'
-      case 'medium': return 'text-yellow-600 bg-yellow-100'
-      case 'low': return 'text-green-600 bg-green-100'
-      default: return 'text-gray-600 bg-gray-100'
-    }
-  }
-  
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'improvement': return <Lightbulb className="h-5 w-5" />
-      case 'issue': return <AlertCircle className="h-5 w-5" />
-      case 'opportunity': return <Target className="h-5 w-5" />
-      case 'trend': return <TrendingUp className="h-5 w-5" />
-      default: return <Activity className="h-5 w-5" />
-    }
-  }
-  
-  if (loading) {
-    return <div className="p-8">Loading AI features...</div>
-  }
-  
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">AI Intelligence Center</h1>
-          <p className="text-muted-foreground">GPT-4 powered insights, sentiment analysis, and self-learning</p>
-        </div>
-        <div className="flex gap-2">
-          <Button onClick={generateInsights} variant="outline">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Generate Insights
-          </Button>
-          <Button onClick={exportLearningData} variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Export Data
+    <div className="container mx-auto px-6 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <Brain className="h-8 w-8 text-cyan-600" />
+              <h1 className="text-3xl font-bold text-gray-900">AI Configuration</h1>
+            </div>
+            <p className="text-gray-600">Configure and train your AI assistant</p>
+          </div>
+          <Button onClick={saveConfig} disabled={loading}>
+            <Settings className="h-4 w-4 mr-2" />
+            Save Configuration
           </Button>
         </div>
       </div>
-      
-      {/* AI Status */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+
+      {/* Status Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <Card className="bg-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">AI Status</CardTitle>
-            <Brain className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-700">AI Model</CardTitle>
+            <Brain className="h-4 w-4 text-cyan-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-gray-900">GPT-4</div>
+            <p className="text-xs text-gray-500">Active & Ready</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-white">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-gray-700">Training Data</CardTitle>
+            <Database className="h-4 w-4 text-blue-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-gray-900">{trainingStats.totalDocuments}</div>
+            <p className="text-xs text-gray-500">Documents</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-white">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-gray-700">Q&A Pairs</CardTitle>
+            <MessageSquare className="h-4 w-4 text-green-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-gray-900">{trainingStats.totalQuestions}</div>
+            <p className="text-xs text-gray-500">Trained responses</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-white">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-gray-700">Learning</CardTitle>
+            <Sparkles className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">
-              {aiStatus?.status === 'configured' ? (
-                <>
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <span className="font-semibold text-green-600">Active</span>
-                </>
-              ) : (
-                <>
-                  <XCircle className="h-5 w-5 text-red-600" />
-                  <span className="font-semibold text-red-600">Not Configured</span>
-                </>
-              )}
+              <CheckCircle className="h-5 w-5 text-green-600" />
+              <span className="font-semibold text-green-600">Enabled</span>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {aiStatus?.models?.[0] || 'GPT-4 Turbo'}
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Learning Patterns</CardTitle>
-            <Sparkles className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{patterns.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Recognized patterns
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Insights</CardTitle>
-            <Lightbulb className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{insights.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Actionable recommendations
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {patterns.length > 0 
-                ? `${(patterns.reduce((sum, p) => sum + p.successRate, 0) / patterns.length * 100).toFixed(0)}%`
-                : 'N/A'
-              }
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Average pattern success
-            </p>
+            <p className="text-xs text-gray-500">Self-improving</p>
           </CardContent>
         </Card>
       </div>
-      
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="insights">Insights</TabsTrigger>
-          <TabsTrigger value="patterns">Learning Patterns</TabsTrigger>
-          <TabsTrigger value="sentiment">Sentiment Analysis</TabsTrigger>
-          <TabsTrigger value="settings">AI Settings</TabsTrigger>
+
+      {/* Main Configuration */}
+      <Tabs defaultValue="training" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-3 bg-gray-100">
+          <TabsTrigger value="training" className="data-[state=active]:bg-white">
+            Training Data
+          </TabsTrigger>
+          <TabsTrigger value="behavior" className="data-[state=active]:bg-white">
+            Behavior Settings
+          </TabsTrigger>
+          <TabsTrigger value="advanced" className="data-[state=active]:bg-white">
+            Advanced Options
+          </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent AI Insights</CardTitle>
-                <CardDescription>Latest recommendations from the learning engine</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {insights.length > 0 ? (
-                  <div className="space-y-3">
-                    {insights.slice(0, 5).map((insight) => (
-                      <div key={insight.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                        {getTypeIcon(insight.type)}
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium">{insight.title}</span>
-                            <Badge className={getImpactColor(insight.impact)}>
-                              {insight.impact}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-gray-600">{insight.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-gray-500">No insights available yet. Generate insights to see recommendations.</p>
-                )}
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Learning Patterns</CardTitle>
-                <CardDescription>Most frequent customer interaction patterns</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {patterns.length > 0 ? (
-                  <div className="space-y-3">
-                    {patterns.slice(0, 5).map((pattern) => (
-                      <div key={pattern.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div>
-                          <span className="font-medium">{pattern.pattern}</span>
-                          <div className="flex items-center gap-4 mt-1 text-xs text-gray-600">
-                            <span>Frequency: {pattern.frequency}</span>
-                            <span>Success: {(pattern.successRate * 100).toFixed(0)}%</span>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-sm font-semibold">
-                            {pattern.avgSentiment > 0 ? (
-                              <span className="text-green-600">Positive</span>
-                            ) : pattern.avgSentiment < 0 ? (
-                              <span className="text-red-600">Negative</span>
-                            ) : (
-                              <span className="text-gray-600">Neutral</span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-gray-500">No patterns detected yet. The AI will learn from customer interactions.</p>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-          
+        {/* Training Data Tab */}
+        <TabsContent value="training">
           <Card>
             <CardHeader>
-              <CardTitle>AI Features</CardTitle>
-              <CardDescription>Advanced capabilities powered by OpenAI GPT-4</CardDescription>
+              <CardTitle>Upload Training Data</CardTitle>
+              <CardDescription>
+                Train your AI with your business-specific knowledge
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <Brain className="h-8 w-8 text-blue-600 mb-2" />
-                  <h4 className="font-semibold">GPT-4 Integration</h4>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Advanced language understanding and generation for natural conversations
-                  </p>
-                </div>
-                
-                <div className="p-4 bg-purple-50 rounded-lg">
-                  <Activity className="h-8 w-8 text-purple-600 mb-2" />
-                  <h4 className="font-semibold">Sentiment Analysis</h4>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Real-time emotion detection and urgency assessment
-                  </p>
-                </div>
-                
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <Zap className="h-8 w-8 text-green-600 mb-2" />
-                  <h4 className="font-semibold">Self-Learning</h4>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Continuous improvement from feedback and interactions
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="insights" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>AI-Generated Insights</CardTitle>
-              <CardDescription>Actionable recommendations based on conversation analysis</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {insights.length > 0 ? (
-                <div className="space-y-4">
-                  {insights.map((insight) => (
-                    <div key={insight.id} className="border rounded-lg p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          {getTypeIcon(insight.type)}
-                          <h4 className="font-semibold">{insight.title}</h4>
-                        </div>
-                        <Badge className={getImpactColor(insight.impact)}>
-                          {insight.impact} impact
-                        </Badge>
-                      </div>
-                      <p className="text-gray-600 mb-3">{insight.description}</p>
-                      <div className="bg-blue-50 p-3 rounded">
-                        <p className="text-sm font-medium text-blue-900">Recommendation:</p>
-                        <p className="text-sm text-blue-700">{insight.recommendation}</p>
-                      </div>
-                      {insight.metrics && (
-                        <div className="mt-3 pt-3 border-t">
-                          <p className="text-xs text-gray-500">
-                            Created: {new Date(insight.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
-                  <div>
-                    <p className="font-medium">No insights available</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Click "Generate Insights" to analyze your conversation data and receive AI-powered recommendations.
-                    </p>
-                  </div>
-                </Alert>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="patterns" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Learning Patterns</CardTitle>
-              <CardDescription>Recognized patterns from customer interactions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {patterns.length > 0 ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left p-2">Pattern</th>
-                        <th className="text-center p-2">Frequency</th>
-                        <th className="text-center p-2">Success Rate</th>
-                        <th className="text-center p-2">Sentiment</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {patterns.map((pattern) => (
-                        <tr key={pattern.id} className="border-b">
-                          <td className="p-2">{pattern.pattern}</td>
-                          <td className="text-center p-2">{pattern.frequency}</td>
-                          <td className="text-center p-2">
-                            <span className={`font-medium ${
-                              pattern.successRate > 0.7 ? 'text-green-600' :
-                              pattern.successRate > 0.4 ? 'text-yellow-600' :
-                              'text-red-600'
-                            }`}>
-                              {(pattern.successRate * 100).toFixed(0)}%
-                            </span>
-                          </td>
-                          <td className="text-center p-2">
-                            {pattern.avgSentiment > 0.3 ? '😊' :
-                             pattern.avgSentiment < -0.3 ? '😔' : '😐'}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <p className="text-gray-500 text-center py-8">
-                  No learning patterns detected yet. Patterns will appear as the AI learns from conversations.
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="sentiment" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Sentiment Analysis Dashboard</CardTitle>
-              <CardDescription>Real-time emotional intelligence and conversation monitoring</CardDescription>
-            </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-6">
+              {/* File Upload Section */}
               <div className="space-y-4">
-                <Alert>
-                  <Activity className="h-4 w-4" />
-                  <div>
-                    <p className="font-medium">Sentiment Analysis Active</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      All conversations are being analyzed for emotional content, urgency, and intent.
-                    </p>
-                  </div>
-                </Alert>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-3">Detected Emotions</h4>
-                    <div className="space-y-2">
-                      {['Joy', 'Anger', 'Sadness', 'Fear', 'Surprise', 'Disgust'].map((emotion) => (
-                        <div key={emotion} className="flex items-center justify-between">
-                          <span className="text-sm">{emotion}</span>
-                          <div className="w-32 bg-gray-200 rounded-full h-2">
-                            <div
-                              className="bg-gradient-to-r from-blue-600 to-blue-400 h-2 rounded-full"
-                              style={{ width: `${Math.random() * 100}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="p-4 border rounded-lg">
-                    <h4 className="font-semibold mb-3">Alert Triggers</h4>
-                    <div className="space-y-2">
-                      <label className="flex items-center gap-2">
-                        <input type="checkbox" defaultChecked className="rounded" />
-                        <span className="text-sm">High negative sentiment (&lt; -0.5)</span>
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <input type="checkbox" defaultChecked className="rounded" />
-                        <span className="text-sm">Urgent requests</span>
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <input type="checkbox" defaultChecked className="rounded" />
-                        <span className="text-sm">Escalation keywords</span>
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <input type="checkbox" defaultChecked className="rounded" />
-                        <span className="text-sm">Complaint detection</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="settings" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>AI Configuration</CardTitle>
-              <CardDescription>Configure your AI assistant settings</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">OpenAI API Key</label>
-                <div className="flex gap-2">
+                <h3 className="font-medium text-gray-900">Document Upload</h3>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50">
+                  <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-700 font-medium mb-2">
+                    Upload documents to train your AI
+                  </p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Supported: PDF, DOCX, XLSX, CSV, TXT
+                  </p>
                   <input
-                    type="password"
-                    placeholder="sk-..."
-                    className="flex-1 px-3 py-2 border rounded-lg text-gray-900 bg-white"
-                    defaultValue={aiStatus?.status === 'configured' ? 'sk-...configured' : ''}
+                    type="file"
+                    id="ai-file-upload"
+                    className="hidden"
+                    accept=".pdf,.docx,.xlsx,.csv,.txt"
+                    onChange={handleFileUpload}
+                    disabled={uploading}
                   />
-                  <Button variant="outline">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Update
+                  <Button 
+                    onClick={() => document.getElementById('ai-file-upload')?.click()}
+                    disabled={uploading}
+                  >
+                    {uploading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <FileText className="h-4 w-4 mr-2" />
+                        Choose Files
+                      </>
+                    )}
                   </Button>
                 </div>
-                <p className="text-xs text-gray-500">
-                  Your OpenAI API key for GPT-4 access. Keep this secure.
+                
+                {/* File Type Examples */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-3 p-3 border rounded-lg bg-white">
+                    <FileSpreadsheet className="h-8 w-8 text-green-600" />
+                    <div>
+                      <p className="font-medium text-gray-900">Spreadsheets</p>
+                      <p className="text-xs text-gray-500">FAQ lists, price sheets</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 border rounded-lg bg-white">
+                    <FileText className="h-8 w-8 text-blue-600" />
+                    <div>
+                      <p className="font-medium text-gray-900">Documents</p>
+                      <p className="text-xs text-gray-500">Policies, guides, manuals</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 border rounded-lg bg-white">
+                    <File className="h-8 w-8 text-gray-600" />
+                    <div>
+                      <p className="font-medium text-gray-900">Text Files</p>
+                      <p className="text-xs text-gray-500">Scripts, templates</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Web Scraping Section */}
+              <div className="space-y-4 pt-6 border-t">
+                <h3 className="font-medium text-gray-900">Web Scraping</h3>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="https://your-website.com/faq"
+                    value={fileUrl}
+                    onChange={(e) => setFileUrl(e.target.value)}
+                    className="flex-1"
+                    disabled={uploading}
+                  />
+                  <Button onClick={handleUrlImport} disabled={uploading}>
+                    {uploading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        <Globe className="h-4 w-4 mr-2" />
+                        Import
+                      </>
+                    )}
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-500">
+                  Automatically extract and learn from your website content
                 </p>
               </div>
               
-              <div className="space-y-2">
-                <label className="text-sm font-medium">AI Model</label>
-                <select className="w-full px-3 py-2 border rounded-lg">
-                  <option value="gpt-4-turbo-preview">GPT-4 Turbo (Recommended)</option>
-                  <option value="gpt-4">GPT-4</option>
-                  <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Faster, Lower Cost)</option>
+              {/* Training Button */}
+              <div className="pt-6 border-t">
+                <Button 
+                  onClick={trainModel} 
+                  className="w-full"
+                  size="lg"
+                  disabled={loading || trainingStats.totalDocuments === 0}
+                >
+                  <Zap className="h-4 w-4 mr-2" />
+                  Start Training AI Model
+                </Button>
+                {trainingStats.lastTrained && (
+                  <p className="text-sm text-gray-500 text-center mt-2">
+                    Last trained: {new Date(trainingStats.lastTrained).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        {/* Behavior Settings Tab */}
+        <TabsContent value="behavior">
+          <Card>
+            <CardHeader>
+              <CardTitle>AI Behavior</CardTitle>
+              <CardDescription>
+                Customize how your AI interacts with guests
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Response Style
+                </label>
+                <select
+                  value={config.responseStyle}
+                  onChange={(e) => setConfig({...config, responseStyle: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white"
+                >
+                  <option value="professional">Professional</option>
+                  <option value="friendly">Friendly & Casual</option>
+                  <option value="concise">Concise</option>
+                  <option value="detailed">Detailed</option>
                 </select>
               </div>
               
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Temperature (Creativity)</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  defaultValue="70"
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>Precise (0)</span>
-                  <span>Balanced (0.7)</span>
-                  <span>Creative (1.0)</span>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Personality Traits
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {['Helpful', 'Friendly', 'Professional', 'Knowledgeable', 'Empathetic', 'Proactive'].map(trait => (
+                    <Badge
+                      key={trait}
+                      variant={config.personalityTraits.includes(trait.toLowerCase()) ? 'default' : 'outline'}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        const traits = config.personalityTraits.includes(trait.toLowerCase())
+                          ? config.personalityTraits.filter(t => t !== trait.toLowerCase())
+                          : [...config.personalityTraits, trait.toLowerCase()]
+                        setConfig({...config, personalityTraits: traits})
+                      }}
+                    >
+                      {trait}
+                    </Badge>
+                  ))}
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Max Response Length</label>
-                <input
-                  type="number"
-                  defaultValue="500"
-                  className="w-full px-3 py-2 border rounded-lg"
-                  placeholder="500"
-                />
-                <p className="text-xs text-gray-500">
-                  Maximum tokens (words) for AI responses
-                </p>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Supported Languages
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { code: 'en', name: 'English' },
+                    { code: 'es', name: 'Spanish' },
+                    { code: 'fr', name: 'French' },
+                    { code: 'de', name: 'German' },
+                    { code: 'ja', name: 'Japanese' },
+                    { code: 'zh', name: 'Chinese' }
+                  ].map(lang => (
+                    <Badge
+                      key={lang.code}
+                      variant={config.languages.includes(lang.code) ? 'default' : 'outline'}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        const languages = config.languages.includes(lang.code)
+                          ? config.languages.filter(l => l !== lang.code)
+                          : [...config.languages, lang.code]
+                        setConfig({...config, languages})
+                      }}
+                    >
+                      {lang.name}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        {/* Advanced Options Tab */}
+        <TabsContent value="advanced">
+          <Card>
+            <CardHeader>
+              <CardTitle>Advanced Settings</CardTitle>
+              <CardDescription>
+                Fine-tune AI parameters for optimal performance
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  AI Model
+                </label>
+                <select
+                  value={config.model}
+                  onChange={(e) => setConfig({...config, model: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white"
+                >
+                  <option value="gpt-4-turbo">GPT-4 Turbo (Recommended)</option>
+                  <option value="gpt-4">GPT-4</option>
+                  <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                </select>
               </div>
               
-              <div className="pt-4">
-                <Button className="w-full">
-                  Save AI Settings
-                </Button>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Response Creativity (Temperature: {config.temperature})
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={config.temperature}
+                  onChange={(e) => setConfig({...config, temperature: parseFloat(e.target.value)})}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>Focused</span>
+                  <span>Balanced</span>
+                  <span>Creative</span>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Max Response Length
+                </label>
+                <select
+                  value={config.maxTokens}
+                  onChange={(e) => setConfig({...config, maxTokens: parseInt(e.target.value)})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white"
+                >
+                  <option value="150">Short (150 tokens)</option>
+                  <option value="300">Medium (300 tokens)</option>
+                  <option value="500">Long (500 tokens)</option>
+                  <option value="1000">Very Long (1000 tokens)</option>
+                </select>
+              </div>
+              
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div>
+                  <p className="font-medium text-gray-900">Self-Learning Mode</p>
+                  <p className="text-sm text-gray-500">AI learns from conversations</p>
+                </div>
+                <button
+                  onClick={() => setConfig({...config, learningEnabled: !config.learningEnabled})}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    config.learningEnabled ? 'bg-cyan-600' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      config.learningEnabled ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
               </div>
             </CardContent>
           </Card>
