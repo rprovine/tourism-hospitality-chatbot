@@ -19,7 +19,9 @@ import {
   Settings,
   Hash,
   CreditCard,
-  BookOpen
+  BookOpen,
+  Code,
+  Lock
 } from 'lucide-react'
 
 export default function BusinessDashboard() {
@@ -134,6 +136,24 @@ export default function BusinessDashboard() {
             </Card>
           </Link>
 
+          {/* Widget - Available to all tiers */}
+          <Link href="/widget">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Code className="h-8 w-8 text-cyan-600" />
+                    <div>
+                      <CardTitle>Widget</CardTitle>
+                      <CardDescription>Get your chat code</CardDescription>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </CardHeader>
+            </Card>
+          </Link>
+
           {/* Knowledge Base */}
           <Link href="/knowledge-base">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
@@ -152,59 +172,113 @@ export default function BusinessDashboard() {
             </Card>
           </Link>
 
-          {/* Revenue */}
-          <Link href="/revenue">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          {/* Revenue - Professional+ only */}
+          {business?.tier === 'starter' ? (
+            <Card className="opacity-60 cursor-not-allowed">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <TrendingUp className="h-8 w-8 text-green-600" />
+                    <TrendingUp className="h-8 w-8 text-gray-400" />
                     <div>
-                      <CardTitle>Revenue</CardTitle>
-                      <CardDescription>Optimize pricing</CardDescription>
+                      <CardTitle className="text-gray-500">Revenue</CardTitle>
+                      <CardDescription className="flex items-center gap-1">
+                        <Lock className="h-3 w-3" /> Professional+ only
+                      </CardDescription>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
                 </div>
               </CardHeader>
             </Card>
-          </Link>
+          ) : (
+            <Link href="/revenue">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <TrendingUp className="h-8 w-8 text-green-600" />
+                      <div>
+                        <CardTitle>Revenue</CardTitle>
+                        <CardDescription>Optimize pricing</CardDescription>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                  </div>
+                </CardHeader>
+              </Card>
+            </Link>
+          )}
 
-          {/* Guests */}
-          <Link href="/guests">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          {/* Guests - Professional+ only */}
+          {business?.tier === 'starter' ? (
+            <Card className="opacity-60 cursor-not-allowed">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Users className="h-8 w-8 text-purple-600" />
+                    <Users className="h-8 w-8 text-gray-400" />
                     <div>
-                      <CardTitle>Guests</CardTitle>
-                      <CardDescription>Guest intelligence</CardDescription>
+                      <CardTitle className="text-gray-500">Guests</CardTitle>
+                      <CardDescription className="flex items-center gap-1">
+                        <Lock className="h-3 w-3" /> Professional+ only
+                      </CardDescription>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
                 </div>
               </CardHeader>
             </Card>
-          </Link>
+          ) : (
+            <Link href="/guests">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Users className="h-8 w-8 text-purple-600" />
+                      <div>
+                        <CardTitle>Guests</CardTitle>
+                        <CardDescription>Guest intelligence</CardDescription>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                  </div>
+                </CardHeader>
+              </Card>
+            </Link>
+          )}
 
-          {/* Channels */}
-          <Link href="/channels">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+          {/* Channels - Professional+ only */}
+          {business?.tier === 'starter' ? (
+            <Card className="opacity-60 cursor-not-allowed">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Hash className="h-8 w-8 text-orange-600" />
+                    <Hash className="h-8 w-8 text-gray-400" />
                     <div>
-                      <CardTitle>Channels</CardTitle>
-                      <CardDescription>Connect platforms</CardDescription>
+                      <CardTitle className="text-gray-500">Channels</CardTitle>
+                      <CardDescription className="flex items-center gap-1">
+                        <Lock className="h-3 w-3" /> Professional+ only
+                      </CardDescription>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
                 </div>
               </CardHeader>
             </Card>
-          </Link>
+          ) : (
+            <Link href="/channels">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Hash className="h-8 w-8 text-orange-600" />
+                      <div>
+                        <CardTitle>Channels</CardTitle>
+                        <CardDescription>Connect platforms</CardDescription>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                  </div>
+                </CardHeader>
+              </Card>
+            </Link>
+          )}
 
           {/* AI Config */}
           <Link href="/ai-config">

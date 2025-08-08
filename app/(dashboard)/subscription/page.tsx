@@ -456,7 +456,7 @@ export default function SubscriptionPage() {
             </Button>
           </div>
           
-          {isActive && !subscription.cancelAtPeriodEnd && subscription.status !== 'demo' && (
+          {(subscription.status === 'active' || subscription.status === 'trialing') && !subscription.cancelAtPeriodEnd && (
             <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
               <div>
                 <h3 className="font-medium text-red-900">Cancel Subscription</h3>
