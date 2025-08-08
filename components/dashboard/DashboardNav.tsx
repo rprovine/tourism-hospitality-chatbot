@@ -24,7 +24,7 @@ const navItems = [
   { href: '/revenue', label: 'Revenue', icon: TrendingUp },
   { href: '/guests', label: 'Guests', icon: Users },
   { href: '/channels', label: 'Channels', icon: Hash },
-  { href: '/ai', label: 'AI Config', icon: Brain },
+  { href: '/ai-settings', label: 'AI Config', icon: Brain },
   { href: '/billing', label: 'Billing', icon: CreditCard },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
@@ -53,9 +53,7 @@ export default function DashboardNav() {
             <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => {
                 const Icon = item.icon
-                const isActive = pathname === item.href || 
-                  (item.href === '/admin' && pathname === '/dashboard') ||
-                  (item.href === '/admin/analytics' && pathname?.includes('/analytics'))
+                const isActive = pathname === item.href
                 
                 return (
                   <Link

@@ -81,8 +81,8 @@ export default function BillingPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Billing & Subscription</h1>
-        <p className="text-muted-foreground">Manage your subscription and billing information</p>
+        <h1 className="text-3xl font-bold text-gray-900">Billing & Subscription</h1>
+        <p className="text-gray-600">Manage your subscription and billing information</p>
       </div>
 
       {subscription?.warning && (
@@ -104,22 +104,22 @@ export default function BillingPage() {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-muted-foreground">Plan</p>
-              <p className="font-semibold capitalize">{subscription?.tier || 'Starter'}</p>
+              <p className="text-sm text-gray-600">Plan</p>
+              <p className="font-semibold capitalize text-gray-900">{subscription?.tier || 'Starter'}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Status</p>
+              <p className="text-sm text-gray-600">Status</p>
               <p className={`font-semibold capitalize ${statusColors[subscription?.status || 'active']}`}>
                 {subscription?.status || 'Active'}
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Billing Cycle</p>
-              <p className="font-semibold capitalize">{subscription?.billingCycle || 'Monthly'}</p>
+              <p className="text-sm text-gray-600">Billing Cycle</p>
+              <p className="font-semibold capitalize text-gray-900">{subscription?.billingCycle || 'Monthly'}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Next Billing Date</p>
-              <p className="font-semibold">
+              <p className="text-sm text-gray-600">Next Billing Date</p>
+              <p className="font-semibold text-gray-900">
                 {subscription?.endDate ? new Date(subscription.endDate).toLocaleDateString() : 'N/A'}
               </p>
             </div>
@@ -148,7 +148,7 @@ export default function BillingPage() {
             {getPlanFeatures(subscription?.tier || 'starter').map((feature: string, index: number) => (
               <div key={index} className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-green-600" />
-                <span>{feature}</span>
+                <span className="text-gray-700">{feature}</span>
               </div>
             ))}
           </div>

@@ -170,7 +170,7 @@ export default function RealtimeDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <DashboardNav />
+      <AdminNav />
       
       <div className="container mx-auto px-6 py-8">
         {/* Header with Controls */}

@@ -91,8 +91,8 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-muted-foreground">Manage your account and chatbot configuration</p>
+        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+        <p className="text-gray-600">Manage your account and chatbot configuration</p>
       </div>
       
       <Tabs defaultValue="profile" className="space-y-4">
@@ -112,7 +112,7 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Business Name</label>
+                <label className="text-sm font-medium text-gray-700">Business Name</label>
                 <Input
                   value={profileData.name}
                   onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
@@ -121,7 +121,7 @@ export default function SettingsPage() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Email</label>
+                <label className="text-sm font-medium text-gray-700">Email</label>
                 <Input
                   type="email"
                   value={profileData.email}
@@ -131,11 +131,11 @@ export default function SettingsPage() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Business Type</label>
+                <label className="text-sm font-medium text-gray-700">Business Type</label>
                 <select
                   value={profileData.type}
                   onChange={(e) => setProfileData({ ...profileData, type: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 >
                   <option value="hotel">Hotel</option>
                   <option value="resort">Resort</option>
@@ -147,7 +147,7 @@ export default function SettingsPage() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Logo</label>
+                <label className="text-sm font-medium text-gray-700">Logo</label>
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center">
                     <Upload className="h-8 w-8 text-gray-400" />
@@ -172,18 +172,18 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Welcome Message</label>
+                <label className="text-sm font-medium text-gray-700">Welcome Message</label>
                 <textarea
                   value={profileData.welcomeMessage}
                   onChange={(e) => setProfileData({ ...profileData, welcomeMessage: e.target.value })}
-                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   rows={3}
                   placeholder="Aloha! How can I help you today?"
                 />
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Primary Color</label>
+                <label className="text-sm font-medium text-gray-700">Primary Color</label>
                 <div className="flex items-center gap-4">
                   <input
                     type="color"

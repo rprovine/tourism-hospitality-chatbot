@@ -161,15 +161,15 @@ export default function ChannelsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Multi-Channel Integration</h1>
-        <p className="text-muted-foreground">Configure WhatsApp, SMS, and social media channels</p>
+        <h1 className="text-3xl font-bold text-gray-900">Multi-Channel Integration</h1>
+        <p className="text-gray-600">Configure WhatsApp, SMS, and social media channels</p>
       </div>
 
       {/* Channel Status Overview */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">WhatsApp</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-700">WhatsApp</CardTitle>
             <MessageSquare className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -185,7 +185,7 @@ export default function ChannelsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">SMS (Twilio)</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-700">SMS (Twilio)</CardTitle>
             <Phone className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
@@ -201,7 +201,7 @@ export default function ChannelsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Instagram</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-700">Instagram</CardTitle>
             <Instagram className="h-4 w-4 text-pink-600" />
           </CardHeader>
           <CardContent>
@@ -211,7 +211,7 @@ export default function ChannelsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Facebook</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-700">Facebook</CardTitle>
             <Facebook className="h-4 w-4 text-blue-700" />
           </CardHeader>
           <CardContent>
@@ -240,7 +240,7 @@ export default function ChannelsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Access Token</label>
+                <label className="text-sm font-medium text-gray-700">Access Token</label>
                 <Input
                   type="password"
                   placeholder="Your WhatsApp Business API access token"
@@ -250,7 +250,7 @@ export default function ChannelsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Phone Number ID</label>
+                <label className="text-sm font-medium text-gray-700">Phone Number ID</label>
                 <Input
                   placeholder="WhatsApp phone number ID"
                   value={whatsappConfig.phoneNumberId}
@@ -259,7 +259,7 @@ export default function ChannelsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Business Account ID</label>
+                <label className="text-sm font-medium text-gray-700">Business Account ID</label>
                 <Input
                   placeholder="WhatsApp business account ID"
                   value={whatsappConfig.businessAccountId}
@@ -268,7 +268,7 @@ export default function ChannelsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Webhook URL</label>
+                <label className="text-sm font-medium text-gray-700">Webhook URL</label>
                 <div className="flex gap-2">
                   <Input
                     readOnly
@@ -284,7 +284,7 @@ export default function ChannelsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Webhook Verify Token</label>
+                <label className="text-sm font-medium text-gray-700">Webhook Verify Token</label>
                 <Input
                   readOnly
                   value={whatsappConfig.webhookVerifyToken}
@@ -333,7 +333,7 @@ export default function ChannelsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Account SID</label>
+                <label className="text-sm font-medium text-gray-700">Account SID</label>
                 <Input
                   placeholder="Your Twilio Account SID"
                   value={smsConfig.accountSid}
@@ -342,7 +342,7 @@ export default function ChannelsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Auth Token</label>
+                <label className="text-sm font-medium text-gray-700">Auth Token</label>
                 <Input
                   type="password"
                   placeholder="Your Twilio Auth Token"
@@ -352,7 +352,7 @@ export default function ChannelsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Phone Number</label>
+                <label className="text-sm font-medium text-gray-700">Phone Number</label>
                 <Input
                   placeholder="+1234567890"
                   value={smsConfig.phoneNumber}
@@ -364,7 +364,7 @@ export default function ChannelsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Messaging Service SID (Optional)</label>
+                <label className="text-sm font-medium text-gray-700">Messaging Service SID (Optional)</label>
                 <Input
                   placeholder="Messaging Service SID for advanced features"
                   value={smsConfig.messagingServiceSid}
@@ -373,7 +373,7 @@ export default function ChannelsPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Webhook URLs</label>
+                <label className="text-sm font-medium text-gray-700">Webhook URLs</label>
                 <div className="space-y-2">
                   <div className="flex gap-2">
                     <Input
@@ -446,7 +446,7 @@ export default function ChannelsPage() {
             <CardContent>
               <div className="bg-gray-50 p-6 rounded-lg text-center">
                 <Instagram className="h-12 w-12 text-pink-600 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">Coming Soon</h3>
+                <h3 className="font-semibold mb-2 text-gray-900">Coming Soon</h3>
                 <p className="text-sm text-gray-600">
                   Instagram Direct Message integration will be available in the next update.
                   This will allow you to respond to customer inquiries directly from Instagram.

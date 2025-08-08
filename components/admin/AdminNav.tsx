@@ -20,13 +20,9 @@ import { Button } from '@/components/ui/button'
 
 const navItems = [
   { href: '/admin', label: 'Overview', icon: Home },
+  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/admin/realtime', label: 'Real-Time', icon: Activity },
   { href: '/admin/users', label: 'Users', icon: Users },
-  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/admin/conversations', label: 'Conversations', icon: MessageSquare },
-  { href: '/admin/knowledge-base', label: 'Knowledge', icon: BookOpen },
-  { href: '/admin/ai-settings', label: 'AI Config', icon: Brain },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
 ]
 
 export default function AdminNav() {
