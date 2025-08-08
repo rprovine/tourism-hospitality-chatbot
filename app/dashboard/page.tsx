@@ -11,12 +11,14 @@ import {
   TrendingUp,
   Calendar,
   Bot,
+  Brain,
   Star,
   ChevronRight,
   BarChart3,
   Settings,
   Hash,
-  CreditCard
+  CreditCard,
+  BookOpen
 } from 'lucide-react'
 
 export default function BusinessDashboard() {
@@ -113,8 +115,9 @@ export default function BusinessDashboard() {
           </Card>
         </div>
 
-        {/* Quick Actions */}
+        {/* Quick Actions - Matching Nav Order */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {/* Analytics */}
           <Link href="/analytics">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
@@ -132,6 +135,43 @@ export default function BusinessDashboard() {
             </Card>
           </Link>
 
+          {/* Knowledge Base */}
+          <Link href="/knowledge-base">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Bot className="h-8 w-8 text-indigo-600" />
+                    <div>
+                      <CardTitle>Knowledge Base</CardTitle>
+                      <CardDescription>Train your AI</CardDescription>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </CardHeader>
+            </Card>
+          </Link>
+
+          {/* Revenue */}
+          <Link href="/revenue">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <TrendingUp className="h-8 w-8 text-green-600" />
+                    <div>
+                      <CardTitle>Revenue</CardTitle>
+                      <CardDescription>Optimize pricing</CardDescription>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </CardHeader>
+            </Card>
+          </Link>
+
+          {/* Guests */}
           <Link href="/guests">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
@@ -139,8 +179,8 @@ export default function BusinessDashboard() {
                   <div className="flex items-center gap-3">
                     <Users className="h-8 w-8 text-purple-600" />
                     <div>
-                      <CardTitle>Guest Profiles</CardTitle>
-                      <CardDescription>Manage guest data</CardDescription>
+                      <CardTitle>Guests</CardTitle>
+                      <CardDescription>Guest intelligence</CardDescription>
                     </div>
                   </div>
                   <ChevronRight className="h-5 w-5 text-gray-400" />
@@ -149,23 +189,7 @@ export default function BusinessDashboard() {
             </Card>
           </Link>
 
-          <Link href="/ai-config">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Bot className="h-8 w-8 text-green-600" />
-                    <div>
-                      <CardTitle>AI Configuration</CardTitle>
-                      <CardDescription>Customize responses</CardDescription>
-                    </div>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
-                </div>
-              </CardHeader>
-            </Card>
-          </Link>
-
+          {/* Channels */}
           <Link href="/channels">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
@@ -183,15 +207,16 @@ export default function BusinessDashboard() {
             </Card>
           </Link>
 
-          <Link href="/revenue">
+          {/* AI Config */}
+          <Link href="/ai-config">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <TrendingUp className="h-8 w-8 text-blue-600" />
+                    <Brain className="h-8 w-8 text-pink-600" />
                     <div>
-                      <CardTitle>Revenue Insights</CardTitle>
-                      <CardDescription>Optimize pricing</CardDescription>
+                      <CardTitle>AI Config</CardTitle>
+                      <CardDescription>Customize behavior</CardDescription>
                     </div>
                   </div>
                   <ChevronRight className="h-5 w-5 text-gray-400" />
@@ -200,6 +225,43 @@ export default function BusinessDashboard() {
             </Card>
           </Link>
 
+          {/* Subscription */}
+          <Link href="/subscription">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="h-8 w-8 text-blue-600" />
+                    <div>
+                      <CardTitle>Subscription</CardTitle>
+                      <CardDescription>Manage your plan</CardDescription>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </CardHeader>
+            </Card>
+          </Link>
+
+          {/* Billing */}
+          <Link href="/billing">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="h-8 w-8 text-emerald-600" />
+                    <div>
+                      <CardTitle>Billing</CardTitle>
+                      <CardDescription>Payment & invoices</CardDescription>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </CardHeader>
+            </Card>
+          </Link>
+
+          {/* Settings */}
           <Link href="/settings">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
