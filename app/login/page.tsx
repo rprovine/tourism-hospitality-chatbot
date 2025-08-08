@@ -169,14 +169,6 @@ export default function LoginPage() {
                 </a>
               </div>
             </form>
-            
-            {/* Test credentials info */}
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg text-xs text-blue-700">
-              <p className="font-semibold mb-1">Test Accounts:</p>
-              <p>• premium@demo.com / demo123</p>
-              <p>• professional@demo.com / demo123</p>
-              <p>• admin@lenilani.com / LeniLani2025!</p>
-            </div>
           </CardContent>
         </Card>
 

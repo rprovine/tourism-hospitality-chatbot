@@ -91,14 +91,6 @@ export default function AdminLoginPage() {
             {loading ? 'Logging in...' : 'Login as Admin'}
           </button>
         </form>
-        
-        <div className="mt-6 text-sm text-gray-600">
-          <p>Default credentials:</p>
-          <p className="font-mono bg-gray-100 p-2 rounded mt-2">
-            Email: admin@lenilani.com<br/>
-            Password: Admin@2024!
-          </p>
-        </div>
       </div>
     </div>
   )
