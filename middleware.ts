@@ -23,6 +23,14 @@ const adminRoutes = [
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
   
+  // Handle widget routes - remove X-Frame-Options to allow embedding
+  if (path.startsWith('/widget/')) {
+    const response = NextResponse.next()
+    response.headers.delete('X-Frame-Options')
+    response.headers.set('Content-Security-Policy', 'frame-ancestors *')
+    return response
+  }
+  
   // Check if route requires authentication
   const isProtectedRoute = protectedRoutes.some(route => path.startsWith(route))
   const isAdminRoute = adminRoutes.some(route => path.startsWith(route))
@@ -57,6 +65,7 @@ export const config = {
     '/channels/:path*',
     '/guests/:path*',
     '/revenue/:path*',
-    '/admin/:path*'
+    '/admin/:path*',
+    '/widget/:path*'
   ]
 }
