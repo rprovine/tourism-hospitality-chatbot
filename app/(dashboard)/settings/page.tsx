@@ -15,7 +15,9 @@ import {
   Key,
   Save,
   Upload,
-  AlertCircle
+  AlertCircle,
+  CheckCircle,
+  X
 } from 'lucide-react'
 
 export default function SettingsPage() {
@@ -74,27 +76,39 @@ export default function SettingsPage() {
       return
     }
     
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('File size must be less than 5MB')
+    // Validate file size (max 2MB for base64)
+    if (file.size > 2 * 1024 * 1024) {
+      alert('File size must be less than 2MB')
       return
     }
     
     setUploadingLogo(true)
     
     try {
-      // Convert to base64 for demo (in production, you'd upload to a CDN)
+      // Convert to base64
       const reader = new FileReader()
       reader.onloadend = () => {
         const base64String = reader.result as string
         setLogoUrl(base64String)
-        setProfileData({ ...profileData, logo: base64String })
+        setProfileData(prev => ({ ...prev, logo: base64String }))
+        
+        // Immediately update localStorage for preview
+        const currentBusiness = JSON.parse(localStorage.getItem('business') || '{}')
+        localStorage.setItem('business', JSON.stringify({
+          ...currentBusiness,
+          logo: base64String
+        }))
+        
+        setUploadingLogo(false)
+      }
+      reader.onerror = () => {
+        alert('Failed to read file')
+        setUploadingLogo(false)
       }
       reader.readAsDataURL(file)
     } catch (error) {
       console.error('Error uploading logo:', error)
       alert('Failed to upload logo')
-    } finally {
       setUploadingLogo(false)
     }
   }
@@ -102,20 +116,10 @@ export default function SettingsPage() {
   const saveProfile = async () => {
     setSaving(true)
     try {
-      // Save logo if there's one
-      if (profileData.logo && profileData.logo !== business?.logo) {
-        const logoResponse = await fetch('/api/upload/logo', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({ logo: profileData.logo })
-        })
-        
-        if (!logoResponse.ok) {
-          throw new Error('Failed to upload logo')
-        }
+      // Include logo in the profile data
+      const dataToSave = {
+        ...profileData,
+        logo: profileData.logo || logoUrl // Ensure logo is included
       }
       
       const response = await fetch('/api/auth/profile', {
@@ -124,13 +128,21 @@ export default function SettingsPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify(profileData)
+        body: JSON.stringify(dataToSave)
       })
       
       if (response.ok) {
         const updated = await response.json()
-        localStorage.setItem('business', JSON.stringify({ ...updated, logo: profileData.logo }))
+        // Update localStorage with the new data including logo
+        const updatedBusiness = {
+          ...updated,
+          logo: dataToSave.logo
+        }
+        localStorage.setItem('business', JSON.stringify(updatedBusiness))
+        setBusiness(updatedBusiness)
         alert('Profile updated successfully!')
+        // Force navigation refresh to update logo in nav
+        window.location.reload()
       }
     } catch (error) {
       console.error('Save error:', error)
@@ -205,19 +217,39 @@ export default function SettingsPage() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Logo</label>
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
-                    {logoUrl ? (
-                      <img src={logoUrl} alt="Business logo" className="w-full h-full object-cover" />
-                    ) : (
-                      <Upload className="h-8 w-8 text-gray-400" />
+                <label className="text-sm font-medium text-gray-700">Business Logo</label>
+                <div className="flex items-start gap-4">
+                  <div className="relative group">
+                    <div className="w-24 h-24 bg-gray-50 border-2 border-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                      {logoUrl ? (
+                        <img src={logoUrl} alt="Business logo" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="text-center">
+                          <Upload className="h-8 w-8 text-gray-400 mx-auto" />
+                          <p className="text-xs text-gray-500 mt-1">No logo</p>
+                        </div>
+                      )}
+                    </div>
+                    {logoUrl && (
+                      <button
+                        onClick={() => {
+                          setLogoUrl(null)
+                          setProfileData({ ...profileData, logo: '' })
+                          // Update localStorage immediately
+                          const currentBusiness = JSON.parse(localStorage.getItem('business') || '{}')
+                          delete currentBusiness.logo
+                          localStorage.setItem('business', JSON.stringify(currentBusiness))
+                        }}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
                     )}
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex-1">
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
                       onChange={handleLogoUpload}
                       className="hidden"
                       id="logo-upload"
@@ -231,23 +263,21 @@ export default function SettingsPage() {
                           e.preventDefault()
                           document.getElementById('logo-upload')?.click()
                         }}
+                        className="w-full sm:w-auto"
                       >
-                        {uploadingLogo ? 'Uploading...' : 'Upload Logo'}
+                        <Upload className="h-4 w-4 mr-2" />
+                        {uploadingLogo ? 'Processing...' : 'Choose Logo'}
                       </Button>
                     </label>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Recommended: Square image, max 2MB, PNG or JPG
+                    </p>
                     {logoUrl && (
-                      <Button 
-                        variant="ghost" 
-                        size="sm"
-                        onClick={() => {
-                          setLogoUrl(null)
-                          setProfileData({ ...profileData, logo: '' })
-                        }}
-                      >
-                        Remove Logo
-                      </Button>
+                      <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                        <CheckCircle className="h-3 w-3" />
+                        Logo uploaded successfully
+                      </p>
                     )}
-                  </div>
                 </div>
               </div>
               

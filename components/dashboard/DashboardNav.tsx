@@ -66,13 +66,18 @@ export default function DashboardNav() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-8">
-            <Link href="/dashboard" className="flex items-center gap-2">
+            <Link href="/dashboard" className="flex items-center gap-3">
               {businessLogo ? (
-                <img src={businessLogo} alt="Business Logo" className="h-8 w-8 rounded-lg object-cover" />
+                <img src={businessLogo} alt="Business Logo" className="h-9 w-9 rounded-lg object-cover shadow-sm" />
               ) : (
-                <Bot className="h-7 w-7 text-cyan-600" />
+                <div className="p-2 bg-cyan-50 rounded-lg">
+                  <Bot className="h-6 w-6 text-cyan-600" />
+                </div>
               )}
-              <span className="text-xl font-bold text-gray-900">{businessName}</span>
+              <div>
+                <span className="text-lg font-bold text-gray-900 leading-tight block">{businessName}</span>
+                <span className="text-xs text-gray-500 capitalize">{businessTier} Plan</span>
+              </div>
             </Link>
             
             {/* Navigation Links */}

@@ -253,16 +253,16 @@ export default function UnifiedAIConfigPage() {
             <CardContent className="space-y-4">
               {/* Model Tier Alert */}
               {businessTier === 'starter' && (
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
+                <Alert className="border-yellow-200 bg-yellow-50">
+                  <AlertCircle className="h-4 w-4 text-yellow-600" />
                   <div className="flex items-start gap-2">
                     <div className="text-sm">
-                      <p className="font-medium text-yellow-900">Limited AI Models</p>
-                      <p className="text-yellow-800 mt-1">
+                      <p className="font-medium text-gray-900">Limited AI Models</p>
+                      <p className="text-gray-700 mt-1">
                         Your {businessTier} plan includes basic AI models. Upgrade to Professional or Premium for advanced models.
                       </p>
                       <Link href="/subscription">
-                        <Button variant="outline" size="sm" className="mt-2">
+                        <Button variant="outline" size="sm" className="mt-2 border-yellow-600 text-yellow-700 hover:bg-yellow-100">
                           View Upgrade Options
                         </Button>
                       </Link>
