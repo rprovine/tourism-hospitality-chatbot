@@ -217,7 +217,6 @@ function generateFallbackResponse(query: string, tier: 'starter' | 'professional
       return `🏢 **Enterprise Flexible Policies**:\n• 24/7 check-in/out available\n• Bulk check-ins for groups\n• Custom times for corporate contracts\n• Automated digital key distribution\n• Dedicated group check-in areas\n\nNeed to coordinate a group arrival?${disclaimer}`
     }
   }
-  }
   
   if (lowerQuery.includes('my') || lowerQuery.includes('history') || lowerQuery.includes('previous stay')) {
     if (tier === 'starter') {
@@ -255,23 +254,13 @@ function generateFallbackResponse(query: string, tier: 'starter' | 'professional
 3. **Afternoon**: Snorkel at Hanauma Bay (1 PM - 4 PM)
 4. **Evening**: Sunset dinner at Duke's Waikiki
 
-Would you like me to help arrange any of these activities or make reservations?`
-    }
+Would you like me to help arrange any of these activities or make reservations?${disclaimer}`
     }
     return `I can help you with bookings, recommendations, and answer questions about our amenities. What would you like to know?${disclaimer}`
   } else if (tier === 'premium') {
     return `Welcome to your personal AI concierge! I have access to your preferences, can make instant reservations, coordinate exclusive experiences, and ensure every detail of your stay exceeds expectations. How may I create magic for you today?${disclaimer}`
   } else {
     return `Welcome to our enterprise hospitality platform. I can coordinate multi-property bookings, manage group events, handle corporate travel, and provide comprehensive business intelligence. Which property or service would you like to access?${disclaimer}`
-
-• **Taxi/Uber**: $35-45, 25 minutes
-• **Shared Shuttle**: $16/person, 35-45 minutes
-• **Private Car Service**: $85, can be arranged through concierge
-• **Rental Car**: Available at airport, valet parking at resort
-
-Would you like me to arrange transportation for your arrival?`
-    }
-    return `I understand you're asking about ${query}. Let me provide you with detailed information. Based on your question, I can help with specific recommendations, make reservations, or connect you with the right department. How would you like me to assist you further?`
   }
 }
 
