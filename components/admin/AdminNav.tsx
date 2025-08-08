@@ -92,10 +92,10 @@ export default function AdminNav() {
               variant="ghost" 
               size="sm"
               onClick={handleLogout}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
             >
               <LogOut className="h-4 w-4" />
-              Logout
+              <span>Logout</span>
             </Button>
           </div>
         </div>

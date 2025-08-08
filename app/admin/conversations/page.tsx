@@ -173,7 +173,7 @@ export default function ConversationsPage() {
                 <select
                   value={filterLanguage}
                   onChange={(e) => setFilterLanguage(e.target.value)}
-                  className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="px-4 py-2 border rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 >
                   <option value="all">All Languages</option>
                   <option value="en">English</option>
@@ -185,7 +185,7 @@ export default function ConversationsPage() {
                 <select
                   value={filterRating}
                   onChange={(e) => setFilterRating(e.target.value)}
-                  className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="px-4 py-2 border rounded-lg text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 >
                   <option value="all">All Ratings</option>
                   <option value="high">4+ Stars</option>
