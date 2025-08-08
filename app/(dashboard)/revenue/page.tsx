@@ -154,7 +154,7 @@ export default function RevenuePage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Revenue Optimization</h1>
-          <p className="text-gray-600">Dynamic pricing, upselling, and abandonment recovery</p>
+          <p className="text-gray-700 font-medium">Dynamic pricing, upselling, and abandonment recovery</p>
         </div>
         <div className="flex gap-2">
           <select
