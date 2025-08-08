@@ -3,20 +3,128 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertCircle, Check, X } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { 
+  AlertCircle, 
+  Check, 
+  X, 
+  Crown, 
+  Shield, 
+  Zap, 
+  ArrowUpRight,
+  TrendingUp,
+  Users,
+  MessageSquare,
+  Brain,
+  Hash,
+  BarChart3,
+  Phone,
+  Building,
+  Sparkles
+} from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import Link from 'next/link'
+
+const planDetails = {
+  starter: {
+    name: 'Starter',
+    price: 29,
+    icon: Zap,
+    color: 'green',
+    features: [
+      { text: '100 conversations/month', included: true },
+      { text: 'Basic analytics', included: true },
+      { text: 'Email support', included: true },
+      { text: 'Web chat widget', included: true },
+      { text: '50 knowledge base items', included: true },
+      { text: 'Basic AI models', included: true },
+      { text: 'Revenue optimization', included: false },
+      { text: 'Guest intelligence', included: false },
+      { text: 'Multi-channel support', included: false },
+      { text: 'Advanced AI models', included: false },
+      { text: 'API access', included: false },
+      { text: 'Priority support', included: false }
+    ]
+  },
+  professional: {
+    name: 'Professional',
+    price: 149,
+    icon: Shield,
+    color: 'blue',
+    features: [
+      { text: '1,000 conversations/month', included: true },
+      { text: 'Advanced analytics', included: true },
+      { text: 'Priority email support', included: true },
+      { text: 'Web chat + WhatsApp + SMS', included: true },
+      { text: '500 knowledge base items', included: true },
+      { text: 'Advanced AI models (GPT-4, Claude Sonnet)', included: true },
+      { text: 'Revenue optimization', included: true },
+      { text: 'Guest intelligence & CRM', included: true },
+      { text: 'Multi-channel support', included: true },
+      { text: 'Custom branding', included: true },
+      { text: 'Export data', included: true },
+      { text: 'API access (limited)', included: false }
+    ]
+  },
+  premium: {
+    name: 'Premium',
+    price: 299,
+    icon: Crown,
+    color: 'purple',
+    features: [
+      { text: 'Unlimited conversations', included: true },
+      { text: 'Enterprise analytics', included: true },
+      { text: '24/7 phone & email support', included: true },
+      { text: 'All channels (Web, WhatsApp, SMS, Instagram, Facebook)', included: true },
+      { text: 'Unlimited knowledge base', included: true },
+      { text: 'All AI models including GPT-4 Turbo & Claude Opus', included: true },
+      { text: 'Advanced revenue optimization', included: true },
+      { text: 'Full guest intelligence suite', included: true },
+      { text: 'White-label solution', included: true },
+      { text: 'Unlimited API access', included: true },
+      { text: 'Custom integrations', included: true },
+      { text: 'Dedicated account manager', included: true }
+    ]
+  }
+}
 
 export default function BillingPage() {
   const [subscription, setSubscription] = useState<any>(null)
+  const [businessTier, setBusinessTier] = useState<string>('starter')
   const [loading, setLoading] = useState(true)
   const [cancelling, setCancelling] = useState(false)
 
   useEffect(() => {
     fetchSubscription()
+    
+    // Get business tier from localStorage
+    const businessData = localStorage.getItem('business')
+    if (businessData) {
+      const business = JSON.parse(businessData)
+      setBusinessTier(business.tier || 'starter')
+    }
   }, [])
 
   const fetchSubscription = async () => {
     try {
+      const businessData = localStorage.getItem('business')
+      
+      // Check if it's a demo account
+      if (businessData) {
+        const business = JSON.parse(businessData)
+        if (business.email?.endsWith('@demo.com')) {
+          // For demo accounts, create mock subscription data
+          setSubscription({
+            tier: business.tier || 'starter',
+            status: 'demo',
+            billingCycle: 'monthly',
+            endDate: null
+          })
+          setLoading(false)
+          return
+        }
+      }
+      
       const response = await fetch('/api/subscription', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -69,8 +177,12 @@ export default function BillingPage() {
     return <div className="p-8">Loading...</div>
   }
 
+  const currentPlan = planDetails[businessTier as keyof typeof planDetails] || planDetails.starter
+  const PlanIcon = currentPlan.icon
+
   const statusColors: any = {
     active: 'text-green-600',
+    demo: 'text-blue-600',
     past_due: 'text-yellow-600',
     cancelling: 'text-orange-600',
     cancelled: 'text-red-600',
@@ -82,7 +194,7 @@ export default function BillingPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Billing & Subscription</h1>
-        <p className="text-gray-600">Manage your subscription and billing information</p>
+        <p className="text-gray-600">Manage your subscription and unlock more features</p>
       </div>
 
       {subscription?.warning && (
@@ -96,70 +208,255 @@ export default function BillingPage() {
         </Alert>
       )}
 
-      <Card>
+      {/* Current Plan Card */}
+      <Card className="border-2 border-cyan-200 bg-gradient-to-br from-cyan-50 to-white">
         <CardHeader>
-          <CardTitle>Current Subscription</CardTitle>
-          <CardDescription>Your subscription details and status</CardDescription>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`p-3 rounded-lg bg-${currentPlan.color}-100`}>
+                <PlanIcon className={`h-6 w-6 text-${currentPlan.color}-600`} />
+              </div>
+              <div>
+                <CardTitle className="text-2xl">{currentPlan.name} Plan</CardTitle>
+                <CardDescription className="text-base">
+                  ${currentPlan.price}/month • {subscription?.status === 'demo' ? 'Demo Account' : subscription?.status || 'Active'}
+                </CardDescription>
+              </div>
+            </div>
+            <Badge className={`${statusColors[subscription?.status || 'active']} text-lg px-3 py-1`}>
+              {subscription?.status === 'demo' ? 'DEMO' : subscription?.status?.toUpperCase() || 'ACTIVE'}
+            </Badge>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm text-gray-600">Plan</p>
-              <p className="font-semibold capitalize text-gray-900">{subscription?.tier || 'Starter'}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Status</p>
-              <p className={`font-semibold capitalize ${statusColors[subscription?.status || 'active']}`}>
-                {subscription?.status || 'Active'}
-              </p>
-            </div>
-            <div>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white p-3 rounded-lg">
               <p className="text-sm text-gray-600">Billing Cycle</p>
-              <p className="font-semibold capitalize text-gray-900">{subscription?.billingCycle || 'Monthly'}</p>
+              <p className="font-semibold text-gray-900 capitalize">{subscription?.billingCycle || 'Monthly'}</p>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">Next Billing Date</p>
+            <div className="bg-white p-3 rounded-lg">
+              <p className="text-sm text-gray-600">Next Billing</p>
               <p className="font-semibold text-gray-900">
                 {subscription?.endDate ? new Date(subscription.endDate).toLocaleDateString() : 'N/A'}
               </p>
             </div>
+            <div className="bg-white p-3 rounded-lg">
+              <p className="text-sm text-gray-600">Conversations Used</p>
+              <p className="font-semibold text-gray-900">
+                23 / {businessTier === 'premium' ? '∞' : businessTier === 'professional' ? '1000' : '100'}
+              </p>
+            </div>
+            <div className="bg-white p-3 rounded-lg">
+              <p className="text-sm text-gray-600">Knowledge Items</p>
+              <p className="font-semibold text-gray-900">
+                12 / {businessTier === 'premium' ? '∞' : businessTier === 'professional' ? '500' : '50'}
+              </p>
+            </div>
           </div>
 
-          {subscription?.cancelAtPeriodEnd && (
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Subscription Ending</AlertTitle>
-              <AlertDescription>
-                Your subscription will end on {new Date(subscription.endDate).toLocaleDateString()}.
-                You will lose access to premium features after this date.
+          {businessTier !== 'premium' && (
+            <Alert className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+              <Sparkles className="h-4 w-4 text-purple-600" />
+              <AlertTitle className="text-purple-900">Unlock More Features!</AlertTitle>
+              <AlertDescription className="text-purple-800">
+                {businessTier === 'starter' 
+                  ? 'Upgrade to Professional to get 10x more conversations, revenue optimization, and multi-channel support!'
+                  : 'Upgrade to Premium for unlimited everything, white-label options, and dedicated support!'}
               </AlertDescription>
             </Alert>
           )}
         </CardContent>
       </Card>
 
+      {/* Upgrade Options */}
+      {businessTier !== 'premium' && (
+        <div>
+          <h2 className="text-xl font-bold mb-4 text-gray-900">
+            {subscription?.status === 'demo' ? 'Choose Your Plan' : 'Upgrade Your Plan'}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {businessTier === 'starter' && (
+              <>
+                {/* Professional Upgrade */}
+                <Card className="relative hover:shadow-xl transition-shadow cursor-pointer border-2 hover:border-blue-300"
+                      onClick={() => window.location.href = '/checkout?plan=professional&interval=monthly'}>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <Badge className="bg-blue-600 text-white px-4">RECOMMENDED</Badge>
+                  </div>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Shield className="h-8 w-8 text-blue-600" />
+                        <div>
+                          <CardTitle>Professional</CardTitle>
+                          <CardDescription>Perfect for growing businesses</CardDescription>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="h-5 w-5 text-gray-400" />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold mb-4">
+                      $149<span className="text-sm font-normal text-gray-600">/month</span>
+                    </div>
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm">
+                        <MessageSquare className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">10x more conversations</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <TrendingUp className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Revenue optimization</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Users className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">Guest intelligence</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Hash className="h-4 w-4 text-blue-600" />
+                        <span className="font-medium">WhatsApp & SMS</span>
+                      </div>
+                    </div>
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                      Upgrade to Professional
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Premium Upgrade */}
+                <Card className="relative hover:shadow-xl transition-shadow cursor-pointer border-2 hover:border-purple-300"
+                      onClick={() => window.location.href = '/checkout?plan=premium&interval=monthly'}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Crown className="h-8 w-8 text-purple-600" />
+                        <div>
+                          <CardTitle>Premium</CardTitle>
+                          <CardDescription>For serious businesses</CardDescription>
+                        </div>
+                      </div>
+                      <ArrowUpRight className="h-5 w-5 text-gray-400" />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold mb-4">
+                      $299<span className="text-sm font-normal text-gray-600">/month</span>
+                    </div>
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm">
+                        <MessageSquare className="h-4 w-4 text-purple-600" />
+                        <span className="font-medium">Unlimited everything</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Brain className="h-4 w-4 text-purple-600" />
+                        <span className="font-medium">All AI models</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Building className="h-4 w-4 text-purple-600" />
+                        <span className="font-medium">White-label ready</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Phone className="h-4 w-4 text-purple-600" />
+                        <span className="font-medium">24/7 support</span>
+                      </div>
+                    </div>
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                      Upgrade to Premium
+                    </Button>
+                  </CardContent>
+                </Card>
+              </>
+            )}
+            
+            {businessTier === 'professional' && (
+              <Card className="relative hover:shadow-xl transition-shadow cursor-pointer border-2 hover:border-purple-300"
+                    onClick={() => window.location.href = '/checkout?plan=premium&interval=monthly'}>
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <Badge className="bg-purple-600 text-white px-4">UNLOCK EVERYTHING</Badge>
+                </div>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Crown className="h-8 w-8 text-purple-600" />
+                      <div>
+                        <CardTitle>Premium</CardTitle>
+                        <CardDescription>Unlimited power for your business</CardDescription>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-gray-400" />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold mb-4">
+                    $299<span className="text-sm font-normal text-gray-600">/month</span>
+                  </div>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Check className="h-4 w-4 text-green-600" />
+                      <span>Everything in Professional, plus:</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <MessageSquare className="h-4 w-4 text-purple-600" />
+                      <span className="font-medium">Unlimited conversations</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Brain className="h-4 w-4 text-purple-600" />
+                      <span className="font-medium">Claude Opus & GPT-4 Turbo</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Building className="h-4 w-4 text-purple-600" />
+                      <span className="font-medium">White-label & API access</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Phone className="h-4 w-4 text-purple-600" />
+                      <span className="font-medium">Dedicated account manager</span>
+                    </div>
+                  </div>
+                  <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                    Upgrade to Premium
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Feature Comparison */}
       <Card>
         <CardHeader>
-          <CardTitle>Plan Features</CardTitle>
-          <CardDescription>What's included in your current plan</CardDescription>
+          <CardTitle>Plan Features Comparison</CardTitle>
+          <CardDescription>See what's included in each plan</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2">
-            {getPlanFeatures(subscription?.tier || 'starter').map((feature: string, index: number) => (
-              <div key={index} className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-green-600" />
-                <span className="text-gray-700">{feature}</span>
+          <div className="space-y-3">
+            {currentPlan.features.map((feature, index) => (
+              <div key={index} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                {feature.included ? (
+                  <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
+                ) : (
+                  <X className="h-5 w-5 text-gray-300 flex-shrink-0" />
+                )}
+                <span className={`${feature.included ? 'text-gray-900' : 'text-gray-400'}`}>
+                  {feature.text}
+                </span>
+                {!feature.included && businessTier !== 'premium' && (
+                  <Badge variant="outline" className="ml-auto text-xs">
+                    {businessTier === 'starter' && feature.text.includes('Revenue') ? 'Pro' : 'Premium'}
+                  </Badge>
+                )}
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {subscription && subscription.status !== 'cancelled' && subscription.status !== 'expired' && (
+      {/* Cancel Subscription */}
+      {subscription && subscription.status !== 'cancelled' && subscription.status !== 'expired' && subscription.status !== 'demo' && (
         <Card className="border-red-200">
           <CardHeader>
             <CardTitle>Cancel Subscription</CardTitle>
-            <CardDescription>Cancel your subscription</CardDescription>
+            <CardDescription>We're sorry to see you go</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Alert>
@@ -191,34 +488,4 @@ export default function BillingPage() {
       )}
     </div>
   )
-}
-
-function getPlanFeatures(tier: string) {
-  const features: any = {
-    starter: [
-      '100 conversations/month',
-      'Basic analytics',
-      'Email support',
-      'Standard response time'
-    ],
-    professional: [
-      '1,000 conversations/month',
-      'Advanced analytics',
-      'Priority email support',
-      'Custom branding',
-      'API access (100 calls/day)',
-      'Webhook integration'
-    ],
-    premium: [
-      'Unlimited conversations',
-      'Real-time analytics',
-      '24/7 phone & email support',
-      'White-label solution',
-      'Unlimited API access',
-      'Custom integrations',
-      'Dedicated account manager'
-    ]
-  }
-  
-  return features[tier] || features.starter
 }
