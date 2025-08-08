@@ -17,7 +17,8 @@ import {
   Hash,
   Lock,
   Crown,
-  Menu
+  Menu,
+  X
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { isRouteAccessible } from '@/lib/tierRestrictions'
@@ -40,6 +41,7 @@ export default function DashboardNav() {
   const [businessTier, setBusinessTier] = useState<string>('starter')
   const [businessLogo, setBusinessLogo] = useState<string | null>(null)
   const [businessName, setBusinessName] = useState<string>('LeniLani AI')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   
   useEffect(() => {
     // Get business data from localStorage
@@ -129,7 +131,7 @@ export default function DashboardNav() {
                 variant="ghost"
                 size="sm"
                 className="lg:hidden"
-                onClick={() => {}}
+                onClick={() => setMobileMenuOpen(true)}
               >
                 <Menu className="h-5 w-5" />
               </Button>
@@ -183,6 +185,116 @@ export default function DashboardNav() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileMenuOpen && (
+        <>
+          {/* Overlay */}
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          
+          {/* Drawer */}
+          <div className="fixed inset-y-0 right-0 w-80 bg-white shadow-xl z-50 lg:hidden overflow-y-auto">
+            <div className="p-6">
+              {/* Drawer Header */}
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                  {businessLogo ? (
+                    <img 
+                      src={businessLogo} 
+                      alt="Business Logo" 
+                      className="h-10 w-10 rounded-xl object-cover shadow-sm" 
+                    />
+                  ) : (
+                    <div className="h-10 w-10 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl flex items-center justify-center shadow-sm">
+                      <Bot className="h-5 w-5 text-cyan-600" />
+                    </div>
+                  )}
+                  <div>
+                    <div className="font-semibold text-gray-900">{businessName}</div>
+                    <div className="text-xs text-gray-500 capitalize">{businessTier} Plan</div>
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+              
+              {/* Navigation Links */}
+              <nav className="space-y-2">
+                {navItems.map((item) => {
+                  const Icon = item.icon
+                  const isActive = pathname === item.href
+                  const isAccessible = !item.requiresTier || 
+                    (item.requiresTier === 'professional' && (businessTier === 'professional' || businessTier === 'premium')) ||
+                    (item.requiresTier === 'premium' && businessTier === 'premium')
+                  
+                  if (!isAccessible) {
+                    return (
+                      <div
+                        key={item.href}
+                        className="flex items-center gap-3 px-4 py-3 text-gray-400 cursor-not-allowed"
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span>{item.label}</span>
+                        <Lock className="h-4 w-4 ml-auto" />
+                      </div>
+                    )
+                  }
+                  
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`
+                        flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
+                        ${isActive 
+                          ? 'bg-cyan-50 text-cyan-700' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                        }
+                      `}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span className="font-medium">{item.label}</span>
+                    </Link>
+                  )
+                })}
+              </nav>
+              
+              {/* Upgrade Button for Starter */}
+              {businessTier === 'starter' && (
+                <div className="mt-6 pt-6 border-t">
+                  <Link href="/subscription" onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                      <Crown className="h-4 w-4 mr-2" />
+                      Upgrade to Pro
+                    </Button>
+                  </Link>
+                </div>
+              )}
+              
+              {/* Logout Button */}
+              <div className="mt-6 pt-6 border-t">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </Button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </nav>
   )
 }
