@@ -15,7 +15,12 @@ export const TIER_FEATURES = {
     upselling: false,
     recovery: false,
     channels_config: false,
-    maxTeamMembers: 1
+    maxTeamMembers: 1,
+    webhooks: false,
+    whiteLabel: false,
+    prioritySupport: false,
+    exportData: false,
+    integrations: false
   },
   professional: {
     conversationsPerMonth: 1000,
@@ -31,7 +36,12 @@ export const TIER_FEATURES = {
     upselling: true,
     recovery: true,
     channels_config: true,
-    maxTeamMembers: 5
+    maxTeamMembers: 5,
+    webhooks: false,
+    whiteLabel: false,
+    prioritySupport: true,
+    exportData: true,
+    integrations: true
   },
   premium: {
     conversationsPerMonth: -1, // unlimited
@@ -47,7 +57,12 @@ export const TIER_FEATURES = {
     upselling: true,
     recovery: true,
     channels_config: true,
-    maxTeamMembers: -1 // unlimited
+    maxTeamMembers: -1, // unlimited
+    webhooks: true,
+    whiteLabel: true,
+    prioritySupport: true,
+    exportData: true,
+    integrations: true
   }
 }
 

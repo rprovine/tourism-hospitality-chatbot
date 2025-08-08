@@ -2,21 +2,23 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Brain, Sparkles, Save, AlertCircle, Check, Bot, MessageSquare } from 'lucide-react'
+import { Brain, Sparkles, Save, AlertCircle, Check, Bot, MessageSquare, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { getTierLimit } from '@/lib/tierRestrictions'
+import Link from 'next/link'
 
 export default function AISettingsPage() {
   const [settings, setSettings] = useState({
     provider: 'claude', // 'claude' or 'chatgpt'
     claudeSettings: {
       apiKey: '',
-      modelPreference: 'sonnet',
+      modelPreference: 'haiku',
     },
     chatgptSettings: {
       apiKey: '',
-      modelPreference: 'gpt-4',
+      modelPreference: 'gpt-3.5-turbo',
     },
     temperature: 0.7,
     maxTokens: 500,
@@ -26,8 +28,19 @@ export default function AISettingsPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState('')
   const [loading, setLoading] = useState(true)
+  const [businessTier, setBusinessTier] = useState<string>('starter')
+  const [allowedModels, setAllowedModels] = useState<string[]>([])
 
   useEffect(() => {
+    // Get business tier for model restrictions
+    const businessData = localStorage.getItem('business')
+    if (businessData) {
+      const business = JSON.parse(businessData)
+      const tier = business.tier || 'starter'
+      setBusinessTier(tier)
+      const models = getTierLimit(tier, 'aiModels')
+      setAllowedModels(models || [])
+    }
     loadSettings()
   }, [])
 
@@ -163,6 +176,26 @@ export default function AISettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Model Tier Alert */}
+          {businessTier === 'starter' && (
+            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-medium text-yellow-900">Limited AI Models</p>
+                  <p className="text-yellow-800 mt-1">
+                    Your {businessTier} plan includes basic AI models. Upgrade to Professional or Premium for advanced models.
+                  </p>
+                  <Link href="/subscription">
+                    <Button variant="outline" size="sm" className="mt-2">
+                      View Upgrade Options
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+          
           {settings.provider === 'claude' ? (
             <>
               <div>
@@ -199,9 +232,15 @@ export default function AISettingsPage() {
                   })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 >
-                  <option value="haiku">Claude 3 Haiku (Fast & Economical)</option>
-                  <option value="sonnet">Claude 3.5 Sonnet (Balanced)</option>
-                  <option value="opus">Claude 3 Opus (Most Capable)</option>
+                  <option value="haiku" disabled={!allowedModels.includes('claude-haiku')}>
+                    Claude 3 Haiku (Fast & Economical) {!allowedModels.includes('claude-haiku') && '🔒'}
+                  </option>
+                  <option value="sonnet" disabled={!allowedModels.includes('claude-sonnet')}>
+                    Claude 3.5 Sonnet (Balanced) {!allowedModels.includes('claude-sonnet') && '🔒 Pro'}
+                  </option>
+                  <option value="opus" disabled={!allowedModels.includes('claude-opus')}>
+                    Claude 3 Opus (Most Capable) {!allowedModels.includes('claude-opus') && '🔒 Premium'}
+                  </option>
                 </select>
               </div>
             </>
@@ -241,9 +280,15 @@ export default function AISettingsPage() {
                   })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
-                  <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast & Economical)</option>
-                  <option value="gpt-4">GPT-4 (Advanced)</option>
-                  <option value="gpt-4-turbo">GPT-4 Turbo (Latest)</option>
+                  <option value="gpt-3.5-turbo" disabled={!allowedModels.includes('gpt-3.5-turbo')}>
+                    GPT-3.5 Turbo (Fast & Economical) {!allowedModels.includes('gpt-3.5-turbo') && '🔒'}
+                  </option>
+                  <option value="gpt-4" disabled={!allowedModels.includes('gpt-4')}>
+                    GPT-4 (Advanced) {!allowedModels.includes('gpt-4') && '🔒 Pro'}
+                  </option>
+                  <option value="gpt-4-turbo" disabled={!allowedModels.includes('gpt-4-turbo')}>
+                    GPT-4 Turbo (Latest) {!allowedModels.includes('gpt-4-turbo') && '🔒 Premium'}
+                  </option>
                 </select>
               </div>
             </>

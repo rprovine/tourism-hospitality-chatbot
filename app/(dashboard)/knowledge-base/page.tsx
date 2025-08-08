@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
+import { Alert } from '@/components/ui/alert'
 import { 
   Upload,
   FileText,
@@ -19,14 +20,17 @@ import {
   AlertCircle,
   CheckCircle,
   Loader2,
-  Link,
+  Link as LinkIcon,
   Database,
   File,
   X,
   Edit,
   Save,
-  Activity
+  Activity,
+  Lock
 } from 'lucide-react'
+import { getTierLimit } from '@/lib/tierRestrictions'
+import Link from 'next/link'
 
 interface KnowledgeItem {
   id: string
@@ -47,6 +51,8 @@ export default function KnowledgeBasePage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [editingItem, setEditingItem] = useState<string | null>(null)
+  const [businessTier, setBusinessTier] = useState<string>('starter')
+  const [itemLimit, setItemLimit] = useState<number>(50)
   const [newItem, setNewItem] = useState({
     question: '',
     answer: '',
@@ -57,6 +63,15 @@ export default function KnowledgeBasePage() {
   const [fileUrl, setFileUrl] = useState('')
 
   useEffect(() => {
+    // Get business tier for limits
+    const businessData = localStorage.getItem('business')
+    if (businessData) {
+      const business = JSON.parse(businessData)
+      const tier = business.tier || 'starter'
+      setBusinessTier(tier)
+      const limit = getTierLimit(tier, 'knowledgeBaseItems')
+      setItemLimit(limit === -1 ? 999999 : limit) // -1 means unlimited
+    }
     fetchKnowledgeBase()
   }, [])
 
@@ -151,6 +166,12 @@ export default function KnowledgeBasePage() {
   const addManualItem = async () => {
     if (!newItem.question || !newItem.answer) {
       alert('Please fill in both question and answer')
+      return
+    }
+    
+    // Check tier limits
+    if (items.length >= itemLimit) {
+      alert(`You've reached your knowledge base limit of ${itemLimit} items. Please upgrade to add more.`)
       return
     }
 
@@ -260,46 +281,72 @@ export default function KnowledgeBasePage() {
           </Button>
         </div>
       </div>
+      
+      {/* Tier Limit Alert */}
+      {businessTier === 'starter' && (
+        <Alert className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <div className="flex items-center justify-between w-full">
+            <div>
+              <p className="font-medium">Knowledge Base Limit</p>
+              <p className="text-sm text-gray-600">
+                You're using {items.length} of {itemLimit} available items in your {businessTier} plan.
+                {items.length >= itemLimit * 0.8 && ' Consider upgrading for more capacity.'}
+              </p>
+            </div>
+            {items.length >= itemLimit * 0.8 && (
+              <Link href="/subscription">
+                <Button variant="outline" size="sm">
+                  Upgrade
+                </Button>
+              </Link>
+            )}
+          </div>
+        </Alert>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Items</CardTitle>
-            <Database className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-700">Total Items</CardTitle>
+            <Database className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{items.length}</div>
+            <div className="text-2xl font-bold text-gray-900">{items.length}</div>
+            {itemLimit !== 999999 && (
+              <p className="text-xs text-gray-600">of {itemLimit} allowed</p>
+            )}
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Categories</CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-700">Categories</CardTitle>
+            <BookOpen className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{categories.length - 1}</div>
+            <div className="text-2xl font-bold text-gray-900">{categories.length - 1}</div>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Items</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-700">Active Items</CardTitle>
+            <CheckCircle className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{items.filter(i => i.isActive).length}</div>
+            <div className="text-2xl font-bold text-gray-900">{items.filter(i => i.isActive).length}</div>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Usage</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-gray-700">Total Usage</CardTitle>
+            <Activity className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-gray-900">
               {items.reduce((sum, item) => sum + item.usageCount, 0)}
             </div>
           </CardContent>

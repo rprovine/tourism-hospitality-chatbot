@@ -65,6 +65,29 @@ export default function SubscriptionPage() {
   const fetchSubscription = async () => {
     try {
       const token = localStorage.getItem('token')
+      const businessData = localStorage.getItem('business')
+      
+      // Check if it's a demo account
+      if (businessData) {
+        const business = JSON.parse(businessData)
+        if (business.email?.endsWith('@demo.com')) {
+          // For demo accounts, create mock subscription data
+          setSubscription({
+            tier: business.tier || 'starter',
+            status: 'demo',
+            startDate: new Date().toISOString(),
+            endDate: null,
+            cancelAtPeriodEnd: false,
+            paymentMethod: null,
+            nextBillingDate: null,
+            amount: 0,
+            interval: 'monthly'
+          })
+          setLoading(false)
+          return
+        }
+      }
+      
       const response = await fetch('/api/subscription', {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -146,7 +169,7 @@ export default function SubscriptionPage() {
   }
   
   const TierIcon = tierIcons[subscription.tier] || Zap
-  const isActive = subscription.status === 'active' || subscription.status === 'trialing'
+  const isActive = subscription.status === 'active' || subscription.status === 'trialing' || subscription.status === 'demo'
   
   return (
     <div className="container mx-auto px-6 py-8">
@@ -154,6 +177,48 @@ export default function SubscriptionPage() {
         <h1 className="text-3xl font-bold text-gray-900">Subscription Management</h1>
         <p className="text-gray-600 mt-1">Manage your subscription and billing</p>
       </div>
+      
+      {/* Demo Account Notice */}
+      {subscription.status === 'demo' && subscription.tier === 'starter' && (
+        <Card className="mb-6 border-yellow-200 bg-yellow-50">
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
+              <div>
+                <h3 className="font-semibold text-yellow-900 mb-2">Demo Account - Limited Features</h3>
+                <p className="text-sm text-yellow-800 mb-3">
+                  You're currently using a demo account with starter tier limitations. 
+                  Upgrade to unlock powerful features:
+                </p>
+                <ul className="text-sm text-yellow-800 space-y-1 mb-4">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span><strong>Revenue Optimization:</strong> Dynamic pricing & upselling</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span><strong>Guest Intelligence:</strong> Detailed profiles & insights</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span><strong>Multi-Channel:</strong> WhatsApp, SMS, Instagram</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span><strong>Advanced AI:</strong> GPT-4 and Claude Sonnet/Opus</span>
+                  </li>
+                </ul>
+                <Button 
+                  className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                  onClick={() => window.location.href = '/checkout?plan=professional&interval=monthly'}
+                >
+                  Start 14-Day Free Trial
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       
       {/* Current Plan */}
       <Card className="mb-6">
@@ -172,7 +237,7 @@ export default function SubscriptionPage() {
             </div>
             <Badge className={isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
               {isActive ? <CheckCircle className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}
-              {subscription.status}
+              {subscription.status === 'demo' ? 'Demo Account' : subscription.status}
             </Badge>
           </div>
         </CardHeader>
@@ -213,12 +278,18 @@ export default function SubscriptionPage() {
         </CardContent>
       </Card>
       
-      {/* Upgrade Options */}
-      {subscription.tier !== 'enterprise' && !subscription.cancelAtPeriodEnd && (
+      {/* Upgrade Options - Always show for demo accounts and starter tier */}
+      {(subscription.tier !== 'enterprise' && !subscription.cancelAtPeriodEnd) && (
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Upgrade Your Plan</CardTitle>
-            <CardDescription>Get more features and capabilities</CardDescription>
+            <CardTitle>
+              {subscription.status === 'demo' ? 'Choose Your Plan' : 'Upgrade Your Plan'}
+            </CardTitle>
+            <CardDescription>
+              {subscription.status === 'demo' 
+                ? 'Start your free trial and unlock all features' 
+                : 'Get more features and capabilities'}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -231,8 +302,13 @@ export default function SubscriptionPage() {
                         <ArrowUpRight className="h-4 w-4 text-gray-400" />
                       </div>
                       <h3 className="font-semibold">Professional</h3>
-                      <p className="text-sm text-gray-600 mb-2">CRM & Booking Integration</p>
+                      <p className="text-sm text-gray-600 mb-2">1000 conversations/mo</p>
                       <div className="text-2xl font-bold">$149<span className="text-sm font-normal">/mo</span></div>
+                      <ul className="text-xs text-gray-600 mt-2 space-y-1">
+                        <li>• Revenue optimization</li>
+                        <li>• Guest profiles</li>
+                        <li>• Multi-channel</li>
+                      </ul>
                     </CardContent>
                   </Card>
                   <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleUpgrade('premium')}>
@@ -242,8 +318,13 @@ export default function SubscriptionPage() {
                         <ArrowUpRight className="h-4 w-4 text-gray-400" />
                       </div>
                       <h3 className="font-semibold">Premium</h3>
-                      <p className="text-sm text-gray-600 mb-2">Full AI Suite + Analytics</p>
+                      <p className="text-sm text-gray-600 mb-2">Unlimited conversations</p>
                       <div className="text-2xl font-bold">$299<span className="text-sm font-normal">/mo</span></div>
+                      <ul className="text-xs text-gray-600 mt-2 space-y-1">
+                        <li>• Advanced AI models</li>
+                        <li>• All channels</li>
+                        <li>• API access</li>
+                      </ul>
                     </CardContent>
                   </Card>
                 </>
@@ -307,7 +388,7 @@ export default function SubscriptionPage() {
             </Button>
           </div>
           
-          {isActive && !subscription.cancelAtPeriodEnd && (
+          {isActive && !subscription.cancelAtPeriodEnd && subscription.status !== 'demo' && (
             <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
               <div>
                 <h3 className="font-medium text-red-900">Cancel Subscription</h3>
