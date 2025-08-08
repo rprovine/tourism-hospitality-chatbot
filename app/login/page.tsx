@@ -31,7 +31,7 @@ export default function LoginPage() {
     setError('')
 
     try {
-      const endpoint = '/api/auth/simple-admin-login'
+      const endpoint = '/api/auth/login'
       console.log(`Sending login request to ${endpoint}...`)
       console.log('Form data:', formData)
       
@@ -67,20 +67,12 @@ export default function LoginPage() {
       }
 
       console.log('Login successful, saving auth data...')
-      // Store token and appropriate user data
-      if (data.isAdmin) {
-        // For admin users, still set the cookie for middleware
-        localStorage.setItem('adminToken', data.token)
-        localStorage.setItem('adminUser', JSON.stringify(data.user))
-        // Set cookie for middleware authentication
-        document.cookie = `token=${data.token}; path=/; max-age=${30 * 24 * 60 * 60}` // 30 days
-      } else {
-        setAuthData(data.token, data.business)
-      }
+      // Store business auth data
+      setAuthData(data.token, data.business)
 
-      console.log(`Redirecting to ${data.redirectTo || '/dashboard'}...`)
+      console.log('Redirecting to dashboard...')
       // Use window.location for a hard redirect to ensure middleware picks up the cookie
-      window.location.href = data.redirectTo || '/dashboard'
+      window.location.href = '/dashboard'
     } catch (err) {
       console.error('Login error details:', err)
       if (err instanceof Error) {
@@ -107,12 +99,9 @@ export default function LoginPage() {
                 <Bot className="h-6 w-6 text-cyan-700" />
               </div>
             </div>
-            <CardTitle className="text-2xl">Welcome Back</CardTitle>
+            <CardTitle className="text-2xl">Business Login</CardTitle>
             <CardDescription>
-              Sign in to your LeniLani Hospitality AI account
-              {formData.email === 'admin@lenilani.com' && (
-                <span className="block text-xs text-purple-600 mt-1">Admin mode</span>
-              )}
+              Sign in to manage your hospitality AI assistant
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -133,7 +122,7 @@ export default function LoginPage() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  placeholder="you@business.com"
+                  placeholder="your@hotel.com"
                 />
               </div>
 
