@@ -64,7 +64,7 @@ export default function DashboardNav() {
   return (
     <nav className="sticky top-0 z-40 bg-white border-b border-gray-200 w-full">
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center gap-8">
             <Link href="/dashboard" className="flex items-center gap-3 group">
@@ -73,20 +73,20 @@ export default function DashboardNav() {
                   <img 
                     src={businessLogo} 
                     alt="Business Logo" 
-                    className="h-10 w-10 rounded-xl object-cover shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all" 
+                    className="h-12 w-12 rounded-xl object-cover shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all" 
                   />
                 ) : (
-                  <div className="h-10 w-10 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl flex items-center justify-center shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all">
-                    <Bot className="h-5 w-5 text-cyan-600" />
+                  <div className="h-12 w-12 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl flex items-center justify-center shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all">
+                    <Bot className="h-6 w-6 text-cyan-600" />
                   </div>
                 )}
               </div>
               <div className="flex flex-col">
-                <span className="text-base font-semibold text-gray-900 leading-tight group-hover:text-cyan-700 transition-colors">
+                <span className="text-lg font-semibold text-gray-900 leading-tight group-hover:text-cyan-700 transition-colors">
                   {businessName}
                 </span>
-                <span className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                  <span className={`inline-block w-1.5 h-1.5 rounded-full ${
+                <span className="text-xs text-gray-500 flex items-center gap-1.5 mt-0.5">
+                  <span className={`inline-block w-2 h-2 rounded-full ${
                     businessTier === 'premium' ? 'bg-purple-500' : 
                     businessTier === 'professional' ? 'bg-blue-500' : 
                     'bg-green-500'
