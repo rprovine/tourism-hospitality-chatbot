@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
   if (path.startsWith('/widget/')) {
     const response = NextResponse.next()
     response.headers.delete('X-Frame-Options')
-    response.headers.set('Content-Security-Policy', 'frame-ancestors *')
+    response.headers.delete('Content-Security-Policy')
     return response
   }
   
