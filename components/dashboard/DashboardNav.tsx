@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { 
@@ -32,6 +33,20 @@ const navItems = [
 
 export default function DashboardNav() {
   const pathname = usePathname()
+  const [businessTier, setBusinessTier] = useState<string>('starter')
+  
+  useEffect(() => {
+    // Get business tier from localStorage
+    const businessData = localStorage.getItem('business')
+    if (businessData) {
+      try {
+        const business = JSON.parse(businessData)
+        setBusinessTier(business.tier || 'starter')
+      } catch (error) {
+        console.error('Error parsing business data:', error)
+      }
+    }
+  }, [])
   
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -80,7 +95,7 @@ export default function DashboardNav() {
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-600">
               <span className="hidden sm:inline">Tier: </span>
-              <span className="font-semibold text-gray-900">Premium</span>
+              <span className="font-semibold text-gray-900 capitalize">{businessTier}</span>
             </div>
             <Button
               variant="ghost"
