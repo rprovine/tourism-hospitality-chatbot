@@ -15,7 +15,8 @@ import {
   Home,
   Bot,
   Hash,
-  Lock
+  Lock,
+  Crown
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { isRouteAccessible } from '@/lib/tierRestrictions'
@@ -66,17 +67,32 @@ export default function DashboardNav() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-8">
-            <Link href="/dashboard" className="flex items-center gap-3">
-              {businessLogo ? (
-                <img src={businessLogo} alt="Business Logo" className="h-9 w-9 rounded-lg object-cover shadow-sm" />
-              ) : (
-                <div className="p-2 bg-cyan-50 rounded-lg">
-                  <Bot className="h-6 w-6 text-cyan-600" />
-                </div>
-              )}
-              <div>
-                <span className="text-lg font-bold text-gray-900 leading-tight block">{businessName}</span>
-                <span className="text-xs text-gray-500 capitalize">{businessTier} Plan</span>
+            <Link href="/dashboard" className="flex items-center gap-3 group">
+              <div className="relative">
+                {businessLogo ? (
+                  <img 
+                    src={businessLogo} 
+                    alt="Business Logo" 
+                    className="h-10 w-10 rounded-xl object-cover shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all" 
+                  />
+                ) : (
+                  <div className="h-10 w-10 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl flex items-center justify-center shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all">
+                    <Bot className="h-5 w-5 text-cyan-600" />
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col">
+                <span className="text-base font-semibold text-gray-900 leading-tight group-hover:text-cyan-700 transition-colors">
+                  {businessName}
+                </span>
+                <span className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
+                  <span className={`inline-block w-1.5 h-1.5 rounded-full ${
+                    businessTier === 'premium' ? 'bg-purple-500' : 
+                    businessTier === 'professional' ? 'bg-blue-500' : 
+                    'bg-green-500'
+                  }`}></span>
+                  <span className="capitalize">{businessTier} Plan</span>
+                </span>
               </div>
             </Link>
             
@@ -126,11 +142,19 @@ export default function DashboardNav() {
           </div>
           
           {/* Right Side */}
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-600">
-              <span className="hidden sm:inline">Tier: </span>
-              <span className="font-semibold text-gray-900 capitalize">{businessTier}</span>
-            </div>
+          <div className="flex items-center gap-3">
+            {businessTier === 'starter' && (
+              <Link href="/subscription">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hidden sm:flex items-center gap-1 border-purple-200 text-purple-700 hover:bg-purple-50"
+                >
+                  <Crown className="h-3.5 w-3.5" />
+                  Upgrade
+                </Button>
+              </Link>
+            )}
             <Button
               variant="ghost"
               size="sm"
