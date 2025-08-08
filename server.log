@@ -49,3 +49,4 @@ Login successful for: enterprise@demo.com
  GET /api/analytics 200 in 163ms
  ✓ Compiled in 77ms (186 modules)
  ✓ Compiled in 39ms (186 modules)
+[?25h

@@ -27,7 +27,7 @@ export const TIER_FEATURES = {
     knowledgeBaseItems: 500,
     channels: ['web', 'whatsapp', 'sms'],
     analytics: 'advanced',
-    aiModels: ['claude-sonnet', 'gpt-4'],
+    aiModels: ['claude-haiku', 'claude-sonnet', 'gpt-3.5-turbo', 'gpt-4'],
     multiLanguage: true,
     customBranding: true,
     apiAccess: false,
@@ -48,7 +48,7 @@ export const TIER_FEATURES = {
     knowledgeBaseItems: -1, // unlimited
     channels: ['web', 'whatsapp', 'sms', 'instagram', 'facebook'],
     analytics: 'enterprise',
-    aiModels: ['claude-opus', 'claude-sonnet', 'gpt-4-turbo', 'gpt-4'],
+    aiModels: ['claude-haiku', 'claude-sonnet', 'claude-opus', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo'],
     multiLanguage: true,
     customBranding: true,
     apiAccess: true,
