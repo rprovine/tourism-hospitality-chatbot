@@ -128,12 +128,12 @@ export default function DashboardNav() {
               
               {/* Mobile Menu Button */}
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="lg:hidden"
+                className="lg:hidden border-gray-300 hover:bg-gray-50"
                 onClick={() => setMobileMenuOpen(true)}
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-6 w-6 text-gray-700" />
               </Button>
             </div>
           </div>
