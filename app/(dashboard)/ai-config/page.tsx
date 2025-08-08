@@ -152,13 +152,13 @@ export default function UnifiedAIConfigPage() {
   const responseStyles = ['professional', 'friendly', 'casual', 'concise', 'detailed']
   const availableLanguages = [
     { code: 'english', label: 'English', flag: '🇺🇸' },
+    { code: 'spanish', label: 'Spanish', flag: '🇪🇸', tier: 'professional' },
+    { code: 'japanese', label: 'Japanese', flag: '🇯🇵', tier: 'professional' },
+    { code: 'chinese', label: 'Chinese', flag: '🇨🇳', tier: 'professional' },
+    { code: 'french', label: 'French', flag: '🇫🇷', tier: 'professional' },
+    { code: 'german', label: 'German', flag: '🇩🇪', tier: 'professional' },
     { code: 'pidgin', label: 'Hawaiian Pidgin', flag: '🤙', tier: 'professional' },
-    { code: 'hawaiian', label: 'ʻŌlelo Hawaiʻi', flag: '🌺', tier: 'premium' },
-    { code: 'spanish', label: 'Spanish', flag: '🇪🇸' },
-    { code: 'japanese', label: 'Japanese', flag: '🇯🇵' },
-    { code: 'chinese', label: 'Chinese', flag: '🇨🇳' },
-    { code: 'french', label: 'French', flag: '🇫🇷' },
-    { code: 'german', label: 'German', flag: '🇩🇪' }
+    { code: 'hawaiian', label: 'ʻŌlelo Hawaiʻi', flag: '🌺', tier: 'premium' }
   ]
   
   const personalityOptions = [
@@ -438,6 +438,25 @@ export default function UnifiedAIConfigPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Supported Languages
                 </label>
+                
+                {/* Language Restriction Alert for Starter */}
+                {businessTier === 'starter' && (
+                  <Alert className="mb-3 border-yellow-200 bg-yellow-50">
+                    <AlertCircle className="h-4 w-4 text-yellow-600" />
+                    <div>
+                      <p className="font-semibold text-gray-900">Language Limitation</p>
+                      <p className="text-sm text-gray-800 font-medium mt-1">
+                        Your Starter plan includes English only. Upgrade to Professional to unlock 7 additional languages including Hawaiian Pidgin.
+                      </p>
+                      <Link href="/subscription">
+                        <Button variant="outline" size="sm" className="mt-2 border-yellow-600 text-yellow-700 hover:bg-yellow-100">
+                          View Upgrade Options
+                        </Button>
+                      </Link>
+                    </div>
+                  </Alert>
+                )}
+                
                 <div className="grid grid-cols-3 gap-2">
                   {availableLanguages.map((lang) => {
                     const isRestricted = lang.tier && 
@@ -455,9 +474,12 @@ export default function UnifiedAIConfigPage() {
                       >
                         <input
                           type="checkbox"
-                          checked={settings.languages.includes(lang.code)}
-                          disabled={isRestricted}
+                          checked={settings.languages.includes(lang.code) || lang.code === 'english'}
+                          disabled={isRestricted || lang.code === 'english'}
                           onChange={(e) => {
+                            // Prevent unchecking English
+                            if (lang.code === 'english') return;
+                            
                             if (e.target.checked) {
                               setSettings({
                                 ...settings,
@@ -474,6 +496,9 @@ export default function UnifiedAIConfigPage() {
                         />
                         <span className="text-sm text-gray-700 flex items-center gap-1">
                           {lang.flag} {lang.label}
+                          {lang.code === 'english' && (
+                            <span className="text-xs text-gray-500">(Required)</span>
+                          )}
                           {isRestricted && (
                             <Lock className="h-3 w-3 text-gray-400" />
                           )}
