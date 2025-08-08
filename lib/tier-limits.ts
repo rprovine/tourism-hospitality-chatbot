@@ -26,10 +26,10 @@ export interface TierLimits {
 
 export const TIER_LIMITS: Record<string, TierLimits> = {
   starter: {
-    conversationsPerMonth: 1000,
+    conversationsPerMonth: 100,
     conversationsPerDay: 50, // Max 50/day even within monthly limit
     knowledgeBaseItems: 50,
-    languagesSupported: ['en', 'es', 'ja', 'zh', 'fr', 'de'],
+    languagesSupported: ['en'],
     properties: 1,
     apiRequestsPerHour: null, // No API access
     apiRequestsPerDay: 0,
@@ -49,10 +49,10 @@ export const TIER_LIMITS: Record<string, TierLimits> = {
     }
   },
   professional: {
-    conversationsPerMonth: null, // Unlimited monthly
+    conversationsPerMonth: 1000,
     conversationsPerDay: 500, // But max 500/day for cost protection
-    knowledgeBaseItems: 1000, // Soft limit to prevent DB abuse
-    languagesSupported: ['en', 'es', 'ja', 'zh', 'fr', 'de', 'pidgin'], // All basic languages + Hawaiian Pidgin
+    knowledgeBaseItems: 500, // Soft limit to prevent DB abuse
+    languagesSupported: ['en', 'es', 'ja', 'zh', 'fr', 'de', 'pidgin'], // 2 languages of choice
     properties: 1,
     apiRequestsPerHour: 1000,
     apiRequestsPerDay: 5000, // Hard cap: 5k/day max
@@ -74,8 +74,8 @@ export const TIER_LIMITS: Record<string, TierLimits> = {
   premium: {
     conversationsPerMonth: null, // Unlimited monthly
     conversationsPerDay: 1000, // Max 1k/day
-    knowledgeBaseItems: 5000, // Reasonable limit
-    languagesSupported: ['en', 'es', 'ja', 'zh', 'fr', 'de', 'ko', 'pidgin', 'hawaiian'], // All languages including Hawaiian
+    knowledgeBaseItems: null, // Unlimited
+    languagesSupported: ['en', 'es', 'ja', 'zh', 'fr', 'de', 'ko', 'pidgin', 'hawaiian'], // 5 languages of choice
     properties: 1,
     apiRequestsPerHour: 5000,
     apiRequestsPerDay: 10000, // 10k/day max

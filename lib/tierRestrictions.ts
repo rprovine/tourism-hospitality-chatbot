@@ -7,7 +7,7 @@ export const TIER_FEATURES = {
     channels: ['web'],
     analytics: 'basic',
     aiModels: ['claude-haiku', 'gpt-3.5-turbo'],
-    languages: ['english', 'spanish', 'japanese', 'chinese', 'french', 'german'],
+    languages: ['english'],
     multiLanguage: false,
     customBranding: false,
     apiAccess: false,
