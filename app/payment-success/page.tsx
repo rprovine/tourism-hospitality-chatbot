@@ -17,6 +17,8 @@ function PaymentSuccessContent() {
   const [copied, setCopied] = useState(false)
   const [sessionData, setSessionData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [activationData, setActivationData] = useState<any>(null)
+  const [activating, setActivating] = useState(false)
   
   const sessionId = searchParams.get('session_id')
   const tier = searchParams.get('tier') || sessionData?.planId?.split('_')[0] || 'professional'
@@ -49,6 +51,13 @@ function PaymentSuccessContent() {
       setLoading(false)
     }
     
+    // Check for demo mode and auto-activate
+    const demo = searchParams.get('demo')
+    const email = searchParams.get('email')
+    if (demo === 'true' && email) {
+      activateAccount(email)
+    }
+    
     // Trigger celebration animation
     const timer = setTimeout(() => {
       // Could add confetti here
@@ -62,11 +71,37 @@ function PaymentSuccessContent() {
       if (response.ok) {
         const data = await response.json()
         setSessionData(data)
+        // Auto-activate account if we have email
+        if (data.email) {
+          activateAccount(data.email)
+        }
       }
     } catch (error) {
       console.error('Failed to fetch session data:', error)
     } finally {
       setLoading(false)
+    }
+  }
+  
+  const activateAccount = async (email: string) => {
+    if (activating) return
+    setActivating(true)
+    
+    try {
+      const response = await fetch('/api/auth/activate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, sessionId })
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setActivationData(data)
+      }
+    } catch (error) {
+      console.error('Failed to activate account:', error)
+    } finally {
+      setActivating(false)
     }
   }
 
@@ -99,6 +134,30 @@ function PaymentSuccessContent() {
 
         {isInstantDeploy ? (
           <>
+            {activationData && !activationData.alreadyActivated && (
+              <Card className="mb-6 border-2 border-blue-500">
+                <CardHeader className="bg-blue-50">
+                  <CardTitle className="text-blue-900">🎉 Account Activated!</CardTitle>
+                  <CardDescription>
+                    Your login credentials have been sent to your email. Here's your temporary password:
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <div className="bg-blue-100 rounded-lg p-4 mb-4">
+                    <p className="text-sm text-blue-800 mb-2">Email: <strong>{searchParams.get('email') || sessionData?.email}</strong></p>
+                    <p className="text-sm text-blue-800">Temporary Password: <code className="bg-white px-2 py-1 rounded font-mono">{activationData.tempPassword}</code></p>
+                  </div>
+                  <Button
+                    className="w-full bg-blue-600 hover:bg-blue-700"
+                    onClick={() => window.open(activationData.loginUrl, '_blank')}
+                  >
+                    Login Now →
+                  </Button>
+                  <p className="text-xs text-gray-600 mt-2">⚠️ Please change your password after logging in</p>
+                </CardContent>
+              </Card>
+            )}
+            
             <Card className="mb-6 border-2 border-green-200">
               <CardHeader className="bg-green-50">
                 <CardTitle>Your Chatbot is Ready!</CardTitle>

@@ -76,15 +76,39 @@ async function handlePaymentSuccess(data: any) {
   if (!email) return
   
   // Update business subscription status
-  await prisma.business.updateMany({
-    where: { email },
-    data: {
-      subscriptionStatus: 'active',
-      subscriptionTier: tier,
-      subscriptionStartDate: new Date(),
-      hubspotDealId: dealId
-    }
+  const business = await prisma.business.findUnique({
+    where: { email }
   })
+  
+  if (business) {
+    await prisma.business.update({
+      where: { id: business.id },
+      data: {
+        subscriptionStatus: 'active',
+        subscriptionTier: tier,
+        subscriptionStartDate: new Date(),
+        hubspotDealId: dealId
+      }
+    })
+    
+    // If account not activated yet, activate it
+    if (!business.password || business.password === '') {
+      // Call activation endpoint
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/activate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        })
+        
+        if (response.ok) {
+          console.log('Account activated for:', email)
+        }
+      } catch (error) {
+        console.error('Failed to activate account via webhook:', error)
+      }
+    }
+  }
 }
 
 async function handleSubscriptionCreate(data: any) {
