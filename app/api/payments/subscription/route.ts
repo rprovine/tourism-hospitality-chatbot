@@ -29,11 +29,7 @@ export async function GET(request: NextRequest) {
     const business = await prisma.business.findUnique({
       where: { id: payload.businessId },
       include: {
-        subscriptions: {
-          where: { status: 'active' },
-          orderBy: { createdAt: 'desc' },
-          take: 1
-        }
+        subscription: true
       }
     })
 
@@ -48,7 +44,7 @@ export async function GET(request: NextRequest) {
     const hubspotStatus = await getSubscriptionStatus(business.email)
 
     // Sync with local database if needed
-    if (hubspotStatus.isActive && business.subscriptions.length === 0) {
+    if (hubspotStatus.isActive && !business.subscription) {
       // Create subscription record if HubSpot shows active but we don't have it
       await prisma.subscription.create({
         data: {
@@ -69,7 +65,7 @@ export async function GET(request: NextRequest) {
       tier: hubspotStatus.tier,
       startDate: hubspotStatus.startDate,
       endDate: hubspotStatus.endDate,
-      subscription: business.subscriptions[0] || null
+      subscription: business.subscription || null
     })
   } catch (error) {
     console.error('Error getting subscription status:', error)

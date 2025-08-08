@@ -300,7 +300,7 @@ export default function AdminAnalyticsPage() {
                             tier === 'professional' ? 'bg-cyan-600' :
                             'bg-gray-600'
                           }`}
-                          style={{ width: `${(revenue / analytics.revenueMetrics.mrr) * 100}%` }}
+                          style={{ width: `${(revenue / (analytics?.revenueMetrics.mrr || 1)) * 100}%` }}
                         />
                       </div>
                       <span className="text-sm font-bold text-gray-900 w-20 text-right">

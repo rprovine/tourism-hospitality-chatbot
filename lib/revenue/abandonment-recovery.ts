@@ -49,11 +49,11 @@ export class AbandonmentRecoveryEngine {
   
   constructor(
     prisma: PrismaClient,
-    messaging?: UnifiedMessagingService,
+    messaging: UnifiedMessagingService,
     openAI?: OpenAIService
   ) {
     this.prisma = prisma
-    this.messaging = messaging || new UnifiedMessagingService(prisma)
+    this.messaging = messaging
     this.openAI = openAI || new OpenAIService()
     this.sentimentAnalyzer = new SentimentAnalyzer(this.openAI)
   }
@@ -483,7 +483,6 @@ Personalized message:`
       const conversations = await this.prisma.conversation.findMany({
         where: {
           businessId,
-          status: 'active',
           updatedAt: {
             lt: new Date(Date.now() - 10 * 60 * 1000) // 10+ minutes old
           }

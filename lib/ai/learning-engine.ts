@@ -85,6 +85,7 @@ export class LearningEngine {
       await this.prisma.conversationFeedback.create({
         data: {
           conversationId,
+          businessId: conversation.businessId,
           feedback,
           context: additionalContext || {},
           timestamp: new Date()

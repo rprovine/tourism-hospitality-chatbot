@@ -225,8 +225,7 @@ export class UnifiedMessagingService {
           data: {
             conversationId: session.conversationId,
             role: 'assistant',
-            content: aiResponse,
-            metadata: { channel }
+            content: aiResponse
           }
         })
       }

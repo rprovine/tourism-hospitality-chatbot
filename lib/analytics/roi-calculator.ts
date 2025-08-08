@@ -123,7 +123,8 @@ export class ROICalculator {
         monthlyWebsiteVisitors: 1000,
         currentConversionRate: 0.02,
         currentResponseTime: 24,
-        currentStaffCost: 2000
+        currentStaffCost: 2000,
+        currentSupportTickets: 50
       },
       professional: {
         subscriptionCost: 99,
@@ -131,7 +132,8 @@ export class ROICalculator {
         monthlyWebsiteVisitors: 5000,
         currentConversionRate: 0.025,
         currentResponseTime: 12,
-        currentStaffCost: 5000
+        currentStaffCost: 5000,
+        currentSupportTickets: 200
       },
       premium: {
         subscriptionCost: 299,
@@ -139,7 +141,8 @@ export class ROICalculator {
         monthlyWebsiteVisitors: 15000,
         currentConversionRate: 0.03,
         currentResponseTime: 6,
-        currentStaffCost: 10000
+        currentStaffCost: 10000,
+        currentSupportTickets: 500
       },
       enterprise: {
         subscriptionCost: 999,
@@ -147,7 +150,8 @@ export class ROICalculator {
         monthlyWebsiteVisitors: 50000,
         currentConversionRate: 0.035,
         currentResponseTime: 2,
-        currentStaffCost: 25000
+        currentStaffCost: 25000,
+        currentSupportTickets: 2000
       }
     }
     

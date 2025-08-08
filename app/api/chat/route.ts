@@ -76,6 +76,13 @@ export async function POST(request: NextRequest) {
       })
     }
     
+    if (!conversation) {
+      return NextResponse.json(
+        { error: 'Failed to create or retrieve conversation' },
+        { status: 500 }
+      )
+    }
+    
     // Save user message
     await prisma.message.create({
       data: {
@@ -128,14 +135,13 @@ export async function POST(request: NextRequest) {
             }
           ]
           
-          const response = await openAI.createCompletion({
-            messages,
+          const response = await openAI.createChatCompletion(messages, {
             model: aiSettings.chatgptSettings?.modelPreference || 'gpt-4',
             temperature: aiSettings.temperature || 0.7,
             maxTokens: aiSettings.maxTokens || 500
           })
           
-          aiResponse = response.content || 'I apologize, but I encountered an issue processing your request.'
+          aiResponse = response || 'I apologize, but I encountered an issue processing your request.'
         } catch (error) {
           console.error('OpenAI error:', error)
           // Fall back to Claude if OpenAI fails

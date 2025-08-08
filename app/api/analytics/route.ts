@@ -39,8 +39,8 @@ export async function GET(request: NextRequest) {
     const start = startDate ? new Date(startDate) : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
     
     // Try to get analytics data (may not exist yet)
-    let analytics = []
-    let conversations = []
+    let analytics: any[] = []
+    let conversations: any[] = []
     
     try {
       analytics = await prisma.analytics.findMany({
@@ -90,11 +90,11 @@ export async function GET(request: NextRequest) {
     const resolutionRate = totalConversations > 0 ? (resolvedConversations / totalConversations) * 100 : 0
     
     // Get top questions
-    const allMessages = conversations.flatMap(c => 
-      c.messages.filter(m => m.role === 'user').map(m => m.content)
+    const allMessages = conversations.flatMap((c: any) => 
+      c.messages.filter((m: any) => m.role === 'user').map((m: any) => m.content)
     )
     const questionFrequency: Record<string, number> = {}
-    allMessages.forEach(msg => {
+    allMessages.forEach((msg: string) => {
       const normalized = msg.toLowerCase().trim()
       questionFrequency[normalized] = (questionFrequency[normalized] || 0) + 1
     })
@@ -163,10 +163,10 @@ export async function POST(request: NextRequest) {
     
     // Calculate metrics
     const totalConversations = conversations.length
-    const uniqueUsers = new Set(conversations.map(c => c.sessionId)).size
-    const satisfactionRatings = conversations.filter(c => c.satisfaction !== null)
+    const uniqueUsers = new Set(conversations.map((c: any) => c.sessionId)).size
+    const satisfactionRatings = conversations.filter((c: any) => c.satisfaction !== null)
     const avgSatisfaction = satisfactionRatings.length > 0
-      ? satisfactionRatings.reduce((sum, c) => sum + (c.satisfaction || 0), 0) / satisfactionRatings.length
+      ? satisfactionRatings.reduce((sum: number, c: any) => sum + (c.satisfaction || 0), 0) / satisfactionRatings.length
       : 0
     
     // Upsert analytics record

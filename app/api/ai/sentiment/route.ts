@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import { SentimentAnalyzer } from '@/lib/ai/sentiment-analyzer'
 import { getOpenAIService } from '@/lib/ai/openai-service'
@@ -7,8 +6,6 @@ import { getOpenAIService } from '@/lib/ai/openai-service'
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
 
 export async function POST(request: NextRequest) {
-  let prisma: PrismaClient | null = null
-  
   try {
     // Verify JWT token
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
@@ -53,10 +50,6 @@ export async function POST(request: NextRequest) {
       { error: 'Failed to analyze sentiment', details: error.message },
       { status: 500 }
     )
-  } finally {
-    if (prisma) {
-      await prisma.$disconnect()
-    }
   }
 }
 

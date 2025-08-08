@@ -222,12 +222,12 @@ export default function BillingPage() {
               <div>
                 <CardTitle className="text-2xl">{currentPlan.name} Plan</CardTitle>
                 <CardDescription className="text-base">
-                  ${currentPlan.price}/month • {subscription?.status === 'demo' ? 'Demo Account' : subscription?.status || 'Active'}
+                  ${currentPlan.price}/month • {subscription?.status === 'demo' ? 'Demo Account' : (String(subscription?.status || 'Active'))}
                 </CardDescription>
               </div>
             </div>
-            <Badge className={`${statusColors[subscription?.status || 'active']} text-lg px-3 py-1`}>
-              {subscription?.status === 'demo' ? 'DEMO' : subscription?.status?.toUpperCase() || 'ACTIVE'}
+            <Badge className={`${statusColors[String(subscription?.status || 'active')]} text-lg px-3 py-1`}>
+              {subscription?.status === 'demo' ? 'DEMO' : String(subscription?.status || 'ACTIVE').toUpperCase()}
             </Badge>
           </div>
         </CardHeader>
@@ -235,12 +235,12 @@ export default function BillingPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-white p-3 rounded-lg">
               <p className="text-sm text-gray-600">Billing Cycle</p>
-              <p className="font-semibold text-gray-900 capitalize">{subscription?.billingCycle || 'Monthly'}</p>
+              <p className="font-semibold text-gray-900 capitalize">{String(subscription?.billingCycle || 'Monthly')}</p>
             </div>
             <div className="bg-white p-3 rounded-lg">
               <p className="text-sm text-gray-600">Next Billing</p>
               <p className="font-semibold text-gray-900">
-                {subscription?.endDate ? new Date(subscription.endDate).toLocaleDateString() : 'N/A'}
+                {subscription?.endDate ? new Date(String(subscription.endDate)).toLocaleDateString() : 'N/A'}
               </p>
             </div>
             <div className="bg-white p-3 rounded-lg">
@@ -582,7 +582,7 @@ export default function BillingPage() {
               <Button
                 variant="outline"
                 onClick={() => handleCancelSubscription(false)}
-                disabled={cancelling || subscription.cancelAtPeriodEnd}
+                disabled={cancelling || Boolean(subscription.cancelAtPeriodEnd)}
               >
                 Cancel at Period End
               </Button>

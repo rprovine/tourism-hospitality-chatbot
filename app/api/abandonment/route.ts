@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import { verifyToken } from '@/lib/auth'
 
 const prisma = new PrismaClient()
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
         conversation: {
           businessId: decoded.businessId
         },
-        bookingIntent: { not: null },
+        bookingIntent: { not: Prisma.JsonNull },
         abandonedAt: { not: null },
         completedAt: null,
         followUpSent: false

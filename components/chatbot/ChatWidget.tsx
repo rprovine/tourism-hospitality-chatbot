@@ -148,22 +148,22 @@ export default function ChatWidget({
     if (tierLevel === 'starter') {
       // Starter: Basic FAQ only, NO integrations
       if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
-        return `❌ **Booking Integration Not Available in Starter Plan**\n\nTo make a reservation, please call ${business.contact}.\n\n💡 Upgrade to Professional to enable instant bookings right from the chat!${disclaimer}`
+        return `❌ **Booking Integration Not Available in Starter Plan**\n\nTo make a reservation, please call ${'contact' in business ? business.contact : '(808) 555-0100'}.\n\n💡 Upgrade to Professional to enable instant bookings right from the chat!${disclaimer}`
       }
       if (lowerQuery.includes('room') || lowerQuery.includes('availability')) {
-        return `We have rooms available. Please call ${business.contact} to check specific dates.\n\n⚠️ Real-time availability requires Professional plan or higher.${disclaimer}`
+        return `We have rooms available. Please call ${'contact' in business ? business.contact : '(808) 555-0100'} to check specific dates.\n\n⚠️ Real-time availability requires Professional plan or higher.${disclaimer}`
       }
       if (lowerQuery.includes('my') || lowerQuery.includes('history') || lowerQuery.includes('stayed')) {
-        return `❌ **CRM Integration Not Available**\n\nWe cannot access guest history in the Starter plan. Please call ${business.contact} for assistance.\n\n💡 Professional plan includes full CRM integration!${disclaimer}`
+        return `❌ **CRM Integration Not Available**\n\nWe cannot access guest history in the Starter plan. Please call ${'contact' in business ? business.contact : '(808) 555-0100'} for assistance.\n\n💡 Professional plan includes full CRM integration!${disclaimer}`
       }
       if (lowerQuery.includes('check')) {
-        return `Check-in time is ${business.checkIn} and check-out is ${business.checkOut}.${disclaimer}`
+        return `Check-in time is ${'checkIn' in business ? business.checkIn : '3:00 PM'} and check-out is ${'checkOut' in business ? business.checkOut : '11:00 AM'}.${disclaimer}`
       }
       if (lowerQuery.includes('price') || lowerQuery.includes('rate')) {
-        return `Our rates vary by season. Please call ${business.contact} for current pricing.${disclaimer}`
+        return `Our rates vary by season. Please call ${'contact' in business ? business.contact : '(808) 555-0100'} for current pricing.${disclaimer}`
       }
       // Starter limitation - can't handle complex queries
-      return `I can only answer basic questions. For bookings or guest services, please call ${business.contact}.\n\n⚠️ Limited to basic Q&A in Starter plan.${disclaimer}`
+      return `I can only answer basic questions. For bookings or guest services, please call ${'contact' in business ? business.contact : '(808) 555-0100'}.\n\n⚠️ Limited to basic Q&A in Starter plan.${disclaimer}`
     } 
     
     else if (tierLevel === 'professional') {
@@ -179,9 +179,9 @@ export default function ChatWidget({
       if (lowerQuery.includes('availability') || lowerQuery.includes('tonight')) {
         return `Live Availability at ${business.name}:
 • Tonight: ${realTime.availableRooms} rooms available
-• Current occupancy: ${realTime.occupancy}%
-• Check-ins today: ${realTime.todayCheckIns}
-• Check-outs today: ${realTime.todayCheckOuts}
+• Current occupancy: ${'occupancy' in realTime ? realTime.occupancy : 78}%
+• Check-ins today: ${'todayCheckIns' in realTime ? realTime.todayCheckIns : 23}
+• Check-outs today: ${'todayCheckOuts' in realTime ? realTime.todayCheckOuts : 18}
 
 Our best rate tonight is $${business.avgRate}. Shall I reserve a room for you?${disclaimer}`
       }
@@ -196,7 +196,7 @@ Our best rate tonight is $${business.avgRate}. Shall I reserve a room for you?${
       }
       
       if (lowerQuery.includes('restaurant') || lowerQuery.includes('dining')) {
-        return `${business.name} has ${business.restaurants} restaurants:
+        return `${business.name} has ${'restaurants' in business ? business.restaurants : 2} restaurants:
 • Sunset Grill (American) - Open 7am-10pm
 • Kai Lounge (Hawaiian) - Open 5pm-midnight
 
@@ -233,7 +233,7 @@ How may I assist you?${disclaimer}`
 • Daily champagne breakfast
 • Priority restaurant reservations
 
-Currently ${realTime.availableSuites} luxury suites available. With ${realTime.vipArrivals} VIP arrivals today, I recommend booking immediately. 
+Currently ${'availableSuites' in realTime ? realTime.availableSuites : 3} luxury suites available. With ${'vipArrivals' in realTime ? realTime.vipArrivals : 3} VIP arrivals today, I recommend booking immediately. 
 
 Shall I reserve the Presidential Suite for you?${disclaimer}`
       }
@@ -241,7 +241,7 @@ Shall I reserve the Presidential Suite for you?${disclaimer}`
       if (lowerQuery.includes('chinese') || lowerQuery.includes('中文')) {
         return `欢迎来到${business.name}！
 
-豪华套房：${realTime.availableSuites}间可用
+豪华套房：${'availableSuites' in realTime ? realTime.availableSuites : 3}间可用
 今晚特价：$${business.avgRate}起
 VIP礼遇：免费机场接送、水疗积分、私人管家
 
@@ -251,7 +251,7 @@ VIP礼遇：免费机场接送、水疗积分、私人管家
       if (lowerQuery.includes('spanish') || lowerQuery.includes('español')) {
         return `¡Bienvenido a ${business.name}!
 
-Suites de lujo disponibles: ${realTime.availableSuites}
+Suites de lujo disponibles: ${'availableSuites' in realTime ? realTime.availableSuites : 3}
 Tarifa desde: $${business.avgRate}/noche
 Servicios VIP incluidos
 
@@ -266,12 +266,12 @@ Servicios VIP incluidos
 • Helicopter tour with champagne landing
 • Private chef dining (Michelin-starred)
 • After-hours shopping at luxury boutiques
-• Golf at ${business.golfCourses} championship courses
+• Golf at ${'golfCourses' in business ? business.golfCourses : 2} championship courses
 
 **Complimentary VIP Services:**
 • Rolls-Royce airport transfer
 • 24/7 personal butler
-• Priority access to all ${business.restaurants} restaurants
+• Priority access to all ${'restaurants' in business ? business.restaurants : 8} restaurants
 • Private beach club membership
 
 Your preferences are saved for personalized service. How may I enhance your stay?${disclaimer}`
@@ -279,7 +279,7 @@ Your preferences are saved for personalized service. How may I enhance your stay
       
       return `Welcome to ${business.name} - Hawaii's premier luxury destination.
 
-With ${realTime.occupancy}% occupancy and ${realTime.vipArrivals} VIP arrivals today, our exclusive services are in high demand.
+With ${'occupancy' in realTime ? realTime.occupancy : 89}% occupancy and ${'vipArrivals' in realTime ? realTime.vipArrivals : 3} VIP arrivals today, our exclusive services are in high demand.
 
 I provide personalized assistance in English, Japanese, Chinese, Spanish, and Korean. I have access to your preferences and can arrange:
 • Luxury suite bookings
@@ -292,7 +292,7 @@ How may I create magic for you today?${disclaimer}`
     
     else {
       // Enterprise: Full integration suite with predictive analytics
-      const properties = (business as any).properties || []
+      const properties = ('properties' in business && Array.isArray(business.properties)) ? business.properties : []
       
       if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
         return `✅ **Enterprise Booking Platform - Multi-Property Access**\n\n🏢 **Your Corporate Account (Microsoft - Global Agreement)**\n\n📊 **AI-Powered Recommendations based on your travel patterns:**\n\n**Honolulu (You visit 2x/month)**\n• Saved preference: Ocean Tower, Floor 25+\n• Your rate: $${business.avgRate - 100}/night (Corporate: -40%)\n• Available: 15 rooms in your preferred zone\n\n**Maui (Quarterly visits)**\n• Beachfront Villa - Your usual choice\n• Your rate: $${business.avgRate * 1.5}/night (Corporate rate)\n• Team booking available (up to 20 rooms)\n\n💼 **Quick Actions:**\n[Book Honolulu] [Book Maui] [Book Team Retreat] [View All 12 Properties]\n\n📈 **Your Company Stats:**\n• Annual savings: $124,000 vs public rates\n• 2024 nights booked: 487 across all properties\n• Carbon offset: Automatically included\n\n🔗 **Integrated Services:**\n✓ Direct billing to Microsoft (PO #48291)\n✓ Expense reports auto-generated\n✓ Travel policy compliant\n✓ Concur integration active${disclaimer}`
@@ -330,10 +330,10 @@ I can coordinate across all properties. What are your group requirements?${discl
         return `**Real-Time Business Intelligence Dashboard**
 
 📈 **System-Wide Performance:**
-• Occupancy: ${realTime.systemOccupancy}% (↑3% vs last week)
+• Occupancy: ${'systemOccupancy' in realTime ? realTime.systemOccupancy : 85}% (↑3% vs last week)
 • ADR: $${business.avgRate} (↑$15 vs last month)
-• RevPAR: $${Math.round(business.avgRate * realTime.systemOccupancy / 100)}
-• Revenue Today: $${(realTime.revenueToday / 1000000).toFixed(1)}M
+• RevPAR: $${Math.round(business.avgRate * ('systemOccupancy' in realTime ? realTime.systemOccupancy : 85) / 100)}
+• Revenue Today: $${('revenueToday' in realTime ? (realTime.revenueToday / 1000000).toFixed(1) : '1.3')}M
 
 **Property Performance:**
 ${properties.slice(0, 3).map((p: string, i: number) => 
@@ -392,7 +392,7 @@ I can look up any member, process upgrades, or analyze loyalty metrics. What do 
 Each language includes cultural customization and local payment methods.${disclaimer}`
       }
       
-      return `**${business.name} Enterprise AI Platform**\n\n🚀 **Full Integration Suite Active:**\n\n✅ **Booking Engine**: Real-time across ${properties.length} properties\n✅ **CRM Integration**: Salesforce, HubSpot, Microsoft Dynamics\n✅ **Property Management**: Oracle Opera, Infor HMS\n✅ **Revenue Management**: Dynamic pricing AI active\n✅ **Analytics Platform**: PowerBI, Tableau dashboards\n✅ **Marketing Automation**: Personalized campaigns running\n\n📊 **Live Performance Metrics:**\n• Occupancy right now: ${realTime.systemOccupancy}% system-wide\n• Revenue today: $${(realTime.revenueToday / 1000).toFixed(0)}K\n• Bookings in last hour: 47\n• Average response time: 0.3 seconds\n\nI'm your AI-powered enterprise assistant with access to:
+      return `**${business.name} Enterprise AI Platform**\n\n🚀 **Full Integration Suite Active:**\n\n✅ **Booking Engine**: Real-time across ${properties.length} properties\n✅ **CRM Integration**: Salesforce, HubSpot, Microsoft Dynamics\n✅ **Property Management**: Oracle Opera, Infor HMS\n✅ **Revenue Management**: Dynamic pricing AI active\n✅ **Analytics Platform**: PowerBI, Tableau dashboards\n✅ **Marketing Automation**: Personalized campaigns running\n\n📊 **Live Performance Metrics:**\n• Occupancy right now: ${'systemOccupancy' in realTime ? realTime.systemOccupancy : 85}% system-wide\n• Revenue today: $${('revenueToday' in realTime ? (realTime.revenueToday / 1000).toFixed(0) : '1250')}K\n• Bookings in last hour: 47\n• Average response time: 0.3 seconds\n\nI'm your AI-powered enterprise assistant with access to:
 
 🏨 **${properties.length} Properties** - ${(business as any).totalRooms} total rooms
 💰 **Revenue Management** - Real-time pricing optimization
@@ -403,9 +403,9 @@ Each language includes cultural customization and local payment methods.${discla
 
 Current system status:
 • ${realTime.availableRooms} rooms available system-wide
-• ${realTime.systemOccupancy}% average occupancy
-• ${realTime.groupArrivals} group arrivals tomorrow
-• $${(realTime.revenueToday / 1000000).toFixed(1)}M revenue today
+• ${'systemOccupancy' in realTime ? realTime.systemOccupancy : 85}% average occupancy
+• ${'groupArrivals' in realTime ? realTime.groupArrivals : 450} group arrivals tomorrow
+• $${('revenueToday' in realTime ? (realTime.revenueToday / 1000000).toFixed(1) : '1.3')}M revenue today
 
 I can handle any enterprise hospitality need. What would you like to explore?${disclaimer}`
     }

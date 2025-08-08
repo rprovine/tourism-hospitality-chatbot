@@ -124,10 +124,7 @@ export async function POST(request: NextRequest) {
         conversationId: conversation.id,
         role: 'user',
         content: validatedData.message,
-        metadata: {
-          language: validatedData.language,
-          source: 'api'
-        }
+        language: validatedData.language || 'en'
       }
     })
 
@@ -141,12 +138,12 @@ export async function POST(request: NextRequest) {
     // Generate AI response
     const aiResponse = await generateClaudeResponse(
       validatedData.message,
-      business.tier,
       {
         businessName: business.name,
+        businessType: business.type,
+        tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
         welcomeMessage: business.welcomeMessage,
-        knowledgeBase: knowledgeResults,
-        language: validatedData.language
+        knowledgeBase: knowledgeResults
       }
     )
 
@@ -156,10 +153,7 @@ export async function POST(request: NextRequest) {
         conversationId: conversation.id,
         role: 'assistant',
         content: aiResponse,
-        metadata: {
-          language: validatedData.language,
-          model: business.tier === 'starter' ? 'claude-3-5-haiku' : 'claude-3-5-sonnet'
-        }
+        language: validatedData.language || 'en'
       }
     })
 
@@ -172,16 +166,13 @@ export async function POST(request: NextRequest) {
         }
       },
       update: {
-        totalConversations: { increment: 1 },
-        conversationCount: { increment: 1 }
+        totalConversations: { increment: 1 }
       },
       create: {
         businessId: business.id,
         date: new Date(new Date().toDateString()),
         totalConversations: 1,
-        conversationCount: 1,
-        averageSatisfaction: 0,
-        totalMessages: 2
+        avgSatisfaction: 0
       }
     })
 

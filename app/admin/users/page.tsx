@@ -88,10 +88,16 @@ export default function UsersManagementPage() {
       name: 'Paradise Resort Hawaii',
       tier: 'premium',
       subscriptionStatus: 'active',
+      billingCycle: 'monthly',
       createdAt: '2024-01-15',
       lastActive: '2 hours ago',
       totalConversations: 12847,
-      monthlySpend: 299
+      totalGuests: 3456,
+      monthlySpend: 299,
+      subscription: {
+        startDate: '2024-01-15',
+        endDate: '2024-12-15'
+      }
     },
     {
       id: '2',
@@ -99,10 +105,16 @@ export default function UsersManagementPage() {
       name: 'Sunset Beach Hotel',
       tier: 'professional',
       subscriptionStatus: 'active',
+      billingCycle: 'monthly',
       createdAt: '2024-02-20',
       lastActive: '5 hours ago',
       totalConversations: 8234,
-      monthlySpend: 149
+      totalGuests: 2134,
+      monthlySpend: 149,
+      subscription: {
+        startDate: '2024-02-20',
+        endDate: '2024-12-20'
+      }
     },
     {
       id: '3',
@@ -110,10 +122,16 @@ export default function UsersManagementPage() {
       name: 'Ocean Adventures Tours',
       tier: 'professional',
       subscriptionStatus: 'trial',
+      billingCycle: 'monthly',
       createdAt: '2024-03-01',
       lastActive: '1 day ago',
       totalConversations: 456,
-      monthlySpend: 0
+      totalGuests: 123,
+      monthlySpend: 0,
+      subscription: {
+        startDate: '2024-03-01',
+        endDate: '2024-03-31'
+      }
     },
     {
       id: '4',
@@ -121,10 +139,16 @@ export default function UsersManagementPage() {
       name: 'Beach Front Villas',
       tier: 'starter',
       subscriptionStatus: 'active',
+      billingCycle: 'monthly',
       createdAt: '2024-03-10',
       lastActive: '3 days ago',
       totalConversations: 1234,
-      monthlySpend: 29
+      totalGuests: 567,
+      monthlySpend: 29,
+      subscription: {
+        startDate: '2024-03-10',
+        endDate: '2024-12-10'
+      }
     },
     {
       id: '5',
@@ -132,10 +156,16 @@ export default function UsersManagementPage() {
       name: 'Island Hotel Chain',
       tier: 'enterprise',
       subscriptionStatus: 'active',
+      billingCycle: 'annual',
       createdAt: '2023-12-01',
       lastActive: '1 hour ago',
       totalConversations: 45678,
-      monthlySpend: 1299
+      totalGuests: 12345,
+      monthlySpend: 1299,
+      subscription: {
+        startDate: '2023-12-01',
+        endDate: '2024-12-01'
+      }
     },
     {
       id: '6',
@@ -143,10 +173,17 @@ export default function UsersManagementPage() {
       name: 'Boutique Inn Waikiki',
       tier: 'starter',
       subscriptionStatus: 'canceled',
+      billingCycle: 'monthly',
       createdAt: '2024-01-20',
       lastActive: '2 weeks ago',
       totalConversations: 789,
-      monthlySpend: 0
+      totalGuests: 234,
+      monthlySpend: 0,
+      subscription: {
+        startDate: '2024-01-20',
+        endDate: '2024-03-20',
+        cancelledAt: '2024-03-20'
+      }
     },
     {
       id: '7',
@@ -154,10 +191,16 @@ export default function UsersManagementPage() {
       name: 'Luxury Estates Hawaii',
       tier: 'premium',
       subscriptionStatus: 'trial',
+      billingCycle: 'monthly',
       createdAt: '2024-03-15',
       lastActive: '6 hours ago',
       totalConversations: 234,
-      monthlySpend: 0
+      totalGuests: 89,
+      monthlySpend: 0,
+      subscription: {
+        startDate: '2024-03-15',
+        endDate: '2024-04-15'
+      }
     },
     {
       id: '8',
@@ -165,10 +208,16 @@ export default function UsersManagementPage() {
       name: 'Adventure Sports Center',
       tier: 'professional',
       subscriptionStatus: 'active',
+      billingCycle: 'monthly',
       createdAt: '2024-02-10',
       lastActive: '12 hours ago',
       totalConversations: 5678,
-      monthlySpend: 149
+      totalGuests: 1890,
+      monthlySpend: 149,
+      subscription: {
+        startDate: '2024-02-10',
+        endDate: '2024-12-10'
+      }
     }
   ]
 

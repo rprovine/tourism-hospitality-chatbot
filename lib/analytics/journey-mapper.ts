@@ -75,13 +75,17 @@ export class JourneyMapper {
           businessId
         },
         include: {
-          conversations: {
+          contexts: {
             include: {
-              messages: true
+              conversation: {
+                include: {
+                  messages: true
+                }
+              }
             }
           },
           interactions: true,
-          sessions: true
+          channelSessions: true
         }
       })
       
@@ -93,18 +97,20 @@ export class JourneyMapper {
       const touchPoints: TouchPoint[] = []
       
       // Add conversation touchpoints
-      guestProfile.conversations.forEach(conv => {
-        conv.messages.forEach(msg => {
-          touchPoints.push({
-            id: msg.id,
-            timestamp: msg.createdAt,
-            channel: 'chat',
-            type: this.determineStageFromMessage(msg.content),
-            action: this.extractAction(msg.content),
-            sentiment: msg.metadata?.sentiment as number || 0,
-            metadata: msg.metadata
+      guestProfile.contexts.forEach(context => {
+        if (context.conversation) {
+          context.conversation.messages.forEach(msg => {
+            touchPoints.push({
+              id: msg.id,
+              timestamp: msg.createdAt,
+              channel: 'chat',
+              type: this.determineStageFromMessage(msg.content),
+              action: this.extractAction(msg.content),
+              sentiment: 0,
+              metadata: {}
+            })
           })
-        })
+        }
       })
       
       // Add other interactions
@@ -127,13 +133,12 @@ export class JourneyMapper {
       const startDate = touchPoints[0]?.timestamp || new Date()
       const endDate = touchPoints[touchPoints.length - 1]?.timestamp
       const hasBooking = touchPoints.some(tp => tp.action === 'booking')
-      const totalValue = guestProfile.totalSpent ? Number(guestProfile.totalSpent) : 0
+      const totalValue = guestProfile.lifetimeValue ? Number(guestProfile.lifetimeValue) : 0
       
       // Determine status
       let status: CustomerJourney['status'] = 'active'
       if (hasBooking) status = 'converted'
-      else if (guestProfile.sessions.some(s => s.abandonedAt)) status = 'abandoned'
-      else if (guestProfile.churnedAt) status = 'churned'
+      else if (guestProfile.channelSessions.some(s => s.status === 'closed' || s.status === 'expired')) status = 'abandoned'
       
       // Calculate conversion probability
       const conversionProbability = this.calculateConversionProbability(touchPoints, status)
@@ -190,9 +195,9 @@ export class JourneyMapper {
           createdAt: { gte: startDate }
         },
         include: {
-          conversations: true,
+          contexts: true,
           interactions: true,
-          sessions: true
+          channelSessions: true
         }
       })
       

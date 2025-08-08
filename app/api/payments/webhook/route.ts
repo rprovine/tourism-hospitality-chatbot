@@ -205,9 +205,9 @@ async function handleSubscriptionCreated(data: any) {
         data: {
           hubspotSubscriptionId: subscriptionId,
           metadata: {
-            ...checkoutSession.metadata,
+            ...(typeof checkoutSession.metadata === 'object' && checkoutSession.metadata !== null ? checkoutSession.metadata : {}),
             subscriptionCreated: true
-          }
+          } as any
         }
       })
     }

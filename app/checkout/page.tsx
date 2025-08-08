@@ -141,11 +141,6 @@ function CheckoutContent() {
                           <p className="text-sm text-gray-600">
                             {p.tier === 'enterprise' ? 'Starting at' : ''} ${p.price}/{p.interval === 'yearly' ? 'year' : 'month'}
                           </p>
-                          {p.trialText && (
-                            <p className="text-xs text-green-600 font-medium mt-1">
-                              ✨ {p.trialText}
-                            </p>
-                          )}
                         </div>
                         {selectedPlan === key && (
                           <Check className="h-5 w-5 text-cyan-600" />
@@ -239,18 +234,16 @@ function CheckoutContent() {
               )}
 
               {/* Trial Information Banner */}
-              {plan && plan.trialDays && (
+              {plan && (
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                   <div className="flex items-start gap-2">
                     <Check className="h-5 w-5 text-green-600 mt-0.5" />
                     <div>
                       <p className="font-semibold text-green-900">
-                        {plan.trialDays === 14 ? '14-Day Free Trial' : '30-Day Money-Back Guarantee'}
+                        14-Day Free Trial
                       </p>
                       <p className="text-sm text-green-700 mt-1">
-                        {plan.trialDays === 14 
-                          ? 'Try risk-free for 14 days. Cancel anytime, no questions asked.'
-                          : 'Full refund within 30 days if you\'re not completely satisfied.'}
+                        Try risk-free for 14 days. Cancel anytime, no questions asked.
                       </p>
                     </div>
                   </div>
@@ -269,16 +262,14 @@ function CheckoutContent() {
                   </>
                 ) : (
                   <>
-                    {plan?.trialDays ? 'Start Free Trial' : 'Continue to Payment'}
+                    Start Free Trial
                     <ArrowRight className="h-5 w-5" />
                   </>
                 )}
               </button>
 
               <p className="text-xs text-gray-500 text-center">
-                {plan?.trialDays ? (
-                  <>No payment required for {plan.trialDays} days. Cancel anytime.<br/></>
-                ) : null}
+                No payment required for 14 days. Cancel anytime.<br/>
                 By continuing, you agree to our Terms of Service and Privacy Policy.
               </p>
             </form>

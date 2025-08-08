@@ -39,9 +39,9 @@ export async function GET() {
     })
   } catch (error: any) {
     return NextResponse.json({
+      ...checks,
       status: 'error',
-      error: error.message,
-      ...checks
+      error: error.message
     }, { status: 500 })
   }
 }

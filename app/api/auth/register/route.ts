@@ -69,8 +69,9 @@ export async function POST(request: NextRequest) {
     const startDate = new Date()
     const endDate = new Date()
     
-    // Set end date based on billing cycle
-    if (validatedData.billingCycle === 'annual') {
+    // Set end date based on billing cycle (default to monthly)
+    const billingCycle = (body.billingCycle as string) || 'monthly'
+    if (billingCycle === 'annual') {
       endDate.setFullYear(endDate.getFullYear() + 1)
     } else {
       endDate.setMonth(endDate.getMonth() + 1)
@@ -81,7 +82,7 @@ export async function POST(request: NextRequest) {
         businessId: business.id,
         tier: validatedData.tier,
         status: 'active',
-        billingCycle: validatedData.billingCycle,
+        billingCycle: billingCycle,
         startDate: startDate,
         endDate: endDate
       }

@@ -261,7 +261,7 @@ export const emailTemplates = {
 }
 
 // Import SendGrid email service
-async function sendEmailWithSendGrid(to: string, template: { subject: string; html: string }) {
+async function sendEmailWithSendGrid(to: string, template: { subject: string; html: string }): Promise<any> {
   const { sendEmail } = await import('./sendgrid')
   return sendEmail(to, template)
 }

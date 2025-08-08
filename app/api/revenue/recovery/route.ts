@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     
     // Initialize services
     prisma = new PrismaClient()
-    const messaging = new UnifiedMessagingService(prisma)
+    const messaging = new UnifiedMessagingService(businessId)
     const openAI = getOpenAIService()
     const recoveryEngine = new AbandonmentRecoveryEngine(prisma, messaging, openAI)
     
@@ -138,7 +138,7 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type')
     
     prisma = new PrismaClient()
-    const messaging = new UnifiedMessagingService(prisma)
+    const messaging = new UnifiedMessagingService(businessId)
     const openAI = getOpenAIService()
     const recoveryEngine = new AbandonmentRecoveryEngine(prisma, messaging, openAI)
     

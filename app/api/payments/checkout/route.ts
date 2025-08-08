@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   try {
     // Check if user is authenticated (for registered users)
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
-    let businessId: string | null = null
+    let businessId: string | undefined = undefined
     let business: any = null
     
     if (token) {

@@ -306,8 +306,7 @@ export class WhatsAppService {
         data: {
           conversationId: session.conversationId,
           role: 'user',
-          content: content,
-          metadata: { whatsappMessageId: messageId, type }
+          content: content
         }
       })
     }
