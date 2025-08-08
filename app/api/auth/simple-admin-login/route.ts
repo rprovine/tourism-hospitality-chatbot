@@ -10,8 +10,11 @@ export async function POST(request: NextRequest) {
   
   try {
     // Get the raw text first, then parse it
-    const text = await request.text()
+    let text = await request.text()
     console.log('Raw request body:', text)
+    
+    // Fix common escaping issues
+    text = text.replace(/\\!/g, '!')
     
     let body
     try {
