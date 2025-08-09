@@ -51,7 +51,7 @@ export default function KnowledgeBasePage() {
   const [uploading, setUploading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
-  const [editingItem, setEditingItem] = useState<string | null>(null)
+  const [editingItem, setEditingItem] = useState<KnowledgeItem | null>(null)
   const [businessTier, setBusinessTier] = useState<string>('starter')
   const [itemLimit, setItemLimit] = useState<number>(50)
   const [newItem, setNewItem] = useState({
@@ -142,7 +142,7 @@ export default function KnowledgeBasePage() {
 
     setUploading(true)
     try {
-      const response = await fetch('/api/knowledge-base/import', {
+      const response = await fetch('/api/knowledge-base/import-url', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -152,11 +152,13 @@ export default function KnowledgeBasePage() {
       })
 
       if (response.ok) {
-        alert('Website content imported successfully!')
+        const data = await response.json()
+        alert(data.message || 'Website content imported successfully!')
         setFileUrl('')
         await fetchKnowledgeBase()
       } else {
-        alert('Failed to import website content')
+        const error = await response.json()
+        alert(error.error || 'Failed to import website content')
       }
     } catch (error) {
       console.error('Import error:', error)
@@ -198,6 +200,57 @@ export default function KnowledgeBasePage() {
     } catch (error) {
       console.error('Add error:', error)
       alert('Failed to add item')
+    }
+  }
+
+  const handleEdit = (item: KnowledgeItem) => {
+    setEditingItem(item)
+    setNewItem({
+      question: item.question,
+      answer: item.answer,
+      category: item.category || 'general',
+      keywords: item.keywords || '',
+      priority: item.priority || 0,
+      language: item.language || 'en'
+    })
+  }
+
+  const handleUpdate = async () => {
+    if (!editingItem) return
+    
+    try {
+      const response = await fetch('/api/knowledge-base', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${typeof window !== 'undefined' ? localStorage.getItem('token') : ''}`
+        },
+        body: JSON.stringify({
+          id: editingItem.id,
+          ...newItem,
+          isActive: true
+        })
+      })
+
+      if (response.ok) {
+        setNewItem({
+          question: '',
+          answer: '',
+          category: 'general',
+          keywords: '',
+          priority: 0,
+          language: 'en'
+        })
+        setEditingItem(null)
+        await fetchKnowledgeBase()
+        alert('Item updated successfully!')
+      } else {
+        const error = await response.json()
+        alert(error.error || 'Failed to update item')
+      }
+    } catch (error) {
+      console.error('Update error:', error)
+      alert('Failed to update item')
     }
   }
 
@@ -401,10 +454,30 @@ export default function KnowledgeBasePage() {
                   onChange={(e) => setNewItem({...newItem, keywords: e.target.value})}
                 />
               </div>
-              <Button onClick={addManualItem} className="w-full">
-                <Plus className="h-4 w-4 mr-2" />
-                Add to Knowledge Base
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={editingItem ? handleUpdate : addManualItem} className="flex-1">
+                  {editingItem ? (
+                    <><Save className="h-4 w-4 mr-2" />Update Item</>
+                  ) : (
+                    <><Plus className="h-4 w-4 mr-2" />Add to Knowledge Base</>
+                  )}
+                </Button>
+                {editingItem && (
+                  <Button variant="outline" onClick={() => {
+                    setEditingItem(null)
+                    setNewItem({
+                      question: '',
+                      answer: '',
+                      category: 'general',
+                      keywords: '',
+                      priority: 0,
+                      language: 'en'
+                    })
+                  }}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </TabsContent>
             
             <TabsContent value="file" className="space-y-4">
@@ -577,7 +650,11 @@ export default function KnowledgeBasePage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 ml-4">
-                      <Button variant="ghost" size="sm">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => handleEdit(item)}
+                      >
                         <Edit className="h-4 w-4" />
                       </Button>
                       <Button 
