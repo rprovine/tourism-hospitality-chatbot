@@ -124,9 +124,13 @@ ${knowledgeContext}
 Guidelines:
 1. Always be warm, welcoming, and professional
 2. Use "Aloha" spirit in your responses
-3. If you don't know something, politely suggest contacting the business directly
+3. ${context.isDemo ? 'Include the demo mode disclaimer at the end of every response' : `When you don't have specific information in the knowledge base:
+   - Acknowledge that you don't have that specific information yet
+   - Offer to collect their contact information for follow-up
+   - Provide alternative contact methods (phone/email if available)
+   - Be helpful and solution-oriented`}
 4. Keep responses concise but helpful
-5. ${context.isDemo ? 'Include the demo mode disclaimer at the end of every response' : 'Provide accurate, business-specific information'}
+5. For questions you cannot answer, always offer to connect them with a human team member
 6. For the ${context.tier} tier, ${
     context.tier === 'enterprise'
       ? 'provide enterprise-grade concierge service with multi-property coordination, group booking management, corporate travel arrangements, and seamless integration across all business units'
@@ -197,9 +201,24 @@ function generateFallbackResponse(query: string, tier: 'starter' | 'professional
   const lowerQuery = query.toLowerCase()
   const disclaimer = isDemo ? "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]" : ""
   
-  // For production accounts, provide helpful but generic responses
+  // For production accounts, provide helpful response that acknowledges the limitation
   if (!isDemo) {
-    return `I'd be happy to help you with that. Please let me know more details about what you're looking for, and I'll provide you with the best information available.`
+    // Check if they're asking about contact info
+    if (lowerQuery.includes('contact') || lowerQuery.includes('phone') || lowerQuery.includes('email') || lowerQuery.includes('call')) {
+      return `I'd be happy to help you get in touch with our team. While I'm still learning about all our services, our staff can answer any specific questions you have. 
+
+Would you like to leave your contact information so someone can reach out to you directly? Just let me know your name and preferred contact method (phone or email).`
+    }
+    
+    // For general queries without a knowledge base match
+    return `I don't have that specific information in my knowledge base yet, but I'd love to help you get the answer you need.
+
+You have a few options:
+1. Leave your contact information here and I'll have someone from our team reach out to you
+2. Call us directly for immediate assistance
+3. Send us an email with your question
+
+Which would you prefer? I'm here to make sure you get the information you're looking for.`
   }
   
   // Common queries handled differently by tier

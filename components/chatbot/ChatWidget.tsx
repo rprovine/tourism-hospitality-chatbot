@@ -84,16 +84,50 @@ export default function ChatWidget({
     }
 
     setMessages(prev => [...prev, userMessage])
+    const currentInput = input // Store before clearing
     setInput('')
     setIsTyping(true)
     
     // Increment message count
     setMessageCount(prev => prev + 1)
+    
+    // Check if user is providing contact information
+    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/
+    const phoneRegex = /(\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/
+    
+    const hasEmail = emailRegex.test(currentInput)
+    const hasPhone = phoneRegex.test(currentInput)
+    const email = hasEmail ? currentInput.match(emailRegex)?.[0] : undefined
+    const phone = hasPhone ? currentInput.match(phoneRegex)?.[0] : undefined
 
     try {
       // Get businessId from URL params or use demo
       const urlParams = new URLSearchParams(window.location.search)
       const businessId = urlParams.get('businessId') || 'demo-business-id'
+      
+      // If contact info detected, capture as lead
+      if ((hasEmail || hasPhone) && conversationId && businessId !== 'demo' && businessId !== 'demo-business-id') {
+        // Extract name if provided (common patterns)
+        const nameMatch = currentInput.match(/(?:my name is|i'm|i am|call me)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i)
+        const name = nameMatch ? nameMatch[1] : undefined
+        
+        // Send lead capture in background
+        fetch('/api/widget/lead', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            conversationId: conversationId,
+            businessId: businessId,
+            name: name,
+            email: email,
+            phone: phone,
+            message: currentInput,
+            preferredContact: hasEmail && hasPhone ? 'either' : hasEmail ? 'email' : 'phone'
+          })
+        }).catch(err => console.error('Failed to capture lead:', err))
+      }
       
       // Call the widget API with CORS support
       const response = await fetch('/api/widget/chat', {
@@ -102,7 +136,7 @@ export default function ChatWidget({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: input,
+          message: currentInput,
           sessionId: sessionId,
           businessId: businessId,
           conversationId: conversationId
@@ -120,16 +154,11 @@ export default function ChatWidget({
         setConversationId(data.conversationId)
       }
       
-      // Add demo disclaimer if not already present
-      const disclaimer = "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
-      const messageContent = data.message.includes('[🔸 Demo Mode') 
-        ? data.message 
-        : data.message + disclaimer
-      
+      // Don't add any demo disclaimer - let the backend handle it
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: messageContent,
+        content: data.message,
         timestamp: new Date()
       }
       setMessages(prev => [...prev, assistantMessage])
@@ -201,8 +230,12 @@ export default function ChatWidget({
     const realTime = mockRealTimeData[tierLevel as keyof typeof mockRealTimeData]
     const knowledge = mockKnowledgeBase[tierLevel as keyof typeof mockRealTimeData]
     
-    // Add demo mode disclaimer
-    const disclaimer = "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
+    // Only add demo disclaimer if this is actually a demo (businessId === 'demo')
+    const urlParams = new URLSearchParams(window.location.search)
+    const businessId = urlParams.get('businessId')
+    const disclaimer = businessId === 'demo' || businessId === 'demo-business-id' 
+      ? "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
+      : ""
     
     if (tierLevel === 'starter') {
       // Starter: Basic FAQ only, NO integrations

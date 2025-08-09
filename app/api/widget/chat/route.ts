@@ -104,13 +104,17 @@ export async function POST(request: NextRequest) {
       console.log('Using direct knowledge base answer')
       response = relevantQAs[0].answer
     } else {
+      // No direct match - provide helpful fallback
+      const isDemo = validatedData.businessId === 'demo' || validatedData.businessId === 'demo-business-id'
+      
       // Generate AI response based on tier
       try {
         const businessContext = {
           businessName: business.name,
           businessType: business.type,
           tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
-          knowledgeBase: relevantQAs.slice(0, 3)
+          knowledgeBase: relevantQAs.slice(0, 3),
+          isDemo: isDemo
         }
         
         response = await generateClaudeResponse(
@@ -119,10 +123,24 @@ export async function POST(request: NextRequest) {
         )
       } catch (aiError) {
         console.error('AI generation error:', aiError)
-        // Fallback response
-        response = relevantQAs.length > 0 
-          ? relevantQAs[0].answer
-          : "I apologize, but I'm having trouble processing your request right now. Please try again in a moment, or contact our staff directly for immediate assistance."
+        // Improved fallback response when no Q&A match is found
+        if (relevantQAs.length > 0) {
+          response = relevantQAs[0].answer
+        } else {
+          // Provide a more helpful response that offers to collect contact info
+          const businessInfo = business.businessInfo as any || {}
+          const contactPhone = businessInfo.phone || '(808) 555-0100'
+          const contactEmail = businessInfo.email || business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
+          
+          response = `I don't have specific information about that in my knowledge base yet. I'd be happy to have someone from our team contact you directly with the answer.
+
+Would you like to leave your contact information? You can:
+• Call us directly at ${contactPhone}
+• Email us at ${contactEmail}
+• Or share your contact details here and we'll reach out to you
+
+How would you prefer to be contacted?`
+        }
       }
     }
     
