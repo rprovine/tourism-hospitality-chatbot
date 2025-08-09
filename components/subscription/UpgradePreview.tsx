@@ -14,7 +14,11 @@ import {
   Crown,
   Building,
   Plus,
-  Minus
+  Minus,
+  MessageSquare,
+  Users,
+  DollarSign,
+  ArrowUpRight
 } from 'lucide-react'
 
 interface UpgradePreviewProps {
@@ -305,36 +309,236 @@ export default function UpgradePreview({
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Plus className="h-5 w-5 text-green-600" />
-                  New Features You'll Get
+                  New Features You'll Unlock
                 </CardTitle>
+                <CardDescription className="text-green-700">
+                  Everything you need to transform your guest experience
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {newFeatures.channels.filter(c => !currentFeatures.channels.includes(c)).map((channel) => (
-                    <li key={channel} className="flex items-center gap-2 text-sm">
-                      <Check className="h-4 w-4 text-green-600" />
-                      <span>{channel} support</span>
-                    </li>
-                  ))}
-                  {newFeatures.aiModels.filter(m => !currentFeatures.aiModels.includes(m)).map((model) => (
-                    <li key={model} className="flex items-center gap-2 text-sm">
-                      <Check className="h-4 w-4 text-green-600" />
-                      <span>{model} AI model</span>
-                    </li>
-                  ))}
-                  {newFeatures.api && !currentFeatures.api && (
-                    <li className="flex items-center gap-2 text-sm">
-                      <Check className="h-4 w-4 text-green-600" />
-                      <span>API Access</span>
-                    </li>
-                  )}
-                  {newFeatures.whiteLabel && !currentFeatures.whiteLabel && (
-                    <li className="flex items-center gap-2 text-sm">
-                      <Check className="h-4 w-4 text-green-600" />
-                      <span>White Label Options</span>
-                    </li>
-                  )}
-                </ul>
+              <CardContent className="space-y-4">
+                {/* Channel Expansions */}
+                {newFeatures.channels.filter(c => !currentFeatures.channels.includes(c)).length > 0 && (
+                  <div className="pb-3 border-b border-green-200">
+                    <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4" />
+                      Multi-Channel Communication
+                    </h4>
+                    <ul className="space-y-2">
+                      {newFeatures.channels.filter(c => !currentFeatures.channels.includes(c)).map((channel) => (
+                        <li key={channel} className="flex items-start gap-2 text-sm">
+                          <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                          <div>
+                            <span className="font-medium">{channel}</span>
+                            {channel === 'WhatsApp' && (
+                              <p className="text-xs text-green-600 mt-0.5">Connect with 2+ billion WhatsApp users. Send booking confirmations, answer questions, and provide support 24/7.</p>
+                            )}
+                            {channel === 'SMS' && (
+                              <p className="text-xs text-green-600 mt-0.5">Reach guests instantly with 98% open rates. Perfect for urgent updates and last-minute offers.</p>
+                            )}
+                            {channel === 'Instagram' && (
+                              <p className="text-xs text-green-600 mt-0.5">Engage younger travelers on their favorite platform. Handle DMs automatically.</p>
+                            )}
+                            {channel === 'Facebook' && (
+                              <p className="text-xs text-green-600 mt-0.5">Manage Facebook Messenger conversations. Never miss a potential booking.</p>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                {/* AI Model Upgrades */}
+                {newFeatures.aiModels.filter(m => !currentFeatures.aiModels.includes(m)).length > 0 && (
+                  <div className="pb-3 border-b border-green-200">
+                    <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                      <Zap className="h-4 w-4" />
+                      Advanced AI Models
+                    </h4>
+                    <ul className="space-y-2">
+                      {newFeatures.aiModels.filter(m => !currentFeatures.aiModels.includes(m)).map((model) => (
+                        <li key={model} className="flex items-start gap-2 text-sm">
+                          <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                          <div>
+                            <span className="font-medium">{model}</span>
+                            {model === 'GPT-4' && (
+                              <p className="text-xs text-green-600 mt-0.5">Most advanced reasoning. Handles complex requests, multi-step bookings, and nuanced conversations.</p>
+                            )}
+                            {model === 'Claude Sonnet' && (
+                              <p className="text-xs text-green-600 mt-0.5">Superior conversation flow. More natural, empathetic responses that feel genuinely human.</p>
+                            )}
+                            {model === 'Claude Opus' && (
+                              <p className="text-xs text-green-600 mt-0.5">Ultimate AI capability. Perfect for luxury properties requiring exceptional service.</p>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                
+                {/* Guest Intelligence */}
+                {newFeatures.guestProfiles > 0 && currentFeatures.guestProfiles === 0 && (
+                  <div className="pb-3 border-b border-green-200">
+                    <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      Guest Intelligence System
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">Guest Profiles</span>
+                          <p className="text-xs text-green-600 mt-0.5">
+                            Track {newFeatures.guestProfiles === -1 ? 'unlimited' : newFeatures.guestProfiles.toLocaleString()} guest profiles with preferences, booking history, and lifetime value.
+                          </p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">VIP Recognition</span>
+                          <p className="text-xs text-green-600 mt-0.5">Automatically identify and prioritize high-value guests for personalized service.</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">Preference Tracking</span>
+                          <p className="text-xs text-green-600 mt-0.5">Remember room preferences, dietary restrictions, and special requests automatically.</p>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+                
+                {/* Revenue Optimization */}
+                {newFeatures.revenueOptimization && !currentFeatures.revenueOptimization && (
+                  <div className="pb-3 border-b border-green-200">
+                    <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                      <DollarSign className="h-4 w-4" />
+                      Revenue Optimization Suite
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">Dynamic Pricing</span>
+                          <p className="text-xs text-green-600 mt-0.5">AI-powered rate optimization based on demand, events, and competitor pricing.</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">Intelligent Upselling</span>
+                          <p className="text-xs text-green-600 mt-0.5">Increase revenue by 15-30% with personalized upgrade offers and add-ons.</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">Cart Recovery</span>
+                          <p className="text-xs text-green-600 mt-0.5">Recover up to 40% of abandoned bookings with automated follow-ups.</p>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+                
+                {/* Capacity Increases */}
+                <div className="pb-3 border-b border-green-200">
+                  <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                    <ArrowUpRight className="h-4 w-4" />
+                    Increased Capacity
+                  </h4>
+                  <ul className="space-y-2 text-sm">
+                    {newFeatures.conversations > currentFeatures.conversations && (
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">
+                            {newFeatures.conversations === -1 ? 'Unlimited' : `${newFeatures.conversations.toLocaleString()}`} Monthly Conversations
+                          </span>
+                          <p className="text-xs text-green-600 mt-0.5">
+                            {currentFeatures.conversations === -1 ? '' : `Up from ${currentFeatures.conversations.toLocaleString()} - `}
+                            {newFeatures.conversations === -1 ? 'No limits on guest interactions' : 'Handle more guest inquiries'}
+                          </p>
+                        </div>
+                      </li>
+                    )}
+                    {newFeatures.knowledgeItems > currentFeatures.knowledgeItems && (
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">
+                            {newFeatures.knowledgeItems === -1 ? 'Unlimited' : `${newFeatures.knowledgeItems.toLocaleString()}`} Knowledge Base Items
+                          </span>
+                          <p className="text-xs text-green-600 mt-0.5">
+                            {currentFeatures.knowledgeItems === -1 ? '' : `Up from ${currentFeatures.knowledgeItems.toLocaleString()} - `}
+                            Store more FAQs, policies, and information
+                          </p>
+                        </div>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+                
+                {/* API and White Label */}
+                {(newFeatures.api && !currentFeatures.api) || (newFeatures.whiteLabel && !currentFeatures.whiteLabel) && (
+                  <div className="pb-3 border-b border-green-200">
+                    <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                      <Building className="h-4 w-4" />
+                      Enterprise Features
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      {newFeatures.api && !currentFeatures.api && (
+                        <li className="flex items-start gap-2">
+                          <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                          <div>
+                            <span className="font-medium">API Access</span>
+                            <p className="text-xs text-green-600 mt-0.5">Integrate with your existing systems. Build custom workflows and automations.</p>
+                          </div>
+                        </li>
+                      )}
+                      {newFeatures.whiteLabel && !currentFeatures.whiteLabel && (
+                        <li className="flex items-start gap-2">
+                          <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                          <div>
+                            <span className="font-medium">White Label Branding</span>
+                            <p className="text-xs text-green-600 mt-0.5">Remove LeniLani branding. Use your own domain and customize everything.</p>
+                          </div>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+                
+                {/* Support Upgrade */}
+                {currentFeatures.support !== newFeatures.support && (
+                  <div>
+                    <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                      <Shield className="h-4 w-4" />
+                      Enhanced Support
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex items-start gap-2">
+                        <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                        <div>
+                          <span className="font-medium">{newFeatures.support}</span>
+                          {newFeatures.support === 'Priority Email' && (
+                            <p className="text-xs text-green-600 mt-0.5">Get responses within 4 hours during business hours.</p>
+                          )}
+                          {newFeatures.support === '24/7 Phone & Email' && (
+                            <p className="text-xs text-green-600 mt-0.5">Direct phone line for urgent issues. Round-the-clock support team.</p>
+                          )}
+                          {newFeatures.support === 'Dedicated Account Manager' && (
+                            <p className="text-xs text-green-600 mt-0.5">Personal account manager. Monthly strategy calls. Custom training sessions.</p>
+                          )}
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}
