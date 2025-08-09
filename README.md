@@ -20,12 +20,21 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
 - **Customer Satisfaction**: Built-in rating system with real-time feedback collection
 
 ### 🆕 Latest Updates (January 2025)
-- ✅ **Customer-Friendly Subscription Management**: Retention offers, data export, prorated billing
-- ✅ **Enhanced Cancellation Flow**: Multi-step process with reason tracking and special offers
+- ✅ **Customer-Friendly Subscription Management**: Complete self-service portal
+- ✅ **Multi-Step Cancellation Flow**: Reason tracking, retention offers (25-50% discounts), data export
+- ✅ **Comprehensive Upgrade Experience**: Detailed feature comparison across both subscription and billing sections
 - ✅ **Billing History & Invoices**: Complete transaction history with downloadable invoices
-- ✅ **Payment Method Management**: Secure card management with PCI compliance
-- ✅ **Upgrade/Downgrade Preview**: Feature comparison with data protection warnings
-- ✅ **Grace Periods**: 30-day data retention for downgrades
+- ✅ **Payment Method Management**: Secure card management with default selection
+- ✅ **Smart Upgrade/Downgrade Preview**: 
+  - Side-by-side plan comparison
+  - Data loss warnings for downgrades
+  - Prorated billing calculations
+  - 7+ feature category breakdowns
+- ✅ **Grace Periods**: 30-day data retention after downgrade
+- ✅ **Trial vs Guarantee**: 
+  - Starter/Professional: 14-day free trial (no payment required)
+  - Premium/Enterprise: 30-day money-back guarantee (manual refund process)
+- ✅ **Enhanced Checkout Experience**: Back/exit navigation, help section, clear pricing
 - ✅ **PMS Webhook Integration**: Real-time booking and revenue data sync
 - ✅ **Lead Capture System**: Automatic collection from unanswered questions
 
@@ -215,10 +224,10 @@ tourism-hospitality-chatbot/
 │   ├── ui/              # UI components (shadcn/ui)
 │   ├── chatbot/         # Chat widget
 │   └── subscription/    # Subscription components
-│       ├── CancellationModal.tsx
-│       ├── UpgradePreview.tsx
-│       ├── PaymentMethodManager.tsx
-│       └── BillingHistory.tsx
+│       ├── CancellationModal.tsx    # Multi-step cancellation with retention
+│       ├── UpgradePreview.tsx       # Comprehensive plan comparison
+│       ├── PaymentMethodManager.tsx # Card management UI
+│       └── BillingHistory.tsx       # Invoice history display
 ├── lib/                  # Core libraries
 │   ├── ai/              # AI services
 │   │   ├── openai-service.ts
@@ -347,15 +356,27 @@ POST /api/webhooks/pms
 ```bash
 # Export All Data
 GET /api/export/data
-# Returns complete JSON export of all business data
+# Returns complete JSON export including:
+# - Business configuration
+# - Knowledge base items
+# - Conversation history (last 1000)
+# - Guest profiles
+# - Statistics summary
 
 # Billing History
 GET /api/billing/history
-# Returns array of invoices with payment details
+# Returns array of invoices with:
+# - Invoice ID and number
+# - Amount and payment method
+# - Status (paid, pending, refunded)
+# - Refund details if applicable
 
-# Download Invoice
-GET /api/billing/invoice/{id}
-# Returns PDF invoice
+# Subscription Management
+POST /api/subscription/cancel
+{
+  "immediate": false,  # false = end of period, true = immediate
+  "reason": "string"   # Cancellation reason for analytics
+}
 ```
 
 ## 🧪 Testing
@@ -438,32 +459,41 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 - Web chat widget only
 - 50 knowledge base items
 - Email support
+- **14-day free trial** (no payment required)
 
 ### Professional ($149/month)
 - 1,000 conversations/month
-- Advanced AI (GPT-4)
+- Dual AI (GPT-4 + Claude Sonnet)
 - Multi-channel (WhatsApp, SMS)
 - 500 knowledge base items
 - **Guest Intelligence (1,000 profiles)**
 - **Revenue Optimization & Insights**
+- **Excel file support**
 - Priority email support
+- **14-day free trial** (no payment required)
 
 ### Premium ($299/month)
 - Unlimited conversations
-- All AI models (GPT-4, Claude)
-- All channels
+- All AI models (GPT-4, Claude Sonnet, Claude Opus)
+- All channels (Web, WhatsApp, SMS, Instagram, Facebook)
 - Unlimited knowledge base
 - **Unlimited Guest Intelligence**
 - **Full Revenue Optimization Suite**
+- **PDF document support**
 - API access & white label
 - 24/7 phone support
+- **30-day money-back guarantee** (manual refund process)
 
-### Enterprise (Custom)
+### Enterprise ($999+/month)
 - Everything in Premium
+- Custom AI model training
+- Multi-property support
 - Custom integrations
 - Dedicated account manager
 - SLA guarantees
+- SSO/SAML authentication
 - On-premise deployment option
+- **30-day money-back guarantee** (manual refund process)
 
 ## 💬 Support
 

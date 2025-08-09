@@ -3,15 +3,27 @@
 ## Last Updated: January 2025
 
 ### Recent Changes
-- ✅ Customer-friendly subscription management with retention offers
-- ✅ Upgrade/downgrade preview with feature comparison
-- ✅ Payment method management with PCI compliance
-- ✅ Complete billing history with invoice downloads
-- ✅ Data export capabilities before cancellation
-- ✅ 30-day grace period for downgrades
-- ✅ PMS webhook integration for booking data
-- ✅ Guest Intelligence included in Professional+ tiers
-- ✅ Revenue Optimization included in Professional+ tiers
+- ✅ **Enhanced Subscription Management System**
+  - Multi-step cancellation flow with retention offers (25-50% discounts)
+  - Comprehensive upgrade/downgrade preview with 7+ feature categories
+  - Unified upgrade experience across subscription and billing sections
+  - Payment method management with default card selection
+  - Complete billing history with downloadable invoices
+  - Data export in JSON format before cancellation
+  - 30-day grace period for downgrades with data protection
+- ✅ **Improved Trial/Guarantee Structure**
+  - Starter/Professional: 14-day free trial (no payment required)
+  - Premium/Enterprise: 30-day money-back guarantee (manual refund)
+  - Clear messaging in checkout flow based on selected plan
+- ✅ **Better User Experience**
+  - Exit/back navigation in checkout flow
+  - Help section with contact information
+  - Prorated billing calculations displayed
+  - Data loss warnings for downgrades
+- ✅ **Integration Improvements**
+  - PMS webhook for real-time booking data
+  - Guest Intelligence included in Professional+ tiers
+  - Revenue Optimization included in Professional+ tiers
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
@@ -418,10 +430,21 @@ curl -X POST https://yourdomain.com/api/v1/chat \
 - Customer satisfaction scores
 - Conversation completion rates
 - Knowledge base hit rate
-- Subscription churn rate
-- Retention offer acceptance rate
-- Guest profile growth
-- Revenue optimization metrics
+- **Subscription Metrics**
+  - Churn rate by tier
+  - Retention offer acceptance rate (target >30%)
+  - Upgrade/downgrade conversion rates
+  - Cancellation reasons distribution
+  - Trial-to-paid conversion (target >15%)
+  - Money-back guarantee requests
+- **Guest Intelligence Metrics**
+  - Profile growth rate
+  - VIP guest identification
+  - Preference capture rate
+- **Revenue Optimization Metrics**
+  - Dynamic pricing effectiveness
+  - Upsell conversion rate
+  - Abandonment recovery rate
 
 ### Alerts to Configure
 - High error rate (>5%)
@@ -510,11 +533,21 @@ export DEBUG="prisma:query"
 ## New API Endpoints (January 2025)
 
 ### Subscription Management
+- `GET /api/subscription` - Get current subscription details
+- `POST /api/subscription/cancel` - Cancel subscription with reason
+- `GET /api/export/data` - Export all business data (JSON)
+- `GET /api/billing/history` - Get billing history with invoices
+- `GET /api/billing/invoice/{id}` - Download specific invoice
+- `POST /api/payments/checkout` - Create checkout session
+
+### Customer Retention
+- Retention offers automatically triggered during cancellation
+- Tier-based discounts: Starter (50%), Professional (30%), Premium (25%)
+- Multi-step cancellation with reason tracking
+
+### Data Management
 - `POST /api/widget/lead` - Lead capture from chat
 - `POST /api/webhooks/pms` - PMS booking data webhook
-- `GET /api/export/data` - Export all business data
-- `GET /api/billing/history` - Get billing history
-- `GET /api/billing/invoice/{id}` - Download invoice
 - `GET /api/ai/usage` - Real API usage tracking
 
 ### Integration Webhooks
