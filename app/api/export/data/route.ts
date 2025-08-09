@@ -46,9 +46,11 @@ export async function GET(request: NextRequest) {
           question: true,
           answer: true,
           category: true,
-          tags: true,
+          keywords: true,
+          language: true,
+          priority: true,
+          usageCount: true,
           isActive: true,
-          metadata: true,
           createdAt: true,
           updatedAt: true
         }
@@ -78,7 +80,8 @@ export async function GET(request: NextRequest) {
           tags: true,
           preferences: true,
           notes: true,
-          isVip: true,
+          languagePreference: true,
+          totalConversations: true,
           totalBookings: true,
           lifetimeValue: true,
           lastVisit: true,
@@ -128,8 +131,7 @@ export async function GET(request: NextRequest) {
       },
       guestProfiles: {
         count: guestProfiles.length,
-        totalLifetimeValue: guestProfiles.reduce((sum, g) => sum + (g.lifetimeValue || 0), 0),
-        vipCount: guestProfiles.filter(g => g.isVip).length,
+        totalLifetimeValue: guestProfiles.reduce((sum, g) => sum + Number(g.lifetimeValue || 0), 0),
         profiles: guestProfiles
       },
       statistics: {
