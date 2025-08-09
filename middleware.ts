@@ -29,9 +29,12 @@ export async function middleware(request: NextRequest) {
   if (path.startsWith('/widget/')) {
     console.log('Middleware: Handling widget route:', path)
     const response = NextResponse.next()
-    response.headers.delete('X-Frame-Options')
-    response.headers.delete('Content-Security-Policy')
-    console.log('Middleware: Removed X-Frame-Options and CSP headers')
+    // Override headers instead of deleting
+    response.headers.set('X-Frame-Options', 'SAMEORIGIN')  // This gets overridden by Vercel anyway
+    response.headers.set('Content-Security-Policy', 'frame-ancestors *')
+    // Add a custom header to verify middleware is running
+    response.headers.set('X-Widget-Embed', 'allowed')
+    console.log('Middleware: Set headers for widget route')
     return response
   }
   
