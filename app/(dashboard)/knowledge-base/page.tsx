@@ -567,19 +567,48 @@ export default function KnowledgeBasePage() {
                 </p>
               </div>
               
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex gap-2">
-                  <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                  <div>
-                    <p className="text-sm font-medium text-blue-900">Web Scraping Tips</p>
-                    <ul className="text-sm text-blue-700 mt-1 space-y-1">
-                      <li>• Ensure you have permission to scrape the website</li>
-                      <li>• FAQ and documentation pages work best</li>
-                      <li>• Content will be automatically parsed and structured</li>
-                    </ul>
+              {/* Import Limitations and Alternatives */}
+              <Alert className="border-yellow-200 bg-yellow-50">
+                <AlertCircle className="h-4 w-4 text-yellow-600" />
+                <div>
+                  <p className="font-semibold text-gray-900">Important: Website Import Limitations</p>
+                  <p className="text-sm text-gray-700 mt-2">
+                    Some websites may not import successfully due to technical restrictions:
+                  </p>
+                  <ul className="text-sm text-gray-600 mt-2 ml-4 list-disc space-y-1">
+                    <li><strong>Bot Protection:</strong> Sites using Cloudflare, reCAPTCHA, or similar anti-bot measures</li>
+                    <li><strong>Dynamic Content:</strong> JavaScript-rendered sites (React, Vue, Angular) that load content after page load</li>
+                    <li><strong>Access Restrictions:</strong> Login-required, paywalled, or member-only content</li>
+                    <li><strong>Security Policies:</strong> Sites with strict CORS policies or server-side blocking</li>
+                  </ul>
+                  
+                  <div className="mt-4 pt-3 border-t border-yellow-200">
+                    <p className="text-sm font-semibold text-gray-800">
+                      Alternative Methods If URL Import Fails:
+                    </p>
+                    <div className="mt-2 space-y-2">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">1. Manual Entry (Recommended for precision):</span>
+                        <p className="text-gray-600 ml-3">Switch to the "Manual" tab to add Q&As individually with complete control over content and categories.</p>
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">2. CSV Upload (Best for bulk import):</span>
+                        <p className="text-gray-600 ml-3">Create a spreadsheet with columns: question, answer, category, keywords. Save as CSV and upload via the "File Upload" tab.</p>
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-700">3. Copy & Paste Method:</span>
+                        <p className="text-gray-600 ml-3">Copy text directly from the website and create custom Q&As in the Manual tab.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-3 p-2 bg-green-50 rounded border border-green-200">
+                    <p className="text-sm text-green-800">
+                      💡 <strong>Best Results:</strong> Public FAQ pages, documentation sites, and static HTML pages typically import successfully.
+                    </p>
                   </div>
                 </div>
-              </div>
+              </Alert>
             </TabsContent>
           </Tabs>
         </CardContent>
