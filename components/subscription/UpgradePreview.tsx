@@ -18,7 +18,8 @@ import {
   MessageSquare,
   Users,
   DollarSign,
-  ArrowUpRight
+  ArrowUpRight,
+  FileText
 } from 'lucide-react'
 
 interface UpgradePreviewProps {
@@ -46,6 +47,7 @@ const tierFeatures = {
     revenueOptimization: false,
     channels: ['Web Chat'],
     aiModels: ['GPT-3.5'],
+    fileFormats: ['CSV', 'JSON', 'TXT'],
     support: 'Email',
     api: false,
     whiteLabel: false,
@@ -58,6 +60,7 @@ const tierFeatures = {
     revenueOptimization: true,
     channels: ['Web Chat', 'WhatsApp', 'SMS'],
     aiModels: ['GPT-3.5', 'GPT-4'],
+    fileFormats: ['CSV', 'JSON', 'TXT', 'Excel (XLSX/XLS)'],
     support: 'Priority Email',
     api: false,
     whiteLabel: false,
@@ -70,6 +73,7 @@ const tierFeatures = {
     revenueOptimization: true,
     channels: ['Web Chat', 'WhatsApp', 'SMS', 'Instagram', 'Facebook'],
     aiModels: ['GPT-3.5', 'GPT-4', 'Claude Sonnet', 'Claude Opus'],
+    fileFormats: ['CSV', 'JSON', 'TXT', 'Excel (XLSX/XLS)', 'PDF'],
     support: '24/7 Phone & Email',
     api: true,
     whiteLabel: true,
@@ -82,6 +86,7 @@ const tierFeatures = {
     revenueOptimization: true,
     channels: ['All Channels'],
     aiModels: ['All Models'],
+    fileFormats: ['All Formats'],
     support: 'Dedicated Account Manager',
     api: true,
     whiteLabel: true,
@@ -441,6 +446,37 @@ export default function UpgradePreview({
                           <p className="text-xs text-green-600 mt-0.5">Recover up to 40% of abandoned bookings with automated follow-ups.</p>
                         </div>
                       </li>
+                    </ul>
+                  </div>
+                )}
+                
+                {/* File Format Support */}
+                {newFeatures.fileFormats && currentFeatures.fileFormats && 
+                 newFeatures.fileFormats.filter(f => !currentFeatures.fileFormats.includes(f)).length > 0 && (
+                  <div className="pb-3 border-b border-green-200">
+                    <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      Enhanced File Support
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      {newFeatures.fileFormats.includes('Excel (XLSX/XLS)') && !currentFeatures.fileFormats.includes('Excel (XLSX/XLS)') && (
+                        <li className="flex items-start gap-2">
+                          <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                          <div>
+                            <span className="font-medium">Excel File Support</span>
+                            <p className="text-xs text-green-600 mt-0.5">Import knowledge base from Excel spreadsheets. Perfect for bulk updates and data migration.</p>
+                          </div>
+                        </li>
+                      )}
+                      {newFeatures.fileFormats.includes('PDF') && !currentFeatures.fileFormats.includes('PDF') && (
+                        <li className="flex items-start gap-2">
+                          <Check className="h-4 w-4 text-green-600 mt-0.5" />
+                          <div>
+                            <span className="font-medium">PDF Document Support</span>
+                            <p className="text-xs text-green-600 mt-0.5">Extract knowledge from PDF documents. Import policies, manuals, and brochures automatically.</p>
+                          </div>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 )}

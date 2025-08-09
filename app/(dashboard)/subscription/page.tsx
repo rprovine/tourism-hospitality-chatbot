@@ -408,6 +408,7 @@ export default function SubscriptionPage() {
                   <ul className="text-xs text-gray-600 mt-2 space-y-1">
                     <li className="font-semibold text-green-700">✓ Guest Intelligence (1,000 profiles)</li>
                     <li className="font-semibold text-green-700">✓ Revenue Insights & AI</li>
+                    <li className="font-semibold text-blue-700">✓ Excel File Support</li>
                     <li>• Multi-channel (WhatsApp, SMS)</li>
                     <li>• Advanced AI models (GPT-4)</li>
                     <li>• 500 knowledge items</li>
@@ -442,6 +443,7 @@ export default function SubscriptionPage() {
                   <ul className="text-xs text-gray-600 mt-2 space-y-1">
                     <li className="font-semibold text-purple-700">✓ Unlimited Guest Intelligence</li>
                     <li className="font-semibold text-purple-700">✓ Full Revenue Optimization</li>
+                    <li className="font-semibold text-purple-700">✓ PDF Document Support</li>
                     <li>• Unlimited conversations</li>
                     <li>• All AI models (GPT-4, Claude)</li>
                     <li>• Unlimited knowledge base</li>
