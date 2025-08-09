@@ -77,6 +77,8 @@ export async function POST(request: NextRequest) {
       }
     })
     
+    console.log(`Found ${knowledgeBase.length} knowledge base items for business ${business.id}`)
+    
     // Convert knowledge base to the format expected by searchKnowledgeBase
     const kbItems = knowledgeBase.map(item => ({
       question: item.question,
@@ -85,14 +87,21 @@ export async function POST(request: NextRequest) {
       keywords: item.keywords
     }))
     
-    // Search for relevant Q&As
-    const relevantQAs = await searchKnowledgeBase(validatedData.message, kbItems as any)
+    // Search for relevant Q&As - call the correct function signature
+    const relevantQAs = await searchKnowledgeBase(business.id, validatedData.message)
+    
+    console.log(`Found ${relevantQAs.length} relevant Q&As`)
+    if (relevantQAs.length > 0) {
+      console.log(`Top match: "${relevantQAs[0].question}" with score ${relevantQAs[0].score}`)
+    }
     
     // Generate response based on tier
     let response = ''
     
     // Check if we have a direct knowledge base match
-    if (relevantQAs.length > 0 && relevantQAs[0].score > 0.8) {
+    // Lower threshold from 0.8 to 50 to make it more likely to use knowledge base
+    if (relevantQAs.length > 0 && relevantQAs[0].score > 50) {
+      console.log('Using direct knowledge base answer')
       response = relevantQAs[0].answer
     } else {
       // Generate AI response based on tier
