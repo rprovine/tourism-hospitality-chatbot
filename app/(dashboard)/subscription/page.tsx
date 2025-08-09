@@ -346,43 +346,44 @@ export default function SubscriptionPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Always show Starter for comparison */}
-              {subscription.tier !== 'starter' && (
-                <Card className={`relative ${subscription.tier === 'starter' ? 'border-cyan-500 border-2' : ''}`}>
-                  <CardContent className="p-4">
-                    {subscription.tier === 'starter' && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                        <Badge className="bg-cyan-600 text-white">Current Plan</Badge>
-                      </div>
-                    )}
-                    <div className="flex items-center justify-between mb-2">
-                      <Zap className="h-8 w-8 text-green-600" />
-                      {subscription.tier !== 'starter' && (
-                        <Badge variant="outline" className="text-xs">Downgrade</Badge>
-                      )}
+              {/* Starter Plan */}
+              <Card className={`relative ${subscription.tier === 'starter' ? 'border-green-500 border-2' : ''}`}>
+                <CardContent className="p-4">
+                  {subscription.tier === 'starter' && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <Badge className="bg-green-600 text-white border-0 font-semibold px-3">Current Plan</Badge>
                     </div>
-                    <h3 className="font-semibold">Starter</h3>
-                    <p className="text-sm text-gray-600 mb-2">100 conversations/mo</p>
-                    <div className="text-2xl font-bold">$29<span className="text-sm font-normal">/mo</span></div>
-                    <ul className="text-xs text-gray-600 mt-2 space-y-1">
-                      <li>• Basic AI models</li>
-                      <li>• Web chat widget</li>
-                      <li>• 50 knowledge items</li>
-                      <li className="text-gray-400 line-through">Guest Intelligence</li>
-                      <li className="text-gray-400 line-through">Revenue Optimization</li>
-                    </ul>
-                    {subscription.tier !== 'starter' && (
-                      <Button 
-                        variant="outline" 
-                        className="w-full mt-3 text-xs"
-                        onClick={() => handleUpgrade('starter')}
-                      >
-                        Switch to Starter
-                      </Button>
+                  )}
+                  <div className="flex items-center justify-between mb-2">
+                    <Zap className="h-8 w-8 text-green-600" />
+                    {subscription.tier !== 'starter' && subscription.tier !== 'demo' && (
+                      <Badge variant="outline" className="text-xs">Downgrade</Badge>
                     )}
-                  </CardContent>
-                </Card>
-              )}
+                  </div>
+                  <h3 className="font-semibold">Starter</h3>
+                  <p className="text-sm text-gray-600 mb-2">100 conversations/mo</p>
+                  <div className="text-2xl font-bold">$29<span className="text-sm font-normal">/mo</span></div>
+                  <ul className="text-xs text-gray-600 mt-2 space-y-1">
+                    <li>• Basic AI models</li>
+                    <li>• Web chat widget</li>
+                    <li>• 50 knowledge items</li>
+                    <li className="text-gray-400 line-through">Guest Intelligence</li>
+                    <li className="text-gray-400 line-through">Revenue Optimization</li>
+                  </ul>
+                  {subscription.tier !== 'starter' && (
+                    <Button 
+                      variant="outline" 
+                      className="w-full mt-3 text-xs"
+                      onClick={() => handleUpgrade('starter')}
+                    >
+                      Switch to Starter
+                    </Button>
+                  )}
+                  {subscription.tier === 'starter' && (
+                    <div className="mt-3 text-xs text-center text-gray-500">Your current plan</div>
+                  )}
+                </CardContent>
+              </Card>
               
               {/* Professional Plan */}
               <Card 
@@ -392,7 +393,7 @@ export default function SubscriptionPage() {
                 <CardContent className="p-4">
                   {subscription.tier === 'professional' && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-blue-600 text-white">Current Plan</Badge>
+                      <Badge className="bg-blue-600 text-white border-0 font-semibold px-3">Current Plan</Badge>
                     </div>
                   )}
                   <div className="flex items-center justify-between mb-2">
@@ -426,7 +427,7 @@ export default function SubscriptionPage() {
                 <CardContent className="p-4">
                   {subscription.tier === 'premium' && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-purple-600 text-white">Current Plan</Badge>
+                      <Badge className="bg-purple-600 text-white border-0 font-semibold px-3">Current Plan</Badge>
                     </div>
                   )}
                   <div className="flex items-center justify-between mb-2">
