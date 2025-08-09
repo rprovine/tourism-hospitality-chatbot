@@ -523,37 +523,43 @@ export default function RevenuePage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="bg-white border-2 border-blue-300 rounded-lg p-5 shadow-sm">
                   <div className="flex gap-3">
-                    <Target className="h-5 w-5 text-blue-600 mt-0.5" />
+                    <div className="bg-blue-100 p-2 rounded-lg h-fit">
+                      <Target className="h-5 w-5 text-blue-700" />
+                    </div>
                     <div className="flex-1">
-                      <p className="font-bold text-gray-900 text-base">Opportunity: Weekend Pricing</p>
-                      <p className="text-gray-800 mt-1">
-                        Your weekend occupancy is 85%. Consider increasing weekend rates by 20% to maximize revenue without impacting demand.
+                      <h4 className="font-bold text-gray-900 text-lg mb-2">Opportunity: Weekend Pricing</h4>
+                      <p className="text-gray-900 leading-relaxed">
+                        Your weekend occupancy is <span className="font-semibold">85%</span>. Consider increasing weekend rates by <span className="font-semibold text-green-700">20%</span> to maximize revenue without impacting demand.
                       </p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <div className="bg-white border-2 border-purple-300 rounded-lg p-5 shadow-sm">
                   <div className="flex gap-3">
-                    <Gift className="h-5 w-5 text-purple-600 mt-0.5" />
+                    <div className="bg-purple-100 p-2 rounded-lg h-fit">
+                      <Gift className="h-5 w-5 text-purple-700" />
+                    </div>
                     <div className="flex-1">
-                      <p className="font-bold text-gray-900 text-base">Upsell Potential: Spa Packages</p>
-                      <p className="text-gray-800 mt-1">
-                        Guests who book deluxe rooms are 3x more likely to purchase spa packages. Target them with personalized offers.
+                      <h4 className="font-bold text-gray-900 text-lg mb-2">Upsell Potential: Spa Packages</h4>
+                      <p className="text-gray-900 leading-relaxed">
+                        Guests who book deluxe rooms are <span className="font-semibold text-purple-700">3x more likely</span> to purchase spa packages. Target them with personalized offers.
                       </p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <div className="bg-white border-2 border-amber-300 rounded-lg p-5 shadow-sm">
                   <div className="flex gap-3">
-                    <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
+                    <div className="bg-amber-100 p-2 rounded-lg h-fit">
+                      <AlertCircle className="h-5 w-5 text-amber-700" />
+                    </div>
                     <div className="flex-1">
-                      <p className="font-bold text-gray-900 text-base">Recovery Gap: Mobile Users</p>
-                      <p className="text-gray-800 mt-1">
-                        Mobile abandonment rate is 40% higher than desktop. Implement SMS recovery for better mobile engagement.
+                      <h4 className="font-bold text-gray-900 text-lg mb-2">Recovery Gap: Mobile Users</h4>
+                      <p className="text-gray-900 leading-relaxed">
+                        Mobile abandonment rate is <span className="font-semibold text-red-600">40% higher</span> than desktop. Implement SMS recovery for better mobile engagement.
                       </p>
                     </div>
                   </div>
