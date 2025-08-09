@@ -550,7 +550,7 @@ export default function UnifiedAIConfigPage() {
         </TabsContent>
 
         {/* Training & Knowledge Tab */}
-        <TabsContent value="training" className="space-y-4">
+        <TabsContent value="training" className="space-y-4 pb-8">
           <Card>
             <CardHeader>
               <CardTitle>Training Statistics</CardTitle>
@@ -653,7 +653,7 @@ export default function UnifiedAIConfigPage() {
         </TabsContent>
 
         {/* Advanced Settings Tab */}
-        <TabsContent value="advanced" className="space-y-4">
+        <TabsContent value="advanced" className="space-y-4 pb-8">
           <Card>
             <CardHeader>
               <CardTitle>Advanced Response Configuration</CardTitle>
