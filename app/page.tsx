@@ -23,7 +23,8 @@ import {
   Gift,
   RefreshCw,
   User,
-  Users
+  Users,
+  Menu
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -36,6 +37,7 @@ export default function LandingPage() {
   const [selectedTier, setSelectedTier] = useState<'starter' | 'professional' | 'premium' | 'enterprise'>('starter')
   const [showDemo, setShowDemo] = useState(false)
   const [selectedQuestion, setSelectedQuestion] = useState('')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <div id="top" className="min-h-screen bg-gradient-to-b from-cyan-50 to-white">
@@ -50,31 +52,72 @@ export default function LandingPage() {
             </a>
             
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-6">
-              <a href="#features" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors">Features</a>
-              <a href="#pricing" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors">Pricing</a>
-              <a href="#demo" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors">Demo</a>
-              <a href="/login" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors">Login</a>
+            <div className="hidden md:flex items-center gap-6">
+              <a href="#features" className="text-gray-700 hover:text-cyan-700 transition-colors">Features</a>
+              <a href="#pricing" className="text-gray-700 hover:text-cyan-700 transition-colors">Pricing</a>
+              <a href="#demo" className="text-gray-700 hover:text-cyan-700 transition-colors">Demo</a>
+              <a href="/login" className="text-gray-700 hover:text-cyan-700 transition-colors">Login</a>
               <Button 
-                className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold shadow-md"
+                className="bg-cyan-700 hover:bg-cyan-800 text-white shadow-md"
                 onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
               >
                 Start 14-Day Free Trial
               </Button>
             </div>
             
-            {/* Mobile Navigation */}
-            <div className="flex lg:hidden items-center gap-2">
-              <Button 
-                className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold shadow-md text-xs sm:text-sm px-3 sm:px-4 py-2"
-                onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
-              >
-                <span className="hidden sm:inline">Start Free Trial</span>
-                <span className="sm:hidden">Free Trial</span>
-              </Button>
-              <a href="/login" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors text-sm">Login</a>
-            </div>
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden p-2 text-gray-700 hover:text-cyan-700 transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           </div>
+          
+          {/* Mobile Menu Dropdown */}
+          {mobileMenuOpen && (
+            <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg">
+              <div className="flex flex-col p-4 space-y-3">
+                <a 
+                  href="#features" 
+                  className="text-gray-700 hover:text-cyan-700 transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Features
+                </a>
+                <a 
+                  href="#pricing" 
+                  className="text-gray-700 hover:text-cyan-700 transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Pricing
+                </a>
+                <a 
+                  href="#demo" 
+                  className="text-gray-700 hover:text-cyan-700 transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Demo
+                </a>
+                <a 
+                  href="/login" 
+                  className="text-gray-700 hover:text-cyan-700 transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Login
+                </a>
+                <Button 
+                  className="bg-cyan-700 hover:bg-cyan-800 text-white w-full"
+                  onClick={() => {
+                    window.location.href = '/checkout?plan=starter&interval=monthly'
+                    setMobileMenuOpen(false)
+                  }}
+                >
+                  Start 14-Day Free Trial
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
