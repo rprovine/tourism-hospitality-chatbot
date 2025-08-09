@@ -233,17 +233,21 @@ function CheckoutContent() {
                 </div>
               )}
 
-              {/* Trial Information Banner */}
+              {/* Trial/Guarantee Information Banner */}
               {plan && (
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                   <div className="flex items-start gap-2">
                     <Check className="h-5 w-5 text-green-600 mt-0.5" />
                     <div>
                       <p className="font-semibold text-green-900">
-                        14-Day Free Trial
+                        {selectedPlan.startsWith('premium') || selectedPlan.startsWith('enterprise') 
+                          ? '30-Day Money-Back Guarantee' 
+                          : '14-Day Free Trial'}
                       </p>
                       <p className="text-sm text-green-700 mt-1">
-                        Try risk-free for 14 days. Cancel anytime, no questions asked.
+                        {selectedPlan.startsWith('premium') || selectedPlan.startsWith('enterprise')
+                          ? 'Full refund within 30 days if not satisfied. Contact support for refund.'
+                          : 'Try risk-free for 14 days. Cancel anytime, no questions asked.'}
                       </p>
                     </div>
                   </div>
@@ -262,14 +266,18 @@ function CheckoutContent() {
                   </>
                 ) : (
                   <>
-                    Start Free Trial
+                    {selectedPlan.startsWith('premium') || selectedPlan.startsWith('enterprise') 
+                      ? 'Complete Purchase' 
+                      : 'Start Free Trial'}
                     <ArrowRight className="h-5 w-5" />
                   </>
                 )}
               </button>
 
               <p className="text-xs text-gray-500 text-center">
-                No payment required for 14 days. Cancel anytime.<br/>
+                {selectedPlan.startsWith('premium') || selectedPlan.startsWith('enterprise')
+                  ? 'Payment required. 30-day money-back guarantee.'
+                  : 'No payment required for 14 days. Cancel anytime.'}<br/>
                 By continuing, you agree to our Terms of Service and Privacy Policy.
               </p>
             </form>

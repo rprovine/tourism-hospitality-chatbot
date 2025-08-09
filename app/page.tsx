@@ -660,6 +660,7 @@ export default function LandingPage() {
                       <span className="text-2xl">🏢</span>
                     </div>
                     <div className="text-2xl font-extrabold text-gray-900">$999+</div>
+                    <div className="text-xs text-green-600 font-medium">30-day money-back guarantee</div>
                     <div className="text-xs text-green-600 mt-1">Custom AI models</div>
                   </th>
                 </tr>

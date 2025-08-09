@@ -249,7 +249,7 @@ export default function SubscriptionPage() {
                   className="bg-cyan-600 hover:bg-cyan-700 text-white"
                   onClick={() => window.location.href = '/checkout?plan=professional&interval=monthly'}
                 >
-                  Start 14-Day Free Trial
+                  Start Free Trial - Professional
                 </Button>
               </div>
             </div>
