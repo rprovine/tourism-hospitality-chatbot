@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
 }
 
 function generateMockInvoices(business: any) {
-  const invoices = []
+  const invoices: any[] = []
   const today = new Date()
   const tierPrices: Record<string, number> = {
     starter: 29,
@@ -75,7 +75,7 @@ function generateMockInvoices(business: any) {
     const invoiceDate = new Date(today)
     invoiceDate.setMonth(today.getMonth() - i)
     
-    const invoice = {
+    const invoice: any = {
       id: `inv_${Date.now()}_${i}`,
       date: invoiceDate.toISOString(),
       amount: currentPrice,
