@@ -18,8 +18,8 @@ export async function GET(request: NextRequest) {
     }
     
     // Fetch all data for the business
-    const [business, chatbot, knowledgeBase, conversations, guestProfiles] = await Promise.all([
-      // Business data
+    const [business, knowledgeBase, conversations, guestProfiles] = await Promise.all([
+      // Business data with chatbot config
       prisma.business.findUnique({
         where: { id: decoded.businessId },
         select: {
@@ -28,15 +28,8 @@ export async function GET(request: NextRequest) {
           email: true,
           tier: true,
           createdAt: true,
-          businessInfo: true
-        }
-      }),
-      
-      // Chatbot configuration
-      prisma.chatbot.findFirst({
-        where: { businessId: decoded.businessId },
-        select: {
-          name: true,
+          businessInfo: true,
+          chatbotName: true,
           welcomeMessage: true,
           primaryColor: true,
           model: true,
@@ -120,7 +113,25 @@ export async function GET(request: NextRequest) {
         createdAt: business.createdAt,
         info: business.businessInfo
       },
-      chatbot: chatbot || {},
+      chatbotConfig: {
+        name: business.chatbotName,
+        welcomeMessage: business.welcomeMessage,
+        primaryColor: business.primaryColor,
+        model: business.model,
+        temperature: business.temperature,
+        responseStyle: business.responseStyle,
+        language: business.language,
+        customInstructions: business.customInstructions,
+        widgetPosition: business.widgetPosition,
+        widgetSize: business.widgetSize,
+        collectUserInfo: business.collectUserInfo,
+        enableTypingIndicator: business.enableTypingIndicator,
+        enableSoundNotifications: business.enableSoundNotifications,
+        autoGreetDelay: business.autoGreetDelay,
+        businessHoursEnabled: business.businessHoursEnabled,
+        businessHours: business.businessHours,
+        offlineMessage: business.offlineMessage
+      },
       knowledgeBase: {
         count: knowledgeBase.length,
         items: knowledgeBase
