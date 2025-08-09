@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-import { Alert } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { LoadingState } from '@/components/ui/loading-state'
 import { 
   Upload,
@@ -110,10 +110,32 @@ export default function KnowledgeBasePage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    
+    // Check file type and validate
+    const fileName = file.name.toLowerCase()
+    const validExtensions = ['.csv', '.json', '.txt']
+    const isValidFile = validExtensions.some(ext => fileName.endsWith(ext))
+    
+    if (!isValidFile) {
+      alert('Please upload a CSV, JSON, or TXT file. PDF and Excel files are not yet supported.')
+      e.target.value = ''
+      return
+    }
 
     setUploading(true)
     const formData = new FormData()
     formData.append('file', file)
+    
+    // Determine format based on file extension
+    let format = 'csv'
+    if (fileName.endsWith('.json')) {
+      format = 'json'
+    } else if (fileName.endsWith('.txt')) {
+      format = 'txt'
+    }
+    
+    formData.append('format', format)
+    formData.append('mode', 'append') // or 'replace' based on user preference
 
     try {
       const response = await fetch('/api/knowledge-base/import', {
@@ -123,16 +145,21 @@ export default function KnowledgeBasePage() {
         },
         body: formData
       })
+      
+      const data = await response.json()
 
       if (response.ok) {
-        alert('File uploaded successfully!')
+        alert(`Successfully imported ${data.imported} items!`)
         await fetchKnowledgeBase()
+        // Clear the file input
+        e.target.value = ''
       } else {
-        alert('Failed to upload file')
+        console.error('Upload error:', data)
+        alert(data.error || 'Failed to upload file')
       }
     } catch (error) {
       console.error('Upload error:', error)
-      alert('Failed to upload file')
+      alert('Failed to upload file. Please check the file format and try again.')
     } finally {
       setUploading(false)
     }
@@ -489,13 +516,13 @@ export default function KnowledgeBasePage() {
                 <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600 mb-2">Upload your files to import knowledge</p>
                 <p className="text-sm text-gray-500 mb-4">
-                  Supported formats: CSV, PDF, XLSX, DOCX, TXT
+                  Supported formats: CSV, JSON, TXT (Q&A format)
                 </p>
                 <input
                   type="file"
                   id="file-upload"
                   className="hidden"
-                  accept=".csv,.pdf,.xlsx,.docx,.txt"
+                  accept=".csv,.json,.txt"
                   onChange={handleFileUpload}
                   disabled={uploading}
                 />
@@ -520,25 +547,44 @@ export default function KnowledgeBasePage() {
                 <div className="flex items-center gap-3 p-3 border rounded-lg">
                   <FileSpreadsheet className="h-8 w-8 text-green-600" />
                   <div>
-                    <p className="font-medium">Spreadsheet</p>
-                    <p className="text-xs text-gray-500">CSV, XLSX files</p>
+                    <p className="font-medium">CSV Format</p>
+                    <p className="text-xs text-gray-500">question,answer,category</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-3 border rounded-lg">
                   <FileText className="h-8 w-8 text-blue-600" />
                   <div>
-                    <p className="font-medium">Documents</p>
-                    <p className="text-xs text-gray-500">PDF, DOCX files</p>
+                    <p className="font-medium">JSON Format</p>
+                    <p className="text-xs text-gray-500">Array of Q&A objects</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-3 border rounded-lg">
                   <File className="h-8 w-8 text-gray-600" />
                   <div>
-                    <p className="font-medium">Text Files</p>
-                    <p className="text-xs text-gray-500">TXT, MD files</p>
+                    <p className="font-medium">Text Format</p>
+                    <p className="text-xs text-gray-500">Q: ... A: ... format</p>
                   </div>
                 </div>
               </div>
+              
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>File Format Examples</AlertTitle>
+                <AlertDescription className="mt-2 space-y-2">
+                  <div>
+                    <strong>CSV:</strong> question,answer,category<br/>
+                    "What time is check-in?","Check-in is at 3 PM","general"
+                  </div>
+                  <div>
+                    <strong>JSON:</strong> [{"{'question': 'What time?', 'answer': 'At 3 PM'}"}]
+                  </div>
+                  <div>
+                    <strong>TXT:</strong><br/>
+                    Q: What time is check-in?<br/>
+                    A: Check-in is at 3 PM
+                  </div>
+                </AlertDescription>
+              </Alert>
             </TabsContent>
             
             <TabsContent value="url" className="space-y-4">

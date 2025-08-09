@@ -30,17 +30,67 @@ export async function POST(request: NextRequest) {
     const content = await file.text()
     let items: any[] = []
 
-    if (format === 'csv') {
-      // Parse CSV
-      items = parse(content, {
-        columns: true,
-        skip_empty_lines: true
-      })
-    } else if (format === 'json') {
-      // Parse JSON
-      items = JSON.parse(content)
-    } else {
-      return NextResponse.json({ error: 'Unsupported format' }, { status: 400 })
+    try {
+      if (format === 'csv') {
+        // Parse CSV
+        items = parse(content, {
+          columns: true,
+          skip_empty_lines: true,
+          relax_quotes: true,
+          skip_records_with_error: true
+        })
+      } else if (format === 'json') {
+        // Parse JSON
+        const jsonData = JSON.parse(content)
+        // Handle both array and object with items property
+        items = Array.isArray(jsonData) ? jsonData : (jsonData.items || jsonData.data || [])
+      } else if (format === 'txt') {
+        // Parse TXT file - assume Q&A format with Q: and A: prefixes
+        const lines = content.split('\n').filter(line => line.trim())
+        let currentQ = ''
+        let currentA = ''
+        
+        for (const line of lines) {
+          if (line.startsWith('Q:') || line.startsWith('Question:')) {
+            if (currentQ && currentA) {
+              items.push({
+                question: currentQ.trim(),
+                answer: currentA.trim(),
+                category: 'general'
+              })
+            }
+            currentQ = line.replace(/^(Q:|Question:)\s*/i, '')
+            currentA = ''
+          } else if (line.startsWith('A:') || line.startsWith('Answer:')) {
+            currentA = line.replace(/^(A:|Answer:)\s*/i, '')
+          } else if (currentA) {
+            // Continue answer on new line
+            currentA += ' ' + line
+          }
+        }
+        
+        // Add last Q&A pair
+        if (currentQ && currentA) {
+          items.push({
+            question: currentQ.trim(),
+            answer: currentA.trim(),
+            category: 'general'
+          })
+        }
+        
+        // If no Q&A format found, treat each line as a simple FAQ
+        if (items.length === 0) {
+          alert('Could not parse TXT file. Please use Q: and A: format.')
+        }
+      } else {
+        return NextResponse.json({ error: 'Unsupported format. Please use CSV, JSON, or TXT.' }, { status: 400 })
+      }
+    } catch (parseError) {
+      console.error('Parse error:', parseError)
+      return NextResponse.json({ 
+        error: `Failed to parse ${format.toUpperCase()} file. Please check the file format.`,
+        details: parseError instanceof Error ? parseError.message : 'Unknown parse error'
+      }, { status: 400 })
     }
 
     // Validate and clean data
