@@ -10,6 +10,7 @@ export interface ConversationContext {
   tier: 'starter' | 'professional' | 'premium' | 'enterprise'
   welcomeMessage?: string
   businessInfo?: any
+  isDemo?: boolean // Flag to indicate if this is a demo bot
   previousMessages?: Array<{
     role: 'user' | 'assistant'
     content: string
@@ -28,7 +29,7 @@ export async function generateClaudeResponse(
 ): Promise<string> {
   // If no API key, fall back to rule-based responses
   if (!process.env.ANTHROPIC_API_KEY) {
-    return generateFallbackResponse(userMessage, context.tier)
+    return generateFallbackResponse(userMessage, context.tier, context.isDemo || false)
   }
 
   try {
@@ -90,7 +91,7 @@ export async function generateClaudeResponse(
   } catch (error) {
     console.error('Claude API error:', error)
     // Fall back to rule-based response if API fails
-    return generateFallbackResponse(userMessage, context.tier)
+    return generateFallbackResponse(userMessage, context.tier, context.isDemo || false)
   }
 }
 
@@ -105,13 +106,16 @@ function createSystemPrompt(context: ConversationContext): string {
     knowledgeContext += '\nUse the above knowledge base information to provide accurate, business-specific answers when relevant.\n'
   }
 
+  // Add demo mode instructions only if this is a demo
+  const demoInstructions = context.isDemo ? `
+IMPORTANT: You are in DEMO MODE. Always end your responses with:
+"[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
+` : ''
+
   const basePrompt = `You are an AI assistant for ${context.businessName}, a ${context.businessType.replace('_', ' ')} in Hawaii.
 
 Your role is to provide helpful, friendly, and accurate information to guests and potential customers.
-
-IMPORTANT: You are in DEMO MODE. Always end your responses with:
-"[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
-
+${demoInstructions}
 Business Context:
 - Business Type: ${context.businessType}
 - Service Tier: ${context.tier}
@@ -122,7 +126,7 @@ Guidelines:
 2. Use "Aloha" spirit in your responses
 3. If you don't know something, politely suggest contacting the business directly
 4. Keep responses concise but helpful
-5. Include the demo mode disclaimer at the end of every response
+5. ${context.isDemo ? 'Include the demo mode disclaimer at the end of every response' : 'Provide accurate, business-specific information'}
 6. For the ${context.tier} tier, ${
     context.tier === 'enterprise'
       ? 'provide enterprise-grade concierge service with multi-property coordination, group booking management, corporate travel arrangements, and seamless integration across all business units'
@@ -189,16 +193,21 @@ Specific capabilities by tier:
   }
 }
 
-function generateFallbackResponse(query: string, tier: 'starter' | 'professional' | 'premium' | 'enterprise'): string {
+function generateFallbackResponse(query: string, tier: 'starter' | 'professional' | 'premium' | 'enterprise', isDemo: boolean = false): string {
   const lowerQuery = query.toLowerCase()
-  const disclaimer = "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
+  const disclaimer = isDemo ? "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]" : ""
+  
+  // For production accounts, provide helpful but generic responses
+  if (!isDemo) {
+    return `I'd be happy to help you with that. Please let me know more details about what you're looking for, and I'll provide you with the best information available.`
+  }
   
   // Common queries handled differently by tier
   if (lowerQuery.includes('book') || lowerQuery.includes('reserve') || lowerQuery.includes('availability')) {
     if (tier === 'starter') {
-      return `❌ **Booking Not Available in Starter Plan**\n\nTo make a reservation, please call us at (808) 555-0100 or visit our website.\n\n⚠️ **Starter Limitation**: No booking integration\n💡 **Upgrade to Professional** for instant booking capabilities!${disclaimer}`
+      return `To make a reservation, please contact us directly or visit our website. We'll be happy to help you find the perfect accommodation for your stay.`
     } else if (tier === 'professional') {
-      return `✅ **Live Booking System**\n\n📊 **Real-Time Availability**:\n• Ocean View Room: $450/night - 3 available\n• Garden View: $350/night - 5 available\n• Suite: $650/night - 1 available\n\n✨ **Features**: Instant confirmation • Secure payment • Mobile check-in\n\nWhich room would you like to book?${disclaimer}`
+      return `I can help you check availability and make a reservation. What dates are you looking to stay with us? I'll check our current availability and provide you with options that best suit your needs.`
     } else if (tier === 'premium') {
       return `✨ **VIP Concierge Booking Service**\n\n🤖 **AI-Powered Recommendations** (Based on your preferences):\n\n⭐ **Perfect Match - Presidential Suite**\n• $1,250/night (15% loyalty discount applied)\n• Your preferences: Ocean view ✓ High floor ✓ Away from elevators ✓\n• Includes: Butler service, spa credits, airport transfer\n\n🎁 **Exclusive Perks**:\n• Guaranteed 10 AM early check-in\n• 4 PM late checkout\n• Welcome champagne & local delicacies\n• Private beach cabana\n\n[Book with Saved Card ****1234] [Use 4,850 Points]${disclaimer}`
     } else {
