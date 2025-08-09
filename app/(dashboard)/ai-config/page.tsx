@@ -45,6 +45,13 @@ export default function UnifiedAIConfigPage() {
     totalQuestions: 0,
     lastTrained: null as string | null
   })
+  const [usageStats, setUsageStats] = useState({
+    requests: 0,
+    tokensUsed: 0,
+    estimatedCost: '0.00',
+    usagePercentage: 0,
+    monthlyBudget: 20
+  })
 
   useEffect(() => {
     // Get business tier for model restrictions
@@ -58,6 +65,7 @@ export default function UnifiedAIConfigPage() {
     }
     loadSettings()
     fetchTrainingStats()
+    fetchUsageStats()
   }, [])
 
   const loadSettings = async () => {
@@ -97,6 +105,23 @@ export default function UnifiedAIConfigPage() {
       }
     } catch {
       console.error('Failed to fetch training stats')
+    }
+  }
+
+  const fetchUsageStats = async () => {
+    try {
+      const response = await fetch('/api/ai/usage', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setUsageStats(data)
+      }
+    } catch {
+      console.error('Failed to fetch usage stats')
     }
   }
 
@@ -694,24 +719,55 @@ export default function UnifiedAIConfigPage() {
             <CardContent>
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">1,234</div>
-                  <div className="text-sm text-gray-600">Requests</div>
+                  <div className="text-2xl font-bold text-gray-900">{usageStats.requests.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">Conversations</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">45.2K</div>
+                  <div className="text-2xl font-bold text-gray-900">
+                    {usageStats.tokensUsed >= 1000 
+                      ? `${(usageStats.tokensUsed / 1000).toFixed(1)}K` 
+                      : usageStats.tokensUsed.toLocaleString()}
+                  </div>
                   <div className="text-sm text-gray-600">Tokens Used</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">$8.45</div>
-                  <div className="text-sm text-gray-600">Cost</div>
+                  <div className="text-2xl font-bold text-gray-900">${usageStats.estimatedCost}</div>
+                  <div className="text-sm text-gray-600">Est. Cost</div>
                 </div>
               </div>
-              <div className="mt-4 p-3 bg-yellow-50 rounded-lg flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5" />
-                <div className="text-sm text-yellow-800">
-                  You&apos;re using approximately 41% of your estimated monthly budget.
+              {usageStats.requests > 0 ? (
+                <div className="mt-4">
+                  <div className="flex justify-between text-sm text-gray-600 mb-1">
+                    <span>Monthly Budget Usage</span>
+                    <span>{usageStats.usagePercentage}% of ${usageStats.monthlyBudget}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className={`h-2 rounded-full transition-all ${
+                        usageStats.usagePercentage > 80 ? 'bg-red-500' :
+                        usageStats.usagePercentage > 50 ? 'bg-yellow-500' :
+                        'bg-green-500'
+                      }`}
+                      style={{ width: `${Math.min(100, usageStats.usagePercentage)}%` }}
+                    />
+                  </div>
+                  {usageStats.usagePercentage > 80 && (
+                    <Alert className="mt-3 border-yellow-200 bg-yellow-50">
+                      <AlertCircle className="h-4 w-4 text-yellow-600" />
+                      <div className="text-sm text-gray-700">
+                        You're approaching your estimated monthly budget. Consider optimizing your usage or upgrading your plan.
+                      </div>
+                    </Alert>
+                  )}
                 </div>
-              </div>
+              ) : (
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2">
+                  <AlertCircle className="h-4 w-4 text-blue-600 mt-0.5" />
+                  <div className="text-sm text-gray-700">
+                    <strong>Note:</strong> API usage tracking will begin once you start processing messages. Usage is calculated based on actual conversations and message volume.
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
