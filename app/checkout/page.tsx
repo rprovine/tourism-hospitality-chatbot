@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useEffect, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { SUBSCRIPTION_PLANS } from '@/lib/payments/hubspot'
-import { Check, ArrowRight, Loader2 } from 'lucide-react'
+import { Check, ArrowRight, Loader2, ArrowLeft, X } from 'lucide-react'
 
 function CheckoutContent() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedPlan, setSelectedPlan] = useState<string>('')
@@ -70,7 +71,26 @@ function CheckoutContent() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-cyan-50 to-white py-12">
       <div className="container mx-auto px-6 max-w-4xl">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Complete Your Subscription</h1>
+        {/* Header with navigation */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.back()}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="h-5 w-5 text-gray-600" />
+            </button>
+            <h1 className="text-3xl font-bold text-gray-900">Complete Your Subscription</h1>
+          </div>
+          <button
+            onClick={() => router.push('/')}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Close"
+          >
+            <X className="h-5 w-5 text-gray-600" />
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Order Summary */}
@@ -274,13 +294,53 @@ function CheckoutContent() {
                 )}
               </button>
 
-              <p className="text-xs text-gray-500 text-center">
+              <div className="flex items-center justify-center gap-4 mt-4">
+                <button
+                  type="button"
+                  onClick={() => router.back()}
+                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors underline"
+                >
+                  ← Back to previous page
+                </button>
+                <span className="text-gray-400">|</span>
+                <button
+                  type="button"
+                  onClick={() => router.push('/')}
+                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors underline"
+                >
+                  Cancel and return home
+                </button>
+              </div>
+
+              <p className="text-xs text-gray-500 text-center mt-4">
                 {selectedPlan.startsWith('premium') || selectedPlan.startsWith('enterprise')
                   ? 'Payment required. 30-day money-back guarantee.'
                   : 'No payment required for 14 days. Cancel anytime.'}<br/>
                 By continuing, you agree to our Terms of Service and Privacy Policy.
               </p>
             </form>
+
+            {/* Help Section */}
+            <div className="mt-8 p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-semibold text-gray-900 mb-2">Need Help?</h3>
+              <div className="space-y-2 text-sm text-gray-600">
+                <p>
+                  <strong>Email:</strong>{' '}
+                  <a href="mailto:support@lenilani.com" className="text-cyan-600 hover:underline">
+                    support@lenilani.com
+                  </a>
+                </p>
+                <p>
+                  <strong>Phone:</strong>{' '}
+                  <a href="tel:+1-800-555-0123" className="text-cyan-600 hover:underline">
+                    +1 (800) 555-0123
+                  </a>
+                </p>
+                <p className="text-xs">
+                  Our sales team is available Mon-Fri 9AM-6PM EST
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
