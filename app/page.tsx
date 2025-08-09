@@ -41,13 +41,16 @@ export default function LandingPage() {
     <div id="top" className="min-h-screen bg-gradient-to-b from-cyan-50 to-white">
       {/* Navigation */}
       <nav className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <a href="#top" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <Bot className="h-8 w-8 text-cyan-700" />
-              <span className="text-xl font-bold text-gray-900">LeniLani Hospitality AI</span>
+              <Bot className="h-6 sm:h-8 w-6 sm:w-8 text-cyan-700" />
+              <span className="text-lg sm:text-xl font-bold text-gray-900 hidden sm:inline">LeniLani Hospitality AI</span>
+              <span className="text-lg font-bold text-gray-900 sm:hidden">LeniLani AI</span>
             </a>
-            <div className="flex items-center gap-6">
+            
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-6">
               <a href="#features" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors">Features</a>
               <a href="#pricing" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors">Pricing</a>
               <a href="#demo" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors">Demo</a>
@@ -58,6 +61,18 @@ export default function LandingPage() {
               >
                 Start 14-Day Free Trial
               </Button>
+            </div>
+            
+            {/* Mobile Navigation */}
+            <div className="flex lg:hidden items-center gap-2">
+              <Button 
+                className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold shadow-md text-xs sm:text-sm px-3 sm:px-4 py-2"
+                onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
+              >
+                <span className="hidden sm:inline">Start Free Trial</span>
+                <span className="sm:hidden">Free Trial</span>
+              </Button>
+              <a href="/login" className="text-gray-800 font-semibold hover:text-cyan-700 transition-colors text-sm">Login</a>
             </div>
           </div>
         </div>

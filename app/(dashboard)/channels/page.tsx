@@ -221,12 +221,18 @@ export default function ChannelsPage() {
 
       {/* Channel Configuration Tabs */}
       <Tabs defaultValue="webchat" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="webchat">Web Widget</TabsTrigger>
-          <TabsTrigger value="whatsapp">WhatsApp</TabsTrigger>
-          <TabsTrigger value="sms">SMS (Twilio)</TabsTrigger>
-          <TabsTrigger value="instagram">Instagram</TabsTrigger>
-          <TabsTrigger value="templates">Templates</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1">
+          <TabsTrigger value="webchat" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Web Widget</span>
+            <span className="sm:hidden">Web</span>
+          </TabsTrigger>
+          <TabsTrigger value="whatsapp" className="text-xs sm:text-sm">WhatsApp</TabsTrigger>
+          <TabsTrigger value="sms" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">SMS (Twilio)</span>
+            <span className="sm:hidden">SMS</span>
+          </TabsTrigger>
+          <TabsTrigger value="instagram" className="text-xs sm:text-sm">Instagram</TabsTrigger>
+          <TabsTrigger value="templates" className="text-xs sm:text-sm col-span-2 sm:col-span-1">Templates</TabsTrigger>
         </TabsList>
 
         {/* Web Chat Widget Configuration */}

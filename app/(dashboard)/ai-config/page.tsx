@@ -199,11 +199,23 @@ export default function UnifiedAIConfigPage() {
       </div>
 
       <Tabs defaultValue="provider" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="provider">Provider & Models</TabsTrigger>
-          <TabsTrigger value="behavior">Behavior & Style</TabsTrigger>
-          <TabsTrigger value="training">Training & Knowledge</TabsTrigger>
-          <TabsTrigger value="advanced">Advanced Settings</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 gap-1">
+          <TabsTrigger value="provider" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Provider & Models</span>
+            <span className="sm:hidden">Provider</span>
+          </TabsTrigger>
+          <TabsTrigger value="behavior" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Behavior & Style</span>
+            <span className="sm:hidden">Behavior</span>
+          </TabsTrigger>
+          <TabsTrigger value="training" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Training & Knowledge</span>
+            <span className="sm:hidden">Training</span>
+          </TabsTrigger>
+          <TabsTrigger value="advanced" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Advanced Settings</span>
+            <span className="sm:hidden">Advanced</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* Provider & Models Tab */}

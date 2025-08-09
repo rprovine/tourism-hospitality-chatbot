@@ -491,11 +491,17 @@ export default function SubscriptionPage() {
       
       {/* Subscription Management Tabs */}
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="payment">Payment Methods</TabsTrigger>
-          <TabsTrigger value="billing">Billing History</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 gap-1">
+          <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+          <TabsTrigger value="payment" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Payment Methods</span>
+            <span className="sm:hidden">Payment</span>
+          </TabsTrigger>
+          <TabsTrigger value="billing" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Billing History</span>
+            <span className="sm:hidden">Billing</span>
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="text-xs sm:text-sm">Settings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">

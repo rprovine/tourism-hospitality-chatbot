@@ -228,13 +228,13 @@ export default function RegisterPage() {
                         <div className="font-semibold">Starter</div>
                         <div className="text-sm text-gray-600">
                           {formData.billingCycle === 'annual' 
-                            ? '$2,390/year (save $598)' 
-                            : '$299/month'}
+                            ? '$290/year (save $58)' 
+                            : '$29/month'}
                         </div>
                       </div>
                       <div>
                         <div className="text-2xl font-bold">
-                          {formData.billingCycle === 'annual' ? '$199' : '$299'}
+                          {formData.billingCycle === 'annual' ? '$24' : '$29'}
                         </div>
                         <div className="text-xs text-gray-500">
                           {formData.billingCycle === 'annual' ? '/month' : '/month'}
@@ -258,13 +258,13 @@ export default function RegisterPage() {
                         </div>
                         <div className="text-sm text-gray-600">
                           {formData.billingCycle === 'annual' 
-                            ? '$5,590/year (save $1,798)' 
-                            : <><s className="text-gray-400">$899</s> $699/month</>}
+                            ? '$1,490/year (save $298)' 
+                            : '$149/month'}
                         </div>
                       </div>
                       <div>
                         <div className="text-2xl font-bold">
-                          {formData.billingCycle === 'annual' ? '$466' : '$699'}
+                          {formData.billingCycle === 'annual' ? '$124' : '$149'}
                         </div>
                         <div className="text-xs text-gray-500">
                           {formData.billingCycle === 'annual' ? '/month' : '/month'}
@@ -287,13 +287,13 @@ export default function RegisterPage() {
                         </div>
                         <div className="text-sm text-gray-600">
                           {formData.billingCycle === 'annual' 
-                            ? '$22,490/year (save $7,498)' 
-                            : '$2,499/month'}
+                            ? '$2,990/year (save $598)' 
+                            : '$299/month'}
                         </div>
                       </div>
                       <div>
                         <div className="text-2xl font-bold">
-                          {formData.billingCycle === 'annual' ? '$1,874' : '$2,499'}
+                          {formData.billingCycle === 'annual' ? '$249' : '$299'}
                         </div>
                         <div className="text-xs text-gray-500">
                           {formData.billingCycle === 'annual' ? '/month' : '/month'}
