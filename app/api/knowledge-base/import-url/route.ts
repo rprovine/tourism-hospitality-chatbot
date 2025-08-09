@@ -35,58 +35,73 @@ function htmlToText(html: string): string {
 function extractQAPairs(content: string, url: string): Array<{question: string, answer: string, category: string}> {
   const pairs: Array<{question: string, answer: string, category: string}> = []
   
-  // Split content into sections
-  const sections = content.split(/\n\n+/)
+  // Clean up content
+  const cleanContent = content
+    .replace(/\s+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
   
-  // Try to identify FAQ sections
-  const faqPattern = /(?:frequently asked questions?|faq|q\s*&\s*a)/i
-  let inFAQ = false
+  // Split content into paragraphs
+  const paragraphs = cleanContent.split(/\n+/).filter(p => p.trim().length > 30)
   
-  for (let i = 0; i < sections.length; i++) {
-    const section = sections[i].trim()
+  // Extract meaningful sections
+  for (let i = 0; i < paragraphs.length && pairs.length < 20; i++) {
+    const para = paragraphs[i].trim()
     
-    if (faqPattern.test(section)) {
-      inFAQ = true
-      continue
-    }
+    // Skip very short paragraphs
+    if (para.length < 50) continue
     
-    // Look for Q&A patterns
-    if (section.match(/^(q:|question:|what|how|why|when|where|who|is|can|do|does|should)/i)) {
-      const question = section.replace(/^(q:|question:)/i, '').trim()
-      const answer = sections[i + 1]?.trim() || ''
-      
-      if (answer && !answer.match(/^(q:|question:|what|how|why|when|where|who)/i)) {
+    // Look for headings followed by content
+    if (para.length < 200 && i + 1 < paragraphs.length) {
+      const nextPara = paragraphs[i + 1].trim()
+      if (nextPara.length > 100) {
         pairs.push({
-          question,
-          answer: answer.substring(0, 1000), // Limit answer length
-          category: inFAQ ? 'FAQ' : 'General'
+          question: para.replace(/[:\-–—]$/, ''),
+          answer: nextPara.substring(0, 1000),
+          category: 'Website Content'
         })
-        i++ // Skip the answer in next iteration
+        i++ // Skip the next paragraph
+        continue
       }
     }
     
-    // Create general entries for substantial content
-    if (section.length > 100 && section.length < 1500 && !section.match(/^(q:|question:)/i)) {
-      // Extract the first sentence as a pseudo-question
-      const firstSentence = section.match(/^[^.!?]+[.!?]/)?.[0] || section.substring(0, 100)
+    // Extract as informational content
+    if (para.length > 100 && para.length < 1500) {
+      // Use first 100 chars or first sentence as the topic
+      const firstSentence = para.match(/^[^.!?]{20,}[.!?]/)?.[0] || para.substring(0, 100)
       
       pairs.push({
-        question: `Information about: ${firstSentence.substring(0, 200)}`,
-        answer: section.substring(0, 1000),
-        category: 'Website Content'
+        question: `Tell me about: ${firstSentence.substring(0, 150)}${firstSentence.length > 150 ? '...' : ''}`,
+        answer: para.substring(0, 1000),
+        category: 'Website Information'
       })
     }
   }
   
-  // If no Q&A pairs found, create some basic entries
-  if (pairs.length === 0 && content.length > 100) {
-    const chunks = content.match(/.{1,1000}/g) || []
-    chunks.slice(0, 5).forEach((chunk, index) => {
+  // If we still don't have enough content, create basic entries
+  if (pairs.length < 3 && cleanContent.length > 200) {
+    // Split into reasonable chunks
+    const chunkSize = 800
+    const chunks = []
+    for (let i = 0; i < cleanContent.length && chunks.length < 5; i += chunkSize) {
+      chunks.push(cleanContent.substring(i, i + chunkSize))
+    }
+    
+    chunks.forEach((chunk, index) => {
+      const preview = chunk.substring(0, 100).replace(/\s+/g, ' ')
       pairs.push({
-        question: `Website information part ${index + 1} from ${url}`,
+        question: `Website content (${index + 1}/${chunks.length}): ${preview}...`,
         answer: chunk.trim(),
-        category: 'Website Content'
+        category: 'Imported Content'
       })
+    })
+  }
+  
+  // Add source attribution
+  if (pairs.length > 0) {
+    const hostname = new URL(url).hostname
+    pairs.forEach(pair => {
+      pair.answer = `${pair.answer}\n\n[Source: ${hostname}]`
     })
   }
   
@@ -113,45 +128,95 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 })
     }
 
+    // Validate URL format
+    let validUrl: URL
+    try {
+      validUrl = new URL(url)
+      if (!['http:', 'https:'].includes(validUrl.protocol)) {
+        throw new Error('Only HTTP/HTTPS URLs are supported')
+      }
+    } catch (urlError: any) {
+      return NextResponse.json(
+        { error: `Invalid URL format: ${urlError.message}` },
+        { status: 400 }
+      )
+    }
+
     // Fetch the URL content
     let content = ''
     try {
-      const response = await fetch(url, {
+      console.log(`Attempting to fetch URL: ${validUrl.toString()}`)
+      
+      // Create timeout controller
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+      
+      const response = await fetch(validUrl.toString(), {
+        method: 'GET',
         headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; LeniLani/1.0)'
-        }
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        },
+        signal: controller.signal
       })
       
+      clearTimeout(timeoutId)
+      
       if (!response.ok) {
-        throw new Error(`Failed to fetch URL: ${response.status}`)
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+      }
+      
+      const contentType = response.headers.get('content-type') || ''
+      if (!contentType.includes('text/html') && !contentType.includes('text/plain')) {
+        throw new Error(`Unsupported content type: ${contentType}`)
       }
       
       const html = await response.text()
       content = htmlToText(html)
       
+      console.log(`Successfully fetched ${html.length} characters, converted to ${content.length} text characters`)
+      
     } catch (fetchError: any) {
+      console.error('URL fetch error:', fetchError)
+      
+      if (fetchError.name === 'AbortError') {
+        return NextResponse.json(
+          { error: 'Request timeout - the website took too long to respond' },
+          { status: 408 }
+        )
+      }
+      
       return NextResponse.json(
-        { error: `Failed to fetch URL: ${fetchError.message}` },
+        { error: `Failed to fetch website: ${fetchError.message}` },
         { status: 400 }
       )
     }
 
     if (!content || content.length < 50) {
+      console.log('Content too short:', content.length, 'characters')
       return NextResponse.json(
-        { error: 'No meaningful content found at the URL' },
+        { error: 'The webpage appears to be empty or has very little text content. Please try a different URL.' },
         { status: 400 }
       )
     }
 
+    console.log(`Extracting Q&A pairs from ${content.length} characters of content`)
+    
     // Extract Q&A pairs from content
-    const qaPairs = extractQAPairs(content, url)
+    const qaPairs = extractQAPairs(content, validUrl.toString())
 
     if (qaPairs.length === 0) {
+      console.log('No Q&A pairs extracted from content')
       return NextResponse.json(
-        { error: 'Could not extract any Q&A pairs from the content' },
+        { error: 'Could not extract meaningful information from the webpage. The content may be too dynamic or image-based.' },
         { status: 400 }
       )
     }
+    
+    console.log(`Extracted ${qaPairs.length} Q&A pairs`)
 
     // Create knowledge base entries
     const entries = qaPairs.map(pair => ({
