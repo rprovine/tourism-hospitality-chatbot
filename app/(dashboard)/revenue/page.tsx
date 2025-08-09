@@ -287,21 +287,21 @@ export default function RevenuePage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <span className="text-sm font-medium text-gray-700">Peak Season</span>
-                    <span className="text-green-700 font-semibold">+30%</span>
+                  <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <span className="text-sm font-semibold text-gray-900">Peak Season</span>
+                    <span className="text-gray-900 font-bold">+30%</span>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                    <span className="text-sm font-medium text-gray-700">Weekend Premium</span>
-                    <span className="text-blue-700 font-semibold">+15%</span>
+                  <div className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <span className="text-sm font-semibold text-gray-900">Weekend Premium</span>
+                    <span className="text-gray-900 font-bold">+15%</span>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-                    <span className="text-sm font-medium text-gray-700">Local Events</span>
-                    <span className="text-yellow-700 font-semibold">+10%</span>
+                  <div className="flex items-center justify-between p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <span className="text-sm font-semibold text-gray-900">Local Events</span>
+                    <span className="text-gray-900 font-bold">+10%</span>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
-                    <span className="text-sm font-medium text-gray-700">Early Bird Discount</span>
-                    <span className="text-purple-700 font-semibold">-10%</span>
+                  <div className="flex items-center justify-between p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                    <span className="text-sm font-semibold text-gray-900">Early Bird Discount</span>
+                    <span className="text-gray-900 font-bold">-10%</span>
                   </div>
                 </div>
               </CardContent>
@@ -490,31 +490,31 @@ export default function RevenuePage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <Alert>
-                  <Target className="h-4 w-4" />
+                <Alert className="border-l-4 border-l-blue-500">
+                  <Target className="h-4 w-4 text-blue-600" />
                   <div>
-                    <p className="font-medium text-gray-900">Opportunity: Weekend Pricing</p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="font-semibold text-gray-900">Opportunity: Weekend Pricing</p>
+                    <p className="text-sm text-gray-700 mt-1">
                       Your weekend occupancy is 85%. Consider increasing weekend rates by 20% to maximize revenue without impacting demand.
                     </p>
                   </div>
                 </Alert>
                 
-                <Alert>
-                  <Gift className="h-4 w-4" />
+                <Alert className="border-l-4 border-l-purple-500">
+                  <Gift className="h-4 w-4 text-purple-600" />
                   <div>
-                    <p className="font-medium text-gray-900">Upsell Potential: Spa Packages</p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="font-semibold text-gray-900">Upsell Potential: Spa Packages</p>
+                    <p className="text-sm text-gray-700 mt-1">
                       Guests who book deluxe rooms are 3x more likely to purchase spa packages. Target them with personalized offers.
                     </p>
                   </div>
                 </Alert>
                 
-                <Alert>
-                  <AlertCircle className="h-4 w-4" />
+                <Alert className="border-l-4 border-l-amber-500">
+                  <AlertCircle className="h-4 w-4 text-amber-600" />
                   <div>
-                    <p className="font-medium text-gray-900">Recovery Gap: Mobile Users</p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="font-semibold text-gray-900">Recovery Gap: Mobile Users</p>
+                    <p className="text-sm text-gray-700 mt-1">
                       Mobile abandonment rate is 40% higher than desktop. Implement SMS recovery for better mobile engagement.
                     </p>
                   </div>
@@ -522,22 +522,22 @@ export default function RevenuePage() {
               </div>
               
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 bg-green-50 rounded-lg">
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-gray-900">Revenue Growth</span>
+                    <span className="font-semibold text-gray-900">Revenue Growth</span>
                     <ArrowUpRight className="h-5 w-5 text-green-600" />
                   </div>
-                  <div className="text-2xl font-bold text-green-700">+24.5%</div>
-                  <p className="text-sm text-green-600">vs. last {period}</p>
+                  <div className="text-2xl font-bold text-gray-900">+24.5%</div>
+                  <p className="text-sm text-gray-700 font-medium">vs. last {period}</p>
                 </div>
                 
-                <div className="p-4 bg-blue-50 rounded-lg">
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-gray-900">Optimization Score</span>
+                    <span className="font-semibold text-gray-900">Optimization Score</span>
                     <Target className="h-5 w-5 text-blue-600" />
                   </div>
-                  <div className="text-2xl font-bold text-blue-700">78/100</div>
-                  <p className="text-sm text-blue-600">Good performance</p>
+                  <div className="text-2xl font-bold text-gray-900">78/100</div>
+                  <p className="text-sm text-gray-700 font-medium">Good performance</p>
                 </div>
               </div>
             </CardContent>
