@@ -58,7 +58,9 @@ export default function KnowledgeBasePage() {
     question: '',
     answer: '',
     category: 'general',
-    keywords: ''
+    keywords: '',
+    priority: 0,
+    language: 'en'
   })
   const [uploadType, setUploadType] = useState<'manual' | 'file' | 'url'>('manual')
   const [fileUrl, setFileUrl] = useState('')
@@ -192,7 +194,7 @@ export default function KnowledgeBasePage() {
 
       if (response.ok) {
         alert('Item added successfully!')
-        setNewItem({ question: '', answer: '', category: 'general', keywords: '' })
+        setNewItem({ question: '', answer: '', category: 'general', keywords: '', priority: 0, language: 'en' })
         await fetchKnowledgeBase()
       } else {
         alert('Failed to add item')
