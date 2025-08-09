@@ -46,10 +46,10 @@ const tierIcons: Record<string, any> = {
 }
 
 const tierColors: Record<string, string> = {
-  starter: 'bg-green-100 text-green-800',
-  professional: 'bg-blue-100 text-blue-800',
-  premium: 'bg-purple-100 text-purple-800',
-  enterprise: 'bg-gray-100 text-gray-800'
+  starter: 'bg-green-100 text-green-700 border border-green-200',
+  professional: 'bg-blue-100 text-blue-700 border border-blue-200',
+  premium: 'bg-purple-100 text-purple-700 border border-purple-200',
+  enterprise: 'bg-gray-100 text-gray-700 border border-gray-200'
 }
 
 const tierPricing: Record<string, { monthly: number, yearly: number }> = {
@@ -268,7 +268,11 @@ export default function SubscriptionPage() {
               <div>
                 <CardTitle className="capitalize">{subscription.tier} Plan</CardTitle>
                 <CardDescription>
-                  ${tierPricing[subscription.tier]?.[subscription.interval as keyof typeof tierPricing.starter] || 0}/{subscription.interval === 'yearly' ? 'year' : 'month'}
+                  {subscription.status === 'demo' ? (
+                    'Demo Account - No charge'
+                  ) : (
+                    `$${tierPricing[subscription.tier]?.[subscription.interval as keyof typeof tierPricing.starter] || 0}/${subscription.interval === 'yearly' ? 'year' : 'month'}`
+                  )}
                 </CardDescription>
               </div>
             </div>
