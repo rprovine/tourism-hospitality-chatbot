@@ -44,7 +44,7 @@ export default function ConversationsList({ limit }: ConversationsListProps) {
           lastMessage: conv.lastMessage || 'No messages yet',
           timestamp: conv.updatedAt ? getRelativeTime(new Date(conv.updatedAt)) : 'Recently',
           status: conv.status || 'active',
-          satisfaction: conv.satisfaction,
+          satisfaction: conv.satisfactionScore,
           messages: conv.messageCount || 0
         })) || []
         

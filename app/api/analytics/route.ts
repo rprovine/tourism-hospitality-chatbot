@@ -82,11 +82,11 @@ export async function GET(request: NextRequest) {
     const totalConversations = conversations.length
     const totalMessages = conversations.reduce((sum, conv) => sum + conv._count.messages, 0)
     const avgMessagesPerConversation = totalConversations > 0 ? totalMessages / totalConversations : 0
-    const satisfactionRatings = conversations.filter(c => c.satisfaction !== null)
+    const satisfactionRatings = conversations.filter(c => c.satisfactionScore !== null)
     const avgSatisfaction = satisfactionRatings.length > 0
-      ? satisfactionRatings.reduce((sum, c) => sum + (c.satisfaction || 0), 0) / satisfactionRatings.length
+      ? satisfactionRatings.reduce((sum, c) => sum + (c.satisfactionScore || 0), 0) / satisfactionRatings.length
       : 0
-    const resolvedConversations = conversations.filter(c => c.resolved).length
+    const resolvedConversations = conversations.filter(c => c.satisfactionScore !== null).length // Consider rated as resolved
     const resolutionRate = totalConversations > 0 ? (resolvedConversations / totalConversations) * 100 : 0
     
     // Get top questions
@@ -164,9 +164,9 @@ export async function POST(request: NextRequest) {
     // Calculate metrics
     const totalConversations = conversations.length
     const uniqueUsers = new Set(conversations.map((c: any) => c.sessionId)).size
-    const satisfactionRatings = conversations.filter((c: any) => c.satisfaction !== null)
+    const satisfactionRatings = conversations.filter((c: any) => c.satisfactionScore !== null)
     const avgSatisfaction = satisfactionRatings.length > 0
-      ? satisfactionRatings.reduce((sum: number, c: any) => sum + (c.satisfaction || 0), 0) / satisfactionRatings.length
+      ? satisfactionRatings.reduce((sum: number, c: any) => sum + (c.satisfactionScore || 0), 0) / satisfactionRatings.length
       : 0
     
     // Upsert analytics record

@@ -19,8 +19,7 @@ export async function POST(request: NextRequest) {
     const conversation = await prisma.conversation.update({
       where: { id: validatedData.conversationId },
       data: { 
-        satisfaction: validatedData.rating,
-        resolved: true // Mark as resolved when rated
+        satisfactionScore: validatedData.rating
       }
     })
     
