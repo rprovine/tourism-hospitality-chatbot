@@ -1,13 +1,17 @@
 # 🚀 Deployment Guide - LeniLani AI Platform
 
-## Last Updated: December 2024
+## Last Updated: January 2025
 
 ### Recent Changes
-- ✅ Satisfaction rating system integrated
-- ✅ Knowledge base URL import functionality
-- ✅ Clean production data initialization
-- ✅ Demo mode isolation to landing page
-- ✅ Enhanced analytics with satisfaction tracking
+- ✅ Customer-friendly subscription management with retention offers
+- ✅ Upgrade/downgrade preview with feature comparison
+- ✅ Payment method management with PCI compliance
+- ✅ Complete billing history with invoice downloads
+- ✅ Data export capabilities before cancellation
+- ✅ 30-day grace period for downgrades
+- ✅ PMS webhook integration for booking data
+- ✅ Guest Intelligence included in Professional+ tiers
+- ✅ Revenue Optimization included in Professional+ tiers
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
@@ -25,13 +29,14 @@
 
 Before deploying, ensure you have:
 - [ ] PostgreSQL database (production-ready)
-- [ ] Claude API key from Anthropic
-- [ ] OpenAI API key
-- [ ] HubSpot account for payments
-- [ ] Twilio account (for SMS)
-- [ ] WhatsApp Business API access
+- [ ] Claude API key from Anthropic (sk-ant-...)
+- [ ] OpenAI API key (sk-...)
+- [ ] HubSpot account for payments (optional)
+- [ ] Twilio account for SMS (optional)
+- [ ] WhatsApp Business API access (optional)
 - [ ] Domain name configured
 - [ ] SSL certificate
+- [ ] SMTP credentials for email (optional)
 
 ## Environment Setup
 
@@ -48,8 +53,8 @@ JWT_SECRET="<generate-secure-64-char-string>"
 ADMIN_PASSWORD="<strong-admin-password>"
 
 # AI Services
-CLAUDE_API_KEY="sk-ant-api-xxx"
-OPENAI_API_KEY="sk-xxx"
+ANTHROPIC_API_KEY="sk-ant-api-xxx"  # For Claude models
+OPENAI_API_KEY="sk-xxx"  # For GPT models
 
 # Payment Processing
 HUBSPOT_ACCESS_TOKEN="pat-xxx"
@@ -58,13 +63,19 @@ HUBSPOT_STARTER_LINK="https://app.hubspot.com/payments/xxx/starter"
 HUBSPOT_PROFESSIONAL_LINK="https://app.hubspot.com/payments/xxx/professional"
 HUBSPOT_PREMIUM_LINK="https://app.hubspot.com/payments/xxx/premium"
 
-# Communication
+# Communication (Optional)
 TWILIO_ACCOUNT_SID="ACxxx"
 TWILIO_AUTH_TOKEN="xxx"
 TWILIO_PHONE_NUMBER="+1234567890"
 WHATSAPP_ACCESS_TOKEN="EAAxxx"
 WHATSAPP_PHONE_NUMBER_ID="xxx"
 WHATSAPP_BUSINESS_ACCOUNT_ID="xxx"
+
+# Email (Optional)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT="587"
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
 
 # Application
 NEXT_PUBLIC_APP_URL="https://yourdomain.com"
@@ -363,6 +374,7 @@ npm run create-admin
 - WhatsApp: `https://yourdomain.com/api/channels/whatsapp/webhook`
 - Twilio SMS: `https://yourdomain.com/api/channels/sms/webhook`
 - HubSpot: `https://yourdomain.com/api/payments/webhook`
+- PMS Integration: `https://yourdomain.com/api/webhooks/pms`
 
 ### 5. Test Deployment
 ```bash
@@ -398,14 +410,18 @@ curl -X POST https://yourdomain.com/api/v1/chat \
 ### Key Metrics to Monitor
 - Response time (<2s target)
 - Error rate (<1%)
-- API usage by tier
-- Conversation limits
+- API usage by tier (real tracking)
+- Conversation limits per tier
 - Database connections
 - Memory usage
 - CPU utilization
 - Customer satisfaction scores
 - Conversation completion rates
 - Knowledge base hit rate
+- Subscription churn rate
+- Retention offer acceptance rate
+- Guest profile growth
+- Revenue optimization metrics
 
 ### Alerts to Configure
 - High error rate (>5%)
@@ -491,12 +507,39 @@ npx prisma studio
 export DEBUG="prisma:query"
 ```
 
+## New API Endpoints (January 2025)
+
+### Subscription Management
+- `POST /api/widget/lead` - Lead capture from chat
+- `POST /api/webhooks/pms` - PMS booking data webhook
+- `GET /api/export/data` - Export all business data
+- `GET /api/billing/history` - Get billing history
+- `GET /api/billing/invoice/{id}` - Download invoice
+- `GET /api/ai/usage` - Real API usage tracking
+
+### Integration Webhooks
+```bash
+# PMS Integration Example
+curl -X POST https://yourdomain.com/api/webhooks/pms \
+  -H "Content-Type: application/json" \
+  -d '{
+    "event": "booking.created",
+    "bookingId": "BK123",
+    "guestEmail": "guest@email.com",
+    "guestName": "John Doe",
+    "checkIn": "2025-02-01",
+    "checkOut": "2025-02-05",
+    "amount": 500,
+    "roomType": "Ocean View Suite"
+  }'
+```
+
 ## Support
 
 For deployment assistance:
 - Documentation: [docs.lenilani.ai](https://docs.lenilani.ai)
-- Email: support@lenilani.ai
-- Enterprise: enterprise@lenilani.ai
+- Email: support@lenilani.com (updated from .ai)
+- Enterprise: enterprise@lenilani.com
 
 ---
 

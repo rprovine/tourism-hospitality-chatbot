@@ -5,6 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { LoadingState } from '@/components/ui/loading-state'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import CancellationModal from '@/components/subscription/CancellationModal'
+import UpgradePreview from '@/components/subscription/UpgradePreview'
+import PaymentMethodManager from '@/components/subscription/PaymentMethodManager'
+import BillingHistory from '@/components/subscription/BillingHistory'
 import { 
   CreditCard, 
   Calendar, 
@@ -16,7 +21,9 @@ import {
   Shield,
   Zap,
   Crown,
-  Building
+  Building,
+  FileText,
+  Settings
 } from 'lucide-react'
 
 interface SubscriptionData {
@@ -55,12 +62,19 @@ const tierPricing: Record<string, { monthly: number, yearly: number }> = {
 export default function SubscriptionPage() {
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [cancelling, setCancelling] = useState(false)
   const [showCancelModal, setShowCancelModal] = useState(false)
-  const [cancelType, setCancelType] = useState<'immediate' | 'end_of_period'>('end_of_period')
+  const [showUpgradePreview, setShowUpgradePreview] = useState(false)
+  const [upgradeTier, setUpgradeTier] = useState('')
+  const [paymentMethods, setPaymentMethods] = useState<any[]>([])
+  const [businessId, setBusinessId] = useState('')
   
   useEffect(() => {
     fetchSubscription()
+    const business = localStorage.getItem('business')
+    if (business) {
+      const parsed = JSON.parse(business)
+      setBusinessId(parsed.id)
+    }
   }, [])
   
   const fetchSubscription = async () => {
@@ -114,8 +128,7 @@ export default function SubscriptionPage() {
     }
   }
   
-  const handleCancelSubscription = async () => {
-    setCancelling(true)
+  const handleCancelSubscription = async (type: 'immediate' | 'end_of_period', reason?: string) => {
     try {
       const token = localStorage.getItem('token')
       const response = await fetch('/api/subscription/cancel', {
@@ -124,11 +137,11 @@ export default function SubscriptionPage() {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ immediate: cancelType === 'immediate' })
+        body: JSON.stringify({ immediate: type === 'immediate', reason })
       })
       
       if (response.ok) {
-        alert(cancelType === 'immediate' 
+        alert(type === 'immediate' 
           ? 'Subscription cancelled immediately' 
           : 'Subscription will cancel at the end of the billing period')
         await fetchSubscription()
@@ -139,15 +152,33 @@ export default function SubscriptionPage() {
     } catch (error) {
       console.error('Cancel error:', error)
       alert('Failed to cancel subscription')
-    } finally {
-      setCancelling(false)
     }
   }
   
   const handleUpgrade = (newTier: string) => {
+    setUpgradeTier(newTier)
+    setShowUpgradePreview(true)
+  }
+  
+  const confirmUpgrade = () => {
     const interval = subscription?.interval || 'monthly'
-    // For demo accounts or any tier change, go to checkout
-    window.location.href = `/checkout?plan=${newTier}&interval=${interval}`
+    window.location.href = `/checkout?plan=${upgradeTier}&interval=${interval}`
+  }
+  
+  const handleAddPaymentMethod = async (method: any) => {
+    // Implementation for adding payment method
+    console.log('Add payment method:', method)
+    // This would integrate with your payment processor
+  }
+  
+  const handleRemovePaymentMethod = async (id: string) => {
+    // Implementation for removing payment method
+    console.log('Remove payment method:', id)
+  }
+  
+  const handleSetDefaultPaymentMethod = async (id: string) => {
+    // Implementation for setting default payment method
+    console.log('Set default payment method:', id)
   }
   
   if (loading) {
@@ -451,131 +482,140 @@ export default function SubscriptionPage() {
         </Card>
       )}
       
-      {/* Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Subscription Actions</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <div>
-              <h3 className="font-medium">Payment Method</h3>
-              <p className="text-sm text-gray-600">
-                {subscription.paymentMethod || 'No payment method on file'}
-              </p>
-            </div>
-            <Button variant="outline">
-              <CreditCard className="h-4 w-4 mr-2" />
-              Update Payment
-            </Button>
-          </div>
-          
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-            <div>
-              <h3 className="font-medium">Billing History</h3>
-              <p className="text-sm text-gray-600">View all past invoices and receipts</p>
-            </div>
-            <Button variant="outline">
-              <Calendar className="h-4 w-4 mr-2" />
-              View History
-            </Button>
-          </div>
-          
-          {(subscription.status === 'active' || subscription.status === 'trialing' || subscription.status === 'trial') && !subscription.cancelAtPeriodEnd && (
-            <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
-              <div>
-                <h3 className="font-medium text-red-900">Cancel Subscription</h3>
-                <p className="text-sm text-red-700">Stop your subscription and billing</p>
-              </div>
+      {/* Subscription Management Tabs */}
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="payment">Payment Methods</TabsTrigger>
+          <TabsTrigger value="billing">Billing History</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="overview" className="space-y-4">
+          {/* Quick Actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button 
-                variant="outline" 
-                className="border-red-500 text-red-600 hover:bg-red-50"
-                onClick={() => setShowCancelModal(true)}
+                variant="outline"
+                onClick={() => window.location.href = '/api/export/data'}
               >
-                Cancel Plan
+                <FileText className="h-4 w-4 mr-2" />
+                Export All Data
               </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              <Button 
+                variant="outline"
+                onClick={() => window.location.href = '/settings'}
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Notification Settings
+              </Button>
+              {(subscription.status === 'active' || subscription.status === 'trialing' || subscription.status === 'trial') && !subscription.cancelAtPeriodEnd && (
+                <Button 
+                  variant="outline" 
+                  className="border-red-500 text-red-600 hover:bg-red-50 md:col-span-2"
+                  onClick={() => setShowCancelModal(true)}
+                >
+                  Cancel Subscription
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="payment">
+          <Card>
+            <CardHeader>
+              <CardTitle>Payment Methods</CardTitle>
+              <CardDescription>
+                Manage your payment methods and billing information
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <PaymentMethodManager
+                methods={paymentMethods}
+                onAddMethod={handleAddPaymentMethod}
+                onRemoveMethod={handleRemovePaymentMethod}
+                onSetDefault={handleSetDefaultPaymentMethod}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="billing">
+          <BillingHistory businessId={businessId} />
+        </TabsContent>
+        
+        <TabsContent value="settings">
+          <Card>
+            <CardHeader>
+              <CardTitle>Subscription Settings</CardTitle>
+              <CardDescription>
+                Configure your subscription preferences
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div>
+                  <h3 className="font-medium">Auto-Renewal</h3>
+                  <p className="text-sm text-gray-600">Automatically renew your subscription</p>
+                </div>
+                <Button variant="outline" size="sm">
+                  {subscription.cancelAtPeriodEnd ? 'Enable' : 'Disable'}
+                </Button>
+              </div>
+              
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div>
+                  <h3 className="font-medium">Billing Alerts</h3>
+                  <p className="text-sm text-gray-600">Get notified before charges</p>
+                </div>
+                <Button variant="outline" size="sm">
+                  Configure
+                </Button>
+              </div>
+              
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div>
+                  <h3 className="font-medium">Usage Alerts</h3>
+                  <p className="text-sm text-gray-600">Get notified when approaching limits</p>
+                </div>
+                <Button variant="outline" size="sm">
+                  Configure
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
       
-      {/* Cancel Modal */}
-      {showCancelModal && (
-        <>
-          <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setShowCancelModal(false)} />
-          <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md">
-            <Card>
-              <CardHeader>
-                <CardTitle>Cancel Subscription</CardTitle>
-                <CardDescription>
-                  Are you sure you want to cancel your subscription?
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <label className="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="cancelType"
-                      value="end_of_period"
-                      checked={cancelType === 'end_of_period'}
-                      onChange={(e) => setCancelType('end_of_period')}
-                      className="mt-1"
-                    />
-                    <div>
-                      <div className="font-medium">Cancel at end of billing period</div>
-                      <div className="text-sm text-gray-600">
-                        Keep access until {subscription.nextBillingDate ? new Date(subscription.nextBillingDate).toLocaleDateString() : 'period ends'}
-                      </div>
-                    </div>
-                  </label>
-                  
-                  <label className="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="cancelType"
-                      value="immediate"
-                      checked={cancelType === 'immediate'}
-                      onChange={(e) => setCancelType('immediate')}
-                      className="mt-1"
-                    />
-                    <div>
-                      <div className="font-medium">Cancel immediately</div>
-                      <div className="text-sm text-gray-600">
-                        Lose access right away (no refunds for unused time)
-                      </div>
-                    </div>
-                  </label>
-                </div>
-                
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => setShowCancelModal(false)}
-                    disabled={cancelling}
-                  >
-                    Keep Subscription
-                  </Button>
-                  <Button
-                    className="flex-1 bg-red-600 hover:bg-red-700"
-                    onClick={handleCancelSubscription}
-                    disabled={cancelling}
-                  >
-                    {cancelling ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Cancelling...
-                      </>
-                    ) : (
-                      'Confirm Cancel'
-                    )}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </>
+      {/* Modals */}
+      {showCancelModal && subscription && (
+        <CancellationModal
+          isOpen={showCancelModal}
+          onClose={() => setShowCancelModal(false)}
+          subscription={{
+            tier: subscription.tier,
+            nextBillingDate: subscription.nextBillingDate,
+            amount: subscription.amount,
+            interval: subscription.interval
+          }}
+          onCancel={handleCancelSubscription}
+        />
+      )}
+      
+      {showUpgradePreview && subscription && (
+        <UpgradePreview
+          currentTier={subscription.tier}
+          newTier={upgradeTier}
+          currentPrice={subscription.amount}
+          newPrice={tierPricing[upgradeTier as keyof typeof tierPricing]?.[subscription.interval as keyof typeof tierPricing.starter] || 0}
+          interval={subscription.interval as 'monthly' | 'yearly'}
+          onConfirm={confirmUpgrade}
+          onCancel={() => setShowUpgradePreview(false)}
+        />
       )}
     </div>
   )

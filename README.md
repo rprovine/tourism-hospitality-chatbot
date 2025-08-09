@@ -19,13 +19,15 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
 - **Self-Learning**: AI improves with every conversation
 - **Customer Satisfaction**: Built-in rating system with real-time feedback collection
 
-### 🆕 Latest Updates (December 2024)
-- ✅ **Satisfaction Rating System**: Post-conversation 5-star ratings with optional feedback
-- ✅ **Clean Production Data**: New accounts start with zero mock data
-- ✅ **Knowledge Base URL Import**: Scrape and import content from any website
-- ✅ **Enhanced KB Editor**: In-place editing of Q&A pairs
-- ✅ **Demo Mode Separation**: Demo content isolated to landing page only
-- ✅ **Real-time Analytics**: Accurate conversation and satisfaction metrics
+### 🆕 Latest Updates (January 2025)
+- ✅ **Customer-Friendly Subscription Management**: Retention offers, data export, prorated billing
+- ✅ **Enhanced Cancellation Flow**: Multi-step process with reason tracking and special offers
+- ✅ **Billing History & Invoices**: Complete transaction history with downloadable invoices
+- ✅ **Payment Method Management**: Secure card management with PCI compliance
+- ✅ **Upgrade/Downgrade Preview**: Feature comparison with data protection warnings
+- ✅ **Grace Periods**: 30-day data retention for downgrades
+- ✅ **PMS Webhook Integration**: Real-time booking and revenue data sync
+- ✅ **Lead Capture System**: Automatic collection from unanswered questions
 
 ## ✨ Core Features
 
@@ -45,7 +47,7 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
 - **Email Integration**: Automated email responses
 - **Unified Inbox**: Manage all channels from one dashboard
 
-### 💰 Revenue Optimization
+### 💰 Revenue Optimization (Included in Professional+)
 - **Dynamic Pricing Engine**: AI-driven price optimization based on:
   - Demand forecasting
   - Seasonal adjustments
@@ -62,6 +64,7 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
   - Multi-touch recovery sequences
   - Personalized incentives
   - Channel optimization
+- **PMS Integration**: Webhook endpoint for real-time booking data
 
 ### 📊 Advanced Analytics
 - **Customer Journey Mapping**: 
@@ -88,10 +91,15 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
 ### 🏢 Enterprise Features
 - **Multi-Property Support**: Manage multiple locations
 - **White-Label Ready**: Full branding customization
-- **Guest Profile System**: Comprehensive guest data management
+- **Guest Intelligence System**: 
+  - Comprehensive guest profiles with booking history
+  - VIP status tracking
+  - Lifetime value calculations
+  - Preference management
 - **API Access**: RESTful API for custom integrations
 - **Role-Based Access**: Granular permission control
 - **Audit Logging**: Complete activity tracking
+- **Data Export**: Full data export capabilities in JSON format
 
 ## 🚀 Quick Start
 
@@ -148,9 +156,10 @@ DATABASE_URL="postgresql://user:password@localhost:5432/chatbot"
 # Authentication
 JWT_SECRET="your-secret-key-minimum-32-characters"
 
-# OpenAI (for GPT-4)
+# AI Models
 OPENAI_API_KEY="sk-..."
 OPENAI_ORG_ID="org-..." # Optional
+ANTHROPIC_API_KEY="sk-ant-..." # For Claude models
 
 # Application
 NEXT_PUBLIC_APP_URL="https://yourdomain.com"
@@ -159,6 +168,10 @@ NEXT_PUBLIC_APP_URL="https://yourdomain.com"
 ### Optional Integrations
 
 ```env
+# Payment Processing
+HUBSPOT_API_KEY="your-hubspot-key"
+HUBSPOT_PORTAL_ID="your-portal-id"
+
 # WhatsApp Business
 WHATSAPP_ACCESS_TOKEN="..."
 WHATSAPP_PHONE_NUMBER_ID="..."
@@ -185,9 +198,13 @@ tourism-hospitality-chatbot/
 │   ├── (dashboard)/       # Dashboard pages
 │   │   ├── admin/         # Main dashboard
 │   │   ├── analytics/     # Analytics dashboard
-│   │   ├── ai/           # AI Intelligence Center
-│   │   ├── revenue/      # Revenue optimization
-│   │   └── settings/     # Settings management
+│   │   ├── ai-config/     # AI configuration
+│   │   ├── guests/        # Guest profiles
+│   │   ├── knowledge-base/# Knowledge management
+│   │   ├── revenue/       # Revenue optimization
+│   │   ├── subscription/  # Subscription management
+│   │   ├── billing/       # Billing & invoices
+│   │   └── settings/      # Settings management
 │   ├── api/              # API routes
 │   │   ├── ai/           # AI endpoints
 │   │   ├── channels/     # Messaging channels
@@ -195,8 +212,13 @@ tourism-hospitality-chatbot/
 │   │   └── auth/         # Authentication
 │   └── (public)/         # Public pages
 ├── components/           # React components
-│   ├── ui/              # UI components
-│   └── chatbot/         # Chat widget
+│   ├── ui/              # UI components (shadcn/ui)
+│   ├── chatbot/         # Chat widget
+│   └── subscription/    # Subscription components
+│       ├── CancellationModal.tsx
+│       ├── UpgradePreview.tsx
+│       ├── PaymentMethodManager.tsx
+│       └── BillingHistory.tsx
 ├── lib/                  # Core libraries
 │   ├── ai/              # AI services
 │   │   ├── openai-service.ts
@@ -302,6 +324,40 @@ POST /api/channels/whatsapp
 GET /api/channels/whatsapp  # Verification
 ```
 
+### Integration Webhooks
+
+```bash
+# PMS Integration Webhook
+POST /api/webhooks/pms
+{
+  "event": "booking.created|booking.updated|booking.cancelled",
+  "bookingId": "string",
+  "guestEmail": "string",
+  "guestName": "string",
+  "checkIn": "2024-01-01",
+  "checkOut": "2024-01-05",
+  "amount": 500,
+  "roomType": "string",
+  "status": "confirmed|cancelled"
+}
+```
+
+### Data Management
+
+```bash
+# Export All Data
+GET /api/export/data
+# Returns complete JSON export of all business data
+
+# Billing History
+GET /api/billing/history
+# Returns array of invoices with payment details
+
+# Download Invoice
+GET /api/billing/invoice/{id}
+# Returns PDF invoice
+```
+
 ## 🧪 Testing
 
 ```bash
@@ -373,6 +429,41 @@ Key models include:
 ## 📄 License
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
+
+## 📋 Subscription Tiers
+
+### Starter ($29/month)
+- 100 conversations/month
+- Basic AI models (GPT-3.5)
+- Web chat widget only
+- 50 knowledge base items
+- Email support
+
+### Professional ($149/month)
+- 1,000 conversations/month
+- Advanced AI (GPT-4)
+- Multi-channel (WhatsApp, SMS)
+- 500 knowledge base items
+- **Guest Intelligence (1,000 profiles)**
+- **Revenue Optimization & Insights**
+- Priority email support
+
+### Premium ($299/month)
+- Unlimited conversations
+- All AI models (GPT-4, Claude)
+- All channels
+- Unlimited knowledge base
+- **Unlimited Guest Intelligence**
+- **Full Revenue Optimization Suite**
+- API access & white label
+- 24/7 phone support
+
+### Enterprise (Custom)
+- Everything in Premium
+- Custom integrations
+- Dedicated account manager
+- SLA guarantees
+- On-premise deployment option
 
 ## 💬 Support
 
