@@ -160,6 +160,34 @@ export default function GuestsPage() {
         </Button>
       </div>
 
+      {/* Integration Notice */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5">
+              <svg className="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900 mb-1">Integration Required for Full Functionality</h3>
+              <p className="text-sm text-gray-700 mb-2">
+                Guest profiles automatically track conversations and interactions with your AI chatbot. To unlock the full power of this feature:
+              </p>
+              <ul className="text-sm text-gray-700 space-y-1 ml-4 list-disc">
+                <li><strong>Booking Data:</strong> Connect your Property Management System (PMS) or booking engine to automatically sync reservation details and booking counts</li>
+                <li><strong>Lifetime Value:</strong> Integrate with your payment system to track actual revenue per guest</li>
+                <li><strong>VIP Detection:</strong> Automatically identify high-value guests based on real spending patterns</li>
+                <li><strong>Abandoned Cart Recovery:</strong> Link with your booking flow to detect and recover incomplete reservations</li>
+              </ul>
+              <p className="text-sm text-gray-600 mt-2">
+                Contact our support team at support@lenilani.ai to set up these integrations with your existing systems.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Search and Filters */}
       <Card>
         <CardContent className="p-6">
@@ -212,11 +240,11 @@ export default function GuestsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-900">{guests.length}</div>
-            <p className="text-xs text-gray-600">Unique profiles</p>
+            <p className="text-xs text-gray-600">Chat interactions tracked</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="opacity-60">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">With Bookings</CardTitle>
             <Calendar className="h-4 w-4 text-gray-400" />
@@ -225,11 +253,11 @@ export default function GuestsPage() {
             <div className="text-2xl font-bold text-gray-900">
               {guests.filter(g => g.totalBookings > 0).length}
             </div>
-            <p className="text-xs text-gray-600">Have made reservations</p>
+            <p className="text-xs text-gray-600">Requires PMS integration</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="opacity-60">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">VIP Guests</CardTitle>
             <Star className="h-4 w-4 text-gray-400" />
@@ -238,11 +266,11 @@ export default function GuestsPage() {
             <div className="text-2xl font-bold text-gray-900">
               {guests.filter(g => getGuestScore(g) >= 4).length}
             </div>
-            <p className="text-xs text-gray-600">High-value customers</p>
+            <p className="text-xs text-gray-600">Based on chat activity</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="opacity-60">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Avg Lifetime Value</CardTitle>
             <DollarSign className="h-4 w-4 text-gray-400" />
@@ -253,7 +281,7 @@ export default function GuestsPage() {
                 ? Math.round(guests.reduce((sum, g) => sum + parseFloat(g.lifetimeValue), 0) / guests.length)
                 : 0}
             </div>
-            <p className="text-xs text-gray-600">Per guest</p>
+            <p className="text-xs text-gray-600">Requires payment integration</p>
           </CardContent>
         </Card>
       </div>
