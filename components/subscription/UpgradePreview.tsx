@@ -321,14 +321,6 @@ export default function UpgradePreview({
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Debug info - remove in production */}
-                <div className="text-xs text-gray-500 p-2 bg-gray-100 rounded mb-4">
-                  Upgrading from <b>{currentTier}</b> to <b>{newTier}</b>
-                  <br />Features available: Channels ({newFeatures?.channels?.length || 0}), 
-                  AI Models ({newFeatures?.aiModels?.length || 0}), 
-                  Guest Profiles ({newFeatures?.guestProfiles === -1 ? 'Unlimited' : newFeatures?.guestProfiles || 0})
-                </div>
-                
                 {/* Channel Expansions */}
                 {newFeatures?.channels?.filter(c => !currentFeatures?.channels?.includes(c)).length > 0 && (
                   <div className="pb-3 border-b border-green-200">

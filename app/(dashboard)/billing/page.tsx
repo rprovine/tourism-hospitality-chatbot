@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { LoadingState } from '@/components/ui/loading-state'
+import UpgradePreview from '@/components/subscription/UpgradePreview'
 import { 
   AlertCircle, 
   Check, 
@@ -96,6 +97,9 @@ export default function BillingPage() {
   const [businessTier, setBusinessTier] = useState<string>('starter')
   const [loading, setLoading] = useState(true)
   const [cancelling, setCancelling] = useState(false)
+  const [showUpgradePreview, setShowUpgradePreview] = useState(false)
+  const [upgradeTier, setUpgradeTier] = useState('')
+  const [currentPrice, setCurrentPrice] = useState(0)
 
   useEffect(() => {
     fetchSubscription()
@@ -105,6 +109,7 @@ export default function BillingPage() {
     if (businessData) {
       const business = JSON.parse(businessData)
       setBusinessTier(business.tier || 'starter')
+      setCurrentPrice(planDetails[business.tier as keyof typeof planDetails]?.price || 29)
     }
   }, [])
 
@@ -174,6 +179,16 @@ export default function BillingPage() {
     } finally {
       setCancelling(false)
     }
+  }
+
+  const handleUpgrade = (newTier: string) => {
+    setUpgradeTier(newTier)
+    setShowUpgradePreview(true)
+  }
+
+  const confirmUpgrade = () => {
+    const interval = (subscription as any)?.interval || 'monthly'
+    window.location.href = `/checkout?plan=${upgradeTier}&interval=${interval}`
   }
 
   if (loading) {
@@ -282,7 +297,7 @@ export default function BillingPage() {
               <>
                 {/* Professional Upgrade */}
                 <Card className="relative hover:shadow-xl transition-shadow cursor-pointer border-2 hover:border-blue-300"
-                      onClick={() => window.location.href = '/checkout?plan=professional&interval=monthly'}>
+                      onClick={() => handleUpgrade('professional')}>
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <Badge className="bg-blue-600 text-white px-4">RECOMMENDED</Badge>
                   </div>
@@ -328,7 +343,7 @@ export default function BillingPage() {
 
                 {/* Premium Upgrade */}
                 <Card className="relative hover:shadow-xl transition-shadow cursor-pointer border-2 hover:border-purple-300"
-                      onClick={() => window.location.href = '/checkout?plan=premium&interval=monthly'}>
+                      onClick={() => handleUpgrade('premium')}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -373,7 +388,7 @@ export default function BillingPage() {
             
             {businessTier === 'professional' && (
               <Card className="relative hover:shadow-xl transition-shadow cursor-pointer border-2 hover:border-purple-300"
-                    onClick={() => window.location.href = '/checkout?plan=premium&interval=monthly'}>
+                    onClick={() => handleUpgrade('premium')}>
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                   <Badge className="bg-purple-600 text-white px-4">UNLOCK EVERYTHING</Badge>
                 </div>
@@ -551,7 +566,7 @@ export default function BillingPage() {
                   </p>
                 </div>
                 <Button 
-                  onClick={() => window.location.href = `/checkout?plan=${businessTier === 'starter' ? 'professional' : 'premium'}&interval=monthly`}
+                  onClick={() => handleUpgrade(businessTier === 'starter' ? 'professional' : 'premium')}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                 >
                   Upgrade Now
@@ -596,6 +611,19 @@ export default function BillingPage() {
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {/* Upgrade Preview Modal */}
+      {showUpgradePreview && (
+        <UpgradePreview
+          currentTier={businessTier}
+          newTier={upgradeTier}
+          currentPrice={currentPrice}
+          newPrice={planDetails[upgradeTier as keyof typeof planDetails]?.price || 0}
+          interval={(subscription as any)?.interval || 'monthly'}
+          onConfirm={confirmUpgrade}
+          onCancel={() => setShowUpgradePreview(false)}
+        />
       )}
     </div>
   )
