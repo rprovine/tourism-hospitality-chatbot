@@ -124,12 +124,20 @@ export default function RevenuePage() {
       })
       
       if (response.ok) {
-        alert('Automated recovery process started successfully!')
+        alert(
+          'Cart Recovery Campaign Started!\n\n' +
+          'The system will:\n' +
+          '• Identify guests who abandoned bookings in the last 48 hours\n' +
+          '• Send personalized recovery emails/SMS\n' +
+          '• Offer time-limited incentives (10% off if booked within 24 hours)\n' +
+          '• Track conversion rates\n\n' +
+          'Note: Requires PMS integration to detect real abandoned bookings.'
+        )
         fetchRevenueData()
       }
     } catch (error) {
       console.error('Failed to run automated recovery:', error)
-      alert('Failed to start automated recovery')
+      alert('Cart recovery requires PMS integration. Connect your booking system first to track abandoned bookings.')
     }
   }
   
@@ -168,9 +176,13 @@ export default function RevenuePage() {
             <option value="month">This Month</option>
             <option value="year">This Year</option>
           </select>
-          <Button onClick={runAutomatedRecovery} variant="outline">
+          <Button 
+            onClick={runAutomatedRecovery} 
+            variant="outline"
+            title="Send recovery messages to guests with abandoned bookings"
+          >
             <Zap className="h-4 w-4 mr-2" />
-            Run Recovery
+            Run Cart Recovery
           </Button>
         </div>
       </div>
