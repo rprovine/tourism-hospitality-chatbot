@@ -39,6 +39,8 @@ interface KnowledgeItem {
   question: string
   answer: string
   keywords: string
+  priority?: number
+  language?: string
   usageCount: number
   lastUsed: string
   isActive: boolean
