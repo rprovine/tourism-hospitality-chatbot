@@ -39,8 +39,8 @@ const planDetails = {
       { text: '50 knowledge base items', included: true },
       { text: 'Basic AI models', included: true },
       { text: 'English language only', included: true },
-      { text: 'Revenue optimization', included: false },
-      { text: 'Guest intelligence', included: false },
+      { text: 'Guest Intelligence', included: false },
+      { text: 'Revenue Optimization', included: false },
       { text: 'Multi-channel support', included: false },
       { text: 'Advanced AI models', included: false },
       { text: 'API access', included: false },
@@ -54,18 +54,18 @@ const planDetails = {
     color: 'blue',
     features: [
       { text: '1,000 conversations/month', included: true },
-      { text: 'Advanced analytics', included: true },
-      { text: 'Priority email support', included: true },
+      { text: 'Guest Intelligence (1,000 profiles)', included: true },
+      { text: 'Revenue Insights & AI Recommendations', included: true },
+      { text: 'Advanced analytics & reporting', included: true },
       { text: 'Web chat + WhatsApp + SMS', included: true },
       { text: '500 knowledge base items', included: true },
-      { text: 'Advanced AI models (GPT-4, Claude Sonnet)', included: true },
+      { text: 'Advanced AI models (GPT-4)', included: true },
       { text: '2 languages of your choice', included: true },
-      { text: 'Revenue optimization', included: true },
-      { text: 'Guest intelligence & CRM', included: true },
-      { text: 'Multi-channel support', included: true },
+      { text: 'PMS webhook integration', included: true },
       { text: 'Custom branding', included: true },
-      { text: 'Export data', included: true },
-      { text: 'API access (limited)', included: false }
+      { text: 'CSV export', included: true },
+      { text: 'Priority email support', included: true },
+      { text: 'API access', included: false }
     ]
   },
   premium: {
@@ -75,18 +75,18 @@ const planDetails = {
     color: 'purple',
     features: [
       { text: 'Unlimited conversations', included: true },
-      { text: 'Enterprise analytics', included: true },
-      { text: '24/7 phone & email support', included: true },
-      { text: 'All channels (Web, WhatsApp, SMS, Instagram, Facebook)', included: true },
+      { text: 'Unlimited Guest Intelligence', included: true },
+      { text: 'Full Revenue Optimization Suite', included: true },
+      { text: 'Dynamic pricing automation', included: true },
+      { text: 'Abandonment recovery campaigns', included: true },
+      { text: 'All channels (Web, WhatsApp, SMS, Social)', included: true },
       { text: 'Unlimited knowledge base', included: true },
-      { text: 'All AI models including GPT-4 Turbo & Claude Opus', included: true },
+      { text: 'All AI models (GPT-4, Claude Opus)', included: true },
       { text: '5 languages of your choice', included: true },
-      { text: 'Advanced revenue optimization', included: true },
-      { text: 'Full guest intelligence suite', included: true },
       { text: 'White-label solution', included: true },
-      { text: 'Unlimited API access', included: true },
+      { text: 'Full API access', included: true },
       { text: 'Custom integrations', included: true },
-      { text: 'Dedicated account manager', included: true }
+      { text: '24/7 phone support', included: true }
     ]
   }
 }

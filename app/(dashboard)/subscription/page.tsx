@@ -331,8 +331,10 @@ export default function SubscriptionPage() {
                     <div className="text-2xl font-bold">$29<span className="text-sm font-normal">/mo</span></div>
                     <ul className="text-xs text-gray-600 mt-2 space-y-1">
                       <li>• Basic AI models</li>
-                      <li>• Web chat only</li>
+                      <li>• Web chat widget</li>
                       <li>• 50 knowledge items</li>
+                      <li className="text-gray-400 line-through">Guest Intelligence</li>
+                      <li className="text-gray-400 line-through">Revenue Optimization</li>
                     </ul>
                     {subscription.tier !== 'starter' && (
                       <Button 
@@ -368,11 +370,12 @@ export default function SubscriptionPage() {
                   <p className="text-sm text-gray-600 mb-2">1000 conversations/mo</p>
                   <div className="text-2xl font-bold">$149<span className="text-sm font-normal">/mo</span></div>
                   <ul className="text-xs text-gray-600 mt-2 space-y-1">
-                    <li>• Revenue optimization</li>
-                    <li>• Guest profiles</li>
-                    <li>• Multi-channel</li>
-                    <li>• Advanced AI models</li>
+                    <li className="font-semibold text-green-700">✓ Guest Intelligence (1,000 profiles)</li>
+                    <li className="font-semibold text-green-700">✓ Revenue Insights & AI</li>
+                    <li>• Multi-channel (WhatsApp, SMS)</li>
+                    <li>• Advanced AI models (GPT-4)</li>
                     <li>• 500 knowledge items</li>
+                    <li>• Priority email support</li>
                   </ul>
                   {subscription.tier === 'professional' && (
                     <div className="mt-3 text-xs text-center text-gray-500">Your current plan</div>
@@ -401,11 +404,13 @@ export default function SubscriptionPage() {
                   <p className="text-sm text-gray-600 mb-2">Unlimited conversations</p>
                   <div className="text-2xl font-bold">$299<span className="text-sm font-normal">/mo</span></div>
                   <ul className="text-xs text-gray-600 mt-2 space-y-1">
-                    <li>• All Professional features</li>
-                    <li>• Unlimited everything</li>
-                    <li>• API access</li>
-                    <li>• White label options</li>
-                    <li>• Priority support</li>
+                    <li className="font-semibold text-purple-700">✓ Unlimited Guest Intelligence</li>
+                    <li className="font-semibold text-purple-700">✓ Full Revenue Optimization</li>
+                    <li>• Unlimited conversations</li>
+                    <li>• All AI models (GPT-4, Claude)</li>
+                    <li>• Unlimited knowledge base</li>
+                    <li>• API access & white label</li>
+                    <li>• 24/7 phone support</li>
                   </ul>
                   {subscription.tier === 'premium' && (
                     <div className="mt-3 text-xs text-center text-gray-500">Your current plan</div>
