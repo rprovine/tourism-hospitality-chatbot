@@ -181,7 +181,7 @@ export default function GuestsPage() {
                 <li><strong>Abandoned Cart Recovery:</strong> Link with your booking flow to detect and recover incomplete reservations</li>
               </ul>
               <p className="text-sm text-gray-600 mt-2">
-                Contact our support team at support@lenilani.ai to set up these integrations with your existing systems.
+                Contact our support team at support@lenilani.com to set up these integrations with your existing systems.
               </p>
             </div>
           </div>
