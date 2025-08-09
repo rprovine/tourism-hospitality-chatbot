@@ -91,7 +91,7 @@
   // Create iframe
   const iframe = document.createElement('iframe');
   iframe.id = 'lenilani-chat-iframe';
-  const widgetUrl = `${config.baseUrl}/api/widget/frame?businessId=${config.businessId}&color=${encodeURIComponent(config.primaryColor)}`;
+  const widgetUrl = `${config.baseUrl}/embed.html?businessId=${config.businessId}&color=${encodeURIComponent(config.primaryColor)}`;
   console.log('LeniLani Widget: Loading URL:', widgetUrl);
   console.log('LeniLani Widget: Config:', config);
   iframe.src = widgetUrl;
