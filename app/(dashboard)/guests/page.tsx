@@ -180,8 +180,43 @@ export default function GuestsPage() {
                 <li><strong>VIP Detection:</strong> Automatically identify high-value guests based on real spending patterns</li>
                 <li><strong>Abandoned Cart Recovery:</strong> Link with your booking flow to detect and recover incomplete reservations</li>
               </ul>
+              <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <h4 className="font-semibold text-gray-900 text-sm mb-2">Quick Start: PMS Webhook Integration</h4>
+                <p className="text-sm text-gray-700 mb-2">
+                  Your PMS can send booking data directly to our webhook endpoint:
+                </p>
+                <div className="bg-white p-2 rounded border border-green-300 font-mono text-xs text-gray-800 mb-2">
+                  POST https://your-domain.com/api/webhooks/pms
+                </div>
+                <p className="text-xs text-gray-600 mb-2">
+                  Headers: <code className="bg-gray-100 px-1 rounded">X-API-Key: [Your Business ID]</code>
+                </p>
+                <details className="text-xs">
+                  <summary className="cursor-pointer text-blue-600 hover:text-blue-700 font-medium">View webhook format →</summary>
+                  <pre className="mt-2 p-2 bg-gray-50 rounded overflow-x-auto text-gray-700">
+{`{
+  "apiKey": "your-business-id",
+  "event": "booking.created",
+  "data": {
+    "guest": {
+      "email": "guest@example.com",
+      "name": "John Doe",
+      "phone": "+1234567890"
+    },
+    "booking": {
+      "confirmationNumber": "ABC123",
+      "checkIn": "2024-03-15",
+      "checkOut": "2024-03-20",
+      "totalAmount": 1500,
+      "status": "confirmed"
+    }
+  }
+}`}
+                  </pre>
+                </details>
+              </div>
               <p className="text-sm text-gray-600 mt-2">
-                Contact our support team at support@lenilani.com to set up these integrations with your existing systems.
+                Need help? Contact our support team at support@lenilani.com for integration assistance.
               </p>
             </div>
           </div>

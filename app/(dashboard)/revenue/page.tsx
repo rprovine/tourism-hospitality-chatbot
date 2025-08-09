@@ -175,9 +175,45 @@ export default function RevenuePage() {
         </div>
       </div>
       
+      {/* Integration Notice */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5">
+              <AlertCircle className="h-5 w-5 text-blue-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-gray-900 mb-1">Integration Required for Real Revenue Data</h3>
+              <p className="text-sm text-gray-700 mb-2">
+                The revenue optimization system provides AI-powered recommendations and strategies. To track actual revenue and enable automated optimization:
+              </p>
+              <ul className="text-sm text-gray-700 space-y-1 ml-4 list-disc">
+                <li><strong>Booking System:</strong> Connect your PMS or booking engine to track real reservations, rates, and occupancy</li>
+                <li><strong>Payment Processing:</strong> Integrate payment data to monitor actual revenue, refunds, and transaction values</li>
+                <li><strong>Dynamic Pricing:</strong> Link with your rate management system to automatically adjust prices based on demand</li>
+                <li><strong>Upsell Tracking:</strong> Connect ancillary services (spa, dining, activities) to measure upsell success</li>
+                <li><strong>Cart Recovery:</strong> Integrate booking flow to detect and automatically recover abandoned bookings</li>
+              </ul>
+              <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <h4 className="font-semibold text-gray-900 text-sm mb-2">Available: PMS Webhook for Revenue Tracking</h4>
+                <p className="text-sm text-gray-700 mb-1">
+                  Send booking and revenue data to: <code className="bg-white px-1 rounded border border-green-300 text-xs">POST /api/webhooks/pms</code>
+                </p>
+                <p className="text-xs text-gray-600">
+                  Supported events: booking.created, booking.updated, booking.cancelled
+                </p>
+              </div>
+              <p className="text-sm text-gray-600 mt-2">
+                Currently showing sample data and AI recommendations. Contact support@lenilani.com for integration help.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card className="opacity-60">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Total Revenue</CardTitle>
             <DollarSign className="h-4 w-4 text-gray-400" />
@@ -186,14 +222,13 @@ export default function RevenuePage() {
             <div className="text-2xl font-bold text-gray-900">
               {formatCurrency(revenueMetrics?.totalRevenue || 0)}
             </div>
-            <p className="text-xs text-gray-600 flex items-center">
-              <TrendingUp className="h-3 w-3 text-green-600 mr-1" />
-              +12.5% from last {period}
+            <p className="text-xs text-gray-600">
+              Sample data
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="opacity-60">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Avg Order Value</CardTitle>
             <ShoppingCart className="h-4 w-4 text-gray-400" />
@@ -202,14 +237,13 @@ export default function RevenuePage() {
             <div className="text-2xl font-bold text-gray-900">
               {formatCurrency(revenueMetrics?.averageOrderValue || 0)}
             </div>
-            <p className="text-xs text-gray-600 flex items-center">
-              <ChevronUp className="h-3 w-3 text-green-600 mr-1" />
-              +8% improvement
+            <p className="text-xs text-gray-600">
+              Requires PMS integration
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="opacity-60">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Conversion Rate</CardTitle>
             <Percent className="h-4 w-4 text-gray-400" />
@@ -218,14 +252,13 @@ export default function RevenuePage() {
             <div className="text-2xl font-bold text-gray-900">
               {formatPercent(revenueMetrics?.conversionRate || 0)}
             </div>
-            <p className="text-xs text-gray-600 flex items-center">
-              <ChevronDown className="h-3 w-3 text-red-600 mr-1" />
-              -0.3% vs target
+            <p className="text-xs text-gray-600">
+              Requires booking data
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="opacity-60">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-700">Customer LTV</CardTitle>
             <Users className="h-4 w-4 text-gray-400" />
@@ -235,7 +268,7 @@ export default function RevenuePage() {
               {formatCurrency(revenueMetrics?.customerLifetimeValue || 0)}
             </div>
             <p className="text-xs text-gray-600">
-              {formatPercent(revenueMetrics?.churnRate || 0)} churn
+              Requires payment data
             </p>
           </CardContent>
         </Card>
