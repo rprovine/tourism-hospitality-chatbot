@@ -559,34 +559,36 @@ export default function UnifiedAIConfigPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-3 gap-4 mb-4">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="text-2xl font-bold text-gray-900">{trainingStats.totalDocuments}</div>
-                  <div className="text-sm text-gray-600">Knowledge Items</div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+                  <div className="text-2xl sm:text-3xl font-bold text-blue-900">{trainingStats.totalDocuments}</div>
+                  <div className="text-sm text-blue-700 font-medium">Knowledge Items</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="text-2xl font-bold text-gray-900">{trainingStats.totalQuestions}</div>
-                  <div className="text-sm text-gray-600">Q&A Pairs</div>
+                <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                  <div className="text-2xl sm:text-3xl font-bold text-green-900">{trainingStats.totalQuestions}</div>
+                  <div className="text-sm text-green-700 font-medium">Q&A Pairs</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="text-2xl font-bold text-gray-900">
+                <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                  <div className="text-lg sm:text-xl font-bold text-purple-900">
                     {trainingStats.lastTrained 
                       ? new Date(trainingStats.lastTrained).toLocaleDateString()
                       : 'Never'}
                   </div>
-                  <div className="text-sm text-gray-600">Last Updated</div>
+                  <div className="text-sm text-purple-700 font-medium">Last Updated</div>
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <Button onClick={triggerRetraining} variant="outline">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button onClick={triggerRetraining} variant="outline" className="flex-1 sm:flex-initial">
                   <RefreshCw className="h-4 w-4 mr-2" />
-                  Retrain AI Model
+                  <span className="hidden sm:inline">Retrain AI Model</span>
+                  <span className="sm:hidden">Retrain</span>
                 </Button>
-                <Link href="/knowledge-base">
-                  <Button variant="outline">
+                <Link href="/knowledge-base" className="flex-1 sm:flex-initial">
+                  <Button variant="outline" className="w-full">
                     <Brain className="h-4 w-4 mr-2" />
-                    Manage Knowledge Base
+                    <span className="hidden sm:inline">Manage Knowledge Base</span>
+                    <span className="sm:hidden">Manage KB</span>
                   </Button>
                 </Link>
               </div>
@@ -600,47 +602,47 @@ export default function UnifiedAIConfigPage() {
                 Configure how your AI learns from conversations
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
+            <CardContent className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-gray-50 rounded-lg">
+                <div className="flex-1">
+                  <label className="text-sm font-semibold text-gray-900">
                     Automatic Learning
                   </label>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-600 mt-1">
                     Allow AI to learn from successful conversations
                   </p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, learningEnabled: !settings.learningEnabled })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    settings.learningEnabled ? 'bg-cyan-600' : 'bg-gray-200'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${
+                    settings.learningEnabled ? 'bg-cyan-600' : 'bg-gray-300'
                   }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
                       settings.learningEnabled ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
                 </button>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-gray-50 rounded-lg">
+                <div className="flex-1">
+                  <label className="text-sm font-semibold text-gray-900">
                     Use Knowledge Base
                   </label>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-600 mt-1">
                     Prioritize knowledge base answers over general responses
                   </p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, knowledgeBaseEnabled: !settings.knowledgeBaseEnabled })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    settings.knowledgeBaseEnabled ? 'bg-cyan-600' : 'bg-gray-200'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${
+                    settings.knowledgeBaseEnabled ? 'bg-cyan-600' : 'bg-gray-300'
                   }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm ${
                       settings.knowledgeBaseEnabled ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
@@ -659,9 +661,9 @@ export default function UnifiedAIConfigPage() {
                 Fine-tune your AI&apos;s response generation
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+            <CardContent className="space-y-6">
+              <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-200">
+                <label className="block text-sm font-semibold text-gray-900 mb-3">
                   Response Creativity (Temperature)
                 </label>
                 <div className="flex items-center gap-4">
@@ -672,17 +674,20 @@ export default function UnifiedAIConfigPage() {
                     step="0.1"
                     value={settings.temperature}
                     onChange={(e) => setSettings({ ...settings, temperature: parseFloat(e.target.value) })}
-                    className="flex-1"
+                    className="flex-1 accent-cyan-600"
                   />
-                  <span className="text-sm font-medium text-gray-700 w-12">{settings.temperature}</span>
+                  <div className="bg-white px-3 py-1 rounded-md border border-blue-300 min-w-[3rem] text-center">
+                    <span className="text-sm font-bold text-blue-900">{settings.temperature}</span>
+                  </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Lower = More consistent, Higher = More creative
-                </p>
+                <div className="flex justify-between text-xs text-gray-600 mt-2">
+                  <span>📏 Consistent</span>
+                  <span>🎨 Creative</span>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+                <label className="block text-sm font-semibold text-gray-900 mb-3">
                   Maximum Response Length (Tokens)
                 </label>
                 <div className="flex items-center gap-4">
@@ -693,13 +698,17 @@ export default function UnifiedAIConfigPage() {
                     step="50"
                     value={settings.maxTokens}
                     onChange={(e) => setSettings({ ...settings, maxTokens: parseInt(e.target.value) })}
-                    className="flex-1"
+                    className="flex-1 accent-green-600"
                   />
-                  <span className="text-sm font-medium text-gray-700 w-16">{settings.maxTokens}</span>
+                  <div className="bg-white px-3 py-1 rounded-md border border-green-300 min-w-[4rem] text-center">
+                    <span className="text-sm font-bold text-green-900">{settings.maxTokens}</span>
+                  </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Approximate word count: {Math.round(settings.maxTokens * 0.75)}
-                </p>
+                <div className="bg-white/50 rounded-md px-3 py-2 mt-3">
+                  <p className="text-xs text-green-800 font-medium">
+                    ≈ {Math.round(settings.maxTokens * 0.75)} words • {Math.round(settings.maxTokens * 0.75 / 150)} paragraphs
+                  </p>
+                </div>
               </div>
 
               <div>
