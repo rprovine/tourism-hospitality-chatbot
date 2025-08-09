@@ -23,11 +23,15 @@ const adminRoutes = [
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
   
+  console.log('Middleware called for path:', path)
+  
   // Handle widget routes - remove X-Frame-Options to allow embedding
   if (path.startsWith('/widget/')) {
+    console.log('Middleware: Handling widget route:', path)
     const response = NextResponse.next()
     response.headers.delete('X-Frame-Options')
     response.headers.delete('Content-Security-Policy')
+    console.log('Middleware: Removed X-Frame-Options and CSP headers')
     return response
   }
   
@@ -66,6 +70,7 @@ export const config = {
     '/guests/:path*',
     '/revenue/:path*',
     '/admin/:path*',
-    '/widget/:path*'
+    '/widget/:path*',
+    '/widget/chat'
   ]
 }
