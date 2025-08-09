@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 import { sendWelcomeEmail } from '@/lib/email/sendgrid'
+import { syncContactToHubSpot, canReactivate, getSubscriptionHistory } from '@/lib/payments/hubspot-sync'
 
 const prisma = new PrismaClient()
 
@@ -32,6 +33,19 @@ export async function POST(request: NextRequest) {
         { error: 'Business with this email already exists' },
         { status: 400 }
       )
+    }
+
+    // Check HubSpot for existing contact and history
+    const hubspotHistory = await getSubscriptionHistory(validatedData.email)
+    if (hubspotHistory?.currentStatus === 'cancelled') {
+      // Check if they can reactivate
+      const reactivateCheck = await canReactivate(validatedData.email)
+      if (!reactivateCheck.canReactivate) {
+        return NextResponse.json(
+          { error: reactivateCheck.reason },
+          { status: 400 }
+        )
+      }
     }
     
     // Hash password
@@ -88,6 +102,27 @@ export async function POST(request: NextRequest) {
       }
     })
     
+    // Sync to HubSpot
+    try {
+      const contactParts = (validatedData as any).contactName?.split(' ') || []
+      const firstname = contactParts[0] || ''
+      const lastname = contactParts.slice(1).join(' ') || ''
+      
+      await syncContactToHubSpot({
+        email: validatedData.email,
+        firstname,
+        lastname,
+        company: validatedData.businessName,
+        phone: (validatedData as any).phone || '',
+        tier: validatedData.tier,
+        status: 'active',
+        action: hubspotHistory ? 'reactivate' : 'signup'
+      })
+    } catch (hubspotError) {
+      console.error('HubSpot sync failed:', hubspotError)
+      // Don't fail registration if HubSpot sync fails
+    }
+
     // Send welcome email
     try {
       await sendWelcomeEmail(

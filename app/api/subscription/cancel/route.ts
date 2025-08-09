@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { verifyToken } from '@/lib/auth'
+import { handleCancellation } from '@/lib/payments/hubspot-sync'
 
 const prisma = new PrismaClient()
 
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
     
     const body = await request.json()
-    const { immediate = false } = body
+    const { immediate = false, reason = '' } = body
     
     // Get business and subscription
     const business = await prisma.business.findUnique({
@@ -71,6 +72,13 @@ export async function POST(request: NextRequest) {
         }
       })
       
+      // Sync cancellation to HubSpot
+      try {
+        await handleCancellation(business.email, business.tier, reason)
+      } catch (hubspotError) {
+        console.error('HubSpot sync failed:', hubspotError)
+      }
+      
       return NextResponse.json({
         message: 'Subscription cancelled immediately',
         accessRevokedAt: new Date()
@@ -92,6 +100,13 @@ export async function POST(request: NextRequest) {
           subscriptionStatus: 'cancelling'
         }
       })
+      
+      // Sync pending cancellation to HubSpot
+      try {
+        await handleCancellation(business.email, business.tier, reason)
+      } catch (hubspotError) {
+        console.error('HubSpot sync failed:', hubspotError)
+      }
       
       return NextResponse.json({
         message: 'Subscription will cancel at period end',

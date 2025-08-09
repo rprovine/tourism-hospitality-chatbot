@@ -61,6 +61,8 @@ model Subscription {
   endDate           DateTime
   cancelAtPeriodEnd Boolean   @default(false)
   cancelledAt       DateTime?
+  cancelDate        DateTime?
+  cancelReason      String?
   paymentFailedAt   DateTime?
   gracePeriodEnds   DateTime?
   accessRevokedAt   DateTime?
