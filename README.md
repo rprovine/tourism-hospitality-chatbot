@@ -17,6 +17,15 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
 - **Revenue Optimization**: Dynamic pricing, intelligent upselling, abandonment recovery
 - **Enterprise Security**: SOC 2 compliant, GDPR ready, comprehensive rate limiting
 - **Self-Learning**: AI improves with every conversation
+- **Customer Satisfaction**: Built-in rating system with real-time feedback collection
+
+### 🆕 Latest Updates (December 2024)
+- ✅ **Satisfaction Rating System**: Post-conversation 5-star ratings with optional feedback
+- ✅ **Clean Production Data**: New accounts start with zero mock data
+- ✅ **Knowledge Base URL Import**: Scrape and import content from any website
+- ✅ **Enhanced KB Editor**: In-place editing of Q&A pairs
+- ✅ **Demo Mode Separation**: Demo content isolated to landing page only
+- ✅ **Real-time Analytics**: Accurate conversation and satisfaction metrics
 
 ## ✨ Core Features
 
@@ -60,6 +69,11 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
   - Identify drop-off points
   - Track conversion paths
   - Bottleneck analysis
+- **Satisfaction Tracking**:
+  - Real-time satisfaction scores
+  - Automated post-conversation ratings
+  - Detailed feedback collection
+  - Trend analysis and insights
 - **ROI Calculator**:
   - Real-time ROI tracking
   - 5-year projections

@@ -1,5 +1,14 @@
 # 🚀 Deployment Guide - LeniLani AI Platform
 
+## Last Updated: December 2024
+
+### Recent Changes
+- ✅ Satisfaction rating system integrated
+- ✅ Knowledge base URL import functionality
+- ✅ Clean production data initialization
+- ✅ Demo mode isolation to landing page
+- ✅ Enhanced analytics with satisfaction tracking
+
 ## Table of Contents
 - [Prerequisites](#prerequisites)
 - [Environment Setup](#environment-setup)
@@ -394,6 +403,9 @@ curl -X POST https://yourdomain.com/api/v1/chat \
 - Database connections
 - Memory usage
 - CPU utilization
+- Customer satisfaction scores
+- Conversation completion rates
+- Knowledge base hit rate
 
 ### Alerts to Configure
 - High error rate (>5%)

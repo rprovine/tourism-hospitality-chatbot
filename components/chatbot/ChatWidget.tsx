@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, X, Send, Sparkles } from 'lucide-react'
+import { MessageCircle, X, Send, Sparkles, Star } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { ChatMessage } from '@/lib/types'
 import { getOrCreateSessionId } from '@/lib/utils/session'
@@ -37,6 +37,12 @@ export default function ChatWidget({
   const [hasAutoSent, setHasAutoSent] = useState(false)
   const [sessionId, setSessionId] = useState<string>('')
   const [conversationId, setConversationId] = useState<string | null>(null)
+  const [showRating, setShowRating] = useState(false)
+  const [rating, setRating] = useState(0)
+  const [hoverRating, setHoverRating] = useState(0)
+  const [feedback, setFeedback] = useState('')
+  const [hasRated, setHasRated] = useState(false)
+  const [messageCount, setMessageCount] = useState(0)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -80,6 +86,9 @@ export default function ChatWidget({
     setMessages(prev => [...prev, userMessage])
     setInput('')
     setIsTyping(true)
+    
+    // Increment message count
+    setMessageCount(prev => prev + 1)
 
     try {
       // Get businessId from URL params or use demo
@@ -138,6 +147,52 @@ export default function ChatWidget({
     } finally {
       setIsTyping(false)
     }
+  }
+
+  const handleClose = () => {
+    // Show rating if user has sent at least 2 messages and hasn't rated yet
+    if (messageCount >= 2 && !hasRated && conversationId) {
+      setShowRating(true)
+    } else {
+      setIsOpen(false)
+    }
+  }
+
+  const submitRating = async () => {
+    if (!conversationId || rating === 0) return
+
+    try {
+      const response = await fetch('/api/widget/rate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          conversationId: conversationId,
+          rating: rating,
+          feedback: feedback.trim() || undefined
+        })
+      })
+
+      if (response.ok) {
+        setHasRated(true)
+        // Show thank you message then close
+        setTimeout(() => {
+          setShowRating(false)
+          setIsOpen(false)
+        }, 2000)
+      }
+    } catch (error) {
+      console.error('Failed to submit rating:', error)
+      // Close anyway
+      setShowRating(false)
+      setIsOpen(false)
+    }
+  }
+
+  const skipRating = () => {
+    setShowRating(false)
+    setIsOpen(false)
   }
 
   const generateResponse = (query: string, tierLevel: string) => {
@@ -460,12 +515,107 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
                 </div>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 transition-colors hover:bg-white/30"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
+
+            {/* Rating Overlay */}
+            {showRating && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/95 backdrop-blur-sm">
+                <div className="w-full max-w-sm p-6">
+                  {!hasRated ? (
+                    <>
+                      <h3 className="text-center text-lg font-semibold text-gray-900 mb-4">
+                        How was your experience?
+                      </h3>
+                      
+                      {/* Star Rating */}
+                      <div className="flex justify-center gap-2 mb-6">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            onClick={() => setRating(star)}
+                            onMouseEnter={() => setHoverRating(star)}
+                            onMouseLeave={() => setHoverRating(0)}
+                            className="transition-transform hover:scale-110"
+                          >
+                            <Star
+                              className={cn(
+                                'h-8 w-8 transition-colors',
+                                (hoverRating || rating) >= star
+                                  ? 'fill-yellow-400 text-yellow-400'
+                                  : 'text-gray-300'
+                              )}
+                            />
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Feedback textarea (optional) */}
+                      {rating > 0 && (
+                        <div className="mb-4">
+                          <textarea
+                            value={feedback}
+                            onChange={(e) => setFeedback(e.target.value)}
+                            placeholder="Any additional feedback? (optional)"
+                            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm resize-none h-20 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500"
+                          />
+                        </div>
+                      )}
+
+                      {/* Actions */}
+                      <div className="flex gap-2">
+                        <button
+                          onClick={skipRating}
+                          className="flex-1 px-4 py-2 text-sm text-gray-600 hover:text-gray-800 transition-colors"
+                        >
+                          Skip
+                        </button>
+                        <button
+                          onClick={submitRating}
+                          disabled={rating === 0}
+                          className="flex-1 px-4 py-2 text-sm text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          style={{ 
+                            backgroundColor: rating > 0 ? primaryColor : '#9ca3af'
+                          }}
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center">
+                      <div className="mb-4">
+                        <div className="mx-auto h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+                          <svg
+                            className="h-6 w-6 text-green-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        Thank you!
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Your feedback helps us improve
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
