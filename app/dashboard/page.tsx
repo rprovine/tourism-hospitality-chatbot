@@ -108,7 +108,7 @@ export default function BusinessDashboard() {
               <Bot className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">< 1s</div>
+              <div className="text-2xl font-bold">&lt; 1s</div>
               <p className="text-xs text-muted-foreground">
                 AI response time
               </p>
