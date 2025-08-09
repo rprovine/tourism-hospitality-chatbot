@@ -131,7 +131,7 @@ export default function ConversationsList({ limit }: ConversationsListProps) {
                           <Star
                             key={i}
                             className={`h-3 w-3 ${
-                              i < conversation.satisfaction
+                              i < (conversation.satisfaction || 0)
                                 ? 'text-yellow-400 fill-current'
                                 : 'text-gray-300'
                             }`}
