@@ -523,35 +523,41 @@ export default function RevenuePage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <Alert className="border-l-4 border-l-blue-500">
-                  <Target className="h-4 w-4 text-blue-600" />
-                  <div>
-                    <p className="font-semibold text-gray-900">Opportunity: Weekend Pricing</p>
-                    <p className="text-sm text-gray-700 mt-1">
-                      Your weekend occupancy is 85%. Consider increasing weekend rates by 20% to maximize revenue without impacting demand.
-                    </p>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex gap-3">
+                    <Target className="h-5 w-5 text-blue-600 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-bold text-gray-900 text-base">Opportunity: Weekend Pricing</p>
+                      <p className="text-gray-800 mt-1">
+                        Your weekend occupancy is 85%. Consider increasing weekend rates by 20% to maximize revenue without impacting demand.
+                      </p>
+                    </div>
                   </div>
-                </Alert>
+                </div>
                 
-                <Alert className="border-l-4 border-l-purple-500">
-                  <Gift className="h-4 w-4 text-purple-600" />
-                  <div>
-                    <p className="font-semibold text-gray-900">Upsell Potential: Spa Packages</p>
-                    <p className="text-sm text-gray-700 mt-1">
-                      Guests who book deluxe rooms are 3x more likely to purchase spa packages. Target them with personalized offers.
-                    </p>
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <div className="flex gap-3">
+                    <Gift className="h-5 w-5 text-purple-600 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-bold text-gray-900 text-base">Upsell Potential: Spa Packages</p>
+                      <p className="text-gray-800 mt-1">
+                        Guests who book deluxe rooms are 3x more likely to purchase spa packages. Target them with personalized offers.
+                      </p>
+                    </div>
                   </div>
-                </Alert>
+                </div>
                 
-                <Alert className="border-l-4 border-l-amber-500">
-                  <AlertCircle className="h-4 w-4 text-amber-600" />
-                  <div>
-                    <p className="font-semibold text-gray-900">Recovery Gap: Mobile Users</p>
-                    <p className="text-sm text-gray-700 mt-1">
-                      Mobile abandonment rate is 40% higher than desktop. Implement SMS recovery for better mobile engagement.
-                    </p>
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                  <div className="flex gap-3">
+                    <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-bold text-gray-900 text-base">Recovery Gap: Mobile Users</p>
+                      <p className="text-gray-800 mt-1">
+                        Mobile abandonment rate is 40% higher than desktop. Implement SMS recovery for better mobile engagement.
+                      </p>
+                    </div>
                   </div>
-                </Alert>
+                </div>
               </div>
               
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
