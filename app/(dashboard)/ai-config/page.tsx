@@ -559,22 +559,22 @@ export default function UnifiedAIConfigPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="bg-white border border-gray-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-gray-900 mb-1">{trainingStats.totalDocuments}</div>
-                  <div className="text-sm text-gray-600">Knowledge Items</div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                <div className="bg-gray-50 rounded-lg p-4 text-center">
+                  <div className="text-2xl font-bold text-gray-900">{trainingStats.totalDocuments}</div>
+                  <div className="text-xs text-gray-600 mt-1">Knowledge Items</div>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
-                  <div className="text-3xl font-bold text-gray-900 mb-1">{trainingStats.totalQuestions}</div>
-                  <div className="text-sm text-gray-600">Q&A Pairs</div>
+                <div className="bg-gray-50 rounded-lg p-4 text-center">
+                  <div className="text-2xl font-bold text-gray-900">{trainingStats.totalQuestions}</div>
+                  <div className="text-xs text-gray-600 mt-1">Q&A Pairs</div>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
-                  <div className="text-xl font-semibold text-gray-900 mb-1">
+                <div className="bg-gray-50 rounded-lg p-4 text-center">
+                  <div className="text-lg font-semibold text-gray-900">
                     {trainingStats.lastTrained 
                       ? new Date(trainingStats.lastTrained).toLocaleDateString()
                       : 'Never'}
                   </div>
-                  <div className="text-sm text-gray-600">Last Updated</div>
+                  <div className="text-xs text-gray-600 mt-1">Last Updated</div>
                 </div>
               </div>
 
@@ -602,47 +602,47 @@ export default function UnifiedAIConfigPage() {
                 Configure how your AI learns from conversations
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
-                <div className="flex-1">
-                  <label className="text-sm font-medium text-gray-900">
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between gap-3 p-4 bg-gray-50 rounded-lg">
+                <div className="flex-1 min-w-0">
+                  <label className="text-sm font-medium text-gray-900 block">
                     Automatic Learning
                   </label>
                   <p className="text-xs text-gray-500 mt-1">
-                    Allow AI to learn from successful conversations
+                    Learn from successful conversations
                   </p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, learningEnabled: !settings.learningEnabled })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    settings.learningEnabled ? 'bg-cyan-600' : 'bg-gray-200'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${
+                    settings.learningEnabled ? 'bg-cyan-600' : 'bg-gray-300'
                   }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-md ${
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
                       settings.learningEnabled ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
                 </button>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
-                <div className="flex-1">
-                  <label className="text-sm font-medium text-gray-900">
+              <div className="flex items-center justify-between gap-3 p-4 bg-gray-50 rounded-lg">
+                <div className="flex-1 min-w-0">
+                  <label className="text-sm font-medium text-gray-900 block">
                     Use Knowledge Base
                   </label>
                   <p className="text-xs text-gray-500 mt-1">
-                    Prioritize knowledge base answers over general responses
+                    Prioritize KB answers first
                   </p>
                 </div>
                 <button
                   onClick={() => setSettings({ ...settings, knowledgeBaseEnabled: !settings.knowledgeBaseEnabled })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    settings.knowledgeBaseEnabled ? 'bg-cyan-600' : 'bg-gray-200'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${
+                    settings.knowledgeBaseEnabled ? 'bg-cyan-600' : 'bg-gray-300'
                   }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-md ${
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
                       settings.knowledgeBaseEnabled ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
@@ -661,53 +661,55 @@ export default function UnifiedAIConfigPage() {
                 Fine-tune your AI&apos;s response generation
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="p-4 bg-white border border-gray-200 rounded-lg">
-                <label className="block text-sm font-medium text-gray-900 mb-3">
-                  Response Creativity (Temperature)
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-900">
+                  Response Creativity
                 </label>
-                <div className="flex items-center gap-4">
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={settings.temperature}
-                    onChange={(e) => setSettings({ ...settings, temperature: parseFloat(e.target.value) })}
-                    className="flex-1 accent-cyan-600"
-                  />
-                  <div className="bg-gray-50 px-3 py-1 rounded-md border border-gray-300 min-w-[3rem] text-center">
-                    <span className="text-sm font-semibold text-gray-900">{settings.temperature}</span>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={settings.temperature}
+                      onChange={(e) => setSettings({ ...settings, temperature: parseFloat(e.target.value) })}
+                      className="flex-1 accent-cyan-600"
+                    />
+                    <div className="bg-white px-3 py-1 rounded border border-gray-200 min-w-[3rem] text-center">
+                      <span className="text-sm font-semibold text-gray-900">{settings.temperature}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="flex justify-between text-xs text-gray-500 mt-2">
-                  <span>Consistent</span>
-                  <span>Creative</span>
+                  <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>Consistent</span>
+                    <span>Creative</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="p-4 bg-white border border-gray-200 rounded-lg">
-                <label className="block text-sm font-medium text-gray-900 mb-3">
-                  Maximum Response Length (Tokens)
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-900">
+                  Response Length
                 </label>
-                <div className="flex items-center gap-4">
-                  <input
-                    type="range"
-                    min="50"
-                    max="1000"
-                    step="50"
-                    value={settings.maxTokens}
-                    onChange={(e) => setSettings({ ...settings, maxTokens: parseInt(e.target.value) })}
-                    className="flex-1 accent-cyan-600"
-                  />
-                  <div className="bg-gray-50 px-3 py-1 rounded-md border border-gray-300 min-w-[4rem] text-center">
-                    <span className="text-sm font-semibold text-gray-900">{settings.maxTokens}</span>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="50"
+                      max="1000"
+                      step="50"
+                      value={settings.maxTokens}
+                      onChange={(e) => setSettings({ ...settings, maxTokens: parseInt(e.target.value) })}
+                      className="flex-1 accent-cyan-600"
+                    />
+                    <div className="bg-white px-2 py-1 rounded border border-gray-200 min-w-[3.5rem] text-center">
+                      <span className="text-sm font-semibold text-gray-900">{settings.maxTokens}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="bg-gray-50 rounded-md px-3 py-2 mt-3">
-                  <p className="text-xs text-gray-600">
-                    ≈ {Math.round(settings.maxTokens * 0.75)} words • {Math.round(settings.maxTokens * 0.75 / 150)} paragraphs
-                  </p>
+                  <div className="text-xs text-gray-500 mt-2 text-center">
+                    ≈ {Math.round(settings.maxTokens * 0.75)} words
+                  </div>
                 </div>
               </div>
 
@@ -738,26 +740,26 @@ export default function UnifiedAIConfigPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-gray-900">{usageStats.requests.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">Conversations</div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">{usageStats.requests.toLocaleString()}</div>
+                  <div className="text-xs text-gray-600">Conversations</div>
                 </div>
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-gray-900">
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">
                     {usageStats.tokensUsed >= 1000 
                       ? `${(usageStats.tokensUsed / 1000).toFixed(1)}K` 
                       : usageStats.tokensUsed.toLocaleString()}
                   </div>
-                  <div className="text-sm text-gray-600">Tokens Used</div>
+                  <div className="text-xs text-gray-600">Tokens</div>
                 </div>
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-gray-900">${usageStats.estimatedCost}</div>
-                  <div className="text-sm text-gray-600">Est. Cost</div>
+                <div className="bg-gray-50 rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold text-gray-900">${usageStats.estimatedCost}</div>
+                  <div className="text-xs text-gray-600">Est. Cost</div>
                 </div>
               </div>
               {usageStats.requests > 0 ? (
-                <div>
+                <div className="mt-4">
                   <div className="flex justify-between text-sm text-gray-600 mb-1">
                     <span>Monthly Budget Usage</span>
                     <span>{usageStats.usagePercentage}% of ${usageStats.monthlyBudget}</span>
