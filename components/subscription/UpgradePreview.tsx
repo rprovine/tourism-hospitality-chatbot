@@ -136,11 +136,11 @@ export default function UpgradePreview({
           {/* Plan Comparison */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Current Plan */}
-            <Card className="border-gray-200">
+            <Card className="border-2 border-blue-400">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <CurrentIcon className="h-8 w-8 text-gray-400" />
-                  <Badge variant="outline">Current</Badge>
+                  <CurrentIcon className="h-8 w-8 text-gray-600" />
+                  <Badge className="bg-blue-600 text-white border-0 font-semibold">Current</Badge>
                 </div>
                 <CardTitle className="capitalize">{currentTier}</CardTitle>
                 <div className="text-2xl font-bold">
