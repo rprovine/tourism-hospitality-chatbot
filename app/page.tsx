@@ -65,13 +65,21 @@ export default function LandingPage() {
               </Button>
             </div>
             
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 text-gray-700 hover:text-cyan-700 transition-colors"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            {/* Mobile Navigation */}
+            <div className="md:hidden flex items-center gap-2">
+              <Button 
+                className="bg-cyan-700 hover:bg-cyan-800 text-white text-xs px-3 py-2"
+                onClick={() => window.location.href = '/checkout?plan=starter&interval=monthly'}
+              >
+                Free Trial
+              </Button>
+              <button
+                className="p-2 text-gray-700 hover:text-cyan-700 transition-colors"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
           
           {/* Mobile Menu Dropdown */}
@@ -106,15 +114,6 @@ export default function LandingPage() {
                 >
                   Login
                 </a>
-                <Button 
-                  className="bg-cyan-700 hover:bg-cyan-800 text-white w-full"
-                  onClick={() => {
-                    window.location.href = '/checkout?plan=starter&interval=monthly'
-                    setMobileMenuOpen(false)
-                  }}
-                >
-                  Start 14-Day Free Trial
-                </Button>
               </div>
             </div>
           )}
