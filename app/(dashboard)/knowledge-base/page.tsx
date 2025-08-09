@@ -597,7 +597,7 @@ export default function KnowledgeBasePage() {
                     <p className="font-medium">CSV/JSON/TXT</p>
                     <p className="text-xs text-gray-500">Basic formats</p>
                   </div>
-                  <Badge variant="outline" className="text-xs">All tiers</Badge>
+                  <Badge className="text-xs bg-green-100 text-green-800 border-green-200">All tiers</Badge>
                 </div>
                 <div className={`flex items-center gap-3 p-3 border rounded-lg relative ${businessTier === 'starter' ? 'opacity-50' : ''}`}>
                   <FileSpreadsheet className="h-8 w-8 text-blue-600" />
@@ -606,9 +606,9 @@ export default function KnowledgeBasePage() {
                     <p className="text-xs text-gray-500">XLSX, XLS</p>
                   </div>
                   {businessTier === 'starter' ? (
-                    <Badge variant="secondary" className="text-xs">Pro+</Badge>
+                    <Badge className="text-xs bg-yellow-100 text-yellow-800 border-yellow-200">Pro+</Badge>
                   ) : (
-                    <Badge variant="outline" className="text-xs text-green-600">Available</Badge>
+                    <Badge className="text-xs bg-green-100 text-green-800 border-green-200">Available</Badge>
                   )}
                 </div>
                 <div className={`flex items-center gap-3 p-3 border rounded-lg relative ${businessTier === 'starter' || businessTier === 'professional' ? 'opacity-50' : ''}`}>
@@ -618,9 +618,9 @@ export default function KnowledgeBasePage() {
                     <p className="text-xs text-gray-500">Extract Q&As</p>
                   </div>
                   {businessTier === 'starter' || businessTier === 'professional' ? (
-                    <Badge variant="secondary" className="text-xs">Premium+</Badge>
+                    <Badge className="text-xs bg-purple-100 text-purple-800 border-purple-200">Premium</Badge>
                   ) : (
-                    <Badge variant="outline" className="text-xs text-green-600">Available</Badge>
+                    <Badge className="text-xs bg-green-100 text-green-800 border-green-200">Available</Badge>
                   )}
                 </div>
               </div>
@@ -658,6 +658,20 @@ export default function KnowledgeBasePage() {
                     Q: What time is check-in?<br/>
                     A: Check-in is at 3 PM
                   </div>
+                  {(businessTier === 'professional' || businessTier === 'premium' || businessTier === 'enterprise') && (
+                    <div>
+                      <strong>Excel (XLSX/XLS):</strong><br/>
+                      Column headers: question | answer | category | keywords<br/>
+                      Data rows with your Q&A pairs
+                    </div>
+                  )}
+                  {(businessTier === 'premium' || businessTier === 'enterprise') && (
+                    <div>
+                      <strong>PDF:</strong><br/>
+                      Q: or Question: prefixes for questions<br/>
+                      A: or Answer: prefixes for answers
+                    </div>
+                  )}
                 </AlertDescription>
               </Alert>
             </TabsContent>
