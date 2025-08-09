@@ -113,11 +113,33 @@ export default function KnowledgeBasePage() {
     
     // Check file type and validate
     const fileName = file.name.toLowerCase()
-    const validExtensions = ['.csv', '.json', '.txt']
-    const isValidFile = validExtensions.some(ext => fileName.endsWith(ext))
     
+    // Define tier-based file support
+    const tierFileSupport: Record<string, string[]> = {
+      starter: ['.csv', '.json', '.txt'],
+      professional: ['.csv', '.json', '.txt', '.xlsx', '.xls'],
+      premium: ['.csv', '.json', '.txt', '.xlsx', '.xls', '.pdf'],
+      enterprise: ['.csv', '.json', '.txt', '.xlsx', '.xls', '.pdf', '.docx', '.pptx']
+    }
+    
+    const allowedExtensions = tierFileSupport[businessTier] || tierFileSupport.starter
+    const fileExtension = fileName.substring(fileName.lastIndexOf('.'))
+    const isValidFile = allowedExtensions.includes(fileExtension)
+    
+    // Check if file type requires upgrade
     if (!isValidFile) {
-      alert('Please upload a CSV, JSON, or TXT file. PDF and Excel files are not yet supported.')
+      let upgradeMessage = ''
+      if ((fileExtension === '.xlsx' || fileExtension === '.xls') && businessTier === 'starter') {
+        upgradeMessage = 'Excel files are available in Professional tier and above. Please upgrade to upload Excel files.'
+      } else if (fileExtension === '.pdf' && (businessTier === 'starter' || businessTier === 'professional')) {
+        upgradeMessage = 'PDF files are available in Premium tier and above. Please upgrade to upload PDF files.'
+      } else if ((fileExtension === '.docx' || fileExtension === '.pptx') && businessTier !== 'enterprise') {
+        upgradeMessage = 'Word and PowerPoint files are available in Enterprise tier. Please upgrade to upload these files.'
+      } else {
+        upgradeMessage = `File type ${fileExtension} is not supported. Please upload: ${allowedExtensions.join(', ')}`
+      }
+      
+      alert(upgradeMessage)
       e.target.value = ''
       return
     }
@@ -132,6 +154,14 @@ export default function KnowledgeBasePage() {
       format = 'json'
     } else if (fileName.endsWith('.txt')) {
       format = 'txt'
+    } else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+      format = fileName.endsWith('.xlsx') ? 'xlsx' : 'xls'
+    } else if (fileName.endsWith('.pdf')) {
+      format = 'pdf'
+    } else if (fileName.endsWith('.docx')) {
+      format = 'docx'
+    } else if (fileName.endsWith('.pptx')) {
+      format = 'pptx'
     }
     
     formData.append('format', format)
@@ -155,7 +185,16 @@ export default function KnowledgeBasePage() {
         e.target.value = ''
       } else {
         console.error('Upload error:', data)
-        alert(data.error || 'Failed to upload file')
+        
+        // Check if it's a tier restriction error
+        if (response.status === 403 && data.upgrade) {
+          const upgradeMessage = data.message || data.error
+          if (confirm(`${upgradeMessage}\n\nWould you like to view upgrade options?`)) {
+            window.location.href = '/subscription'
+          }
+        } else {
+          alert(data.error || 'Failed to upload file')
+        }
       }
     } catch (error) {
       console.error('Upload error:', error)
@@ -516,13 +555,21 @@ export default function KnowledgeBasePage() {
                 <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600 mb-2">Upload your files to import knowledge</p>
                 <p className="text-sm text-gray-500 mb-4">
-                  Supported formats: CSV, JSON, TXT (Q&A format)
+                  {businessTier === 'starter' && 'Supported formats: CSV, JSON, TXT'}
+                  {businessTier === 'professional' && 'Supported formats: CSV, JSON, TXT, Excel (XLSX, XLS)'}
+                  {businessTier === 'premium' && 'Supported formats: CSV, JSON, TXT, Excel, PDF'}
+                  {businessTier === 'enterprise' && 'Supported formats: CSV, JSON, TXT, Excel, PDF, Word, PowerPoint'}
                 </p>
                 <input
                   type="file"
                   id="file-upload"
                   className="hidden"
-                  accept=".csv,.json,.txt"
+                  accept={
+                    businessTier === 'enterprise' ? '.csv,.json,.txt,.xlsx,.xls,.pdf,.docx,.pptx' :
+                    businessTier === 'premium' ? '.csv,.json,.txt,.xlsx,.xls,.pdf' :
+                    businessTier === 'professional' ? '.csv,.json,.txt,.xlsx,.xls' :
+                    '.csv,.json,.txt'
+                  }
                   onChange={handleFileUpload}
                   disabled={uploading}
                 />
@@ -544,28 +591,56 @@ export default function KnowledgeBasePage() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                <div className="flex items-center gap-3 p-3 border rounded-lg">
+                <div className="flex items-center gap-3 p-3 border rounded-lg relative">
                   <FileSpreadsheet className="h-8 w-8 text-green-600" />
-                  <div>
-                    <p className="font-medium">CSV Format</p>
-                    <p className="text-xs text-gray-500">question,answer,category</p>
+                  <div className="flex-1">
+                    <p className="font-medium">CSV/JSON/TXT</p>
+                    <p className="text-xs text-gray-500">Basic formats</p>
                   </div>
+                  <Badge variant="outline" className="text-xs">All tiers</Badge>
                 </div>
-                <div className="flex items-center gap-3 p-3 border rounded-lg">
-                  <FileText className="h-8 w-8 text-blue-600" />
-                  <div>
-                    <p className="font-medium">JSON Format</p>
-                    <p className="text-xs text-gray-500">Array of Q&A objects</p>
+                <div className={`flex items-center gap-3 p-3 border rounded-lg relative ${businessTier === 'starter' ? 'opacity-50' : ''}`}>
+                  <FileSpreadsheet className="h-8 w-8 text-blue-600" />
+                  <div className="flex-1">
+                    <p className="font-medium">Excel Files</p>
+                    <p className="text-xs text-gray-500">XLSX, XLS</p>
                   </div>
+                  {businessTier === 'starter' ? (
+                    <Badge variant="secondary" className="text-xs">Pro+</Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-xs text-green-600">Available</Badge>
+                  )}
                 </div>
-                <div className="flex items-center gap-3 p-3 border rounded-lg">
-                  <File className="h-8 w-8 text-gray-600" />
-                  <div>
-                    <p className="font-medium">Text Format</p>
-                    <p className="text-xs text-gray-500">Q: ... A: ... format</p>
+                <div className={`flex items-center gap-3 p-3 border rounded-lg relative ${businessTier === 'starter' || businessTier === 'professional' ? 'opacity-50' : ''}`}>
+                  <FileText className="h-8 w-8 text-red-600" />
+                  <div className="flex-1">
+                    <p className="font-medium">PDF Files</p>
+                    <p className="text-xs text-gray-500">Extract Q&As</p>
                   </div>
+                  {businessTier === 'starter' || businessTier === 'professional' ? (
+                    <Badge variant="secondary" className="text-xs">Premium+</Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-xs text-green-600">Available</Badge>
+                  )}
                 </div>
               </div>
+              
+              {businessTier === 'starter' && (
+                <Alert className="mt-4">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Upgrade for More File Types</AlertTitle>
+                  <AlertDescription>
+                    <div className="mt-2 space-y-1">
+                      <div>📊 <strong>Professional:</strong> Add Excel file support</div>
+                      <div>📄 <strong>Premium:</strong> Add PDF extraction</div>
+                      <div>🏢 <strong>Enterprise:</strong> Word, PowerPoint & more</div>
+                    </div>
+                    <Link href="/subscription">
+                      <Button size="sm" className="mt-3">View Upgrade Options</Button>
+                    </Link>
+                  </AlertDescription>
+                </Alert>
+              )}
               
               <Alert>
                 <AlertCircle className="h-4 w-4" />
