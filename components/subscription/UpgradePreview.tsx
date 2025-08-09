@@ -109,8 +109,8 @@ export default function UpgradePreview({
   const CurrentIcon = tierIcons[currentTier as keyof typeof tierIcons] || Zap
   const NewIcon = tierIcons[newTier as keyof typeof tierIcons] || Zap
   
-  const currentFeatures = tierFeatures[currentTier as keyof typeof tierFeatures]
-  const newFeatures = tierFeatures[newTier as keyof typeof tierFeatures]
+  const currentFeatures = tierFeatures[currentTier as keyof typeof tierFeatures] || tierFeatures.starter
+  const newFeatures = tierFeatures[newTier as keyof typeof tierFeatures] || tierFeatures.starter
   
   const proratedAmount = ((newPrice - currentPrice) * 0.5).toFixed(2) // 50% for half month
   const nextBillingAmount = newPrice
@@ -321,8 +321,16 @@ export default function UpgradePreview({
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Debug info - remove in production */}
+                <div className="text-xs text-gray-500 p-2 bg-gray-100 rounded mb-4">
+                  Upgrading from <b>{currentTier}</b> to <b>{newTier}</b>
+                  <br />Features available: Channels ({newFeatures?.channels?.length || 0}), 
+                  AI Models ({newFeatures?.aiModels?.length || 0}), 
+                  Guest Profiles ({newFeatures?.guestProfiles === -1 ? 'Unlimited' : newFeatures?.guestProfiles || 0})
+                </div>
+                
                 {/* Channel Expansions */}
-                {newFeatures.channels.filter(c => !currentFeatures.channels.includes(c)).length > 0 && (
+                {newFeatures?.channels?.filter(c => !currentFeatures?.channels?.includes(c)).length > 0 && (
                   <div className="pb-3 border-b border-green-200">
                     <h4 className="font-semibold text-green-900 mb-2 flex items-center gap-2">
                       <MessageSquare className="h-4 w-4" />
