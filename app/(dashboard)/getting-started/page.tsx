@@ -35,7 +35,8 @@ import {
   TrendingUp,
   Shield,
   Clock,
-  ChevronRight
+  ChevronRight,
+  ExternalLink
 } from 'lucide-react'
 import Link from 'next/link'
 
