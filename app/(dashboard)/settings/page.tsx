@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
 import { 
   Settings,
   User,
@@ -678,13 +679,28 @@ export default function SettingsPage() {
                 </AlertDescription>
               </Alert>
               
-              {/* Quick Action 1 */}
+              {/* Tier-based limitations */}
+              {business?.tier === 'starter' && (
+                <Alert className="border-yellow-200 bg-yellow-50">
+                  <AlertCircle className="h-4 w-4 text-yellow-600" />
+                  <AlertTitle className="text-yellow-800">Starter Plan Limitations</AlertTitle>
+                  <AlertDescription className="text-yellow-700">
+                    Quick actions on Starter plan provide basic responses with contact information. 
+                    Upgrade to Professional for dynamic responses and real-time availability.
+                  </AlertDescription>
+                </Alert>
+              )}
+              
+              {/* Quick Action 1 - Check Availability */}
               <div className="space-y-4 p-4 border rounded-lg">
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center">
                     <Calendar className="h-5 w-5 text-cyan-600" />
                   </div>
-                  <h3 className="font-medium">Quick Action #1</h3>
+                  <h3 className="font-medium">Quick Action #1: Check Availability</h3>
+                  {business?.tier !== 'starter' && (
+                    <Badge variant="green" className="text-xs">Dynamic</Badge>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Button Text</label>
@@ -695,24 +711,37 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Response</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Response {business?.tier === 'starter' ? '(Basic)' : '(Dynamic)'}
+                  </label>
                   <textarea
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    rows={3}
-                    value={`To check room availability, please call ${profileData.phone || '(808) 555-0100'}. Our team is standing by to help you find the perfect room for your dates.`}
+                    rows={4}
+                    value={
+                      business?.tier === 'starter' 
+                        ? `To check room availability, please call ${profileData.phone || '(808) 555-0100'}. Our team is standing by to help you find the perfect room for your dates.`
+                        : `Checking availability for your dates...\n\n[Professional+ shows real-time availability]\n[Includes room types, rates, and instant booking]\n\nFor immediate assistance, call ${profileData.phone || '(808) 555-0100'}.`
+                    }
                     onChange={() => {}}
                     placeholder="What the chatbot will say when this button is clicked"
+                    disabled={business?.tier !== 'starter'}
                   />
+                  {business?.tier !== 'starter' && (
+                    <p className="text-xs text-gray-500">Professional+ plans pull real-time availability from your PMS integration</p>
+                  )}
                 </div>
               </div>
               
-              {/* Quick Action 2 */}
+              {/* Quick Action 2 - View Amenities */}
               <div className="space-y-4 p-4 border rounded-lg">
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center">
                     <Utensils className="h-5 w-5 text-cyan-600" />
                   </div>
-                  <h3 className="font-medium">Quick Action #2</h3>
+                  <h3 className="font-medium">Quick Action #2: View Amenities</h3>
+                  {business?.tier === 'premium' && (
+                    <Badge variant="purple" className="text-xs">Interactive</Badge>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Button Text</label>
@@ -723,24 +752,36 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Response</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Response {business?.tier === 'premium' ? '(Interactive)' : '(Standard)'}
+                  </label>
                   <textarea
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    rows={3}
-                    value={`Our amenities include:\n• ${profileData.wifi || 'Free WiFi'}\n• ${profileData.parking || 'Free parking'}\n• ${profileData.pool || 'Pool'}\n• ${profileData.gym || 'Fitness Center'}\n• ${profileData.breakfast || 'Breakfast'}`}
+                    rows={5}
+                    value={
+                      business?.tier === 'premium'
+                        ? `🏨 Resort Amenities (Interactive Menu)\n\n[Premium tier shows interactive amenity selector]\n[Includes photos, operating hours, and booking]\n\nSelect an amenity to learn more or make a reservation.`
+                        : `Our amenities include:\n• ${profileData.wifi || 'Free WiFi'}\n• ${profileData.parking || 'Free parking'}\n• ${profileData.pool || 'Pool'}\n• ${profileData.gym || 'Fitness Center'}\n• ${profileData.breakfast || 'Breakfast'}\n\nCall ${profileData.phone || '(808) 555-0100'} for more information.`
+                    }
                     onChange={() => {}}
                     placeholder="What the chatbot will say when this button is clicked"
                   />
+                  {business?.tier === 'premium' && (
+                    <p className="text-xs text-gray-500">Premium plans show interactive amenity galleries with booking capabilities</p>
+                  )}
                 </div>
               </div>
               
-              {/* Quick Action 3 */}
+              {/* Quick Action 3 - Get Directions */}
               <div className="space-y-4 p-4 border rounded-lg">
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center">
                     <MapPin className="h-5 w-5 text-cyan-600" />
                   </div>
-                  <h3 className="font-medium">Quick Action #3</h3>
+                  <h3 className="font-medium">Quick Action #3: Get Directions</h3>
+                  {(business?.tier === 'professional' || business?.tier === 'premium') && (
+                    <Badge variant="blue" className="text-xs">Maps</Badge>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Button Text</label>
@@ -751,14 +792,46 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Response</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Response {business?.tier !== 'starter' ? '(With Maps)' : '(Basic)'}
+                  </label>
                   <textarea
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    rows={3}
-                    value={`We're located at:\n${profileData.address || '123 Beach Road'}, ${profileData.city || 'Honolulu'}, ${profileData.state || 'HI'} ${profileData.zip || '96815'}\n\nFrom the airport: Take H1 West and exit at our street. The drive is about 20 minutes.\n\nNeed help? Call ${profileData.phone || '(808) 555-0100'}`}
+                    rows={5}
+                    value={
+                      business?.tier !== 'starter'
+                        ? `📍 ${profileData.name || 'Our Location'}\n${profileData.address || '123 Beach Road'}, ${profileData.city || 'Honolulu'}, ${profileData.state || 'HI'} ${profileData.zip || '96815'}\n\n[Professional+ shows interactive map]\n[Includes real-time traffic and parking info]\n\nGet directions: [View on Google Maps]`
+                        : `We're located at:\n${profileData.address || '123 Beach Road'}, ${profileData.city || 'Honolulu'}, ${profileData.state || 'HI'} ${profileData.zip || '96815'}\n\nFrom the airport: Take H1 West and exit at our street. The drive is about 20 minutes.\n\nNeed help? Call ${profileData.phone || '(808) 555-0100'}`
+                    }
                     onChange={() => {}}
                     placeholder="What the chatbot will say when this button is clicked"
                   />
+                  {business?.tier !== 'starter' && (
+                    <p className="text-xs text-gray-500">Professional+ plans include interactive maps with real-time traffic</p>
+                  )}
+                </div>
+              </div>
+              
+              {/* Tier Feature Summary */}
+              <div className="border-t pt-6 mt-6">
+                <h3 className="font-medium mb-4">Quick Actions Features by Tier</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="gray">Starter</Badge>
+                    <span className="text-gray-600">Basic text responses with contact information</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="blue">Professional</Badge>
+                    <span className="text-gray-600">Real-time availability, interactive maps, dynamic pricing</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="purple">Premium</Badge>
+                    <span className="text-gray-600">All Professional features + interactive galleries, instant booking</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="yellow">Enterprise</Badge>
+                    <span className="text-gray-600">Custom quick actions with AI-powered responses</span>
+                  </div>
                 </div>
               </div>
               
