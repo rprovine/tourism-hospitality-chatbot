@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "LeniLani Hospitality AI - Tourism & Hospitality Chatbot Platform",
   description: "AI-powered chatbot solution for Hawaii's tourism industry. 24/7 guest assistance, instant bookings, and personalized recommendations.",
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
