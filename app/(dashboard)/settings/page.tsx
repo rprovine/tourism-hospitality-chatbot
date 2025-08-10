@@ -254,7 +254,12 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Business Profile</CardTitle>
-              <CardDescription>Update your business information</CardDescription>
+              <CardDescription>
+                Update your business information
+                <span className="block text-xs text-green-600 mt-1">
+                  ✓ Business profile data doesn't count toward your knowledge base limit
+                </span>
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">

@@ -556,17 +556,22 @@ export default function UnifiedAIConfigPage() {
               <CardTitle>Training Statistics</CardTitle>
               <CardDescription>
                 Your AI has been trained on your business knowledge base
+                <span className="block text-xs text-blue-600 mt-1">
+                  ℹ️ Business profile information (hours, amenities, policies) is always included free
+                </span>
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
                 <div className="bg-gray-50 rounded-lg p-4 text-center">
                   <div className="text-2xl font-bold text-gray-900">{trainingStats.totalDocuments}</div>
-                  <div className="text-xs text-gray-600 mt-1">Knowledge Items</div>
+                  <div className="text-xs text-gray-600 mt-1">Knowledge Base Q&As</div>
+                  <div className="text-xs text-gray-500">Excludes business profile</div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4 text-center">
                   <div className="text-2xl font-bold text-gray-900">{trainingStats.totalQuestions}</div>
-                  <div className="text-xs text-gray-600 mt-1">Q&A Pairs</div>
+                  <div className="text-xs text-gray-600 mt-1">Custom Q&A Pairs</div>
+                  <div className="text-xs text-gray-500">Your added content</div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4 text-center">
                   <div className="text-lg font-semibold text-gray-900">

@@ -269,10 +269,11 @@ export default function BillingPage() {
               </p>
             </div>
             <div className="bg-white p-3 rounded-lg">
-              <p className="text-sm text-gray-600">Knowledge Items</p>
+              <p className="text-sm text-gray-600">Custom Q&As Added</p>
               <p className="font-semibold text-gray-900">
-                12 / {businessTier === 'premium' ? '∞' : businessTier === 'professional' ? '500' : '50'}
+                0 / {businessTier === 'premium' ? 'Unlimited' : businessTier === 'professional' ? '500' : '50'}
               </p>
+              <p className="text-xs text-gray-500 mt-1">Business profile free</p>
             </div>
           </div>
 
@@ -496,7 +497,7 @@ export default function BillingPage() {
                   <td className="text-center p-3">Unlimited</td>
                 </tr>
                 <tr className="border-b hover:bg-gray-50">
-                  <td className="p-3 text-gray-700">Knowledge Base Items</td>
+                  <td className="p-3 text-gray-700">Custom Q&A Limit</td>
                   <td className="text-center p-3">50</td>
                   <td className="text-center p-3">500</td>
                   <td className="text-center p-3">Unlimited</td>
