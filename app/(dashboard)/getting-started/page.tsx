@@ -803,16 +803,19 @@ Thank you!`)
                     {steps.map(step => (
                       <div
                         key={step.id}
-                        className={`flex items-start gap-3 p-3 rounded-lg transition-all cursor-pointer hover:bg-gray-50 ${
-                          completedSteps.has(step.id) ? 'bg-green-50' : 'bg-white'
+                        className={`flex items-start gap-3 p-3 rounded-lg transition-all ${
+                          completedSteps.has(step.id) ? 'bg-green-50' : 'bg-white hover:bg-gray-50'
                         }`}
-                        onClick={() => toggleStep(step.id)}
                       >
-                        <button className="mt-1">
+                        <button 
+                          className="mt-1"
+                          onClick={() => toggleStep(step.id)}
+                          title={completedSteps.has(step.id) ? "Mark as incomplete" : "Mark as complete"}
+                        >
                           {completedSteps.has(step.id) ? (
-                            <CheckCircle2 className="h-5 w-5 text-green-600" />
+                            <CheckCircle2 className="h-5 w-5 text-green-600 hover:text-green-700" />
                           ) : (
-                            <Circle className="h-5 w-5 text-gray-400" />
+                            <Circle className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                           )}
                         </button>
                         <div className="flex-1">
@@ -831,14 +834,24 @@ Thank you!`)
                           </div>
                           <p className="text-sm text-gray-600 mt-1">{step.description}</p>
                         </div>
-                        {step.link && !completedSteps.has(step.id) && (
-                          <Link href={step.link}>
-                            <Button size="sm" variant="ghost">
-                              Start
-                              <ArrowRight className="h-4 w-4 ml-1" />
-                            </Button>
-                          </Link>
-                        )}
+                        <div className="flex gap-2">
+                          {step.link && !completedSteps.has(step.id) && (
+                            <Link href={step.link}>
+                              <Button size="sm" className="bg-cyan-600 hover:bg-cyan-700 text-white">
+                                <ArrowRight className="h-4 w-4 mr-1" />
+                                Go There
+                              </Button>
+                            </Link>
+                          )}
+                          {step.link && completedSteps.has(step.id) && (
+                            <Link href={step.link}>
+                              <Button size="sm" variant="outline">
+                                <ExternalLink className="h-4 w-4 mr-1" />
+                                View
+                              </Button>
+                            </Link>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </CardContent>
