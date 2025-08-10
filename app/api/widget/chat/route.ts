@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       const isDemo = validatedData.businessId === 'demo' || validatedData.businessId === 'demo-business-id'
       const businessInfo = business.businessInfo as any || {}
       const contactPhone = businessInfo.phone || '(808) 555-0100'
-      const contactEmail = business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
+      const contactEmail = businessInfo.contactEmail || business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
       
       // Check if question is about specific business info we have
       const message = validatedData.message.toLowerCase()

@@ -928,19 +928,35 @@ export default function GettingStartedPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => window.open('https://docs.lenilani.ai', '_blank')}
+                >
                   <BookOpen className="h-4 w-4 mr-2" />
                   Documentation
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => window.location.href = '/support'}
+                >
                   <MessageSquare className="h-4 w-4 mr-2" />
                   Live Chat Support
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => window.open('https://calendly.com/lenilani/support', '_blank')}
+                >
                   <Phone className="h-4 w-4 mr-2" />
                   Schedule Call
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => window.location.href = 'mailto:support@lenilani.ai'}
+                >
                   <Mail className="h-4 w-4 mr-2" />
                   Email Support
                 </Button>
@@ -956,61 +972,54 @@ export default function GettingStartedPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => {
+                    alert('Setup Guide PDF will be available soon!')
+                  }}
+                >
                   <FileText className="h-4 w-4 mr-2" />
                   Setup Guide PDF
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => {
+                    // Download Q&A template CSV
+                    const csvContent = "Question,Answer,Category,Keywords\nWhat are your hours?,We are open 24/7,hours,hours open time\nDo you have parking?,Yes we have free parking,amenities,parking park car"
+                    const blob = new Blob([csvContent], { type: 'text/csv' })
+                    const url = window.URL.createObjectURL(blob)
+                    const a = document.createElement('a')
+                    a.href = url
+                    a.download = 'qa-template.csv'
+                    a.click()
+                  }}
+                >
                   <FileText className="h-4 w-4 mr-2" />
                   Q&A Templates
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => window.open('/roi-calculator', '_blank')}
+                >
                   <FileText className="h-4 w-4 mr-2" />
                   ROI Calculator
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => {
+                    alert('Brand assets package coming soon! This will include logos, widget styles, and marketing materials.')
+                  }}
+                >
                   <FileText className="h-4 w-4 mr-2" />
                   Brand Assets
                 </Button>
               </CardContent>
             </Card>
           </div>
-
-          {/* Video Tutorials */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Video Tutorials</CardTitle>
-              <CardDescription>Step-by-step video guides for common tasks</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
-                {[
-                  { title: 'Initial Setup', duration: '5:32', views: '1.2K' },
-                  { title: 'Adding Q&As', duration: '3:45', views: '856' },
-                  { title: 'Website Installation', duration: '2:18', views: '643' },
-                  { title: 'Booking Integration', duration: '8:24', views: '432' },
-                  { title: 'Multi-Language Setup', duration: '4:15', views: '321' },
-                  { title: 'Analytics Overview', duration: '6:51', views: '287' }
-                ].map((video, index) => (
-                  <div key={index} className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
-                    <div className="aspect-video bg-gray-200 rounded mb-3 flex items-center justify-center">
-                      <div className="text-gray-400">
-                        <svg className="h-12 w-12" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </div>
-                    <h4 className="font-medium text-sm">{video.title}</h4>
-                    <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
-                      <span>{video.duration}</span>
-                      <span>•</span>
-                      <span>{video.views} views</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
 
         {/* Success Metrics Tab */}

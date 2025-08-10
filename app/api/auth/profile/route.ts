@@ -73,8 +73,8 @@ export async function PUT(request: NextRequest) {
     
     // Extract business info fields for separate storage
     const { 
-      name, email, type, welcomeMessage, primaryColor, logo,
-      phone, website, address, city, state, zip,
+      name, type, welcomeMessage, primaryColor, logo,
+      contactEmail, phone, website, address, city, state, zip,
       checkInTime, checkOutTime, frontDeskHours,
       parking, wifi, breakfast, pool, gym, restaurant,
       cancellationPolicy, petPolicy, smokingPolicy,
@@ -85,7 +85,7 @@ export async function PUT(request: NextRequest) {
     
     // Create businessInfo object with all the detailed fields
     const businessInfo = {
-      phone, website, address, city, state, zip,
+      contactEmail, phone, website, address, city, state, zip,
       checkInTime, checkOutTime, frontDeskHours,
       parking, wifi, breakfast, pool, gym, restaurant,
       cancellationPolicy, petPolicy, smokingPolicy,

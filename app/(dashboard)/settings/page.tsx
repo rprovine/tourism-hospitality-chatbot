@@ -55,12 +55,12 @@ export default function SettingsPage() {
   const [profileData, setProfileData] = useState({
     // Basic Info
     name: '',
-    email: '',
     type: '',
     welcomeMessage: '',
     primaryColor: '#0891b2',
     logo: '',
-    // Business Details
+    // Contact Details (Customer-facing)
+    contactEmail: '',
     phone: '',
     website: '',
     address: '',
@@ -98,6 +98,21 @@ export default function SettingsPage() {
     paymentAlerts: true
   })
   
+  const [quickActions, setQuickActions] = useState({
+    action1: {
+      text: 'Check Availability',
+      response: ''
+    },
+    action2: {
+      text: 'View Amenities',
+      response: ''
+    },
+    action3: {
+      text: 'Get Directions',
+      response: ''
+    }
+  })
+  
   useEffect(() => {
     loadSettings()
     
@@ -115,11 +130,11 @@ export default function SettingsPage() {
       setBusiness(parsed)
       setProfileData({
         name: parsed.name || '',
-        email: parsed.email || '',
         type: parsed.type || '',
         welcomeMessage: parsed.welcomeMessage || 'Aloha! How can I help you today?',
         primaryColor: parsed.primaryColor || '#0891b2',
         logo: parsed.logo || '',
+        contactEmail: parsed.businessInfo?.contactEmail || '',
         // Load additional business info if it exists
         ...(parsed.businessInfo || {})
       })
@@ -253,14 +268,14 @@ export default function SettingsPage() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">Email</label>
+                <label className="text-sm font-medium text-gray-700">Account Email</label>
                 <Input
                   type="email"
-                  value={profileData.email}
-                  onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
-                  placeholder="contact@business.com"
-                  className="text-gray-900"
+                  value={business?.email || ''}
+                  disabled
+                  className="text-gray-900 bg-gray-50"
                 />
+                <p className="text-xs text-gray-500">This is your login email and cannot be changed</p>
               </div>
               
               <div className="space-y-2">
@@ -346,9 +361,23 @@ export default function SettingsPage() {
               </div>
 
               {/* Contact Information */}
-              <div className="border-t pt-4 mt-4">
-                <h3 className="font-medium text-gray-900 mb-3">Contact Information</h3>
+              <div className="border-t pt-4 mt-4" id="contact-info">
+                <h3 className="font-medium text-gray-900 mb-3">Contact Information (Customer-Facing)</h3>
+                <p className="text-sm text-gray-600 mb-4">This information will be shown to customers in the chatbot</p>
                 <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Customer Service Email</label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        type="email"
+                        value={profileData.contactEmail}
+                        onChange={(e) => setProfileData({ ...profileData, contactEmail: e.target.value })}
+                        placeholder="info@yourhotel.com"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-700">Phone Number</label>
                     <div className="relative">
@@ -361,7 +390,7 @@ export default function SettingsPage() {
                       />
                     </div>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 md:col-span-2">
                     <label className="text-sm font-medium text-gray-700">Website</label>
                     <div className="relative">
                       <Globe className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
@@ -705,8 +734,11 @@ export default function SettingsPage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Button Text</label>
                   <Input
-                    value="Check Availability"
-                    onChange={() => {}}
+                    value={quickActions.action1.text}
+                    onChange={(e) => setQuickActions({
+                      ...quickActions,
+                      action1: { ...quickActions.action1, text: e.target.value }
+                    })}
                     placeholder="e.g., Check Availability"
                   />
                 </div>
@@ -718,11 +750,16 @@ export default function SettingsPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     rows={4}
                     value={
-                      business?.tier === 'starter' 
-                        ? `To check room availability, please call ${profileData.phone || '(808) 555-0100'}. Our team is standing by to help you find the perfect room for your dates.`
-                        : `Checking availability for your dates...\n\n[Professional+ shows real-time availability]\n[Includes room types, rates, and instant booking]\n\nFor immediate assistance, call ${profileData.phone || '(808) 555-0100'}.`
+                      quickActions.action1.response || (
+                        business?.tier === 'starter' 
+                          ? `To check room availability, please call ${profileData.phone || '(808) 555-0100'}. Our team is standing by to help you find the perfect room for your dates.`
+                          : `Checking availability for your dates...\n\n[Professional+ shows real-time availability]\n[Includes room types, rates, and instant booking]\n\nFor immediate assistance, call ${profileData.phone || '(808) 555-0100'}.`
+                      )
                     }
-                    onChange={() => {}}
+                    onChange={(e) => setQuickActions({
+                      ...quickActions,
+                      action1: { ...quickActions.action1, response: e.target.value }
+                    })}
                     placeholder="What the chatbot will say when this button is clicked"
                     disabled={business?.tier !== 'starter'}
                   />
@@ -746,8 +783,11 @@ export default function SettingsPage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Button Text</label>
                   <Input
-                    value="View Amenities"
-                    onChange={() => {}}
+                    value={quickActions.action2.text}
+                    onChange={(e) => setQuickActions({
+                      ...quickActions,
+                      action2: { ...quickActions.action2, text: e.target.value }
+                    })}
                     placeholder="e.g., View Amenities"
                   />
                 </div>
@@ -759,11 +799,16 @@ export default function SettingsPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     rows={5}
                     value={
-                      business?.tier === 'premium'
-                        ? `🏨 Resort Amenities (Interactive Menu)\n\n[Premium tier shows interactive amenity selector]\n[Includes photos, operating hours, and booking]\n\nSelect an amenity to learn more or make a reservation.`
-                        : `Our amenities include:\n• ${profileData.wifi || 'Free WiFi'}\n• ${profileData.parking || 'Free parking'}\n• ${profileData.pool || 'Pool'}\n• ${profileData.gym || 'Fitness Center'}\n• ${profileData.breakfast || 'Breakfast'}\n\nCall ${profileData.phone || '(808) 555-0100'} for more information.`
+                      quickActions.action2.response || (
+                        business?.tier === 'premium'
+                          ? `🏨 Resort Amenities (Interactive Menu)\n\n[Premium tier shows interactive amenity selector]\n[Includes photos, operating hours, and booking]\n\nSelect an amenity to learn more or make a reservation.`
+                          : `Our amenities include:\n• ${profileData.wifi || 'Free WiFi'}\n• ${profileData.parking || 'Free parking'}\n• ${profileData.pool || 'Pool'}\n• ${profileData.gym || 'Fitness Center'}\n• ${profileData.breakfast || 'Breakfast'}\n\nCall ${profileData.phone || '(808) 555-0100'} for more information.`
+                      )
                     }
-                    onChange={() => {}}
+                    onChange={(e) => setQuickActions({
+                      ...quickActions,
+                      action2: { ...quickActions.action2, response: e.target.value }
+                    })}
                     placeholder="What the chatbot will say when this button is clicked"
                   />
                   {business?.tier === 'premium' && (
@@ -786,8 +831,11 @@ export default function SettingsPage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Button Text</label>
                   <Input
-                    value="Get Directions"
-                    onChange={() => {}}
+                    value={quickActions.action3.text}
+                    onChange={(e) => setQuickActions({
+                      ...quickActions,
+                      action3: { ...quickActions.action3, text: e.target.value }
+                    })}
                     placeholder="e.g., Get Directions"
                   />
                 </div>
@@ -799,11 +847,16 @@ export default function SettingsPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     rows={5}
                     value={
-                      business?.tier !== 'starter'
-                        ? `📍 ${profileData.name || 'Our Location'}\n${profileData.address || '123 Beach Road'}, ${profileData.city || 'Honolulu'}, ${profileData.state || 'HI'} ${profileData.zip || '96815'}\n\n[Professional+ shows interactive map]\n[Includes real-time traffic and parking info]\n\nGet directions: [View on Google Maps]`
-                        : `We're located at:\n${profileData.address || '123 Beach Road'}, ${profileData.city || 'Honolulu'}, ${profileData.state || 'HI'} ${profileData.zip || '96815'}\n\nFrom the airport: Take H1 West and exit at our street. The drive is about 20 minutes.\n\nNeed help? Call ${profileData.phone || '(808) 555-0100'}`
+                      quickActions.action3.response || (
+                        business?.tier !== 'starter'
+                          ? `📍 ${profileData.name || 'Our Location'}\n${profileData.address || '123 Beach Road'}, ${profileData.city || 'Honolulu'}, ${profileData.state || 'HI'} ${profileData.zip || '96815'}\n\n[Professional+ shows interactive map]\n[Includes real-time traffic and parking info]\n\nGet directions: [View on Google Maps]`
+                          : `We're located at:\n${profileData.address || '123 Beach Road'}, ${profileData.city || 'Honolulu'}, ${profileData.state || 'HI'} ${profileData.zip || '96815'}\n\nFrom the airport: Take H1 West and exit at our street. The drive is about 20 minutes.\n\nNeed help? Call ${profileData.phone || '(808) 555-0100'}`
+                      )
                     }
-                    onChange={() => {}}
+                    onChange={(e) => setQuickActions({
+                      ...quickActions,
+                      action3: { ...quickActions.action3, response: e.target.value }
+                    })}
                     placeholder="What the chatbot will say when this button is clicked"
                   />
                   {business?.tier !== 'starter' && (
