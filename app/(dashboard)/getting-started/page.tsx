@@ -36,7 +36,7 @@ import {
   Shield,
   Clock,
   ChevronRight,
-  ExternalLink
+  ExternalLink as External
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -847,7 +847,7 @@ Thank you!`)
                           {step.link && completedSteps.has(step.id) && (
                             <Link href={step.link}>
                               <Button size="sm" variant="outline">
-                                <ExternalLink className="h-4 w-4 mr-1" />
+                                <External className="h-4 w-4 mr-1" />
                                 View
                               </Button>
                             </Link>
