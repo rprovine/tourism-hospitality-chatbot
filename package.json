@@ -7,7 +7,14 @@
     "build": "prisma generate && next build --no-lint",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "npm run test:journey && npm run test:tiers",
+    "test:journey": "node scripts/test-customer-journey.js",
+    "test:tiers": "node scripts/test-tier-features.js",
+    "test:all": "npm run lint && npm run test",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset --force"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.58.0",

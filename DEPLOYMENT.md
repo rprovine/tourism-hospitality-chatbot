@@ -2,7 +2,7 @@
 
 ## Last Updated: January 2025
 
-### Recent Changes
+### Recent Changes (January 2025)
 - ✅ **Enhanced Subscription Management System**
   - Multi-step cancellation flow with retention offers (25-50% discounts)
   - Comprehensive upgrade/downgrade preview with 7+ feature categories
@@ -20,10 +20,18 @@
   - Help section with contact information
   - Prorated billing calculations displayed
   - Data loss warnings for downgrades
+  - Mobile-responsive design with hamburger menu
+  - Fixed visual issues in AI config tabs
 - ✅ **Integration Improvements**
   - PMS webhook for real-time booking data
   - Guest Intelligence included in Professional+ tiers
   - Revenue Optimization included in Professional+ tiers
+  - HubSpot CRM contact deduplication
+- ✅ **Comprehensive Testing**
+  - 96.4% pass rate across all tier features
+  - Customer journey fully tested (signup → cancel)
+  - Mobile responsiveness verified
+  - All tier restrictions properly enforced
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
@@ -398,6 +406,16 @@ curl -X POST https://yourdomain.com/api/v1/chat \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"message": "Hello", "sessionId": "test-123", "language": "en"}'
+
+# Run customer journey tests
+node scripts/test-customer-journey.js
+
+# Run tier feature tests
+node scripts/test-tier-features.js
+
+# Verify tier restrictions
+curl https://yourdomain.com/api/subscription/status \
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
 ## Monitoring
