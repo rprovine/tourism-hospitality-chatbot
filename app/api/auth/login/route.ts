@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
+import prisma from '@/lib/prisma'
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -12,31 +12,12 @@ const loginSchema = z.object({
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
 
 export async function POST(request: NextRequest) {
-  let prisma: PrismaClient | null = null
-  
   try {
     const body = await request.json()
     const validatedData = loginSchema.parse(body)
     
     console.log('Login attempt for:', validatedData.email)
     console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL)
-    
-    // Initialize Prisma with connection parameters
-    let dbUrl = process.env.DATABASE_URL || ''
-    if (!dbUrl.includes('pgbouncer')) {
-      const separator = dbUrl.includes('?') ? '&' : '?'
-      dbUrl = dbUrl + separator + 'pgbouncer=true&connection_limit=1'
-    }
-    
-    prisma = new PrismaClient({
-      datasources: {
-        db: { url: dbUrl }
-      }
-    })
-    
-    // Test connection
-    await prisma.$connect()
-    console.log('Database connected successfully')
     
     // Find business
     const business = await prisma.business.findUnique({
@@ -100,12 +81,14 @@ export async function POST(request: NextRequest) {
     }
     
     // Check for Prisma connection errors
-    if (error.message?.includes("Can't reach database server")) {
+    if (error.message?.includes("Can't reach database server") || 
+        error.message?.includes("P1001") ||
+        error.message?.includes("P1002")) {
       return NextResponse.json(
         { 
           error: 'Database connection failed',
           message: 'Unable to connect to database. Please try again later.',
-          details: error.message
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
         },
         { status: 503 }
       )
@@ -115,16 +98,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        message: error.message,
-        type: error.constructor.name,
+        message: process.env.NODE_ENV === 'development' ? error.message : 'An error occurred during login',
+        type: process.env.NODE_ENV === 'development' ? error.constructor.name : undefined,
         stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
       },
       { status: 500 }
     )
-  } finally {
-    // Always disconnect Prisma
-    if (prisma) {
-      await prisma.$disconnect()
-    }
   }
 }
