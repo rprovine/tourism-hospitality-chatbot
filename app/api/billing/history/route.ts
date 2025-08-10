@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
     
     // Check if we have real payment data
-    let invoices = []
+    let invoices: any[] = []
     
     if (business.payments && business.payments.length > 0) {
       // Map real payment data to invoice format
