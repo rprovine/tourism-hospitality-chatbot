@@ -40,8 +40,9 @@ export default function ChatWidget({
   primaryColor = '#0891b2',
   welcomeMessage = 'Aloha! How can I help you today?',
   autoOpen = false,
-  initialQuestion = ''
-}: ChatWidgetProps & { autoOpen?: boolean; initialQuestion?: string }) {
+  initialQuestion = '',
+  embedded = false
+}: ChatWidgetProps & { autoOpen?: boolean; initialQuestion?: string; embedded?: boolean }) {
   const [isOpen, setIsOpen] = useState(autoOpen)
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -540,9 +541,9 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
   }
 
   return (
-    <>
+    <div className={embedded ? "flex items-center justify-center h-screen" : ""}>
       <AnimatePresence>
-        {!isOpen && (
+        {!isOpen && !embedded && (
           <motion.button
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -562,7 +563,10 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed bottom-6 right-6 z-50 h-[600px] w-[380px] rounded-2xl bg-white shadow-2xl"
+            className={cn(
+              "z-50 h-[600px] w-[380px] rounded-2xl bg-white shadow-2xl",
+              embedded ? "mx-auto" : "fixed bottom-6 right-6"
+            )}
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             {/* Header */}
@@ -811,6 +815,6 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   )
 }

@@ -237,7 +237,7 @@ export default function GuestsPage() {
                 className="pl-10 text-gray-900"
               />
             </div>
-            <Button onClick={searchGuests}>Search</Button>
+            <Button onClick={searchGuests} variant="outline">Search</Button>
           </div>
           
           <div className="flex gap-2 mt-4">

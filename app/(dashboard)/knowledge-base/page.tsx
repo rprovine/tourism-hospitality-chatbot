@@ -525,7 +525,7 @@ export default function KnowledgeBasePage() {
                 />
               </div>
               <div className="flex gap-2">
-                <Button onClick={editingItem ? handleUpdate : addManualItem} className="flex-1">
+                <Button onClick={editingItem ? handleUpdate : addManualItem} variant="outline" className="flex-1">
                   {editingItem ? (
                     <><Save className="h-4 w-4 mr-2" />Update Item</>
                   ) : (

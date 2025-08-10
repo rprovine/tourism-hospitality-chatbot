@@ -79,6 +79,7 @@ function WidgetContent() {
         welcomeMessage={businessConfig?.settings?.welcomeMessage || 'Aloha! How can I help you today?'}
         autoOpen={true}
         initialQuestion=""
+        embedded={true}
       />
     </div>
   )
