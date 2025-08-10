@@ -47,6 +47,7 @@ model Business {
   learningPatterns   LearningPattern[]
   aiInsights         AIInsight[]
   checkoutSessions   CheckoutSession[]
+  payments           Payment[]
 }
 
 model Subscription {
@@ -72,6 +73,35 @@ model Subscription {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   business          Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id              String    @id @default(cuid())
+  businessId      String
+  amount          Decimal   @db.Decimal(10, 2)
+  currency        String    @default("USD")
+  status          String    // paid, pending, failed, refunded
+  description     String
+  invoiceNumber   String    @unique
+  paymentMethod   String?   // Visa •••• 4242
+  stripeInvoiceId String?
+  hubspotInvoiceId String?
+  billingPeriodStart DateTime
+  billingPeriodEnd   DateTime
+  dueDate         DateTime?
+  paidAt          DateTime?
+  failedAt        DateTime?
+  refundedAt      DateTime?
+  refundAmount    Decimal?  @db.Decimal(10, 2)
+  refundReason    String?
+  metadata        Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  business        Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  
+  @@index([businessId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model Conversation {

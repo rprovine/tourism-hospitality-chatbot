@@ -26,6 +26,8 @@ interface Invoice {
   paymentMethod?: string
   refundAmount?: number
   refundDate?: string
+  dueDate?: string
+  paidAt?: string
 }
 
 interface BillingHistoryProps {
@@ -54,60 +56,17 @@ export default function BillingHistory({ businessId }: BillingHistoryProps) {
         const data = await response.json()
         setInvoices(data.invoices || [])
       } else {
-        // Use mock data if API fails
-        setInvoices(getMockInvoices())
+        console.error('Failed to fetch billing history')
+        setInvoices([])
       }
     } catch (error) {
       console.error('Failed to fetch billing history:', error)
-      setInvoices(getMockInvoices())
+      setInvoices([])
     } finally {
       setLoading(false)
     }
   }
 
-  const getMockInvoices = (): Invoice[] => {
-    const today = new Date()
-    return [
-      {
-        id: '1',
-        date: new Date(today.getFullYear(), today.getMonth(), 1).toISOString(),
-        amount: 149,
-        status: 'paid',
-        description: 'Professional Plan - Monthly',
-        invoiceNumber: 'INV-2024-001',
-        paymentMethod: 'Visa •••• 4242'
-      },
-      {
-        id: '2',
-        date: new Date(today.getFullYear(), today.getMonth() - 1, 1).toISOString(),
-        amount: 149,
-        status: 'paid',
-        description: 'Professional Plan - Monthly',
-        invoiceNumber: 'INV-2024-002',
-        paymentMethod: 'Visa •••• 4242'
-      },
-      {
-        id: '3',
-        date: new Date(today.getFullYear(), today.getMonth() - 2, 1).toISOString(),
-        amount: 149,
-        status: 'paid',
-        description: 'Professional Plan - Monthly',
-        invoiceNumber: 'INV-2024-003',
-        paymentMethod: 'Visa •••• 4242'
-      },
-      {
-        id: '4',
-        date: new Date(today.getFullYear(), today.getMonth() - 3, 1).toISOString(),
-        amount: 29,
-        status: 'refunded',
-        description: 'Starter Plan - Monthly',
-        invoiceNumber: 'INV-2024-004',
-        paymentMethod: 'Visa •••• 4242',
-        refundAmount: 29,
-        refundDate: new Date(today.getFullYear(), today.getMonth() - 3, 15).toISOString()
-      }
-    ]
-  }
 
   const handleDownloadInvoice = async (invoiceId: string) => {
     setDownloadingId(invoiceId)
@@ -210,7 +169,7 @@ export default function BillingHistory({ businessId }: BillingHistoryProps) {
               <div className="text-2xl font-bold">{formatCurrency(totalSpent)}</div>
               <ArrowUpRight className="h-5 w-5 text-gray-400" />
             </div>
-            <p className="text-xs text-gray-500 mt-1">All time</p>
+            <p className="text-xs text-gray-500 mt-1">Last 12 months</p>
           </CardContent>
         </Card>
         
@@ -223,7 +182,7 @@ export default function BillingHistory({ businessId }: BillingHistoryProps) {
               <div className="text-2xl font-bold">{formatCurrency(totalRefunded)}</div>
               <ArrowDownRight className="h-5 w-5 text-gray-400" />
             </div>
-            <p className="text-xs text-gray-500 mt-1">All time</p>
+            <p className="text-xs text-gray-500 mt-1">Last 12 months</p>
           </CardContent>
         </Card>
         
@@ -233,11 +192,17 @@ export default function BillingHistory({ businessId }: BillingHistoryProps) {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">{formatCurrency(149)}</div>
+              <div className="text-2xl font-bold">
+                {invoices.find(inv => inv.status === 'pending') 
+                  ? formatCurrency(invoices.find(inv => inv.status === 'pending')!.amount)
+                  : '-'}
+              </div>
               <CreditCard className="h-5 w-5 text-gray-400" />
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              {new Date(new Date().setMonth(new Date().getMonth() + 1)).toLocaleDateString()}
+              {invoices.find(inv => inv.status === 'pending')?.dueDate 
+                ? new Date(invoices.find(inv => inv.status === 'pending')!.dueDate!).toLocaleDateString()
+                : 'No pending payment'}
             </p>
           </CardContent>
         </Card>
@@ -312,8 +277,14 @@ export default function BillingHistory({ businessId }: BillingHistoryProps) {
           ) : (
             <div className="text-center py-8">
               <FileText className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-              <h3 className="font-medium text-gray-900 mb-1">No billing history</h3>
-              <p className="text-sm text-gray-500">Your invoices will appear here</p>
+              <h3 className="font-medium text-gray-900 mb-1">No billing history yet</h3>
+              <p className="text-sm text-gray-500">
+                {localStorage.getItem('business') && 
+                 (JSON.parse(localStorage.getItem('business')!).subscriptionStatus === 'trial' ||
+                  JSON.parse(localStorage.getItem('business')!).subscriptionStatus === 'pending')
+                  ? 'Your first invoice will appear after your trial ends'
+                  : 'Your invoices will appear here once you make a payment'}
+              </p>
             </div>
           )}
         </CardContent>

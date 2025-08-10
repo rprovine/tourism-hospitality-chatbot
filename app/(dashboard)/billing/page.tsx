@@ -255,7 +255,11 @@ export default function BillingPage() {
             <div className="bg-white p-3 rounded-lg">
               <p className="text-sm text-gray-600">Next Billing</p>
               <p className="font-semibold text-gray-900">
-                {subscription?.endDate ? new Date(String(subscription.endDate)).toLocaleDateString() : 'N/A'}
+                {subscription?.status === 'demo' || subscription?.status === 'trial' 
+                  ? 'After trial ends'
+                  : subscription?.endDate 
+                    ? new Date(String(subscription.endDate)).toLocaleDateString() 
+                    : 'N/A'}
               </p>
             </div>
             <div className="bg-white p-3 rounded-lg">

@@ -21,7 +21,11 @@ export async function GET(request: NextRequest) {
     const business = await prisma.business.findUnique({
       where: { id: decoded.businessId },
       include: { 
-        subscription: true
+        subscription: true,
+        payments: {
+          orderBy: { createdAt: 'desc' },
+          take: 12 // Last 12 payments
+        }
       }
     })
     
@@ -29,20 +33,75 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Business not found' }, { status: 404 })
     }
     
-    // For now, return mock data
-    // In production, this would fetch from your payment processor (Stripe, HubSpot, etc.)
-    const mockInvoices = generateMockInvoices(business)
+    // Check if we have real payment data
+    let invoices = []
+    
+    if (business.payments && business.payments.length > 0) {
+      // Map real payment data to invoice format
+      invoices = business.payments.map(payment => ({
+        id: payment.id,
+        date: payment.createdAt.toISOString(),
+        amount: Number(payment.amount),
+        status: payment.status,
+        description: payment.description,
+        invoiceNumber: payment.invoiceNumber,
+        paymentMethod: payment.paymentMethod,
+        refundAmount: payment.refundAmount ? Number(payment.refundAmount) : undefined,
+        refundDate: payment.refundedAt?.toISOString(),
+        refundReason: payment.refundReason,
+        dueDate: payment.dueDate?.toISOString(),
+        paidAt: payment.paidAt?.toISOString()
+      }))
+    } else {
+      // No payments exist - determine what to do based on account type
+      const isDemoAccount = business.email?.endsWith('@demo.com')
+      
+      if (isDemoAccount) {
+        // Only generate sample payments for demo accounts
+        await generateSamplePaymentsForDemo(business)
+        
+        // Fetch the newly created payments
+        const updatedBusiness = await prisma.business.findUnique({
+          where: { id: decoded.businessId },
+          include: {
+            payments: {
+              orderBy: { createdAt: 'desc' },
+              take: 12
+            }
+          }
+        })
+        
+        if (updatedBusiness?.payments) {
+          invoices = updatedBusiness.payments.map(payment => ({
+            id: payment.id,
+            date: payment.createdAt.toISOString(),
+            amount: Number(payment.amount),
+            status: payment.status,
+            description: payment.description,
+            invoiceNumber: payment.invoiceNumber,
+            paymentMethod: payment.paymentMethod,
+            refundAmount: payment.refundAmount ? Number(payment.refundAmount) : undefined,
+            refundDate: payment.refundedAt?.toISOString(),
+            refundReason: payment.refundReason,
+            dueDate: payment.dueDate?.toISOString(),
+            paidAt: payment.paidAt?.toISOString()
+          }))
+        }
+      }
+      // For all real accounts (trial, active, cancelled, etc.), invoices array stays empty if no real payments exist
+      // Real payments should only be created through actual payment processing (Stripe, HubSpot, etc.)
+    }
     
     return NextResponse.json({
-      invoices: mockInvoices,
+      invoices,
       summary: {
-        totalSpent: mockInvoices
+        totalSpent: invoices
           .filter(inv => inv.status === 'paid')
           .reduce((sum, inv) => sum + inv.amount, 0),
-        totalRefunded: mockInvoices
+        totalRefunded: invoices
           .filter(inv => inv.status === 'refunded')
           .reduce((sum, inv) => sum + (inv.refundAmount || 0), 0),
-        invoiceCount: mockInvoices.length
+        invoiceCount: invoices.length
       }
     })
     
@@ -57,9 +116,12 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function generateMockInvoices(business: any) {
-  const invoices: any[] = []
-  const today = new Date()
+async function generateSamplePaymentsForDemo(business: any) {
+  // Only generate sample data for demo accounts
+  if (!business.email?.endsWith('@demo.com')) {
+    return
+  }
+  
   const tierPrices: Record<string, number> = {
     starter: 29,
     professional: 149,
@@ -68,41 +130,52 @@ function generateMockInvoices(business: any) {
   }
   
   const currentPrice = tierPrices[business.tier] || 29
-  const interval = business.subscription?.interval || 'monthly'
+  const today = new Date()
   
-  // Generate last 6 months of invoices
-  for (let i = 0; i < 6; i++) {
-    const invoiceDate = new Date(today)
-    invoiceDate.setMonth(today.getMonth() - i)
+  // Generate last 6 months of payment history for demo
+  const payments = []
+  
+  for (let i = 5; i >= 0; i--) {
+    const billingDate = new Date(today)
+    billingDate.setMonth(today.getMonth() - i)
+    billingDate.setDate(1) // First of the month
     
-    const invoice: any = {
-      id: `inv_${Date.now()}_${i}`,
-      date: invoiceDate.toISOString(),
+    const billingEndDate = new Date(billingDate)
+    billingEndDate.setMonth(billingEndDate.getMonth() + 1)
+    billingEndDate.setDate(0) // Last day of the month
+    
+    const paymentData = {
+      businessId: business.id,
       amount: currentPrice,
+      currency: 'USD',
       status: i === 0 ? 'pending' : 'paid',
-      description: `${business.tier.charAt(0).toUpperCase() + business.tier.slice(1)} Plan - ${interval.charAt(0).toUpperCase() + interval.slice(1)}`,
-      invoiceNumber: `INV-${invoiceDate.getFullYear()}-${String(invoiceDate.getMonth() + 1).padStart(2, '0')}-${String(i + 1).padStart(3, '0')}`,
-      paymentMethod: 'Visa •••• 4242',
-      dueDate: new Date(invoiceDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString()
+      description: `${business.tier.charAt(0).toUpperCase() + business.tier.slice(1)} Plan - Monthly`,
+      invoiceNumber: `DEMO-${billingDate.getFullYear()}-${String(billingDate.getMonth() + 1).padStart(2, '0')}-${String(business.id.slice(-4)).toUpperCase()}`,
+      paymentMethod: 'Demo Card •••• 1234',
+      billingPeriodStart: billingDate,
+      billingPeriodEnd: billingEndDate,
+      dueDate: new Date(billingDate.getTime() + 7 * 24 * 60 * 60 * 1000),
+      paidAt: i === 0 ? null : new Date(billingDate.getTime() + 2 * 24 * 60 * 60 * 1000),
+      createdAt: billingDate
     }
     
-    // Add some variety to the data
+    // Add some variety - show an upgrade from starter plan
     if (i === 4 && business.tier !== 'starter') {
-      // Show an upgrade from starter
-      invoice.amount = 29
-      invoice.description = 'Starter Plan - Monthly'
+      paymentData.amount = 29
+      paymentData.description = 'Starter Plan - Monthly (Upgraded)'
     }
     
-    if (i === 5 && Math.random() > 0.7) {
-      // Sometimes show a refund
-      invoice.status = 'refunded'
-      invoice.refundAmount = invoice.amount
-      invoice.refundDate = new Date(invoiceDate.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString()
-      invoice.refundReason = 'Customer request'
-    }
-    
-    invoices.push(invoice)
+    payments.push(paymentData)
   }
   
-  return invoices
+  // Create all payments in the database
+  for (const payment of payments) {
+    try {
+      await prisma.payment.create({
+        data: payment
+      })
+    } catch (error) {
+      console.error('Error creating demo payment:', error)
+    }
+  }
 }

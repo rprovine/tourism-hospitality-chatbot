@@ -3,6 +3,13 @@
 ## Last Updated: January 2025
 
 ### Recent Changes (January 2025)
+- ✅ **Real Billing & Payment System**
+  - Added Payment model to database for tracking real invoices
+  - Proper handling of trial, demo, and paid accounts
+  - Payment webhook endpoint for Stripe/HubSpot integration
+  - Billing history shows actual payment data (no more mock data)
+  - Trial accounts correctly show no payment history
+  - Demo accounts auto-generate sample data for testing
 - ✅ **Business Profile & Chatbot Integration**
   - Complete business profile management in settings
   - Chatbot automatically pulls from business profile data
@@ -404,6 +411,7 @@ npm run create-admin
 ### 4. Configure Webhooks
 - WhatsApp: `https://yourdomain.com/api/channels/whatsapp/webhook`
 - Twilio SMS: `https://yourdomain.com/api/channels/sms/webhook`
+- Payment Processing: `https://yourdomain.com/api/webhooks/payment`
 - HubSpot: `https://yourdomain.com/api/payments/webhook`
 - PMS Integration: `https://yourdomain.com/api/webhooks/pms`
 
@@ -565,9 +573,15 @@ export DEBUG="prisma:query"
 - `GET /api/subscription` - Get current subscription details
 - `POST /api/subscription/cancel` - Cancel subscription with reason
 - `GET /api/export/data` - Export all business data (JSON)
-- `GET /api/billing/history` - Get billing history with invoices
+- `GET /api/billing/history` - Get billing history with real payment data
 - `GET /api/billing/invoice/{id}` - Download specific invoice
 - `POST /api/payments/checkout` - Create checkout session
+
+### Payment Processing
+- `POST /api/webhooks/payment` - Webhook endpoint for payment processors
+  - Accepts payment data from Stripe, HubSpot, or other processors
+  - Creates/updates payment records in database
+  - Updates subscription status based on payment success/failure
 
 ### Customer Retention
 - Retention offers automatically triggered during cancellation

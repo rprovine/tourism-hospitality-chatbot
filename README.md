@@ -20,6 +20,13 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
 - **Customer Satisfaction**: Built-in rating system with real-time feedback collection
 
 ### 🆕 Latest Updates (January 2025)
+- ✅ **Real Billing & Payment System**: Complete payment tracking and management
+  - Database Payment model for tracking real invoices and payments
+  - Proper handling of trial, demo, and paid accounts
+  - Payment webhook endpoint for Stripe/HubSpot integration
+  - Billing history shows actual payment data (no more mock data)
+  - Trial accounts correctly show no payment history
+  - Demo accounts auto-generate sample data for testing
 - ✅ **Enhanced Business Profile Management**: Comprehensive business information system
   - Complete contact info, location, and operating hours management
   - Detailed amenities and policies configuration
