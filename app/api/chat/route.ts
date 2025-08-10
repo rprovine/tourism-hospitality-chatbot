@@ -136,7 +136,7 @@ export async function POST(request: NextRequest) {
           ]
           
           const response = await openAI.createChatCompletion(messages, {
-            model: aiSettings.chatgptSettings?.modelPreference || 'gpt-4',
+            model: aiSettings.chatgptSettings?.modelPreference || 'gpt-3.5-turbo',
             temperature: aiSettings.temperature || 0.7,
             maxTokens: aiSettings.maxTokens || 500
           })
@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
               content: m.content
             })),
             knowledgeBase: knowledgeMatches
-          })
+          }, aiSettings.claudeSettings?.modelPreference)
         }
       } else {
         // OpenAI not configured, fall back to Claude
@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
             content: m.content
           })),
           knowledgeBase: knowledgeMatches
-        })
+        }, aiSettings.claudeSettings?.modelPreference)
       }
     } else {
       // Default to Claude
@@ -188,7 +188,8 @@ export async function POST(request: NextRequest) {
             content: m.content
           })),
           knowledgeBase: knowledgeMatches
-        }
+        },
+        aiSettings.claudeSettings?.modelPreference
       )
     }
     

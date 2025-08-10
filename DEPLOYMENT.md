@@ -90,9 +90,9 @@ DATABASE_URL="postgresql://user:password@host:5432/lenilani_prod"
 JWT_SECRET="<generate-secure-64-char-string>"
 ADMIN_PASSWORD="<strong-admin-password>"
 
-# AI Services
-ANTHROPIC_API_KEY="sk-ant-api-xxx"  # For Claude models
-OPENAI_API_KEY="sk-xxx"  # For GPT models
+# AI Services (Server-Side Managed)
+ANTHROPIC_API_KEY="sk-ant-api-xxx"  # For Claude models (server-only, not user provided)
+OPENAI_API_KEY="sk-xxx"  # For GPT models (server-only, not user provided)
 
 # Payment Processing
 HUBSPOT_ACCESS_TOKEN="pat-xxx"
@@ -459,8 +459,12 @@ curl https://yourdomain.com/api/subscription/status \
 ### Key Metrics to Monitor
 - Response time (<2s target)
 - Error rate (<1%)
-- API usage by tier (real tracking)
-- Conversation limits per tier
+- API usage by tier (real tracking with 70%+ profit margin enforcement)
+- Conversation limits per tier:
+  - Starter: 500/month (99.7% margin)
+  - Professional: 2,500/month (87.4% margin) 
+  - Premium: 7,500/month (70.0% margin)
+  - Enterprise: 30,000/month (70.0% margin)
 - Database connections
 - Memory usage
 - CPU utilization

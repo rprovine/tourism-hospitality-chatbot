@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { LoadingState } from '@/components/ui/loading-state'
+import { EmptyState } from '@/components/analytics/EmptyStates'
 import { 
   TrendingUp, 
   Users, 
@@ -37,12 +38,19 @@ export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [dateRange, setDateRange] = useState('7d')
+  const [businessTier, setBusinessTier] = useState('starter')
   // const [compareMode, setCompareMode] = useState(false)
   
   useEffect(() => {
     // Only fetch analytics on client side
     if (typeof window !== 'undefined') {
       fetchAnalytics()
+      // Get business tier
+      const businessData = localStorage.getItem('business')
+      if (businessData) {
+        const business = JSON.parse(businessData)
+        setBusinessTier(business.tier || 'starter')
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateRange])
@@ -281,6 +289,9 @@ export default function AnalyticsPage() {
         </TabsList>
         
         <TabsContent value="conversations" className="space-y-4">
+          {(!data.conversationsByDay || data.conversationsByDay.length === 0) ? (
+            <EmptyState tab="conversations" tier={businessTier} />
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Daily Conversations Chart */}
             <Card>
@@ -364,9 +375,14 @@ export default function AnalyticsPage() {
               </div>
             </CardContent>
           </Card>
+          </div>
+          )}
         </TabsContent>
         
         <TabsContent value="users" className="space-y-4">
+          {businessTier === 'starter' || !data.languageDistribution || Object.keys(data.languageDistribution).length === 0 ? (
+            <EmptyState tab="users" tier={businessTier} />
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Language Distribution */}
             <Card>

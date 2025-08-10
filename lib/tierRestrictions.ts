@@ -2,7 +2,7 @@
 
 export const TIER_FEATURES = {
   starter: {
-    conversationsPerMonth: 100,
+    conversationsPerMonth: 500, // Increased from 100 to match pricing page (still 95%+ margin)
     knowledgeBaseItems: 50,
     channels: ['web'],
     analytics: 'basic',
@@ -24,7 +24,7 @@ export const TIER_FEATURES = {
     integrations: false
   },
   professional: {
-    conversationsPerMonth: 1000,
+    conversationsPerMonth: 2500, // Increased from 1000, still maintains 85%+ margin
     knowledgeBaseItems: 500,
     channels: ['web', 'whatsapp', 'sms'],
     analytics: 'advanced',
@@ -46,12 +46,34 @@ export const TIER_FEATURES = {
     integrations: true
   },
   premium: {
-    conversationsPerMonth: -1, // unlimited
+    conversationsPerMonth: 7500, // Reduced to ensure 70% margin ($90 cost vs $299 revenue = 70% margin)
     knowledgeBaseItems: -1, // unlimited
     channels: ['web', 'whatsapp', 'sms', 'instagram', 'facebook'],
     analytics: 'enterprise',
     aiModels: ['claude-haiku', 'claude-sonnet', 'claude-opus', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo'],
     languages: ['english', 'spanish', 'japanese', 'chinese', 'french', 'german', 'pidgin', 'hawaiian'],
+    multiLanguage: true,
+    customBranding: true,
+    apiAccess: true,
+    revenue: true,
+    guests: true,
+    upselling: true,
+    recovery: true,
+    channels_config: true,
+    maxTeamMembers: -1, // unlimited
+    webhooks: true,
+    whiteLabel: true,
+    prioritySupport: true,
+    exportData: true,
+    integrations: true
+  },
+  enterprise: {
+    conversationsPerMonth: 30000, // Reduced to ensure 70% margin ($300 cost vs $999 revenue = 70% margin)
+    knowledgeBaseItems: -1, // unlimited
+    channels: ['web', 'whatsapp', 'sms', 'instagram', 'facebook', 'telegram'],
+    analytics: 'enterprise',
+    aiModels: ['claude-haiku', 'claude-sonnet', 'claude-opus', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo'],
+    languages: ['english', 'spanish', 'japanese', 'chinese', 'french', 'german', 'pidgin', 'hawaiian', 'korean', 'portuguese'],
     multiLanguage: true,
     customBranding: true,
     apiAccess: true,
@@ -76,7 +98,8 @@ export const RESTRICTED_ROUTES = {
     '/channels'
   ],
   professional: [],
-  premium: []
+  premium: [],
+  enterprise: []
 }
 
 export function hasFeatureAccess(tier: string, feature: keyof typeof TIER_FEATURES.starter): boolean {

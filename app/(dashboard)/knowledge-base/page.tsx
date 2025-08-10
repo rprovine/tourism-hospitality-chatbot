@@ -810,10 +810,10 @@ export default function KnowledgeBasePage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         <h3 className="font-medium">{item.question}</h3>
-                        <Badge variant={item.isActive ? 'default' : 'secondary'}>
+                        <Badge variant={item.isActive ? 'success' : 'gray'}>
                           {item.isActive ? 'Active' : 'Inactive'}
                         </Badge>
-                        <Badge variant="outline">{item.category}</Badge>
+                        <Badge variant="blue">{item.category}</Badge>
                       </div>
                       <p className="text-gray-600 text-sm mb-2">{item.answer}</p>
                       {item.keywords && (

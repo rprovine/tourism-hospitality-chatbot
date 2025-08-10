@@ -141,9 +141,9 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
 
 ### Comprehensive Feature Comparison (96.4% Tested & Verified)
 
-| Feature | Starter ($29) | Professional ($149) | Premium ($299) | Enterprise (Custom) |
+| Feature | Starter ($29) | Professional ($149) | Premium ($299) | Enterprise ($999+) |
 |---------|---------------|---------------------|----------------|---------------------|
-| **Conversations/month** | 100 | 1,000 | Unlimited | Unlimited |
+| **Conversations/month** | 500 | 2,500 | 7,500 | 30,000 |
 | **Knowledge Base Items** | 50 | 500 | Unlimited | Unlimited |
 | **Guest Profiles** | ❌ | 1,000 | Unlimited | Unlimited |
 | **Team Members** | 1 | 5 | Unlimited | Unlimited |
@@ -222,7 +222,7 @@ DATABASE_URL="postgresql://user:password@localhost:5432/chatbot"
 # Authentication
 JWT_SECRET="your-secret-key-minimum-32-characters"
 
-# AI Models
+# AI Models (Server-Side Only - Managed Infrastructure)
 OPENAI_API_KEY="sk-..."
 OPENAI_ORG_ID="org-..." # Optional
 ANTHROPIC_API_KEY="sk-ant-..." # For Claude models
@@ -230,6 +230,14 @@ ANTHROPIC_API_KEY="sk-ant-..." # For Claude models
 # Application
 NEXT_PUBLIC_APP_URL="https://yourdomain.com"
 ```
+
+### AI API Key Management
+**Important**: This application uses a managed AI infrastructure approach:
+- ✅ **Server-side API keys only**: All AI API keys are stored as environment variables on the server
+- ✅ **No user-provided keys**: Users don't need to provide or manage any API keys
+- ✅ **Automatic model selection**: Users choose preferences in the UI, system uses server keys
+- ✅ **Built-in cost control**: Conversation limits ensure 70%+ profit margin on all tiers
+- ✅ **Fallback responses**: If API keys aren't configured, system provides intelligent rule-based responses
 
 ### Optional Integrations
 
@@ -540,16 +548,16 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 ## 📋 Subscription Tiers
 
 ### Starter ($29/month)
-- 100 conversations/month
-- Basic AI models (GPT-3.5)
+- **500 conversations/month** (99.7% profit margin)
+- Basic AI models (Claude Haiku, GPT-3.5)
 - Web chat widget only
 - 50 knowledge base items
 - Email support
 - **14-day free trial** (no payment required)
 
-### Professional ($149/month)
-- 1,000 conversations/month
-- Dual AI (GPT-4 + Claude Sonnet)
+### Professional ($149/month) 
+- **2,500 conversations/month** (87.4% profit margin)
+- Dual AI (Claude Sonnet + GPT-4)
 - Multi-channel (WhatsApp, SMS)
 - 500 knowledge base items
 - **Guest Intelligence (1,000 profiles)**
@@ -559,8 +567,8 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 - **14-day free trial** (no payment required)
 
 ### Premium ($299/month)
-- Unlimited conversations
-- All AI models (GPT-4, Claude Sonnet, Claude Opus)
+- **7,500 conversations/month** (70.0% profit margin)
+- All AI models (Claude Opus, GPT-4 Turbo, etc.)
 - All channels (Web, WhatsApp, SMS, Instagram, Facebook)
 - Unlimited knowledge base
 - **Unlimited Guest Intelligence**
@@ -571,6 +579,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 - **30-day money-back guarantee** (manual refund process)
 
 ### Enterprise ($999+/month)
+- **30,000 conversations/month** (70.0% profit margin)
 - Everything in Premium
 - Custom AI model training
 - Multi-property support

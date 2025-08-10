@@ -10,10 +10,10 @@ export const tierComparison: TierFeature[] = [
   },
   {
     name: 'Monthly Conversations',
-    starter: '1,000',
-    professional: '5,000',
-    premium: 'Unlimited VIP',
-    enterprise: 'Unlimited + Multi-property'
+    starter: '500',
+    professional: '2,500',
+    premium: '7,500 VIP',
+    enterprise: '30,000 + Multi-property'
   },
   {
     name: 'AI Model & Intelligence',
@@ -165,7 +165,7 @@ export const pricingTiers: PricingTier[] = [
     savings: 'Claude Haiku - Fast & efficient',
     features: [
       'Claude Haiku AI assistant',
-      '1,000 conversations/month',
+      '500 conversations/month',
       'Basic analytics dashboard',
       'Custom branding',
       'Email support',
@@ -185,7 +185,7 @@ export const pricingTiers: PricingTier[] = [
     features: [
       'Everything in Starter, plus:',
       'Dual AI: Claude Sonnet + GPT-4 Turbo',
-      '5,000 conversations/month',
+      '2,500 conversations/month',
       'English & Japanese support',
       'Booking system integration',
       'CRM integration',

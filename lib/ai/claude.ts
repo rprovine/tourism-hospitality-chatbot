@@ -25,7 +25,8 @@ export interface ConversationContext {
 
 export async function generateClaudeResponse(
   userMessage: string,
-  context: ConversationContext
+  context: ConversationContext,
+  preferredModel?: string
 ): Promise<string> {
   // If no API key, fall back to rule-based responses
   if (!process.env.ANTHROPIC_API_KEY) {
@@ -54,29 +55,44 @@ export async function generateClaudeResponse(
       content: userMessage
     })
 
-    // Select model based on tier - always default to cheapest unless upgraded
+    // Select model based on user preference and tier restrictions
     let model: string
     let maxTokens: number
     
+    // Map user preference to actual model names
+    const modelMap: Record<string, string> = {
+      'haiku': 'claude-3-5-haiku-20241022',
+      'sonnet': 'claude-3-5-sonnet-20241022', 
+      'opus': 'claude-3-opus-20240229'
+    }
+    
+    // Get allowed models based on tier
+    const tierAllowedModels = {
+      'starter': ['haiku'],
+      'professional': ['haiku', 'sonnet'], 
+      'premium': ['haiku', 'sonnet', 'opus'],
+      'enterprise': ['haiku', 'sonnet', 'opus']
+    }
+    
+    const allowedForTier = tierAllowedModels[context.tier] || ['haiku']
+    const requestedModel = preferredModel || 'haiku'
+    
+    // Use preferred model if allowed by tier, otherwise fall back to cheapest allowed
+    const selectedModel = allowedForTier.includes(requestedModel) ? requestedModel : allowedForTier[0]
+    model = modelMap[selectedModel]
+    
+    // Set token limits based on tier
     switch(context.tier) {
       case 'enterprise':
-        // Enterprise can use any model, but default to haiku for cost savings
-        model = 'claude-3-5-haiku-20241022'  // Default to cheapest even for enterprise
-        maxTokens = 2000  // Maximum context for complex operations
+        maxTokens = 2000
         break
       case 'premium':
-        // Premium can choose between haiku, sonnet, or opus
-        model = 'claude-3-5-haiku-20241022'  // Default to cheapest
         maxTokens = 1000
         break
       case 'professional':
-        // Professional can use haiku or sonnet
-        model = 'claude-3-5-haiku-20241022'  // Default to cheapest
         maxTokens = 500
         break
       default: // starter
-        // Starter can only use haiku
-        model = 'claude-3-5-haiku-20241022'  // Only economical model for starter
         maxTokens = 200
     }
 

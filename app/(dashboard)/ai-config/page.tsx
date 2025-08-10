@@ -16,11 +16,9 @@ export default function UnifiedAIConfigPage() {
     // Provider settings
     provider: 'claude',
     claudeSettings: {
-      apiKey: '',
       modelPreference: 'haiku',
     },
     chatgptSettings: {
-      apiKey: '',
       modelPreference: 'gpt-3.5-turbo',
     },
     // Response settings
@@ -67,11 +65,9 @@ export default function UnifiedAIConfigPage() {
       setSettings(prev => ({
         ...prev,
         claudeSettings: {
-          ...prev.claudeSettings,
           modelPreference: models?.includes('claude-haiku') ? 'haiku' : 'haiku'
         },
         chatgptSettings: {
-          ...prev.chatgptSettings,
           modelPreference: models?.includes('gpt-3.5-turbo') ? 'gpt-3.5-turbo' : 'gpt-3.5-turbo'
         }
       }))
@@ -304,6 +300,27 @@ export default function UnifiedAIConfigPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* API Key Explanation */}
+              <Alert className="border-green-200 bg-green-50 mb-4">
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <div>
+                  <p className="font-semibold text-gray-900">🔑 API Keys & Service Status</p>
+                  <div className="text-sm text-gray-700 mt-1">
+                    <p><strong>✅ Your AI service is fully active and configured!</strong></p>
+                    <p className="mt-2">We manage all API keys and infrastructure for you:</p>
+                    <ul className="list-disc ml-5 mt-1 space-y-1">
+                      <li><strong>No setup required:</strong> Our servers handle all Claude AI and ChatGPT API connections</li>
+                      <li><strong>No API keys to manage:</strong> We cover all API costs as part of your subscription</li>
+                      <li><strong>Automatic fallbacks:</strong> If one AI service is unavailable, we switch to backups seamlessly</li>
+                      <li><strong>Usage included:</strong> Your plan includes generous AI usage limits (see Advanced tab for tracking)</li>
+                    </ul>
+                    <div className="mt-3 p-2 bg-white border border-green-200 rounded">
+                      <p className="text-green-800 font-medium">🚀 Ready to use: Simply choose your preferred AI provider and model below, then click "Save All Settings"</p>
+                    </div>
+                  </div>
+                </div>
+              </Alert>
+
               {/* Model Tier Alert - Show for all tiers */}
               <Alert className={businessTier === 'starter' ? "border-yellow-200 bg-yellow-50" : "border-blue-200 bg-blue-50"}>
                 <AlertCircle className={`h-4 w-4 ${businessTier === 'starter' ? 'text-yellow-600' : 'text-blue-600'}`} />
@@ -360,24 +377,7 @@ export default function UnifiedAIConfigPage() {
               </Alert>
               
               {settings.provider === 'claude' ? (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Claude API Key
-                    </label>
-                    <input
-                      type="password"
-                      value={settings.claudeSettings.apiKey}
-                      onChange={(e) => setSettings({
-                        ...settings,
-                        claudeSettings: { ...settings.claudeSettings, apiKey: e.target.value }
-                      })}
-                      placeholder="sk-ant-api..."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    />
-                  </div>
-
-                  <div>
+                <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Claude Model
                     </label>
@@ -385,7 +385,7 @@ export default function UnifiedAIConfigPage() {
                       value={settings.claudeSettings.modelPreference}
                       onChange={(e) => setSettings({
                         ...settings,
-                        claudeSettings: { ...settings.claudeSettings, modelPreference: e.target.value }
+                        claudeSettings: { modelPreference: e.target.value }
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
                     >
@@ -400,26 +400,8 @@ export default function UnifiedAIConfigPage() {
                       </option>
                     </select>
                   </div>
-                </>
               ) : (
-                <>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      OpenAI API Key
-                    </label>
-                    <input
-                      type="password"
-                      value={settings.chatgptSettings.apiKey}
-                      onChange={(e) => setSettings({
-                        ...settings,
-                        chatgptSettings: { ...settings.chatgptSettings, apiKey: e.target.value }
-                      })}
-                      placeholder="sk-..."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
-                  </div>
-
-                  <div>
+                <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       GPT Model
                     </label>
@@ -427,7 +409,7 @@ export default function UnifiedAIConfigPage() {
                       value={settings.chatgptSettings.modelPreference}
                       onChange={(e) => setSettings({
                         ...settings,
-                        chatgptSettings: { ...settings.chatgptSettings, modelPreference: e.target.value }
+                        chatgptSettings: { modelPreference: e.target.value }
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
                     >
@@ -442,7 +424,6 @@ export default function UnifiedAIConfigPage() {
                       </option>
                     </select>
                   </div>
-                </>
               )}
             </CardContent>
           </Card>
