@@ -603,6 +603,114 @@ export default function GettingStartedPage() {
     }
   }
 
+  const handleDownloadInstructions = () => {
+    const businessData = localStorage.getItem('business')
+    const business = businessData ? JSON.parse(businessData) : { id: 'your-business-id', name: 'Your Business' }
+    
+    const instructions = `LeniLani AI Chat Widget - Installation Instructions
+======================================================
+
+Business: ${business.name}
+Business ID: ${business.id}
+Date: ${new Date().toLocaleDateString()}
+
+STEP 1: Add the Widget Code
+----------------------------
+Add the following code to your website, just before the closing </body> tag:
+
+${getEmbedCode()}
+
+STEP 2: Customize Position (Optional)
+--------------------------------------
+You can change the widget position by modifying the 'data-position' attribute:
+- 'bottom-right' (default)
+- 'bottom-left'
+- 'top-right'
+- 'top-left'
+
+STEP 3: Test the Installation
+-----------------------------
+1. Save your changes and refresh your website
+2. You should see the chat widget appear in the specified position
+3. Click on it to open and test a conversation
+
+STEP 4: Advanced Configuration (Optional)
+-----------------------------------------
+You can pass additional parameters:
+- data-primary-color: Customize the widget color (hex code)
+- data-welcome-message: Override the default welcome message
+- data-language: Set default language (en, es, ja, etc.)
+
+Example with all options:
+<script>
+  (function() {
+    var script = document.createElement('script');
+    script.src = 'https://app.lenilani.ai/widget.js';
+    script.setAttribute('data-business-id', '${business.id}');
+    script.setAttribute('data-position', 'bottom-right');
+    script.setAttribute('data-primary-color', '#0891b2');
+    script.setAttribute('data-welcome-message', 'Aloha! How can I help you?');
+    script.setAttribute('data-language', 'en');
+    script.async = true;
+    document.head.appendChild(script);
+  })();
+</script>
+
+TROUBLESHOOTING
+--------------
+If the widget doesn't appear:
+1. Check browser console for errors (F12 > Console)
+2. Ensure your business ID is correct
+3. Verify your subscription is active
+4. Check that JavaScript is enabled
+
+NEED HELP?
+----------
+Email: support@lenilani.com
+Documentation: https://docs.lenilani.ai
+`
+    
+    // Create and download the file
+    const blob = new Blob([instructions], { type: 'text/plain' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'lenilani-widget-instructions.txt'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(url)
+  }
+
+  const handleEmailToDeveloper = () => {
+    const businessData = localStorage.getItem('business')
+    const business = businessData ? JSON.parse(businessData) : { id: 'your-business-id', name: 'Your Business' }
+    
+    const subject = encodeURIComponent('LeniLani AI Chat Widget Installation')
+    const body = encodeURIComponent(`Hi,
+
+Please add the LeniLani AI chat widget to our website.
+
+Business Name: ${business.name}
+Business ID: ${business.id}
+
+Installation Code:
+==================
+
+${getEmbedCode()}
+
+Instructions:
+1. Add this code just before the closing </body> tag on every page where you want the chat widget to appear
+2. The widget will appear in the bottom-right corner by default
+3. Test the widget after installation to ensure it's working properly
+
+If you have any questions, please refer to the documentation at https://docs.lenilani.ai or contact support@lenilani.com
+
+Thank you!`)
+    
+    window.location.href = `mailto:?subject=${subject}&body=${body}`
+  }
+
   return (
     <div className="container mx-auto p-4 max-w-7xl">
       {/* Header */}
@@ -783,11 +891,19 @@ export default function GettingStartedPage() {
                 )}
                 
                 <div className="flex gap-2">
-                  <Button variant="outline" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    className="flex-1"
+                    onClick={handleDownloadInstructions}
+                  >
                     <FileText className="h-4 w-4 mr-2" />
                     Download Instructions
                   </Button>
-                  <Button variant="outline" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    className="flex-1"
+                    onClick={handleEmailToDeveloper}
+                  >
                     <Mail className="h-4 w-4 mr-2" />
                     Email to Developer
                   </Button>
