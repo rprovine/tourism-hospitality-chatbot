@@ -1,5 +1,7 @@
 # 🌺 LeniLani AI - Tourism & Hospitality Chatbot Platform
 
+<!-- Build trigger: 2025-01-10 10:58 HST -->
+
 [![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC)](https://tailwindcss.com/)
