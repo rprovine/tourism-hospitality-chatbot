@@ -33,7 +33,7 @@ const planDetails = {
     icon: Zap,
     color: 'green',
     features: [
-      { text: '100 conversations/month', included: true },
+      { text: '500 conversations/month', included: true },
       { text: 'Basic analytics', included: true },
       { text: 'Email support', included: true },
       { text: 'Web chat widget', included: true },
@@ -54,7 +54,7 @@ const planDetails = {
     icon: Shield,
     color: 'blue',
     features: [
-      { text: '1,000 conversations/month', included: true },
+      { text: '2,500 conversations/month', included: true },
       { text: 'Guest Intelligence (1,000 profiles)', included: true },
       { text: 'Revenue Insights & AI Recommendations', included: true },
       { text: 'Advanced analytics & reporting', included: true },
@@ -75,7 +75,7 @@ const planDetails = {
     icon: Crown,
     color: 'purple',
     features: [
-      { text: 'Unlimited conversations', included: true },
+      { text: '7,500 conversations/month', included: true },
       { text: 'Unlimited Guest Intelligence', included: true },
       { text: 'Full Revenue Optimization Suite', included: true },
       { text: 'Dynamic pricing automation', included: true },
@@ -420,7 +420,7 @@ export default function BillingPage() {
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <MessageSquare className="h-4 w-4 text-purple-600" />
-                      <span className="font-medium">Unlimited conversations</span>
+                      <span className="font-medium">7,500 conversations/month</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Brain className="h-4 w-4 text-purple-600" />

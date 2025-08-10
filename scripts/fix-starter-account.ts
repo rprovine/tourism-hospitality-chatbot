@@ -48,7 +48,7 @@ async function fixStarterAccount() {
         businessInfo: {
           description: 'Demo account for starter tier',
           features: [
-            '100 conversations/month',
+            '500 conversations/month',
             'Basic analytics',
             'Email support',
             'Web chat widget'

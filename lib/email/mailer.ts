@@ -35,12 +35,12 @@ export const emailTemplates = {
               <h3>Your ${tier} Plan Includes:</h3>
               <ul>
                 ${tier === 'starter' ? `
-                  <li>✅ 1,000 conversations per month</li>
+                  <li>✅ 500 conversations per month</li>
                   <li>✅ Basic analytics dashboard</li>
                   <li>✅ 50 knowledge base Q&As</li>
                   <li>✅ Email support</li>
                 ` : tier === 'professional' ? `
-                  <li>✅ Unlimited conversations</li>
+                  <li>✅ 2,500 conversations per month</li>
                   <li>✅ 2 language support</li>
                   <li>✅ API access</li>
                   <li>✅ Priority 24/7 support</li>
@@ -50,7 +50,7 @@ export const emailTemplates = {
                   <li>✅ Dedicated account manager</li>
                   <li>✅ 99.9% SLA guarantee</li>
                 ` : `
-                  <li>✅ Unlimited everything</li>
+                  <li>✅ 30,000+ conversations per month</li>
                   <li>✅ Multi-property support</li>
                   <li>✅ Enterprise features</li>
                   <li>✅ White-glove service</li>
@@ -240,7 +240,7 @@ export const emailTemplates = {
             
             <h3>💡 Upgrade to Professional for:</h3>
             <ul>
-              <li>✅ Unlimited conversations</li>
+              <li>✅ 2,500 conversations per month</li>
               <li>✅ 2 language support</li>
               <li>✅ Advanced analytics</li>
               <li>✅ API access</li>

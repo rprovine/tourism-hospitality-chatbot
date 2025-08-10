@@ -201,9 +201,9 @@ async function createTestAccounts() {
       console.log(`  Email: ${acc.email}`)
       console.log(`  Password: ${acc.password}`)
       console.log(`  Features: ${
-        acc.tier === 'starter' ? '1,000 conversations/month, Basic analytics, 50 Q&As' :
-        acc.tier === 'professional' ? 'Unlimited conversations, 2 languages, API access' :
-        '5 languages, Custom AI training, Dedicated support'
+        acc.tier === 'starter' ? '500 conversations/month, Basic analytics, 50 Q&As' :
+        acc.tier === 'professional' ? '2,500 conversations/month, 2 languages, API access' :
+        '7,500 conversations/month, 5 languages, Custom AI training'
       }`)
       console.log('')
     })

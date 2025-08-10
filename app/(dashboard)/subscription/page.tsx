@@ -390,7 +390,7 @@ export default function SubscriptionPage() {
                     )}
                   </div>
                   <h3 className="font-semibold">Starter</h3>
-                  <p className="text-sm text-gray-600 mb-2">100 conversations/mo</p>
+                  <p className="text-sm text-gray-600 mb-2">500 conversations/mo</p>
                   <div className="text-2xl font-bold">$29<span className="text-sm font-normal">/mo</span></div>
                   <ul className="text-xs text-gray-600 mt-2 space-y-1">
                     <li>• Basic AI models</li>
@@ -432,7 +432,7 @@ export default function SubscriptionPage() {
                     )}
                   </div>
                   <h3 className="font-semibold">Professional</h3>
-                  <p className="text-sm text-gray-600 mb-2">1000 conversations/mo</p>
+                  <p className="text-sm text-gray-600 mb-2">2,500 conversations/mo</p>
                   <div className="text-2xl font-bold">$149<span className="text-sm font-normal">/mo</span></div>
                   <ul className="text-xs text-gray-600 mt-2 space-y-1">
                     <li className="font-semibold text-green-700">✓ Guest Intelligence (1,000 profiles)</li>
@@ -467,7 +467,7 @@ export default function SubscriptionPage() {
                     )}
                   </div>
                   <h3 className="font-semibold">Premium</h3>
-                  <p className="text-sm text-gray-600 mb-2">Unlimited conversations</p>
+                  <p className="text-sm text-gray-600 mb-2">7,500 conversations/mo</p>
                   <div className="text-2xl font-bold">$299<span className="text-sm font-normal">/mo</span></div>
                   <ul className="text-xs text-gray-600 mt-2 space-y-1">
                     <li className="font-semibold text-purple-700">✓ Unlimited Guest Intelligence</li>
@@ -496,7 +496,7 @@ export default function SubscriptionPage() {
                       <h3 className="text-lg font-semibold">Enterprise Solutions</h3>
                       <p className="text-sm text-gray-600 mt-1">Custom pricing, dedicated support, and tailored features for large organizations</p>
                       <ul className="text-xs text-gray-600 mt-2 space-x-4 flex flex-wrap">
-                        <li>• Unlimited everything</li>
+                        <li>• 30,000+ conversations/mo</li>
                         <li>• Custom integrations</li>
                         <li>• Dedicated account manager</li>
                         <li>• SLA guarantees</li>

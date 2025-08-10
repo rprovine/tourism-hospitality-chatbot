@@ -227,7 +227,7 @@ function PaymentSuccessContent() {
                   <ul className="space-y-2 text-sm">
                     {tier === 'starter' && (
                       <>
-                        <li>• 1,000 conversations/month</li>
+                        <li>• 500 conversations/month</li>
                         <li>• Basic analytics</li>
                         <li>• Email support</li>
                         <li>• 50 knowledge base items</li>
@@ -235,7 +235,7 @@ function PaymentSuccessContent() {
                     )}
                     {tier === 'professional' && (
                       <>
-                        <li>• Unlimited conversations</li>
+                        <li>• 2,500 conversations/month</li>
                         <li>• 2 language support</li>
                         <li>• API access</li>
                         <li>• Priority support</li>

@@ -20,7 +20,7 @@ const testResults = {
 // Expected features by tier
 const TIER_FEATURES = {
   starter: {
-    conversationsPerMonth: 100,
+    conversationsPerMonth: 500,
     knowledgeBaseItems: 50,
     guestProfiles: 0,
     channels: ['web'],
@@ -39,7 +39,7 @@ const TIER_FEATURES = {
     whiteLabel: false
   },
   professional: {
-    conversationsPerMonth: 1000,
+    conversationsPerMonth: 2500,
     knowledgeBaseItems: 500,
     guestProfiles: 1000,
     channels: ['web', 'whatsapp', 'sms'],
@@ -58,7 +58,7 @@ const TIER_FEATURES = {
     whiteLabel: false
   },
   premium: {
-    conversationsPerMonth: -1, // unlimited
+    conversationsPerMonth: 7500,
     knowledgeBaseItems: -1, // unlimited
     guestProfiles: -1, // unlimited
     channels: ['web', 'whatsapp', 'sms', 'instagram', 'facebook'],
@@ -77,7 +77,7 @@ const TIER_FEATURES = {
     whiteLabel: true
   },
   enterprise: {
-    conversationsPerMonth: -1,
+    conversationsPerMonth: 30000,
     knowledgeBaseItems: -1,
     guestProfiles: -1,
     channels: ['web', 'whatsapp', 'sms', 'instagram', 'facebook', 'telegram', 'custom'],

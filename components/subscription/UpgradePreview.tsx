@@ -41,7 +41,7 @@ const tierIcons = {
 
 const tierFeatures = {
   starter: {
-    conversations: 100,
+    conversations: 500,
     knowledgeItems: 50,
     guestProfiles: 0,
     revenueOptimization: false,
@@ -54,7 +54,7 @@ const tierFeatures = {
     customIntegrations: false
   },
   professional: {
-    conversations: 1000,
+    conversations: 2500,
     knowledgeItems: 500,
     guestProfiles: 1000,
     revenueOptimization: true,
@@ -67,7 +67,7 @@ const tierFeatures = {
     customIntegrations: false
   },
   premium: {
-    conversations: -1, // unlimited
+    conversations: 7500,
     knowledgeItems: -1,
     guestProfiles: -1,
     revenueOptimization: true,

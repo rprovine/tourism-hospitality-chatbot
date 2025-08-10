@@ -32,7 +32,7 @@ export function EmptyState({ tab, tier, hasData = false }: EmptyStateProps) {
                 </p>
                 {isStarterTier && (
                   <p className="text-xs text-gray-400 mt-3">
-                    Starter plan tracks up to 100 conversations/month
+                    Starter plan tracks up to 500 conversations/month
                   </p>
                 )}
               </div>

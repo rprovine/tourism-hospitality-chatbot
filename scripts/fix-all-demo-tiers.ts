@@ -188,20 +188,20 @@ async function fixAllDemoAccounts() {
 function getTierFeatures(tier: string): string[] {
   const features: Record<string, string[]> = {
     starter: [
-      '100 conversations/month',
+      '500 conversations/month',
       'Basic analytics',
       'Email support',
       'Web chat widget'
     ],
     professional: [
-      '1,000 conversations/month',
+      '2,500 conversations/month',
       'CRM integration',
       'Booking system integration',
       'Priority support',
       'API access'
     ],
     premium: [
-      'Unlimited conversations',
+      '7,500 conversations/month',
       'All integrations',
       'Advanced analytics',
       'Revenue optimization',

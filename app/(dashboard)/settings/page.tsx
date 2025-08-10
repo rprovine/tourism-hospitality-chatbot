@@ -1073,9 +1073,10 @@ export default function SettingsPage() {
                     <span className="text-lg font-bold capitalize">{business?.tier || 'Starter'}</span>
                   </div>
                   <div className="text-sm text-gray-600">
-                    {business?.tier === 'premium' ? 'Unlimited conversations, all features' :
-                     business?.tier === 'professional' ? '1,000 conversations/month' :
-                     '100 conversations/month'}
+                    {business?.tier === 'enterprise' ? '30,000 conversations/month, all features' :
+                     business?.tier === 'premium' ? '7,500 conversations/month, all features' :
+                     business?.tier === 'professional' ? '2,500 conversations/month' :
+                     '500 conversations/month'}
                   </div>
                 </div>
                 
