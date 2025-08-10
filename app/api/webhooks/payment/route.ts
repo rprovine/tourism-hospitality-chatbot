@@ -39,11 +39,13 @@ export async function POST(request: NextRequest) {
     let business
     if (validatedData.businessId) {
       business = await prisma.business.findUnique({
-        where: { id: validatedData.businessId }
+        where: { id: validatedData.businessId },
+        include: { subscription: true }
       })
     } else if (validatedData.businessEmail) {
       business = await prisma.business.findUnique({
-        where: { email: validatedData.businessEmail }
+        where: { email: validatedData.businessEmail },
+        include: { subscription: true }
       })
     }
     
