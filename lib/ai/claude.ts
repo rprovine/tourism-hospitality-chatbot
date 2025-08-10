@@ -54,25 +54,29 @@ export async function generateClaudeResponse(
       content: userMessage
     })
 
-    // Select model based on tier
+    // Select model based on tier - always default to cheapest unless upgraded
     let model: string
     let maxTokens: number
     
     switch(context.tier) {
       case 'enterprise':
-        model = 'claude-3-5-sonnet-20241022'  // Latest and most capable model for enterprise
+        // Enterprise can use any model, but default to haiku for cost savings
+        model = 'claude-3-5-haiku-20241022'  // Default to cheapest even for enterprise
         maxTokens = 2000  // Maximum context for complex operations
         break
       case 'premium':
-        model = 'claude-3-5-sonnet-20241022'  // Latest and most capable model for premium
+        // Premium can choose between haiku, sonnet, or opus
+        model = 'claude-3-5-haiku-20241022'  // Default to cheapest
         maxTokens = 1000
         break
       case 'professional':
-        model = 'claude-3-5-sonnet-20241022'  // Latest model for professional tier
+        // Professional can use haiku or sonnet
+        model = 'claude-3-5-haiku-20241022'  // Default to cheapest
         maxTokens = 500
         break
       default: // starter
-        model = 'claude-3-5-haiku-20241022'  // Fast, economical model for starter
+        // Starter can only use haiku
+        model = 'claude-3-5-haiku-20241022'  // Only economical model for starter
         maxTokens = 200
     }
 

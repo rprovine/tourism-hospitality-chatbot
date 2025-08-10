@@ -41,7 +41,7 @@ export class OpenAIService {
     return !!this.client
   }
   
-  // GPT-4 Chat Completion
+  // GPT Chat Completion - defaults to cheapest model
   async createChatCompletion(
     messages: ChatMessage[],
     options: CompletionOptions = {}
@@ -51,7 +51,7 @@ export class OpenAIService {
     }
     
     const {
-      model = 'gpt-4-turbo-preview',
+      model = 'gpt-3.5-turbo',  // Default to cheapest model
       temperature = 0.7,
       maxTokens = 500,
       topP = 1,

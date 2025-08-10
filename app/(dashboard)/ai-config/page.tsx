@@ -62,6 +62,19 @@ export default function UnifiedAIConfigPage() {
       setBusinessTier(tier)
       const models = getTierLimit(tier, 'aiModels')
       setAllowedModels(models || [])
+      
+      // Set default models based on tier (always default to cheapest)
+      setSettings(prev => ({
+        ...prev,
+        claudeSettings: {
+          ...prev.claudeSettings,
+          modelPreference: models?.includes('claude-haiku') ? 'haiku' : 'haiku'
+        },
+        chatgptSettings: {
+          ...prev.chatgptSettings,
+          modelPreference: models?.includes('gpt-3.5-turbo') ? 'gpt-3.5-turbo' : 'gpt-3.5-turbo'
+        }
+      }))
     }
     loadSettings()
     fetchTrainingStats()
@@ -291,25 +304,60 @@ export default function UnifiedAIConfigPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Model Tier Alert */}
-              {businessTier === 'starter' && (
-                <Alert className="border-yellow-200 bg-yellow-50">
-                  <AlertCircle className="h-4 w-4 text-yellow-600" />
-                  <div className="flex items-start gap-2">
-                    <div className="text-sm">
-                      <p className="font-medium text-gray-900">Limited AI Models</p>
-                      <p className="text-gray-700 mt-1">
-                        Your {businessTier} plan includes basic AI models. Upgrade to Professional or Premium for advanced models.
-                      </p>
+              {/* Model Tier Alert - Show for all tiers */}
+              <Alert className={businessTier === 'starter' ? "border-yellow-200 bg-yellow-50" : "border-blue-200 bg-blue-50"}>
+                <AlertCircle className={`h-4 w-4 ${businessTier === 'starter' ? 'text-yellow-600' : 'text-blue-600'}`} />
+                <div className="flex items-start gap-2">
+                  <div className="text-sm">
+                    <p className="font-medium text-gray-900">
+                      {businessTier === 'starter' ? 'Starter Plan AI Models' :
+                       businessTier === 'professional' ? 'Professional Plan AI Models' :
+                       'Premium Plan AI Models'}
+                    </p>
+                    <div className="text-gray-700 mt-1">
+                      {businessTier === 'starter' && (
+                        <>
+                          <p>Your plan includes economical AI models optimized for cost:</p>
+                          <ul className="list-disc ml-5 mt-1">
+                            <li>Claude 3 Haiku - Fast & economical</li>
+                            <li>GPT-3.5 Turbo - Fast & economical</li>
+                          </ul>
+                          <p className="mt-2 text-gray-600">Perfect for basic inquiries and FAQs. Upgrade for advanced reasoning.</p>
+                        </>
+                      )}
+                      {businessTier === 'professional' && (
+                        <>
+                          <p>Your plan includes balanced AI models:</p>
+                          <ul className="list-disc ml-5 mt-1">
+                            <li>All Starter models (Haiku, GPT-3.5)</li>
+                            <li>Claude 3.5 Sonnet - Balanced performance</li>
+                            <li>GPT-4 - Advanced reasoning</li>
+                          </ul>
+                          <p className="mt-2 text-gray-600">Great for complex queries and nuanced responses.</p>
+                        </>
+                      )}
+                      {businessTier === 'premium' && (
+                        <>
+                          <p>Your plan includes all AI models:</p>
+                          <ul className="list-disc ml-5 mt-1">
+                            <li>All Professional models</li>
+                            <li>Claude 3 Opus - Most capable</li>
+                            <li>GPT-4 Turbo - Latest & fastest</li>
+                          </ul>
+                          <p className="mt-2 text-gray-600">Maximum capability for enterprise needs.</p>
+                        </>
+                      )}
+                    </div>
+                    {businessTier !== 'premium' && (
                       <Link href="/subscription">
-                        <Button variant="outline" size="sm" className="mt-2 border-yellow-600 text-yellow-700 hover:bg-yellow-100">
+                        <Button variant="outline" size="sm" className="mt-2 border-cyan-600 text-cyan-700 hover:bg-cyan-100">
                           View Upgrade Options
                         </Button>
                       </Link>
-                    </div>
+                    )}
                   </div>
-                </Alert>
-              )}
+                </div>
+              </Alert>
               
               {settings.provider === 'claude' ? (
                 <>
@@ -512,12 +560,26 @@ export default function UnifiedAIConfigPage() {
                         <input
                           type="checkbox"
                           checked={settings.languages.includes(lang.code) || lang.code === 'english'}
-                          disabled={isRestricted || lang.code === 'english'}
+                          disabled={isRestricted || lang.code === 'english' || (businessTier === 'starter' && lang.code !== 'english')}
                           onChange={(e) => {
                             // Prevent unchecking English
                             if (lang.code === 'english') return;
                             
+                            // Enforce tier limits
+                            if (businessTier === 'starter') {
+                              // Starter can only use English
+                              return;
+                            }
+                            
+                            const currentLanguages = settings.languages.filter(l => l !== 'english');
+                            const maxLanguages = businessTier === 'professional' ? 1 : businessTier === 'premium' ? 4 : 0;
+                            
                             if (e.target.checked) {
+                              // Check if we've reached the limit
+                              if (currentLanguages.length >= maxLanguages) {
+                                alert(`Your ${businessTier} plan allows a maximum of ${maxLanguages + 1} languages (including English).`);
+                                return;
+                              }
                               setSettings({
                                 ...settings,
                                 languages: [...settings.languages, lang.code]
