@@ -20,6 +20,21 @@ A powerful AI-powered chatbot platform specifically designed for the tourism and
 - **Customer Satisfaction**: Built-in rating system with real-time feedback collection
 
 ### 🆕 Latest Updates (January 2025)
+- ✅ **Enhanced Business Profile Management**: Comprehensive business information system
+  - Complete contact info, location, and operating hours management
+  - Detailed amenities and policies configuration
+  - Real-time chatbot preview showing how information will be used
+  - All business data automatically integrated with chatbot responses
+- ✅ **Intelligent Chatbot Response System**: 
+  - Pulls directly from business profile data
+  - Smart recognition of common questions (check-in times, parking, WiFi, etc.)
+  - Automatic fallback to real business contact information
+  - Context-aware responses based on actual business data
+- ✅ **Improved Navigation & User Experience**:
+  - Getting Started guide with direct links to relevant settings sections
+  - URL hash routing for deep linking to specific tabs
+  - Task-oriented checklist with time estimates
+  - Best practices and pro tips for each subscription tier
 - ✅ **Customer-Friendly Subscription Management**: Complete self-service portal
 - ✅ **Multi-Step Cancellation Flow**: Reason tracking, retention offers (25-50% discounts), data export
 - ✅ **Comprehensive Upgrade Experience**: Detailed feature comparison across both subscription and billing sections

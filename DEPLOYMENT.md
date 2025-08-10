@@ -3,6 +3,17 @@
 ## Last Updated: January 2025
 
 ### Recent Changes (January 2025)
+- ✅ **Business Profile & Chatbot Integration**
+  - Complete business profile management in settings
+  - Chatbot automatically pulls from business profile data
+  - Smart response system for common questions (check-in times, parking, WiFi)
+  - Real-time preview showing how information will be used
+  - Context-aware fallback responses with actual business contact info
+- ✅ **Enhanced Navigation & User Experience**
+  - Getting Started guide with direct links to relevant settings sections
+  - URL hash routing for deep linking to specific settings tabs
+  - Improved task-oriented checklist with time estimates
+  - Best practices and pro tips for each subscription tier
 - ✅ **Enhanced Subscription Management System**
   - Multi-step cancellation flow with retention offers (25-50% discounts)
   - Comprehensive upgrade/downgrade preview with 7+ feature categories
