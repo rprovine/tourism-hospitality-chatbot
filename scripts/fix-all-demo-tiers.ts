@@ -67,6 +67,10 @@ async function fixAllDemoAccounts() {
             businessInfo: {
               description: `Demo account for ${account.tier} tier`,
               features: getTierFeatures(account.tier),
+              checkInTime: account.tier === 'premium' || account.tier === 'enterprise' ? '2:00 PM' : '3:00 PM',
+              checkOutTime: account.tier === 'premium' || account.tier === 'enterprise' ? '12:00 PM' : '11:00 AM',
+              phone: `808-555-010${account.tier === 'starter' ? '1' : account.tier === 'professional' ? '2' : account.tier === 'premium' ? '3' : '4'}`,
+              address: `${account.tier === 'starter' ? '100 Starter Beach Road' : account.tier === 'professional' ? '200 Professional Bay Drive' : account.tier === 'premium' ? '300 Premium Paradise Lane' : '400 Enterprise Plaza'}, Honolulu, HI`,
               demoAccount: true
             }
           }
@@ -91,6 +95,10 @@ async function fixAllDemoAccounts() {
             businessInfo: {
               description: `Demo account for ${account.tier} tier`,
               features: getTierFeatures(account.tier),
+              checkInTime: account.tier === 'premium' || account.tier === 'enterprise' ? '2:00 PM' : '3:00 PM',
+              checkOutTime: account.tier === 'premium' || account.tier === 'enterprise' ? '12:00 PM' : '11:00 AM',
+              phone: `808-555-010${account.tier === 'starter' ? '1' : account.tier === 'professional' ? '2' : account.tier === 'premium' ? '3' : '4'}`,
+              address: `${account.tier === 'starter' ? '100 Starter Beach Road' : account.tier === 'professional' ? '200 Professional Bay Drive' : account.tier === 'premium' ? '300 Premium Paradise Lane' : '400 Enterprise Plaza'}, Honolulu, HI`,
               demoAccount: true
             }
           }

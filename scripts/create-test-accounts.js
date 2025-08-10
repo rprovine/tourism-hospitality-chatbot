@@ -25,6 +25,8 @@ async function createTestAccounts() {
       businessInfo: {
         phone: '808-555-0101',
         address: '100 Starter Beach Road, Honolulu, HI',
+        checkInTime: '3:00 PM',
+        checkOutTime: '11:00 AM',
         hours: 'Check-in: 3PM, Check-out: 11AM'
       }
     },
@@ -38,6 +40,8 @@ async function createTestAccounts() {
       businessInfo: {
         phone: '808-555-0102',
         address: '200 Professional Bay Drive, Maui, HI',
+        checkInTime: '3:00 PM',
+        checkOutTime: '11:00 AM',
         hours: 'Check-in: 3PM, Check-out: 11AM'
       }
     },
@@ -51,6 +55,8 @@ async function createTestAccounts() {
       businessInfo: {
         phone: '808-555-0103',
         address: '300 Premium Paradise Lane, Kauai, HI',
+        checkInTime: '2:00 PM',
+        checkOutTime: '12:00 PM',
         hours: '24/7 Concierge Service'
       }
     }

@@ -143,6 +143,7 @@ export async function POST(request: NextRequest) {
         businessType: business.type,
         tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
         welcomeMessage: business.welcomeMessage,
+        businessInfo: business.businessInfo,
         knowledgeBase: knowledgeResults
       }
     )

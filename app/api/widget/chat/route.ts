@@ -196,6 +196,7 @@ Our team will be happy to help you!`
               businessName: business.name,
               businessType: business.type,
               tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
+              businessInfo: business.businessInfo,
               knowledgeBase: relevantQAs.slice(0, 3),
               isDemo: isDemo
             }
