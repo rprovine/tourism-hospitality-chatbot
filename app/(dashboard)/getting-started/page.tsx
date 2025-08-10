@@ -29,7 +29,7 @@ import {
   Lightbulb,
   FileText,
   Database,
-  Link,
+  Link as LinkIcon,
   Star,
   TrendingUp,
   Shield,
@@ -889,7 +889,7 @@ export default function GettingStartedPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Link className="h-5 w-5 text-blue-600" />
+                  <LinkIcon className="h-5 w-5 text-blue-600" />
                   Quick Links
                 </CardTitle>
               </CardHeader>
