@@ -250,7 +250,7 @@ export default function UnifiedAIConfigPage() {
                   </p>
                   {settings.provider === 'claude' && (
                     <div className="mt-2">
-                      <Badge className="bg-cyan-100 text-cyan-800">Active</Badge>
+                      <Badge variant="info">Active</Badge>
                     </div>
                   )}
                 </button>
@@ -272,7 +272,7 @@ export default function UnifiedAIConfigPage() {
                   </p>
                   {settings.provider === 'chatgpt' && (
                     <div className="mt-2">
-                      <Badge className="bg-green-100 text-green-800">Active</Badge>
+                      <Badge variant="green">Active</Badge>
                     </div>
                   )}
                 </button>

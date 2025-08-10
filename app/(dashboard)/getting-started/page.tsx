@@ -123,7 +123,7 @@ export default function GettingStartedPage() {
           description: 'Set up responses for "Check Availability", "View Amenities", and "Get Directions" buttons',
           completed: false,
           priority: 'essential',
-          link: '/knowledge-base',
+          link: '/settings#quickactions',
           timeEstimate: '5 min'
         },
         {
@@ -715,7 +715,7 @@ export default function GettingStartedPage() {
                               {step.title}
                             </h4>
                             {step.timeEstimate && (
-                              <Badge className="text-xs bg-blue-100 text-blue-800 border-blue-300 font-medium">
+                              <Badge variant="blue" className="text-xs">
                                 <Clock className="h-3 w-3 mr-1" />
                                 {step.timeEstimate}
                               </Badge>

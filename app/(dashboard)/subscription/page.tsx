@@ -306,7 +306,7 @@ export default function SubscriptionPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Badge className={isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+              <Badge variant={isActive ? 'green' : 'red'}>
                 {isActive ? <CheckCircle className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}
                 {subscription.status === 'demo' ? 'Demo Account' : subscription.status}
               </Badge>

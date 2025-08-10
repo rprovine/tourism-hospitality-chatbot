@@ -374,10 +374,10 @@ export default function GuestsPage() {
                     </div>
                   </div>
                   {getGuestScore(guest) >= 4 && (
-                    <Badge className="bg-yellow-100 text-yellow-800">VIP</Badge>
+                    <Badge variant="yellow">VIP</Badge>
                   )}
                   {guest.totalBookings > 0 && (
-                    <Badge className="bg-green-100 text-green-800">
+                    <Badge variant="green">
                       {guest.totalBookings} bookings
                     </Badge>
                   )}

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { 
   Settings,
   User,
@@ -38,7 +39,8 @@ import {
   Plane,
   Baby,
   Dog,
-  Ban
+  Ban,
+  Calendar
 } from 'lucide-react'
 
 export default function SettingsPage() {
@@ -100,7 +102,7 @@ export default function SettingsPage() {
     
     // Check for hash in URL to set active tab
     const hash = window.location.hash.replace('#', '')
-    if (hash && ['profile', 'chatbot', 'notifications', 'security', 'billing'].includes(hash)) {
+    if (hash && ['profile', 'chatbot', 'quickactions', 'notifications', 'security', 'billing'].includes(hash)) {
       setActiveTab(hash)
     }
   }, [])
@@ -226,6 +228,7 @@ export default function SettingsPage() {
         <TabsList>
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="chatbot">Chatbot</TabsTrigger>
+          <TabsTrigger value="quickactions">Quick Actions</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="billing">Billing</TabsTrigger>
@@ -655,6 +658,113 @@ export default function SettingsPage() {
               <Button onClick={saveProfile} disabled={saving}>
                 <Save className="h-4 w-4 mr-2" />
                 Save Chatbot Settings
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="quickactions">
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Action Buttons</CardTitle>
+              <CardDescription>Configure the 3 quick action buttons that appear when users first open the chat</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <Alert>
+                <MessageSquare className="h-4 w-4" />
+                <AlertTitle>Quick Actions Help Users Get Started</AlertTitle>
+                <AlertDescription>
+                  These buttons appear at the bottom of the chat when it first opens. They help guide users to common questions and increase engagement.
+                </AlertDescription>
+              </Alert>
+              
+              {/* Quick Action 1 */}
+              <div className="space-y-4 p-4 border rounded-lg">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center">
+                    <Calendar className="h-5 w-5 text-cyan-600" />
+                  </div>
+                  <h3 className="font-medium">Quick Action #1</h3>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Button Text</label>
+                  <Input
+                    value="Check Availability"
+                    onChange={() => {}}
+                    placeholder="e.g., Check Availability"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Response</label>
+                  <textarea
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    rows={3}
+                    value={`To check room availability, please call ${profileData.phone || '(808) 555-0100'}. Our team is standing by to help you find the perfect room for your dates.`}
+                    onChange={() => {}}
+                    placeholder="What the chatbot will say when this button is clicked"
+                  />
+                </div>
+              </div>
+              
+              {/* Quick Action 2 */}
+              <div className="space-y-4 p-4 border rounded-lg">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center">
+                    <Utensils className="h-5 w-5 text-cyan-600" />
+                  </div>
+                  <h3 className="font-medium">Quick Action #2</h3>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Button Text</label>
+                  <Input
+                    value="View Amenities"
+                    onChange={() => {}}
+                    placeholder="e.g., View Amenities"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Response</label>
+                  <textarea
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    rows={3}
+                    value={`Our amenities include:\n• ${profileData.wifi || 'Free WiFi'}\n• ${profileData.parking || 'Free parking'}\n• ${profileData.pool || 'Pool'}\n• ${profileData.gym || 'Fitness Center'}\n• ${profileData.breakfast || 'Breakfast'}`}
+                    onChange={() => {}}
+                    placeholder="What the chatbot will say when this button is clicked"
+                  />
+                </div>
+              </div>
+              
+              {/* Quick Action 3 */}
+              <div className="space-y-4 p-4 border rounded-lg">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center">
+                    <MapPin className="h-5 w-5 text-cyan-600" />
+                  </div>
+                  <h3 className="font-medium">Quick Action #3</h3>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Button Text</label>
+                  <Input
+                    value="Get Directions"
+                    onChange={() => {}}
+                    placeholder="e.g., Get Directions"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">Response</label>
+                  <textarea
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    rows={3}
+                    value={`We're located at:\n${profileData.address || '123 Beach Road'}, ${profileData.city || 'Honolulu'}, ${profileData.state || 'HI'} ${profileData.zip || '96815'}\n\nFrom the airport: Take H1 West and exit at our street. The drive is about 20 minutes.\n\nNeed help? Call ${profileData.phone || '(808) 555-0100'}`}
+                    onChange={() => {}}
+                    placeholder="What the chatbot will say when this button is clicked"
+                  />
+                </div>
+              </div>
+              
+              <Button onClick={saveProfile} disabled={saving}>
+                <Save className="h-4 w-4 mr-2" />
+                Save Quick Actions
               </Button>
             </CardContent>
           </Card>
