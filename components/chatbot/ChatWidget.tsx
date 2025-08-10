@@ -562,7 +562,8 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed bottom-6 right-6 z-50 flex h-[600px] w-[380px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+            className="fixed bottom-6 right-6 z-50 h-[600px] w-[380px] rounded-2xl bg-white shadow-2xl"
+            style={{ display: 'flex', flexDirection: 'column' }}
           >
             {/* Header */}
             <div 

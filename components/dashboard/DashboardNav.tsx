@@ -18,13 +18,15 @@ import {
   Lock,
   Crown,
   Menu,
-  X
+  X,
+  Rocket
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { isRouteAccessible } from '@/lib/tierRestrictions'
 
 const navItems = [
   { href: '/dashboard', label: 'Overview', icon: Home, requiresTier: null },
+  { href: '/getting-started', label: 'Getting Started', icon: Rocket, requiresTier: null },
   { href: '/analytics', label: 'Analytics', icon: BarChart3, requiresTier: null },
   { href: '/widget', label: 'Widget', icon: MessageSquare, requiresTier: null },
   { href: '/knowledge-base', label: 'Knowledge Base', icon: Bot, requiresTier: null },

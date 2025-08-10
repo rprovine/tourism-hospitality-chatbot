@@ -99,47 +99,53 @@ export async function POST(request: NextRequest) {
     let response = ''
     
     // Check if we have a direct knowledge base match
-    // Lower threshold from 0.8 to 50 to make it more likely to use knowledge base
-    if (relevantQAs.length > 0 && relevantQAs[0].score > 50) {
-      console.log('Using direct knowledge base answer')
+    // Higher threshold to ensure only good matches are used
+    if (relevantQAs.length > 0 && relevantQAs[0].score > 70) {
+      console.log('Using direct knowledge base answer with score:', relevantQAs[0].score)
       response = relevantQAs[0].answer
     } else {
-      // No direct match - provide helpful fallback
+      // No direct match - provide helpful fallback based on tier
       const isDemo = validatedData.businessId === 'demo' || validatedData.businessId === 'demo-business-id'
+      const businessInfo = business.businessInfo as any || {}
+      const contactPhone = businessInfo.phone || '(808) 555-0100'
+      const contactEmail = businessInfo.email || business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
       
-      // Generate AI response based on tier
-      try {
-        const businessContext = {
-          businessName: business.name,
-          businessType: business.type,
-          tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
-          knowledgeBase: relevantQAs.slice(0, 3),
-          isDemo: isDemo
-        }
-        
-        response = await generateClaudeResponse(
-          validatedData.message,
-          businessContext
-        )
-      } catch (aiError) {
-        console.error('AI generation error:', aiError)
-        // Improved fallback response when no Q&A match is found
-        if (relevantQAs.length > 0) {
-          response = relevantQAs[0].answer
-        } else {
-          // Provide a more helpful response that offers to collect contact info
-          const businessInfo = business.businessInfo as any || {}
-          const contactPhone = businessInfo.phone || '(808) 555-0100'
-          const contactEmail = businessInfo.email || business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
-          
-          response = `I don't have specific information about that in my knowledge base yet. I'd be happy to have someone from our team contact you directly with the answer.
+      // For starter tier, always provide contact fallback (no AI)
+      if (business.tier === 'starter') {
+        response = `I don't have specific information about that in my knowledge base. 
 
-Would you like to leave your contact information? You can:
-• Call us directly at ${contactPhone}
+For assistance with your question, please:
+• Call us at ${contactPhone}
 • Email us at ${contactEmail}
-• Or share your contact details here and we'll reach out to you
+• Visit our front desk
 
-How would you prefer to be contacted?`
+Our team will be happy to help you!`
+      } else {
+        // For higher tiers, try AI response
+        try {
+          const businessContext = {
+            businessName: business.name,
+            businessType: business.type,
+            tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
+            knowledgeBase: relevantQAs.slice(0, 3),
+            isDemo: isDemo
+          }
+          
+          response = await generateClaudeResponse(
+            validatedData.message,
+            businessContext
+          )
+        } catch (aiError) {
+          console.error('AI generation error:', aiError)
+          // Fallback for AI error
+          response = `I apologize, but I'm having trouble understanding your question. 
+
+For immediate assistance, please:
+• Call us at ${contactPhone}
+• Email us at ${contactEmail}
+• Visit our front desk
+
+Our team will be happy to help you with your specific needs.`
         }
       }
     }

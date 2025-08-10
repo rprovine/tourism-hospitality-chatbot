@@ -166,19 +166,48 @@ export default function SubscriptionPage() {
   }
   
   const handleAddPaymentMethod = async (method: any) => {
-    // Implementation for adding payment method
-    console.log('Add payment method:', method)
-    // This would integrate with your payment processor
+    // Navigate to checkout to add payment method
+    window.location.href = '/checkout?action=add-payment-method'
   }
   
   const handleRemovePaymentMethod = async (id: string) => {
-    // Implementation for removing payment method
-    console.log('Remove payment method:', id)
+    if (confirm('Are you sure you want to remove this payment method?')) {
+      try {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`/api/payment-methods/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        if (response.ok) {
+          window.location.reload()
+        }
+      } catch (error) {
+        console.error('Error removing payment method:', error)
+        alert('Failed to remove payment method. Please try again.')
+      }
+    }
   }
   
   const handleSetDefaultPaymentMethod = async (id: string) => {
-    // Implementation for setting default payment method
-    console.log('Set default payment method:', id)
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch('/api/payment-methods/default', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ paymentMethodId: id })
+      })
+      if (response.ok) {
+        window.location.reload()
+      }
+    } catch (error) {
+      console.error('Error setting default payment method:', error)
+      alert('Failed to set default payment method. Please try again.')
+    }
   }
   
   if (loading) {
@@ -575,7 +604,28 @@ export default function SubscriptionPage() {
                   <h3 className="font-medium">Auto-Renewal</h3>
                   <p className="text-sm text-gray-600">Automatically renew your subscription</p>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={async () => {
+                    try {
+                      const token = localStorage.getItem('token')
+                      const endpoint = subscription.cancelAtPeriodEnd ? '/api/subscription/resume' : '/api/subscription/pause'
+                      const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                          'Authorization': `Bearer ${token}`,
+                          'Content-Type': 'application/json'
+                        }
+                      })
+                      if (response.ok) {
+                        window.location.reload()
+                      }
+                    } catch (error) {
+                      console.error('Error toggling auto-renewal:', error)
+                    }
+                  }}
+                >
                   {subscription.cancelAtPeriodEnd ? 'Enable' : 'Disable'}
                 </Button>
               </div>
@@ -585,7 +635,13 @@ export default function SubscriptionPage() {
                   <h3 className="font-medium">Billing Alerts</h3>
                   <p className="text-sm text-gray-600">Get notified before charges</p>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    window.location.href = '/settings#notifications'
+                  }}
+                >
                   Configure
                 </Button>
               </div>
@@ -595,7 +651,13 @@ export default function SubscriptionPage() {
                   <h3 className="font-medium">Usage Alerts</h3>
                   <p className="text-sm text-gray-600">Get notified when approaching limits</p>
                 </div>
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    window.location.href = '/settings#usage-alerts'
+                  }}
+                >
                   Configure
                 </Button>
               </div>
