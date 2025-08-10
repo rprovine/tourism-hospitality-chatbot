@@ -200,7 +200,7 @@ export default function UnifiedAIConfigPage() {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="container mx-auto px-6 py-8 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -749,7 +749,7 @@ export default function UnifiedAIConfigPage() {
       </div>
 
       {/* Save Button */}
-      <div className="flex items-center justify-between bg-white p-6 border-t border-gray-200 sticky bottom-0">
+      <div className="flex items-center justify-between bg-white p-4 border border-gray-200 rounded-lg sticky bottom-4">
         {saveMessage && (
           <div className={`flex items-center gap-2 text-sm ${
             saveMessage.includes('Error') ? 'text-red-600' : 'text-green-600'
