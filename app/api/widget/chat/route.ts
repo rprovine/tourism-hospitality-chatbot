@@ -99,10 +99,20 @@ export async function POST(request: NextRequest) {
     let response = ''
     
     // Check if we have a direct knowledge base match
-    // Higher threshold to ensure only good matches are used
-    if (relevantQAs.length > 0 && relevantQAs[0].score > 70) {
+    // Lower threshold to allow more matches (semantic search will ensure quality)
+    if (relevantQAs.length > 0 && relevantQAs[0].score > 40) {
       console.log('Using direct knowledge base answer with score:', relevantQAs[0].score)
       response = relevantQAs[0].answer
+      
+      // If there are multiple good matches, include them as well
+      if (relevantQAs.length > 1 && relevantQAs[1].score > 30) {
+        response += '\n\n**Related information:**'
+        for (let i = 1; i < Math.min(relevantQAs.length, 3); i++) {
+          if (relevantQAs[i].score > 30) {
+            response += `\n• ${relevantQAs[i].answer}`
+          }
+        }
+      }
     } else {
       // No direct match - provide helpful fallback based on tier
       const isDemo = validatedData.businessId === 'demo' || validatedData.businessId === 'demo-business-id'

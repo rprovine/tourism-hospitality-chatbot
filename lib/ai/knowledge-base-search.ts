@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { findSemanticMatches } from './semantic-search'
 
 const prisma = new PrismaClient()
 
@@ -86,21 +87,59 @@ export async function searchKnowledgeBase(
     })
     
     // Filter and sort by score
-    const relevantMatches = matches
+    let relevantMatches: Array<{question: string; answer: string; category: string; score: number; id?: string}> = matches
       .filter(m => m.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, limit)
     
-    // Update usage statistics for matched items
-    if (relevantMatches.length > 0) {
-      const topMatch = relevantMatches[0]
-      await prisma.knowledgeBase.update({
-        where: { id: (topMatch as any).id },
-        data: {
-          usageCount: { increment: 1 },
-          lastUsed: new Date()
+    // If keyword matching didn't find good results, try semantic search
+    if (relevantMatches.length === 0 || relevantMatches[0].score < 30) {
+      console.log('Keyword matching insufficient, trying semantic search...')
+      
+      // Prepare items for semantic search
+      const itemsForSearch = items.map(item => ({
+        question: item.question,
+        answer: item.answer,
+        category: item.category,
+        keywords: item.keywords
+      }))
+      
+      // Try semantic matching with AI
+      const semanticMatches = await findSemanticMatches(
+        query,
+        itemsForSearch,
+        0.6, // Lower threshold for semantic matching
+        limit
+      )
+      
+      // Combine results, preferring semantic matches if they're better
+      if (semanticMatches.length > 0) {
+        // If semantic search found better matches, use those
+        if (relevantMatches.length === 0 || semanticMatches[0].score > relevantMatches[0].score) {
+          relevantMatches = semanticMatches
+          console.log(`Using semantic matches. Top match score: ${semanticMatches[0].score}`)
         }
-      }).catch(console.error) // Don't fail if update fails
+      }
+    }
+    
+    // Update usage statistics for matched items
+    if (relevantMatches.length > 0 && relevantMatches[0].score > 30) {
+      // Find the original item to update
+      const topMatch = relevantMatches[0]
+      const originalItem = items.find(item => 
+        item.question === topMatch.question && 
+        item.answer === topMatch.answer
+      )
+      
+      if (originalItem) {
+        await prisma.knowledgeBase.update({
+          where: { id: originalItem.id },
+          data: {
+            usageCount: { increment: 1 },
+            lastUsed: new Date()
+          }
+        }).catch(console.error) // Don't fail if update fails
+      }
     }
     
     return relevantMatches.map(({ question, answer, category, score }) => ({
