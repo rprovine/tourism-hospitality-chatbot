@@ -480,6 +480,20 @@ export default function KnowledgeBasePage() {
           <CardDescription>Import data from various sources to train your AI</CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Important Note about Availability Data */}
+          <Alert className="mb-4 border-blue-200 bg-blue-50">
+            <AlertCircle className="h-4 w-4 text-blue-600" />
+            <AlertTitle className="text-blue-800">Add Real-Time Data Here</AlertTitle>
+            <AlertDescription className="text-blue-700">
+              Add your availability, room types, rates, and other real-time information here. The chatbot will use this data when responding to guest inquiries. 
+              For example, add entries like:
+              <ul className="list-disc ml-5 mt-2 text-sm">
+                <li><strong>Q:</strong> "What rooms are available?" <strong>A:</strong> "We have Ocean View and Garden View rooms available..."</li>
+                <li><strong>Q:</strong> "Current rates" <strong>A:</strong> "Our rates start at $299 for Garden View..."</li>
+              </ul>
+            </AlertDescription>
+          </Alert>
+
           <Tabs value={uploadType} onValueChange={(v: any) => setUploadType(v)}>
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="manual">Manual Entry</TabsTrigger>

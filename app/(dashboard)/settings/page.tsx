@@ -712,6 +712,23 @@ export default function SettingsPage() {
                   These buttons appear at the bottom of the chat when it first opens. They help guide users to common questions and increase engagement.
                 </AlertDescription>
               </Alert>
+
+              {/* Important Note about Demo Data */}
+              <Alert className="border-blue-200 bg-blue-50">
+                <AlertCircle className="h-4 w-4 text-blue-600" />
+                <AlertTitle className="text-blue-800">Note: Currently Using Demo Data</AlertTitle>
+                <AlertDescription className="text-blue-700">
+                  Quick actions like "Check Availability" currently return demonstration data for testing purposes. 
+                  To connect real data:
+                  <ul className="list-disc ml-5 mt-2">
+                    <li>Update your Business Profile with room types and availability</li>
+                    <li>Add availability information to the Knowledge Base</li>
+                    <li>Connect your booking system API (Professional+ plans)</li>
+                    <li>Configure real-time inventory sync in AI Config</li>
+                  </ul>
+                  The chatbot will automatically pull from your Business Profile and Knowledge Base once configured.
+                </AlertDescription>
+              </Alert>
               
               {/* Tier-based limitations */}
               {business?.tier === 'starter' && (
