@@ -108,11 +108,70 @@ export async function POST(request: NextRequest) {
       const isDemo = validatedData.businessId === 'demo' || validatedData.businessId === 'demo-business-id'
       const businessInfo = business.businessInfo as any || {}
       const contactPhone = businessInfo.phone || '(808) 555-0100'
-      const contactEmail = businessInfo.email || business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
+      const contactEmail = business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
       
-      // For starter tier, always provide contact fallback (no AI)
-      if (business.tier === 'starter') {
-        response = `I don't have specific information about that in my knowledge base. 
+      // Check if question is about specific business info we have
+      const message = validatedData.message.toLowerCase()
+      if (message.includes('check') && (message.includes('in') || message.includes('check-in'))) {
+        if (businessInfo.checkInTime) {
+          response = `Check-in begins at ${businessInfo.checkInTime}. Early check-in may be available - please call ${contactPhone} to inquire.`
+        }
+      } else if (message.includes('check') && (message.includes('out') || message.includes('check-out'))) {
+        if (businessInfo.checkOutTime) {
+          response = `Check-out is at ${businessInfo.checkOutTime}. Late check-out may be available for a small fee - please ask at the front desk.`
+        }
+      } else if (message.includes('parking')) {
+        if (businessInfo.parking) {
+          response = businessInfo.parking
+        }
+      } else if (message.includes('wifi') || message.includes('wi-fi') || message.includes('internet')) {
+        if (businessInfo.wifi) {
+          response = businessInfo.wifi
+        }
+      } else if (message.includes('breakfast')) {
+        if (businessInfo.breakfast) {
+          response = businessInfo.breakfast
+        }
+      } else if (message.includes('pool')) {
+        if (businessInfo.pool) {
+          response = businessInfo.pool
+        }
+      } else if (message.includes('gym') || message.includes('fitness')) {
+        if (businessInfo.gym) {
+          response = businessInfo.gym
+        }
+      } else if (message.includes('restaurant') || message.includes('dining')) {
+        if (businessInfo.restaurant) {
+          response = businessInfo.restaurant
+        }
+      } else if (message.includes('cancel')) {
+        if (businessInfo.cancellationPolicy) {
+          response = businessInfo.cancellationPolicy
+        }
+      } else if (message.includes('pet') || message.includes('dog') || message.includes('cat')) {
+        if (businessInfo.petPolicy) {
+          response = businessInfo.petPolicy
+        }
+      } else if (message.includes('smok')) {
+        if (businessInfo.smokingPolicy) {
+          response = businessInfo.smokingPolicy
+        }
+      } else if (message.includes('address') || message.includes('location') || message.includes('where')) {
+        if (businessInfo.address) {
+          const fullAddress = `${businessInfo.address}${businessInfo.city ? ', ' + businessInfo.city : ''}${businessInfo.state ? ', ' + businessInfo.state : ''}${businessInfo.zip ? ' ' + businessInfo.zip : ''}`
+          response = `We're located at ${fullAddress}. ${businessInfo.airportDistance ? 'We are ' + businessInfo.airportDistance + ' from the airport.' : ''} ${businessInfo.beachDistance ? 'The beach is ' + businessInfo.beachDistance + ' away.' : ''}`
+        }
+      } else if (message.includes('phone') || message.includes('call')) {
+        response = `You can reach us at ${contactPhone}. ${businessInfo.frontDeskHours ? 'Front desk hours: ' + businessInfo.frontDeskHours : 'We\'re available 24/7 for assistance.'}`
+      } else if (message.includes('email')) {
+        response = `Our email is ${contactEmail}. We typically respond within 2-4 hours.`
+      }
+      
+      // If no specific match found, use the existing fallback logic
+      if (!response) {
+        // For starter tier, always provide contact fallback (no AI)
+        if (business.tier === 'starter') {
+          response = `I don't have specific information about that in my knowledge base. 
 
 For assistance with your question, please:
 • Call us at ${contactPhone}
@@ -120,25 +179,25 @@ For assistance with your question, please:
 • Visit our front desk
 
 Our team will be happy to help you!`
-      } else {
-        // For higher tiers, try AI response
-        try {
-          const businessContext = {
-            businessName: business.name,
-            businessType: business.type,
-            tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
-            knowledgeBase: relevantQAs.slice(0, 3),
-            isDemo: isDemo
-          }
-          
-          response = await generateClaudeResponse(
-            validatedData.message,
-            businessContext
-          )
-        } catch (aiError) {
-          console.error('AI generation error:', aiError)
-          // Fallback for AI error
-          response = `I apologize, but I'm having trouble understanding your question. 
+        } else {
+          // For higher tiers, try AI response
+          try {
+            const businessContext = {
+              businessName: business.name,
+              businessType: business.type,
+              tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
+              knowledgeBase: relevantQAs.slice(0, 3),
+              isDemo: isDemo
+            }
+            
+            response = await generateClaudeResponse(
+              validatedData.message,
+              businessContext
+            )
+          } catch (aiError) {
+            console.error('AI generation error:', aiError)
+            // Fallback for AI error
+            response = `I apologize, but I'm having trouble understanding your question. 
 
 For immediate assistance, please:
 • Call us at ${contactPhone}
@@ -146,6 +205,7 @@ For immediate assistance, please:
 • Visit our front desk
 
 Our team will be happy to help you with your specific needs.`
+          }
         }
       }
     }
@@ -212,7 +272,10 @@ export async function GET(request: NextRequest) {
       select: {
         id: true,
         name: true,
-        tier: true
+        tier: true,
+        welcomeMessage: true,
+        primaryColor: true,
+        businessInfo: true
       }
     })
     
@@ -223,14 +286,16 @@ export async function GET(request: NextRequest) {
       )
     }
     
+    const businessInfo = business.businessInfo as any || {}
+    
     return NextResponse.json(
       {
         businessId: business.id,
         businessName: business.name,
         tier: business.tier,
         settings: {
-          welcomeMessage: 'Aloha! How can I help you today?',
-          primaryColor: '#0891b2',
+          welcomeMessage: business.welcomeMessage || 'Aloha! How can I help you today?',
+          primaryColor: business.primaryColor || '#0891b2',
           position: 'bottom-right'
         }
       },

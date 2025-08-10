@@ -105,7 +105,7 @@ export default function GettingStartedPage() {
           description: 'Add your business name, contact info, and hours of operation',
           completed: false,
           priority: 'essential',
-          link: '/settings',
+          link: '/settings#profile',
           timeEstimate: '5 min'
         },
         {
@@ -132,7 +132,7 @@ export default function GettingStartedPage() {
           description: 'Create a friendly greeting that reflects your brand voice',
           completed: false,
           priority: 'essential',
-          link: '/ai-config',
+          link: '/settings#chatbot',
           timeEstimate: '2 min'
         },
         {
@@ -219,7 +219,7 @@ export default function GettingStartedPage() {
           description: 'Ensure all basic Q&As and profile info are complete',
           completed: false,
           priority: 'essential',
-          link: '/settings',
+          link: '/settings#profile',
           timeEstimate: '10 min'
         },
         {
@@ -246,7 +246,7 @@ export default function GettingStartedPage() {
           description: 'Configure all room categories with descriptions and dynamic pricing',
           completed: false,
           priority: 'essential',
-          link: '/ai-config',
+          link: '/settings#chatbot',
           timeEstimate: '20 min'
         },
         {
@@ -255,7 +255,7 @@ export default function GettingStartedPage() {
           description: 'Activate languages for your top guest demographics',
           completed: false,
           priority: 'recommended',
-          link: '/ai-config',
+          link: '/settings#chatbot',
           timeEstimate: '10 min'
         },
         {
@@ -282,7 +282,7 @@ export default function GettingStartedPage() {
           description: 'Set pricing rules and occupancy targets for dynamic pricing',
           completed: false,
           priority: 'optional',
-          link: '/ai-config',
+          link: '/settings#chatbot',
           timeEstimate: '20 min'
         },
         {
@@ -362,7 +362,7 @@ export default function GettingStartedPage() {
           description: 'Set up guest preference learning and predictive recommendations',
           completed: false,
           priority: 'essential',
-          link: '/ai-config',
+          link: '/settings#chatbot',
           timeEstimate: '45 min'
         },
         {

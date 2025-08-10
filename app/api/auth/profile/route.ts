@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function PUT(request: NextRequest) {
   try {
     const auth = await verifyAuth(request)
     
@@ -70,11 +70,39 @@ export async function PATCH(request: NextRequest) {
     }
     
     const body = await request.json()
-    const validatedData = updateProfileSchema.parse(body)
+    
+    // Extract business info fields for separate storage
+    const { 
+      name, email, type, welcomeMessage, primaryColor, logo,
+      phone, website, address, city, state, zip,
+      checkInTime, checkOutTime, frontDeskHours,
+      parking, wifi, breakfast, pool, gym, restaurant,
+      cancellationPolicy, petPolicy, smokingPolicy,
+      numberOfRooms, yearEstablished, acceptedPayments,
+      airportDistance, beachDistance,
+      ...otherFields 
+    } = body
+    
+    // Create businessInfo object with all the detailed fields
+    const businessInfo = {
+      phone, website, address, city, state, zip,
+      checkInTime, checkOutTime, frontDeskHours,
+      parking, wifi, breakfast, pool, gym, restaurant,
+      cancellationPolicy, petPolicy, smokingPolicy,
+      numberOfRooms, yearEstablished, acceptedPayments,
+      airportDistance, beachDistance
+    }
     
     const business = await prisma.business.update({
       where: { id: auth.businessId },
-      data: validatedData,
+      data: {
+        name: name || undefined,
+        type: type || undefined,
+        welcomeMessage: welcomeMessage || undefined,
+        primaryColor: primaryColor || undefined,
+        logo: logo || undefined,
+        businessInfo: businessInfo
+      },
       select: {
         id: true,
         email: true,
@@ -103,4 +131,9 @@ export async function PATCH(request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+// Also keep PATCH for backwards compatibility
+export async function PATCH(request: NextRequest) {
+  return PUT(request)
 }

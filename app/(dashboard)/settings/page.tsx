@@ -17,7 +17,28 @@ import {
   Upload,
   AlertCircle,
   CheckCircle,
-  X
+  X,
+  Building2,
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Car,
+  Wifi,
+  Coffee,
+  Users,
+  CreditCard,
+  Info,
+  MessageSquare,
+  Star,
+  Utensils,
+  Dumbbell,
+  Waves,
+  Trees,
+  Plane,
+  Baby,
+  Dog,
+  Ban
 } from 'lucide-react'
 
 export default function SettingsPage() {
@@ -26,14 +47,44 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false)
   const [uploadingLogo, setUploadingLogo] = useState(false)
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState('profile')
   
   const [profileData, setProfileData] = useState({
+    // Basic Info
     name: '',
     email: '',
     type: '',
     welcomeMessage: '',
     primaryColor: '#0891b2',
-    logo: ''
+    logo: '',
+    // Business Details
+    phone: '',
+    website: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    // Operating Hours
+    checkInTime: '3:00 PM',
+    checkOutTime: '11:00 AM',
+    frontDeskHours: '24/7',
+    // Amenities
+    parking: 'Free self-parking available',
+    wifi: 'Free WiFi throughout property',
+    breakfast: 'Continental breakfast 7:00 AM - 10:00 AM',
+    pool: 'Outdoor pool open 7:00 AM - 9:00 PM',
+    gym: '24/7 fitness center',
+    restaurant: 'On-site restaurant open 7:00 AM - 10:00 PM',
+    // Policies
+    cancellationPolicy: '48 hours before arrival for full refund',
+    petPolicy: 'Service animals only',
+    smokingPolicy: 'Non-smoking property',
+    // Additional
+    numberOfRooms: '',
+    yearEstablished: '',
+    acceptedPayments: ['Visa', 'Mastercard', 'Amex', 'Discover'],
+    airportDistance: '',
+    beachDistance: ''
   })
   
   const [notificationSettings, setNotificationSettings] = useState({
@@ -46,6 +97,12 @@ export default function SettingsPage() {
   
   useEffect(() => {
     loadSettings()
+    
+    // Check for hash in URL to set active tab
+    const hash = window.location.hash.replace('#', '')
+    if (hash && ['profile', 'chatbot', 'notifications', 'security', 'billing'].includes(hash)) {
+      setActiveTab(hash)
+    }
   }, [])
   
   const loadSettings = () => {
@@ -59,7 +116,9 @@ export default function SettingsPage() {
         type: parsed.type || '',
         welcomeMessage: parsed.welcomeMessage || 'Aloha! How can I help you today?',
         primaryColor: parsed.primaryColor || '#0891b2',
-        logo: parsed.logo || ''
+        logo: parsed.logo || '',
+        // Load additional business info if it exists
+        ...(parsed.businessInfo || {})
       })
       setLogoUrl(parsed.logo || null)
     }
@@ -163,7 +222,7 @@ export default function SettingsPage() {
         <p className="text-gray-600">Manage your account and chatbot configuration</p>
       </div>
       
-      <Tabs defaultValue="profile" className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList>
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="chatbot">Chatbot</TabsTrigger>
@@ -281,10 +340,245 @@ export default function SettingsPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Contact Information */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="font-medium text-gray-900 mb-3">Contact Information</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Phone Number</label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.phone}
+                        onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                        placeholder="(808) 555-0100"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Website</label>
+                    <div className="relative">
+                      <Globe className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.website}
+                        onChange={(e) => setProfileData({ ...profileData, website: e.target.value })}
+                        placeholder="https://www.yourhotel.com"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="font-medium text-gray-900 mb-3">Location</h3>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Street Address</label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.address}
+                        onChange={(e) => setProfileData({ ...profileData, address: e.target.value })}
+                        placeholder="123 Beach Road"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">City</label>
+                      <Input
+                        value={profileData.city}
+                        onChange={(e) => setProfileData({ ...profileData, city: e.target.value })}
+                        placeholder="Honolulu"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">State</label>
+                      <Input
+                        value={profileData.state}
+                        onChange={(e) => setProfileData({ ...profileData, state: e.target.value })}
+                        placeholder="HI"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">ZIP</label>
+                      <Input
+                        value={profileData.zip}
+                        onChange={(e) => setProfileData({ ...profileData, zip: e.target.value })}
+                        placeholder="96815"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Operating Hours */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="font-medium text-gray-900 mb-3">Operating Hours</h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Check-in Time</label>
+                    <div className="relative">
+                      <Clock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.checkInTime}
+                        onChange={(e) => setProfileData({ ...profileData, checkInTime: e.target.value })}
+                        placeholder="3:00 PM"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Check-out Time</label>
+                    <div className="relative">
+                      <Clock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.checkOutTime}
+                        onChange={(e) => setProfileData({ ...profileData, checkOutTime: e.target.value })}
+                        placeholder="11:00 AM"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Front Desk</label>
+                    <div className="relative">
+                      <Users className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.frontDeskHours}
+                        onChange={(e) => setProfileData({ ...profileData, frontDeskHours: e.target.value })}
+                        placeholder="24/7"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Key Amenities */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="font-medium text-gray-900 mb-3">Key Amenities</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Parking</label>
+                    <div className="relative">
+                      <Car className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.parking}
+                        onChange={(e) => setProfileData({ ...profileData, parking: e.target.value })}
+                        placeholder="Free self-parking"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">WiFi</label>
+                    <div className="relative">
+                      <Wifi className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.wifi}
+                        onChange={(e) => setProfileData({ ...profileData, wifi: e.target.value })}
+                        placeholder="Free WiFi throughout"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Breakfast</label>
+                    <div className="relative">
+                      <Coffee className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.breakfast}
+                        onChange={(e) => setProfileData({ ...profileData, breakfast: e.target.value })}
+                        placeholder="Continental 7-10 AM"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Pool</label>
+                    <div className="relative">
+                      <Waves className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Input
+                        value={profileData.pool}
+                        onChange={(e) => setProfileData({ ...profileData, pool: e.target.value })}
+                        placeholder="Outdoor pool 7 AM - 9 PM"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Policies */}
+              <div className="border-t pt-4 mt-4">
+                <h3 className="font-medium text-gray-900 mb-3">Policies</h3>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Cancellation Policy</label>
+                    <Input
+                      value={profileData.cancellationPolicy}
+                      onChange={(e) => setProfileData({ ...profileData, cancellationPolicy: e.target.value })}
+                      placeholder="48 hours before arrival for full refund"
+                    />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">Pet Policy</label>
+                      <div className="relative">
+                        <Dog className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input
+                          value={profileData.petPolicy}
+                          onChange={(e) => setProfileData({ ...profileData, petPolicy: e.target.value })}
+                          placeholder="Service animals only"
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700">Smoking Policy</label>
+                      <div className="relative">
+                        <Ban className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input
+                          value={profileData.smokingPolicy}
+                          onChange={(e) => setProfileData({ ...profileData, smokingPolicy: e.target.value })}
+                          placeholder="Non-smoking property"
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Chatbot Preview */}
+              <div className="border-t pt-4 mt-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <MessageSquare className="h-5 w-5 text-blue-600" />
+                    <h3 className="font-medium text-blue-900">Chatbot Preview</h3>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="bg-white rounded p-2">
+                      <span className="text-gray-600">Guest: "What time is check-in?"</span><br/>
+                      <span className="text-gray-800">Bot: Check-in begins at {profileData.checkInTime || '3:00 PM'}.</span>
+                    </div>
+                    <div className="bg-white rounded p-2">
+                      <span className="text-gray-600">Guest: "Do you have parking?"</span><br/>
+                      <span className="text-gray-800">Bot: Yes! {profileData.parking || 'We offer parking'}.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
               
               <Button onClick={saveProfile} disabled={saving}>
                 <Save className="h-4 w-4 mr-2" />
-                {saving ? 'Saving...' : 'Save Changes'}
+                {saving ? 'Saving...' : 'Save All Changes'}
               </Button>
             </CardContent>
           </Card>
