@@ -303,6 +303,7 @@ export async function GET(request: NextRequest) {
         businessId: business.id,
         businessName: business.name,
         tier: business.tier,
+        businessInfo: businessInfo, // Include real business data
         settings: {
           welcomeMessage: business.welcomeMessage || 'Aloha! How can I help you today?',
           primaryColor: business.primaryColor || '#0891b2',

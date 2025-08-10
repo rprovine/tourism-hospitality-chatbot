@@ -314,6 +314,7 @@ export default function StarterWidgetDemo() {
           businessName={businessName}
           primaryColor={primaryColor}
           welcomeMessage={welcomeMessage}
+          isDemo={true}
         />
       )}
     </div>

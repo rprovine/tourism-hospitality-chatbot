@@ -32,10 +32,16 @@ export default function WidgetPage() {
     if (businessData) {
       try {
         const business = JSON.parse(businessData)
-        setBusinessId(business.id || 'demo-business-id')
+        // Only use demo ID if this is actually a demo account
+        if (business.id === 'demo' || !business.id) {
+          setBusinessId('demo-business-id')
+        } else {
+          setBusinessId(business.id)
+        }
       } catch (error) {
         console.error('Error parsing business data:', error)
-        setBusinessId('demo-business-id')
+        // Don't default to demo for production accounts
+        setBusinessId('')
       }
     }
   }, [])

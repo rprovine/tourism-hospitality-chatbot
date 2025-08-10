@@ -6,13 +6,13 @@ import { MessageCircle, X, Send, Sparkles, Star } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { ChatMessage } from '@/lib/types'
 import { getOrCreateSessionId } from '@/lib/utils/session'
-import { mockBusinessData, mockKnowledgeBase, mockRealTimeData } from '@/lib/data/mock-business-data'
-
 interface ChatWidgetProps {
   tier: 'starter' | 'professional' | 'premium' | 'enterprise'
   businessName?: string
   primaryColor?: string
   welcomeMessage?: string
+  businessData?: any
+  isDemo?: boolean
 }
 
 interface QuickAction {
@@ -39,6 +39,8 @@ export default function ChatWidget({
   businessName = 'Aloha Resort',
   primaryColor = '#0891b2',
   welcomeMessage = 'Aloha! How can I help you today?',
+  businessData = null,
+  isDemo = false,
   autoOpen = false,
   initialQuestion = '',
   embedded = false
@@ -263,14 +265,26 @@ export default function ChatWidget({
 
   const generateResponse = (query: string, tierLevel: string) => {
     const lowerQuery = query.toLowerCase()
-    const business = mockBusinessData[tierLevel as keyof typeof mockBusinessData]
-    const realTime = mockRealTimeData[tierLevel as keyof typeof mockRealTimeData]
-    const knowledge = mockKnowledgeBase[tierLevel as keyof typeof mockRealTimeData]
     
-    // Only add demo disclaimer if this is actually a demo (businessId === 'demo')
-    const urlParams = new URLSearchParams(window.location.search)
-    const businessId = urlParams.get('businessId')
-    const disclaimer = businessId === 'demo' || businessId === 'demo-business-id' 
+    // Use real business data if available, otherwise return a message to configure data
+    if (!businessData && !isDemo) {
+      return "Please configure your business information in Settings to provide accurate responses. The chatbot needs your business details to answer guest questions."
+    }
+    
+    // For demo mode, load mock data
+    let business: any = businessData || {}
+    let realTime: any = {}
+    let knowledge: any = {}
+    
+    if (isDemo) {
+      // Only load mock data for demo accounts
+      const { mockBusinessData, mockRealTimeData, mockKnowledgeBase } = require('@/lib/data/mock-business-data')
+      business = mockBusinessData[tierLevel as keyof typeof mockBusinessData] || {}
+      realTime = mockRealTimeData[tierLevel as keyof typeof mockRealTimeData] || {}
+      knowledge = mockKnowledgeBase[tierLevel as keyof typeof mockKnowledgeBase] || {}
+    }
+    
+    const disclaimer = isDemo 
       ? "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
       : ""
     

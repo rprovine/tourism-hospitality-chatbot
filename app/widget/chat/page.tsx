@@ -77,6 +77,8 @@ function WidgetContent() {
         businessName={businessConfig?.businessName || 'Your Business'}
         primaryColor={businessConfig?.settings?.primaryColor || primaryColor}
         welcomeMessage={businessConfig?.settings?.welcomeMessage || 'Aloha! How can I help you today?'}
+        businessData={businessConfig?.businessInfo || null}
+        isDemo={businessId === 'demo' || businessId === 'demo-business-id'}
         autoOpen={true}
         initialQuestion=""
         embedded={true}

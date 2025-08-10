@@ -166,7 +166,10 @@ export default function AnalyticsPage() {
     resolutionRate: 87.3
   }
   
-  const data = analytics || mockAnalytics
+  // Only use mock data for demo accounts
+  const businessData = typeof window !== 'undefined' ? localStorage.getItem('business') : null
+  const isDemo = businessData ? JSON.parse(businessData).id === 'demo' : false
+  const data = (!analytics || Object.keys(analytics).length === 0) && isDemo ? mockAnalytics : (analytics || mockAnalytics)
   
   if (loading) {
     return <LoadingState message="Loading analytics data..." size="lg" />
