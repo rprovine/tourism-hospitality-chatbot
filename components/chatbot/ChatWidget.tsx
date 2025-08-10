@@ -15,6 +15,25 @@ interface ChatWidgetProps {
   welcomeMessage?: string
 }
 
+interface QuickAction {
+  label: string
+  icon: string
+  action: string
+  tier: string[]
+}
+
+// Quick action menu items based on tier
+const quickActions: QuickAction[] = [
+  { label: 'Check Availability', icon: '🏨', action: 'What rooms are available tonight?', tier: ['starter', 'professional', 'premium', 'enterprise'] },
+  { label: 'View Amenities', icon: '🏖️', action: 'What amenities do you offer?', tier: ['starter', 'professional', 'premium', 'enterprise'] },
+  { label: 'Get Directions', icon: '📍', action: 'How do I get to your hotel?', tier: ['starter', 'professional', 'premium', 'enterprise'] },
+  { label: 'Book a Room', icon: '📅', action: 'I want to book a room', tier: ['professional', 'premium', 'enterprise'] },
+  { label: 'Restaurant Info', icon: '🍽️', action: 'Tell me about your restaurants', tier: ['professional', 'premium', 'enterprise'] },
+  { label: 'Special Offers', icon: '🎁', action: 'Do you have any special offers?', tier: ['professional', 'premium', 'enterprise'] },
+  { label: 'VIP Services', icon: '👑', action: 'What VIP services do you offer?', tier: ['premium', 'enterprise'] },
+  { label: 'Concierge', icon: '🎯', action: 'I need concierge assistance', tier: ['premium', 'enterprise'] },
+]
+
 export default function ChatWidget({
   tier = 'starter',
   businessName = 'Aloha Resort',
@@ -43,7 +62,11 @@ export default function ChatWidget({
   const [feedback, setFeedback] = useState('')
   const [hasRated, setHasRated] = useState(false)
   const [messageCount, setMessageCount] = useState(0)
+  const [showQuickActions, setShowQuickActions] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  
+  // Filter quick actions based on tier
+  const availableQuickActions = quickActions.filter(action => action.tier.includes(tier))
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -73,20 +96,33 @@ export default function ChatWidget({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, initialQuestion, hasAutoSent])
 
-  const handleSend = async () => {
-    if (!input.trim()) return
+  const handleQuickAction = (action: string) => {
+    setInput(action)
+    setShowQuickActions(false)
+    // Automatically send the quick action
+    setTimeout(() => {
+      handleSend(action)
+    }, 100)
+  }
+
+  const handleSend = async (customInput?: string) => {
+    const messageToSend = customInput || input
+    if (!messageToSend.trim()) return
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
-      content: input,
+      content: messageToSend,
       timestamp: new Date()
     }
 
     setMessages(prev => [...prev, userMessage])
-    const currentInput = input // Store before clearing
-    setInput('')
+    const currentInput = messageToSend // Store before clearing
+    if (!customInput) {
+      setInput('')
+    }
     setIsTyping(true)
+    setShowQuickActions(false)
     
     // Increment message count
     setMessageCount(prev => prev + 1)
@@ -653,32 +689,82 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
             {/* Messages */}
             <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
               <div className="space-y-4">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={cn(
-                      'flex',
-                      message.role === 'user' ? 'justify-end' : 'justify-start'
-                    )}
-                  >
+                {messages.map((message, index) => (
+                  <div key={message.id}>
                     <div
                       className={cn(
-                        'max-w-[80%] rounded-lg px-4 py-2',
-                        message.role === 'user'
-                          ? 'bg-cyan-700 text-white'
-                          : 'bg-white text-gray-800 shadow-sm'
+                        'flex',
+                        message.role === 'user' ? 'justify-end' : 'justify-start'
                       )}
                     >
-                      <div className="whitespace-pre-wrap">{message.content}</div>
-                      <div 
+                      <div
                         className={cn(
-                          'mt-1 text-xs',
-                          message.role === 'user' ? 'text-cyan-50 opacity-90' : 'text-gray-500'
+                          'max-w-[80%] rounded-lg px-4 py-2',
+                          message.role === 'user'
+                            ? 'bg-cyan-700 text-white'
+                            : 'bg-white text-gray-800 shadow-sm'
                         )}
                       >
-                        {new Date(message.timestamp).toLocaleTimeString()}
+                        <div className="whitespace-pre-wrap">{message.content}</div>
+                        <div 
+                          className={cn(
+                            'mt-1 text-xs',
+                            message.role === 'user' ? 'text-cyan-50 opacity-90' : 'text-gray-500'
+                          )}
+                        >
+                          {new Date(message.timestamp).toLocaleTimeString()}
+                        </div>
                       </div>
                     </div>
+                    
+                    {/* Quick Actions - Show after first message only */}
+                    {index === 0 && showQuickActions && messages.length === 1 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-4 space-y-2"
+                      >
+                        <div className="text-xs text-gray-500 mb-2">Quick actions:</div>
+                        <div className="grid grid-cols-2 gap-2">
+                          {availableQuickActions.map((action, actionIndex) => (
+                            <motion.button
+                              key={action.label}
+                              initial={{ opacity: 0, scale: 0.9 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: 0.4 + actionIndex * 0.05 }}
+                              onClick={() => handleQuickAction(action.action)}
+                              className="flex items-center gap-2 px-3 py-2 text-sm bg-white rounded-lg border border-gray-200 hover:border-cyan-400 hover:bg-cyan-50 transition-all text-left group"
+                            >
+                              <span className="text-base">{action.icon}</span>
+                              <span className="text-gray-700 group-hover:text-cyan-700">{action.label}</span>
+                            </motion.button>
+                          ))}
+                        </div>
+                        
+                        {/* Tier-specific messaging */}
+                        {tier === 'starter' && (
+                          <div className="text-xs text-gray-400 italic mt-3 px-2">
+                            💡 Upgrade to Professional for booking capabilities
+                          </div>
+                        )}
+                        {tier === 'professional' && (
+                          <div className="text-xs text-gray-400 italic mt-3 px-2">
+                            🚀 Includes real-time booking & multi-language support
+                          </div>
+                        )}
+                        {tier === 'premium' && (
+                          <div className="text-xs text-gray-400 italic mt-3 px-2">
+                            👑 VIP concierge service with personalized recommendations
+                          </div>
+                        )}
+                        {tier === 'enterprise' && (
+                          <div className="text-xs text-gray-400 italic mt-3 px-2">
+                            🏢 Full enterprise integration with all systems active
+                          </div>
+                        )}
+                      </motion.div>
+                    )}
                   </div>
                 ))}
                 {isTyping && (
