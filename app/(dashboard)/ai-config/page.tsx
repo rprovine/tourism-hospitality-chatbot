@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Brain, Sparkles, Save, AlertCircle, Check, Bot, MessageSquare, Lock, RefreshCw } from 'lucide-react'
+import { Brain, Sparkles, Save, AlertCircle, Check, Bot, MessageSquare, Lock, RefreshCw, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'

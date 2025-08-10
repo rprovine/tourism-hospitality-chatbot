@@ -292,59 +292,60 @@ export default function AnalyticsPage() {
           {(!data.conversationsByDay || data.conversationsByDay.length === 0) ? (
             <EmptyState tab="conversations" tier={businessTier} />
           ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Daily Conversations Chart */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Daily Conversations</CardTitle>
-                <CardDescription>Conversation volume over the past week</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-64 flex items-end justify-between gap-2">
-                  {data.conversationsByDay.map((day, index) => {
-                    const heightPercent = (day.count / Math.max(...data.conversationsByDay.map(d => d.count))) * 100
-                    return (
-                      <div key={index} className="flex-1 flex flex-col items-center">
-                        <div className="relative w-full group">
-                          <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                            {day.count} conversations
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {/* Daily Conversations Chart */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Daily Conversations</CardTitle>
+                    <CardDescription>Conversation volume over the past week</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-64 flex items-end justify-between gap-2">
+                      {data.conversationsByDay.map((day, index) => {
+                        const heightPercent = (day.count / Math.max(...data.conversationsByDay.map(d => d.count))) * 100
+                        return (
+                          <div key={index} className="flex-1 flex flex-col items-center">
+                            <div className="relative w-full group">
+                              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                {day.count} conversations
+                              </div>
+                              <div
+                                className="w-full bg-gradient-to-t from-cyan-600 to-cyan-400 rounded-t hover:from-cyan-700 hover:to-cyan-500 transition-colors"
+                                style={{ height: `${(heightPercent * 200) / 100}px` }}
+                              />
+                            </div>
+                            <span className="text-xs text-gray-600 mt-2">{day.date}</span>
                           </div>
-                          <div
-                            className="w-full bg-gradient-to-t from-cyan-600 to-cyan-400 rounded-t hover:from-cyan-700 hover:to-cyan-500 transition-colors"
-                            style={{ height: `${(heightPercent * 200) / 100}px` }}
-                          />
-                        </div>
-                        <span className="text-xs text-gray-600 mt-2">{day.date}</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-            
-            {/* Top Questions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Questions</CardTitle>
-                <CardDescription>Most frequently asked questions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {data.topQuestions.map((question, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700 flex-1 truncate pr-4">
-                        {index + 1}. {question.question}
-                      </span>
-                      <Badge variant="outline">{question.count}</Badge>
+                        )
+                      })}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* Hourly Distribution */}
-          <Card>
+                  </CardContent>
+                </Card>
+                
+                {/* Top Questions */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Top Questions</CardTitle>
+                    <CardDescription>Most frequently asked questions</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {data.topQuestions.map((question, index) => (
+                        <div key={index} className="flex items-center justify-between">
+                          <span className="text-sm text-gray-700 flex-1 truncate pr-4">
+                            {index + 1}. {question.question}
+                          </span>
+                          <Badge variant="outline">{question.count}</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Hourly Distribution */}
+              <Card>
             <CardHeader>
               <CardTitle>Hourly Activity</CardTitle>
               <CardDescription>Conversation distribution throughout the day</CardDescription>
@@ -375,7 +376,7 @@ export default function AnalyticsPage() {
               </div>
             </CardContent>
           </Card>
-          </div>
+          </>
           )}
         </TabsContent>
         
@@ -383,7 +384,7 @@ export default function AnalyticsPage() {
           {businessTier === 'starter' || !data.languageDistribution || Object.keys(data.languageDistribution).length === 0 ? (
             <EmptyState tab="users" tier={businessTier} />
           ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Language Distribution */}
             <Card>
               <CardHeader>
@@ -436,6 +437,7 @@ export default function AnalyticsPage() {
               </CardContent>
             </Card>
           </div>
+          )}
         </TabsContent>
         
         <TabsContent value="performance" className="space-y-4">
