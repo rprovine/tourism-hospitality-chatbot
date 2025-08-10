@@ -760,8 +760,8 @@ export default function GettingStartedPage() {
                     </pre>
                     <Button
                       size="sm"
-                      variant="secondary"
-                      className="absolute top-2 right-2"
+                      variant="outline"
+                      className="absolute top-2 right-2 bg-white hover:bg-gray-100"
                       onClick={() => {
                         navigator.clipboard.writeText(getEmbedCode())
                       }}
