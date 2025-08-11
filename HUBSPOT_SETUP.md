@@ -151,7 +151,7 @@ curl -X POST http://localhost:3000/api/payments/webhook \
 | Tier | Monthly | Yearly | Conversations | AI Model |
 |------|---------|--------|--------------|----------|
 | Starter | $29 | $290 | 1,000/mo | Claude Haiku |
-| Professional | $149 | $1,490 | 5,000/mo | Claude + GPT-4 |
+| Professional | $149 | $1,490 | 5,000/mo | Claude + GPT-5 |
 | Premium | $299 | $2,990 | Unlimited | Dual AI + Learning |
 | Enterprise | $999+ | Custom | Unlimited | Custom Blend |
 

@@ -35,7 +35,7 @@
 - ✅ Knowledge base limit: 500 items enforced
 - ✅ Guest profiles: 1,000 limit enforced
 - ✅ Channels: Web, WhatsApp, SMS
-- ✅ AI Models: Added claude-sonnet, gpt-4
+- ✅ AI Models: Added claude-sonnet, gpt-5
 - ✅ Languages: 7 languages available (English, Spanish, Japanese, Chinese, French, German, Pidgin)
 - ✅ Analytics: Advanced level
 - ✅ Feature Access:
@@ -58,7 +58,7 @@
 - ✅ Knowledge base: Unlimited
 - ✅ Guest profiles: Unlimited
 - ✅ Channels: Web, WhatsApp, SMS, Instagram, Facebook
-- ✅ AI Models: Full suite (claude-haiku, sonnet, opus, gpt-3.5, gpt-4, gpt-4-turbo)
+- ✅ AI Models: Full suite (claude-haiku, sonnet, opus, gpt-5 auto-optimizing)
 - ✅ Languages: 8 languages (adds Hawaiian)
 - ✅ Analytics: Enterprise level
 - ✅ All Features Enabled:
@@ -100,9 +100,7 @@
 | **Claude Haiku** | ✅ | ✅ | ✅ | ✅ |
 | **Claude Sonnet** | ❌ | ✅ | ✅ | ✅ |
 | **Claude Opus** | ❌ | ❌ | ✅ | ✅ |
-| **GPT-3.5** | ✅ | ✅ | ✅ | ✅ |
-| **GPT-4** | ❌ | ✅ | ✅ | ✅ |
-| **GPT-4 Turbo** | ❌ | ❌ | ✅ | ✅ |
+| **GPT-5 (Auto-Optimizing)** | ❌ | ✅ | ✅ | ✅ |
 | **English** | ✅ | ✅ | ✅ | ✅ |
 | **Multi-language** | ❌ | ✅ (7) | ✅ (8) | ✅ (All) |
 | **Hawaiian** | ❌ | ❌ | ✅ | ✅ |

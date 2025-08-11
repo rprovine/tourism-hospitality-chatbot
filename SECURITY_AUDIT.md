@@ -70,7 +70,7 @@
 | **Conversations/Day** | 50 | 500 | 1,000 |
 | **Languages** | English Only | 2 of Choice | 5 of Choice |
 | **Knowledge Base Items** | 50 | 500 | Unlimited |
-| **AI Models** | Basic (Haiku, GPT-3.5) | Advanced (+ Sonnet, GPT-4) | All (+ Opus, GPT-4 Turbo) |
+| **AI Models** | Basic (Haiku only) | Advanced (+ Sonnet, GPT-5) | All (+ Opus, GPT-5) |
 | **API Access** | ❌ | ✅ (Rate Limited) | ✅ (Higher Limits) |
 | **Channels** | Web Only | Web, WhatsApp, SMS | All Channels |
 | **Revenue Features** | ❌ | ✅ | ✅ |
