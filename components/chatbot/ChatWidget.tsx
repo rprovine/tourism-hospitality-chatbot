@@ -144,8 +144,22 @@ export default function ChatWidget({
       const urlParams = new URLSearchParams(window.location.search)
       const businessId = urlParams.get('businessId') || 'demo-business-id'
       
+      // For demo mode, use local response generation
+      if (businessId === 'demo-business-id' || businessId === 'demo') {
+        const response = generateResponse(currentInput, tier)
+        const assistantMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: response,
+          timestamp: new Date()
+        }
+        setMessages(prev => [...prev, assistantMessage])
+        setIsTyping(false)
+        return
+      }
+      
       // If contact info detected, capture as lead
-      if ((hasEmail || hasPhone) && conversationId && businessId !== 'demo' && businessId !== 'demo-business-id') {
+      if ((hasEmail || hasPhone) && conversationId) {
         // Extract name if provided (common patterns)
         const nameMatch = currentInput.match(/(?:my name is|i'm|i am|call me)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i)
         const name = nameMatch ? nameMatch[1] : undefined
@@ -204,7 +218,7 @@ export default function ChatWidget({
     } catch (error) {
       console.error('Chat error:', error)
       // Fallback to local response generation
-      const response = generateResponse(input, tier)
+      const response = generateResponse(currentInput, tier)
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',

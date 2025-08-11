@@ -1212,6 +1212,7 @@ export default function LandingPage() {
             }
             autoOpen={true}
             initialQuestion={selectedQuestion}
+            isDemo={true}
           />
         </>
       )}
