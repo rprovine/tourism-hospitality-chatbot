@@ -30,7 +30,7 @@ export async function generateClaudeResponse(
 ): Promise<string> {
   // If no API key, fall back to rule-based responses
   if (!process.env.ANTHROPIC_API_KEY) {
-    return generateFallbackResponse(userMessage, context.tier, context.isDemo || false)
+    return generateFallbackResponse(userMessage, context.tier, context.isDemo || false, context.businessInfo)
   }
 
   try {
@@ -111,7 +111,7 @@ export async function generateClaudeResponse(
   } catch (error) {
     console.error('Claude API error:', error)
     // Fall back to rule-based response if API fails
-    return generateFallbackResponse(userMessage, context.tier, context.isDemo || false)
+    return generateFallbackResponse(userMessage, context.tier, context.isDemo || false, context.businessInfo)
   }
 }
 
@@ -132,6 +132,41 @@ IMPORTANT: You are in DEMO MODE. Always end your responses with:
 "[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]"
 ` : ''
 
+  // Parse business info for easier access
+  let businessDetails = ''
+  if (context.businessInfo) {
+    const info = context.businessInfo as any
+    businessDetails = `
+IMPORTANT Business Information (USE THIS DATA IN YOUR RESPONSES):
+`
+    if (info.checkInTime) businessDetails += `- Check-in Time: ${info.checkInTime}\n`
+    if (info.checkOutTime) businessDetails += `- Check-out Time: ${info.checkOutTime}\n`
+    if (info.phone) businessDetails += `- Phone: ${info.phone}\n`
+    if (info.email || info.contactEmail) businessDetails += `- Email: ${info.email || info.contactEmail}\n`
+    if (info.address) businessDetails += `- Address: ${info.address}\n`
+    if (info.city) businessDetails += `- City: ${info.city}\n`
+    if (info.state) businessDetails += `- State: ${info.state}\n`
+    if (info.zip) businessDetails += `- ZIP: ${info.zip}\n`
+    if (info.parking) businessDetails += `- Parking: ${info.parking}\n`
+    if (info.wifi) businessDetails += `- WiFi: ${info.wifi}\n`
+    if (info.breakfast) businessDetails += `- Breakfast: ${info.breakfast}\n`
+    if (info.pool) businessDetails += `- Pool: ${info.pool}\n`
+    if (info.gym) businessDetails += `- Gym/Fitness: ${info.gym}\n`
+    if (info.restaurant) businessDetails += `- Restaurant: ${info.restaurant}\n`
+    if (info.cancellationPolicy) businessDetails += `- Cancellation Policy: ${info.cancellationPolicy}\n`
+    if (info.petPolicy) businessDetails += `- Pet Policy: ${info.petPolicy}\n`
+    if (info.smokingPolicy) businessDetails += `- Smoking Policy: ${info.smokingPolicy}\n`
+    if (info.airportDistance) businessDetails += `- Airport Distance: ${info.airportDistance}\n`
+    if (info.beachDistance) businessDetails += `- Beach Distance: ${info.beachDistance}\n`
+    if (info.frontDeskHours) businessDetails += `- Front Desk Hours: ${info.frontDeskHours}\n`
+    businessDetails += `
+You MUST use the above business information when answering guest questions. For example:
+- If asked about check-in, use the exact check-in time provided above
+- If asked about contact info, use the phone/email provided above
+- If asked about amenities, use the specific details provided above
+`
+  }
+
   const basePrompt = `You are an AI assistant for ${context.businessName}, a ${context.businessType.replace('_', ' ')} in Hawaii.
 
 Your role is to provide helpful, friendly, and accurate information to guests and potential customers.
@@ -139,7 +174,7 @@ ${demoInstructions}
 Business Context:
 - Business Type: ${context.businessType}
 - Service Tier: ${context.tier}
-${context.businessInfo ? `- Business Info: ${JSON.stringify(context.businessInfo)}` : ''}
+${businessDetails}
 ${knowledgeContext}
 Guidelines:
 1. Always be warm, welcoming, and professional
@@ -217,9 +252,61 @@ Specific capabilities by tier:
   }
 }
 
-function generateFallbackResponse(query: string, tier: 'starter' | 'professional' | 'premium' | 'enterprise', isDemo: boolean = false): string {
+function generateFallbackResponse(query: string, tier: 'starter' | 'professional' | 'premium' | 'enterprise', isDemo: boolean = false, businessInfo?: any): string {
   const lowerQuery = query.toLowerCase()
   const disclaimer = isDemo ? "\n\n[🔸 Demo Mode: Using sample data. In production, this would show YOUR actual business information.]" : ""
+  
+  // If businessInfo is provided and query matches a known field, use it
+  if (businessInfo) {
+    const info = businessInfo
+    if (lowerQuery.includes('check') && lowerQuery.includes('in') && !lowerQuery.includes('out')) {
+      if (info.checkInTime) {
+        return `Check-in time is ${info.checkInTime}. ${info.frontDeskHours ? `Front desk hours: ${info.frontDeskHours}.` : 'Our front desk is available to assist you.'} ${info.phone ? `For early check-in requests, please call ${info.phone}.` : ''}${disclaimer}`
+      }
+    }
+    if (lowerQuery.includes('check') && lowerQuery.includes('out')) {
+      if (info.checkOutTime) {
+        return `Check-out time is ${info.checkOutTime}. Late check-out may be available upon request. ${info.phone ? `Please call ${info.phone} to inquire about late check-out.` : ''}${disclaimer}`
+      }
+    }
+    if ((lowerQuery.includes('phone') || lowerQuery.includes('call') || lowerQuery.includes('contact')) && info.phone) {
+      return `You can reach us at ${info.phone}. ${info.frontDeskHours ? `Front desk hours: ${info.frontDeskHours}.` : 'We\'re here to help!'}${disclaimer}`
+    }
+    if (lowerQuery.includes('email') && (info.email || info.contactEmail)) {
+      return `Our email is ${info.email || info.contactEmail}. We typically respond within 2-4 hours during business hours.${disclaimer}`
+    }
+    if ((lowerQuery.includes('address') || lowerQuery.includes('location') || lowerQuery.includes('where')) && info.address) {
+      const fullAddress = `${info.address}${info.city ? ', ' + info.city : ''}${info.state ? ', ' + info.state : ''}${info.zip ? ' ' + info.zip : ''}`
+      return `We're located at ${fullAddress}. ${info.airportDistance ? `We are ${info.airportDistance} from the airport.` : ''} ${info.beachDistance ? `The beach is ${info.beachDistance} away.` : ''}${disclaimer}`
+    }
+    if (lowerQuery.includes('parking') && info.parking) {
+      return `${info.parking}${disclaimer}`
+    }
+    if ((lowerQuery.includes('wifi') || lowerQuery.includes('wi-fi') || lowerQuery.includes('internet')) && info.wifi) {
+      return `${info.wifi}${disclaimer}`
+    }
+    if (lowerQuery.includes('breakfast') && info.breakfast) {
+      return `${info.breakfast}${disclaimer}`
+    }
+    if (lowerQuery.includes('pool') && info.pool) {
+      return `${info.pool}${disclaimer}`
+    }
+    if ((lowerQuery.includes('gym') || lowerQuery.includes('fitness')) && info.gym) {
+      return `${info.gym}${disclaimer}`
+    }
+    if ((lowerQuery.includes('restaurant') || lowerQuery.includes('dining')) && info.restaurant) {
+      return `${info.restaurant}${disclaimer}`
+    }
+    if (lowerQuery.includes('cancel') && info.cancellationPolicy) {
+      return `${info.cancellationPolicy}${disclaimer}`
+    }
+    if ((lowerQuery.includes('pet') || lowerQuery.includes('dog') || lowerQuery.includes('cat')) && info.petPolicy) {
+      return `${info.petPolicy}${disclaimer}`
+    }
+    if (lowerQuery.includes('smok') && info.smokingPolicy) {
+      return `${info.smokingPolicy}${disclaimer}`
+    }
+  }
   
   // For production accounts, provide helpful response that acknowledges the limitation
   if (!isDemo) {
