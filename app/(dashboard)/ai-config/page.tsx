@@ -365,17 +365,8 @@ export default function UnifiedAIConfigPage() {
                     })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                   >
-                    <option value="gpt-3.5-turbo" disabled={!allowedModels.includes('gpt-3.5-turbo')}>
-                      💰 GPT-3.5 Turbo (Budget) {!allowedModels.includes('gpt-3.5-turbo') && '🔒'}
-                    </option>
-                    <option value="gpt-4" disabled={!allowedModels.includes('gpt-4')}>
-                      📚 GPT-4 (Previous Gen) {!allowedModels.includes('gpt-4') && '🔒 Pro'}
-                    </option>
                     <option value="gpt-5" disabled={!allowedModels.includes('gpt-5')}>
-                      🚀 GPT-5 (NEW - 10x Faster) {!allowedModels.includes('gpt-5') && '🔒 Pro'}
-                    </option>
-                    <option value="gpt-5-turbo" disabled={!allowedModels.includes('gpt-5-turbo')}>
-                      🎯 GPT-5 Turbo (Ultimate AI) {!allowedModels.includes('gpt-5-turbo') && '🔒 Premium'}
+                      🚀 GPT-5 (Auto-Optimizing AI) {!allowedModels.includes('gpt-5') && '🔒 Professional+'}
                     </option>
                   </select>
                 )}

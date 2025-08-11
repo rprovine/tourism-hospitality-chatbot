@@ -129,7 +129,7 @@ export default function LandingPage() {
         >
           <div className="inline-flex items-center gap-2 bg-cyan-700 text-white px-4 py-2 rounded-full mb-6 border border-cyan-600 shadow-md">
             <Sparkles className="h-4 w-4" />
-            <span className="text-sm font-bold">🚀 NEW: GPT-5 + Claude AI - Next-Gen Dual Intelligence</span>
+            <span className="text-sm font-bold">🚀 NEW: GPT-5 (Auto-Optimizing) + Claude AI</span>
           </div>
           
           {/* Hawaiian Market Badge */}
@@ -234,12 +234,12 @@ export default function LandingPage() {
               <Brain className="h-12 w-12 text-cyan-400 mb-4" />
               <h3 className="text-xl font-bold mb-2">🎯 GPT-5 + Claude Dual AI</h3>
               <p className="text-gray-400 mb-4">
-                GPT-5's breakthrough reasoning with Claude's natural conversations. The most advanced AI combination available.
+                GPT-5 auto-optimizes for speed or quality as needed. Combined with Claude for perfect conversations.
               </p>
               <ul className="text-sm text-gray-500 space-y-1">
-                <li>• GPT-5 advanced reasoning</li>
+                <li>• GPT-5 auto-optimization</li>
                 <li>• Claude conversational AI</li>
-                <li>• 10x faster responses</li>
+                <li>• Seamless mode switching</li>
               </ul>
             </motion.div>
 

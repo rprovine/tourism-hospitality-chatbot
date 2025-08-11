@@ -51,7 +51,7 @@ export class OpenAIService {
     }
     
     const {
-      model = 'gpt-5',  // Default to latest GPT-5 model
+      model = 'gpt-5',  // GPT-5 auto-optimizes for speed/quality
       temperature = 0.7,
       maxTokens = 500,
       topP = 1,
@@ -88,7 +88,7 @@ export class OpenAIService {
     }
     
     const {
-      model = 'gpt-5',
+      model = 'gpt-5',  // GPT-5 auto-optimizes
       temperature = 0.7,
       maxTokens = 500
     } = options
@@ -183,11 +183,7 @@ export class OpenAIService {
   // Estimate Cost
   estimateCost(tokens: number, model: string = 'gpt-5'): number {
     const pricing: Record<string, { input: number; output: number }> = {
-      'gpt-5': { input: 0.015, output: 0.045 },
-      'gpt-5-turbo': { input: 0.008, output: 0.024 },
-      'gpt-4-turbo-preview': { input: 0.01, output: 0.03 },
-      'gpt-4': { input: 0.03, output: 0.06 },
-      'gpt-3.5-turbo': { input: 0.0005, output: 0.0015 },
+      'gpt-5': { input: 0.012, output: 0.036 },  // GPT-5 unified pricing
       'text-embedding-3-small': { input: 0.00002, output: 0 },
       'text-embedding-3-large': { input: 0.00013, output: 0 }
     }
@@ -260,7 +256,7 @@ Never:
         .map(model => model.id)
     } catch (error: any) {
       console.error('Failed to list models:', error)
-      return ['gpt-5', 'gpt-5-turbo', 'gpt-4-turbo-preview', 'gpt-4', 'gpt-3.5-turbo']
+      return ['gpt-5']  // GPT-5 is the only model now
     }
   }
 }

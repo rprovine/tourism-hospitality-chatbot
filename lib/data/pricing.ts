@@ -17,10 +17,10 @@ export const tierComparison: TierFeature[] = [
   },
   {
     name: 'AI Model & Intelligence',
-    starter: 'Claude Haiku - Fast, efficient AI for basic queries',
-    professional: 'Dual AI: Claude Sonnet + GPT-5 - Next-gen intelligence',
-    premium: 'Dual AI Enhanced + Self-Learning - Improves with every conversation',
-    enterprise: 'Custom AI Blend - Claude + GPT-5 + Your proprietary data'
+    starter: 'Claude Haiku - Fast, efficient AI for essential queries',
+    professional: 'Dual AI: Claude Sonnet + GPT-5 (Auto-Optimizing)',
+    premium: 'Dual AI: Claude Opus + GPT-5 with Self-Learning',
+    enterprise: 'Custom AI: Claude + GPT-5 + Your proprietary data'
   },
   {
     name: 'Languages Supported',
