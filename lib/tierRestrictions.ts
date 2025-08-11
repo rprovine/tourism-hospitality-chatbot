@@ -28,7 +28,7 @@ export const TIER_FEATURES = {
     knowledgeBaseItems: 500,
     channels: ['web', 'whatsapp', 'sms'],
     analytics: 'advanced',
-    aiModels: ['claude-haiku', 'claude-sonnet', 'gpt-3.5-turbo', 'gpt-4'],
+    aiModels: ['claude-haiku', 'claude-sonnet', 'gpt-3.5-turbo', 'gpt-4', 'gpt-5'],
     languages: ['english', 'spanish', 'japanese', 'chinese', 'french', 'german', 'pidgin'],
     multiLanguage: true,
     customBranding: true,
@@ -50,7 +50,7 @@ export const TIER_FEATURES = {
     knowledgeBaseItems: -1, // unlimited
     channels: ['web', 'whatsapp', 'sms', 'instagram', 'facebook'],
     analytics: 'enterprise',
-    aiModels: ['claude-haiku', 'claude-sonnet', 'claude-opus', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo'],
+    aiModels: ['claude-haiku', 'claude-sonnet', 'claude-opus', 'gpt-3.5-turbo', 'gpt-4', 'gpt-5', 'gpt-5-turbo'],
     languages: ['english', 'spanish', 'japanese', 'chinese', 'french', 'german', 'pidgin', 'hawaiian'],
     multiLanguage: true,
     customBranding: true,
@@ -72,7 +72,7 @@ export const TIER_FEATURES = {
     knowledgeBaseItems: -1, // unlimited
     channels: ['web', 'whatsapp', 'sms', 'instagram', 'facebook', 'telegram'],
     analytics: 'enterprise',
-    aiModels: ['claude-haiku', 'claude-sonnet', 'claude-opus', 'gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo'],
+    aiModels: ['claude-haiku', 'claude-sonnet', 'claude-opus', 'gpt-3.5-turbo', 'gpt-4', 'gpt-5', 'gpt-5-turbo'],
     languages: ['english', 'spanish', 'japanese', 'chinese', 'french', 'german', 'pidgin', 'hawaiian', 'korean', 'portuguese'],
     multiLanguage: true,
     customBranding: true,

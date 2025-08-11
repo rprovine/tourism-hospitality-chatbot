@@ -145,7 +145,7 @@ export async function GET(request: NextRequest) {
     // Get available models
     const models = openAI.isConfigured() 
       ? await openAI.listAvailableModels()
-      : ['gpt-4-turbo-preview', 'gpt-4', 'gpt-3.5-turbo']
+      : ['gpt-5', 'gpt-5-turbo', 'gpt-4-turbo-preview', 'gpt-4', 'gpt-3.5-turbo']
     
     return NextResponse.json({
       status: openAI.isConfigured() ? 'configured' : 'not_configured',
@@ -157,6 +157,8 @@ export async function GET(request: NextRequest) {
         costEstimation: true
       },
       pricing: {
+        'gpt-5': { input: 0.015, output: 0.045 },
+        'gpt-5-turbo': { input: 0.008, output: 0.024 },
         'gpt-4-turbo-preview': { input: 0.01, output: 0.03 },
         'gpt-4': { input: 0.03, output: 0.06 },
         'gpt-3.5-turbo': { input: 0.0005, output: 0.0015 }

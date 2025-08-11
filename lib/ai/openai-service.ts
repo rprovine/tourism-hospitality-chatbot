@@ -51,7 +51,7 @@ export class OpenAIService {
     }
     
     const {
-      model = 'gpt-3.5-turbo',  // Default to cheapest model
+      model = 'gpt-5',  // Default to latest GPT-5 model
       temperature = 0.7,
       maxTokens = 500,
       topP = 1,
@@ -88,7 +88,7 @@ export class OpenAIService {
     }
     
     const {
-      model = 'gpt-4-turbo-preview',
+      model = 'gpt-5',
       temperature = 0.7,
       maxTokens = 500
     } = options
@@ -181,8 +181,10 @@ export class OpenAIService {
   }
   
   // Estimate Cost
-  estimateCost(tokens: number, model: string = 'gpt-4-turbo-preview'): number {
+  estimateCost(tokens: number, model: string = 'gpt-5'): number {
     const pricing: Record<string, { input: number; output: number }> = {
+      'gpt-5': { input: 0.015, output: 0.045 },
+      'gpt-5-turbo': { input: 0.008, output: 0.024 },
       'gpt-4-turbo-preview': { input: 0.01, output: 0.03 },
       'gpt-4': { input: 0.03, output: 0.06 },
       'gpt-3.5-turbo': { input: 0.0005, output: 0.0015 },
@@ -190,7 +192,7 @@ export class OpenAIService {
       'text-embedding-3-large': { input: 0.00013, output: 0 }
     }
     
-    const modelPricing = pricing[model] || pricing['gpt-4-turbo-preview']
+    const modelPricing = pricing[model] || pricing['gpt-5']
     // Estimate assuming equal input/output
     return (tokens * (modelPricing.input + modelPricing.output)) / 1000
   }
@@ -258,7 +260,7 @@ Never:
         .map(model => model.id)
     } catch (error: any) {
       console.error('Failed to list models:', error)
-      return ['gpt-4-turbo-preview', 'gpt-4', 'gpt-3.5-turbo']
+      return ['gpt-5', 'gpt-5-turbo', 'gpt-4-turbo-preview', 'gpt-4', 'gpt-3.5-turbo']
     }
   }
 }

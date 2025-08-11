@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
       },
       chatgptSettings: {
         apiKey: process.env.OPENAI_API_KEY || '',
-        modelPreference: 'gpt-4'
+        modelPreference: 'gpt-5'
       },
       temperature: 0.7,
       maxTokens: 500,
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
         modelPreference: settings.claudeSettings?.modelPreference || 'sonnet'
       },
       chatgptSettings: {
-        modelPreference: settings.chatgptSettings?.modelPreference || 'gpt-4'
+        modelPreference: settings.chatgptSettings?.modelPreference || 'gpt-5'
       },
       temperature: settings.temperature || 0.7,
       maxTokens: settings.maxTokens || 500,

@@ -271,7 +271,7 @@ export default function SubscriptionPage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span><strong>Advanced AI:</strong> GPT-4 and Claude Sonnet/Opus</span>
+                    <span><strong>Advanced AI:</strong> GPT-5 and Claude Sonnet/Opus</span>
                   </li>
                 </ul>
                 <Button 
@@ -439,7 +439,7 @@ export default function SubscriptionPage() {
                     <li className="font-semibold text-green-700">✓ Revenue Insights & AI</li>
                     <li className="font-semibold text-blue-700">✓ Excel File Support</li>
                     <li>• Multi-channel (WhatsApp, SMS)</li>
-                    <li>• Advanced AI models (GPT-4)</li>
+                    <li>• Advanced AI models (GPT-5)</li>
                     <li>• 500 knowledge items</li>
                     <li>• Priority email support</li>
                   </ul>
@@ -474,7 +474,7 @@ export default function SubscriptionPage() {
                     <li className="font-semibold text-purple-700">✓ Full Revenue Optimization</li>
                     <li className="font-semibold text-purple-700">✓ PDF Document Support</li>
                     <li>• Unlimited conversations</li>
-                    <li>• All AI models (GPT-4, Claude)</li>
+                    <li>• All AI models (GPT-5, Claude)</li>
                     <li>• Unlimited knowledge base</li>
                     <li>• API access & white label</li>
                     <li>• 24/7 phone support</li>

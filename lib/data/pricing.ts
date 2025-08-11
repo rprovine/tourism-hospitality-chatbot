@@ -18,9 +18,9 @@ export const tierComparison: TierFeature[] = [
   {
     name: 'AI Model & Intelligence',
     starter: 'Claude Haiku - Fast, efficient AI for basic queries',
-    professional: 'Dual AI: Claude Sonnet + GPT-4 Turbo - Best of both worlds',
+    professional: 'Dual AI: Claude Sonnet + GPT-5 - Next-gen intelligence',
     premium: 'Dual AI Enhanced + Self-Learning - Improves with every conversation',
-    enterprise: 'Custom AI Blend - Claude + GPT-4 + Your proprietary data'
+    enterprise: 'Custom AI Blend - Claude + GPT-5 + Your proprietary data'
   },
   {
     name: 'Languages Supported',
@@ -181,10 +181,10 @@ export const pricingTiers: PricingTier[] = [
     originalPrice: '$299',
     description: 'For established hospitality businesses',
     highlighted: true,
-    savings: 'Dual AI: Claude + GPT-4 Turbo',
+    savings: 'Dual AI: Claude + GPT-5',
     features: [
       'Everything in Starter, plus:',
-      'Dual AI: Claude Sonnet + GPT-4 Turbo',
+      'Dual AI: Claude Sonnet + GPT-5',
       '2,500 conversations/month',
       'English & Japanese support',
       'Booking system integration',
@@ -228,7 +228,7 @@ export const pricingTiers: PricingTier[] = [
     savings: 'Custom AI Blend + Proprietary Models',
     features: [
       'Everything in Premium, plus:',
-      'Custom AI Blend: Claude + GPT-4 + Your Data',
+      'Custom AI Blend: Claude + GPT-5 + Your Data',
       'Multi-language support (10+ languages)',
       'Multi-property support',
       'Centralized management console',

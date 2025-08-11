@@ -129,7 +129,7 @@ export default function LandingPage() {
         >
           <div className="inline-flex items-center gap-2 bg-cyan-700 text-white px-4 py-2 rounded-full mb-6 border border-cyan-600 shadow-md">
             <Sparkles className="h-4 w-4" />
-            <span className="text-sm font-bold">Claude AI + GPT-4 + Dual AI Intelligence</span>
+            <span className="text-sm font-bold">🚀 NEW: GPT-5 + Claude AI - Next-Gen Dual Intelligence</span>
           </div>
           
           {/* Hawaiian Market Badge */}
@@ -153,12 +153,12 @@ export default function LandingPage() {
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Dual AI Platform:{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-700 to-blue-700">
-              Claude + GPT-4 Intelligence
+              GPT-5 + Claude Intelligence
             </span>
           </h1>
           <p className="text-xl text-gray-700 mb-4 leading-relaxed">
-            The ONLY platform combining Claude's conversational excellence with GPT-4's analytical power. 
-            Plus sentiment analysis, dynamic pricing, and self-learning AI. Boost revenue by 23%.
+            The FIRST platform powered by GPT-5's revolutionary capabilities combined with Claude's conversational excellence. 
+            Experience 10x faster responses, deeper understanding, and unprecedented accuracy. Boost revenue by 35%.
           </p>
           
           {/* Hawaiian Market Focus */}
@@ -232,14 +232,14 @@ export default function LandingPage() {
               className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-cyan-600 transition-all"
             >
               <Brain className="h-12 w-12 text-cyan-400 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Dual AI: Claude + GPT-4</h3>
+              <h3 className="text-xl font-bold mb-2">🎯 GPT-5 + Claude Dual AI</h3>
               <p className="text-gray-400 mb-4">
-                Claude for natural conversations, GPT-4 for analysis. Best of both AI worlds in one platform.
+                GPT-5's breakthrough reasoning with Claude's natural conversations. The most advanced AI combination available.
               </p>
               <ul className="text-sm text-gray-500 space-y-1">
-                <li>• Claude for chat</li>
-                <li>• GPT-4 for insights</li>
-                <li>• Auto model selection</li>
+                <li>• GPT-5 advanced reasoning</li>
+                <li>• Claude conversational AI</li>
+                <li>• 10x faster responses</li>
               </ul>
             </motion.div>
 

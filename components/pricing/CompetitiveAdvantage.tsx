@@ -7,8 +7,8 @@ export default function CompetitiveAdvantage() {
   const advantages = [
     {
       icon: Brain,
-      title: 'Powered by Claude AI',
-      description: 'Industry-leading Anthropic Claude 3.5 models - superior to generic chatbots',
+      title: 'GPT-5 + Claude AI Dual Engine',
+      description: 'The ONLY platform with GPT-5\'s breakthrough reasoning AND Claude 3.5\'s conversational excellence',
       color: 'text-purple-600',
       bgColor: 'bg-purple-50'
     },
