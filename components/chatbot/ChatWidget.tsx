@@ -72,17 +72,6 @@ export default function ChatWidget({
   const validTier = ['starter', 'professional', 'premium', 'enterprise'].includes(tier) ? tier : 'starter'
   const availableQuickActions = quickActions.filter(action => action.tier.includes(validTier))
   
-  // Debug logging
-  useEffect(() => {
-    console.log('ChatWidget Debug:')
-    console.log('- Raw Tier:', tier)
-    console.log('- Valid Tier:', validTier)
-    console.log('- Available Quick Actions:', availableQuickActions.length)
-    console.log('- Show Quick Actions:', showQuickActions)
-    console.log('- Messages Length:', messages.length)
-    console.log('- First Message:', messages[0])
-    console.log('- Quick Actions List:', availableQuickActions)
-  }, [tier, validTier, availableQuickActions.length, showQuickActions, messages.length])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
