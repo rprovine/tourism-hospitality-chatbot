@@ -67,26 +67,6 @@
     button.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
   };
   
-  // Create close button for iframe
-  const closeBtn = document.createElement('button');
-  closeBtn.innerHTML = '×';
-  closeBtn.style.cssText = `
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    background: #dc2626;
-    color: white;
-    border: 2px solid white;
-    font-size: 20px;
-    cursor: pointer;
-    display: none;
-    z-index: 1000000;
-    line-height: 1;
-    font-weight: bold;
-  `;
   
   // Create iframe
   const iframe = document.createElement('iframe');
@@ -105,7 +85,6 @@
   iframe.setAttribute('allow', 'microphone; camera');
   
   // Append elements
-  container.appendChild(closeBtn);
   container.appendChild(iframe);
   document.body.appendChild(button);
   document.body.appendChild(container);
@@ -118,18 +97,15 @@
     if (isOpen) {
       container.style.display = 'block';
       button.style.display = 'none';
-      closeBtn.style.display = 'block';
       // Send message to iframe that chat is opened
       iframe.contentWindow.postMessage({ type: 'chat-opened' }, config.baseUrl);
     } else {
       container.style.display = 'none';
       button.style.display = 'flex';
-      closeBtn.style.display = 'none';
     }
   }
   
   button.onclick = toggleChat;
-  closeBtn.onclick = toggleChat;
   
   // Handle messages from iframe
   window.addEventListener('message', function(event) {

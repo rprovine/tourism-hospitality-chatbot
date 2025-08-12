@@ -232,11 +232,16 @@ export default function ChatWidget({
   }
 
   const handleClose = () => {
-    // Show rating if user has sent at least 2 messages and hasn't rated yet
-    if (messageCount >= 2 && !hasRated && conversationId) {
-      setShowRating(true)
+    if (embedded && typeof window !== 'undefined' && window.parent !== window) {
+      // Send message to parent window to close the widget
+      window.parent.postMessage({ type: 'toggle-chat' }, '*')
     } else {
-      setIsOpen(false)
+      // Show rating if user has sent at least 2 messages and hasn't rated yet
+      if (messageCount >= 2 && !hasRated && conversationId) {
+        setShowRating(true)
+      } else {
+        setIsOpen(false)
+      }
     }
   }
 
