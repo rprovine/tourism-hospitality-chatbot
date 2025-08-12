@@ -33,41 +33,47 @@ export async function POST(request: NextRequest) {
     
     // Handle trial accounts (no subscription record)
     if (!business.subscription) {
-      // For trial accounts, just downgrade to free/demo tier
+      // For trial accounts without subscription, mark as cancelled but keep access until trial end
+      const trialEndDate = business.trialEndDate || new Date()
+      
       await prisma.business.update({
         where: { id: business.id },
         data: {
-          tier: 'none',
-          subscriptionStatus: 'cancelled'
+          subscriptionStatus: 'cancelling'  // Mark as cancelling, not cancelled yet
         }
       })
       
       return NextResponse.json({
-        message: 'Trial account cancelled - access revoked',
-        accessRevokedAt: new Date()
+        message: 'Trial will end on scheduled date',
+        accessUntil: trialEndDate,
+        willDowngradeTo: 'starter'
       })
     }
     
     const subscription = business.subscription
     
+    // Check if this is a trial subscription
+    const isTrial = subscription.status === 'trial'
+    
     // Update subscription based on cancellation type
-    if (immediate) {
-      // Immediate cancellation - revoke access now
+    if (immediate && !isTrial) {
+      // Immediate cancellation for paid subscriptions only - revoke access now
       await prisma.subscription.update({
         where: { id: subscription.id },
         data: {
           status: 'cancelled',
           cancelledAt: new Date(),
           accessRevokedAt: new Date(),
-          cancelAtPeriodEnd: false
+          cancelAtPeriodEnd: false,
+          cancelReason: reason
         }
       })
       
-      // Downgrade to free tier
+      // Downgrade to starter tier
       await prisma.business.update({
         where: { id: business.id },
         data: {
-          tier: 'none',
+          tier: 'starter',
           subscriptionStatus: 'cancelled'
         }
       })
@@ -84,13 +90,14 @@ export async function POST(request: NextRequest) {
         accessRevokedAt: new Date()
       })
     } else {
-      // Cancel at period end - maintain access until end date
+      // Cancel at period end - maintain access until end date (default for trials)
       await prisma.subscription.update({
         where: { id: subscription.id },
         data: {
           cancelAtPeriodEnd: true,
           cancelledAt: new Date(),
-          status: 'cancelling'
+          status: 'cancelling',
+          cancelReason: reason
         }
       })
       
@@ -109,8 +116,9 @@ export async function POST(request: NextRequest) {
       }
       
       return NextResponse.json({
-        message: 'Subscription will cancel at period end',
-        accessUntil: subscription.endDate
+        message: isTrial ? 'Trial will end on scheduled date' : 'Subscription will cancel at period end',
+        accessUntil: subscription.endDate,
+        willDowngradeTo: 'starter'
       })
     }
     

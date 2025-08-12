@@ -29,16 +29,10 @@ export async function GET(request: NextRequest) {
 
       let newTier = 'starter' // Default tier
       
-      if (subscription) {
-        // Use subscription tier if available, otherwise map from planId
-        if (subscription.tier && ['starter', 'professional', 'premium', 'enterprise'].includes(subscription.tier)) {
+      if (subscription && subscription.tier) {
+        // Use subscription tier if it's valid
+        if (['starter', 'professional', 'premium', 'enterprise'].includes(subscription.tier)) {
           newTier = subscription.tier
-        } else if (subscription.planId?.includes('enterprise')) {
-          newTier = 'enterprise'
-        } else if (subscription.planId?.includes('premium')) {
-          newTier = 'premium'
-        } else if (subscription.planId?.includes('professional')) {
-          newTier = 'professional'
         }
       }
 
