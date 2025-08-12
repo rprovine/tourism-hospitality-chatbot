@@ -8,18 +8,11 @@ export async function GET(request: NextRequest) {
     // Find all businesses with invalid tiers
     const businessesWithInvalidTiers = await prisma.business.findMany({
       where: {
-        OR: [
-          { tier: { equals: null } },
-          { tier: 'none' },
-          { tier: '' },
-          {
-            NOT: {
-              tier: {
-                in: ['starter', 'professional', 'premium', 'enterprise']
-              }
-            }
+        NOT: {
+          tier: {
+            in: ['starter', 'professional', 'premium', 'enterprise']
           }
-        ]
+        }
       }
     })
 
