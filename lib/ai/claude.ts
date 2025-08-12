@@ -10,6 +10,7 @@ export interface ConversationContext {
   tier: 'starter' | 'professional' | 'premium' | 'enterprise'
   welcomeMessage?: string
   businessInfo?: any
+  customPrompt?: string // Custom instructions from AI settings
   isDemo?: boolean // Flag to indicate if this is a demo bot
   previousMessages?: Array<{
     role: 'user' | 'assistant'
@@ -139,33 +140,57 @@ IMPORTANT: You are in DEMO MODE. Always end your responses with:
     businessDetails = `
 IMPORTANT Business Information (USE THIS DATA IN YOUR RESPONSES):
 `
-    if (info.checkInTime) businessDetails += `- Check-in Time: ${info.checkInTime}\n`
-    if (info.checkOutTime) businessDetails += `- Check-out Time: ${info.checkOutTime}\n`
+    // Contact and Location
     if (info.phone) businessDetails += `- Phone: ${info.phone}\n`
     if (info.email || info.contactEmail) businessDetails += `- Email: ${info.email || info.contactEmail}\n`
+    if (info.website) businessDetails += `- Website: ${info.website}\n`
     if (info.address) businessDetails += `- Address: ${info.address}\n`
     if (info.city) businessDetails += `- City: ${info.city}\n`
     if (info.state) businessDetails += `- State: ${info.state}\n`
     if (info.zip) businessDetails += `- ZIP: ${info.zip}\n`
+    
+    // Operating Hours
+    if (info.checkInTime) businessDetails += `- Check-in Time: ${info.checkInTime}\n`
+    if (info.checkOutTime) businessDetails += `- Check-out Time: ${info.checkOutTime}\n`
+    if (info.frontDeskHours) businessDetails += `- Front Desk Hours: ${info.frontDeskHours}\n`
+    
+    // Amenities (Key amenities that should be displayed)
     if (info.parking) businessDetails += `- Parking: ${info.parking}\n`
     if (info.wifi) businessDetails += `- WiFi: ${info.wifi}\n`
     if (info.breakfast) businessDetails += `- Breakfast: ${info.breakfast}\n`
     if (info.pool) businessDetails += `- Pool: ${info.pool}\n`
     if (info.gym) businessDetails += `- Gym/Fitness: ${info.gym}\n`
     if (info.restaurant) businessDetails += `- Restaurant: ${info.restaurant}\n`
+    
+    // Policies
     if (info.cancellationPolicy) businessDetails += `- Cancellation Policy: ${info.cancellationPolicy}\n`
     if (info.petPolicy) businessDetails += `- Pet Policy: ${info.petPolicy}\n`
     if (info.smokingPolicy) businessDetails += `- Smoking Policy: ${info.smokingPolicy}\n`
+    
+    // Additional Info
     if (info.airportDistance) businessDetails += `- Airport Distance: ${info.airportDistance}\n`
     if (info.beachDistance) businessDetails += `- Beach Distance: ${info.beachDistance}\n`
-    if (info.frontDeskHours) businessDetails += `- Front Desk Hours: ${info.frontDeskHours}\n`
+    if (info.numberOfRooms) businessDetails += `- Number of Rooms: ${info.numberOfRooms}\n`
+    if (info.yearEstablished) businessDetails += `- Established: ${info.yearEstablished}\n`
+    if (info.acceptedPayments && Array.isArray(info.acceptedPayments)) {
+      businessDetails += `- Accepted Payments: ${info.acceptedPayments.join(', ')}\n`
+    }
+    
     businessDetails += `
 You MUST use the above business information when answering guest questions. For example:
 - If asked about check-in, use the exact check-in time provided above
 - If asked about contact info, use the phone/email provided above
 - If asked about amenities, use the specific details provided above
+- When listing amenities, include ALL amenities listed above
 `
   }
+
+  // Add custom instructions if provided
+  const customInstructions = context.customPrompt ? `
+CUSTOM INSTRUCTIONS FROM BUSINESS OWNER:
+${context.customPrompt}
+
+` : ''
 
   const basePrompt = `You are an AI assistant for ${context.businessName}, a ${context.businessType.replace('_', ' ')} in Hawaii.
 
@@ -175,6 +200,7 @@ Business Context:
 - Business Type: ${context.businessType}
 - Service Tier: ${context.tier}
 ${businessDetails}
+${customInstructions}
 ${knowledgeContext}
 Guidelines:
 1. Always be warm, welcoming, and professional
@@ -355,7 +381,7 @@ Which would you prefer? I'm here to make sure you get the information you're loo
   
   if (lowerQuery.includes('my') || lowerQuery.includes('history') || lowerQuery.includes('previous stay')) {
     if (tier === 'starter') {
-      return `❌ **Guest History Not Available**\n\nStarter plan doesn't include CRM integration. Please call (808) 555-0100 for assistance.\n\n💡 **Upgrade to Professional** for full guest profile access!${disclaimer}`
+      return `❌ **Guest History Not Available**\n\nStarter plan doesn't include CRM integration. Please call 815-641-6689 for assistance.\n\n💡 **Upgrade to Professional** for full guest profile access!${disclaimer}`
     } else if (tier === 'professional') {
       return `👤 **Guest Profile Found**\n\n📊 Your History:\n• Last stay: Sept 2024 (Ocean View Room)\n• Total stays: 3\n• Loyalty points: 2,450\n• Preferred: High floor, away from elevators\n\n🎁 **Returning Guest Offer**: 15% off your next stay!${disclaimer}`
     } else if (tier === 'premium') {
@@ -367,7 +393,7 @@ Which would you prefer? I'm here to make sure you get the information you're loo
   
   if (lowerQuery.includes('restaurant') || lowerQuery.includes('dining') || lowerQuery.includes('eat')) {
     if (tier === 'starter') {
-      return `We have 3 restaurants on property. For reservations, please call (808) 555-0100.${disclaimer}`
+      return `We have 3 restaurants on property. For reservations, please call 815-641-6689.${disclaimer}`
     } else if (tier === 'professional') {
       return `🍽️ **Restaurant Availability**:\n\n**Ocean Terrace** (Fine Dining)\n• Tonight: 6:30 PM, 8:00 PM available\n• Tomorrow: Multiple times\n\n**Sunset Grill** (Casual)\n• Walk-ins welcome\n\n**Pool Bar** (Light Bites)\n• Open until 10 PM\n\nWould you like me to make a reservation?${disclaimer}`
     } else if (tier === 'premium') {
@@ -379,7 +405,7 @@ Which would you prefer? I'm here to make sure you get the information you're loo
   
   // Default responses by tier
   if (tier === 'starter') {
-    return `I can help with basic information about our property. For specific requests or bookings, please call (808) 555-0100.\n\n⚠️ **Starter Plan**: Limited to basic Q&A${disclaimer}`
+    return `I can help with basic information about our property. For specific requests or bookings, please call 815-641-6689.\n\n⚠️ **Starter Plan**: Limited to basic Q&A${disclaimer}`
   } else if (tier === 'professional') {
     if (lowerQuery.includes('recommend') || lowerQuery.includes('what to do')) {
       return `Based on popular guest activities, I'd recommend:

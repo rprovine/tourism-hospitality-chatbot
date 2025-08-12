@@ -667,8 +667,9 @@ If the widget doesn't appear:
 
 NEED HELP?
 ----------
-Email: support@lenilani.com
-Documentation: https://docs.lenilani.ai
+Email: info@lenilani.com
+Phone: 815-641-6689
+Website: www.lenilani.com
 `
     
     // Create and download the file
@@ -705,7 +706,7 @@ Instructions:
 2. The widget will appear in the bottom-right corner by default
 3. Test the widget after installation to ensure it's working properly
 
-If you have any questions, please refer to the documentation at https://docs.lenilani.ai or contact support@lenilani.com
+If you have any questions, please visit www.lenilani.com or contact info@lenilani.com / 815-641-6689
 
 Thank you!`)
     
@@ -1038,9 +1039,9 @@ Thank you!`)
                   <Settings className="h-4 w-4 text-gray-500" />
                   <span className="text-sm">AI Configuration</span>
                 </Link>
-                <Link href="/integrations" className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded">
+                <Link href="/channels" className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded">
                   <Globe className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm">Integrations</span>
+                  <span className="text-sm">Channels & Integrations</span>
                 </Link>
                 <Link href="/analytics" className="flex items-center gap-2 p-2 hover:bg-gray-50 rounded">
                   <BarChart3 className="h-4 w-4 text-gray-500" />
@@ -1061,7 +1062,9 @@ Thank you!`)
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
-                  onClick={() => window.open('https://docs.lenilani.ai', '_blank')}
+                  onClick={() => {
+                    window.open('https://www.lenilani.com', '_blank')
+                  }}
                 >
                   <BookOpen className="h-4 w-4 mr-2" />
                   Documentation
@@ -1069,7 +1072,9 @@ Thank you!`)
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
-                  onClick={() => window.location.href = '/support'}
+                  onClick={() => {
+                    alert('Live chat support coming soon! Please email info@lenilani.com for immediate assistance.')
+                  }}
                 >
                   <MessageSquare className="h-4 w-4 mr-2" />
                   Live Chat Support
@@ -1077,7 +1082,9 @@ Thank you!`)
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
-                  onClick={() => window.open('https://calendly.com/lenilani/support', '_blank')}
+                  onClick={() => {
+                    alert('To schedule a call, please email info@lenilani.com or call 815-641-6689 during business hours.')
+                  }}
                 >
                   <Phone className="h-4 w-4 mr-2" />
                   Schedule Call
@@ -1085,7 +1092,7 @@ Thank you!`)
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"
-                  onClick={() => window.location.href = 'mailto:support@lenilani.ai'}
+                  onClick={() => window.location.href = 'mailto:info@lenilani.com'}
                 >
                   <Mail className="h-4 w-4 mr-2" />
                   Email Support
@@ -1129,14 +1136,15 @@ Thank you!`)
                   <FileText className="h-4 w-4 mr-2" />
                   Q&A Templates
                 </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => window.open('/roi-calculator', '_blank')}
-                >
-                  <FileText className="h-4 w-4 mr-2" />
-                  ROI Calculator
-                </Button>
+                <Link href="/roi-calculator" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                  >
+                    <FileText className="h-4 w-4 mr-2" />
+                    ROI Calculator
+                  </Button>
+                </Link>
                 <Button 
                   variant="outline" 
                   className="w-full justify-start"

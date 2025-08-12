@@ -305,22 +305,22 @@ export default function ChatWidget({
     if (tierLevel === 'starter') {
       // Starter: Basic FAQ only, NO integrations
       if (lowerQuery.includes('book') || lowerQuery.includes('reserve')) {
-        return `❌ **Booking Integration Not Available in Starter Plan**\n\nTo make a reservation, please call ${'contact' in business ? business.contact : '(808) 555-0100'}.\n\n💡 Upgrade to Professional to enable instant bookings right from the chat!${disclaimer}`
+        return `❌ **Booking Integration Not Available in Starter Plan**\n\nTo make a reservation, please call ${'contact' in business ? business.contact : '815-641-6689'}.\n\n💡 Upgrade to Professional to enable instant bookings right from the chat!${disclaimer}`
       }
       if (lowerQuery.includes('room') || lowerQuery.includes('availability')) {
-        return `We have rooms available. Please call ${'contact' in business ? business.contact : '(808) 555-0100'} to check specific dates.\n\n⚠️ Real-time availability requires Professional plan or higher.${disclaimer}`
+        return `We have rooms available. Please call ${'contact' in business ? business.contact : '815-641-6689'} to check specific dates.\n\n⚠️ Real-time availability requires Professional plan or higher.${disclaimer}`
       }
       if (lowerQuery.includes('my') || lowerQuery.includes('history') || lowerQuery.includes('stayed')) {
-        return `❌ **CRM Integration Not Available**\n\nWe cannot access guest history in the Starter plan. Please call ${'contact' in business ? business.contact : '(808) 555-0100'} for assistance.\n\n💡 Professional plan includes full CRM integration!${disclaimer}`
+        return `❌ **CRM Integration Not Available**\n\nWe cannot access guest history in the Starter plan. Please call ${'contact' in business ? business.contact : '815-641-6689'} for assistance.\n\n💡 Professional plan includes full CRM integration!${disclaimer}`
       }
       if (lowerQuery.includes('check')) {
         return `Check-in time is ${'checkIn' in business ? business.checkIn : '3:00 PM'} and check-out is ${'checkOut' in business ? business.checkOut : '11:00 AM'}.${disclaimer}`
       }
       if (lowerQuery.includes('price') || lowerQuery.includes('rate')) {
-        return `Our rates vary by season. Please call ${'contact' in business ? business.contact : '(808) 555-0100'} for current pricing.${disclaimer}`
+        return `Our rates vary by season. Please call ${'contact' in business ? business.contact : '815-641-6689'} for current pricing.${disclaimer}`
       }
       // Starter limitation - can't handle complex queries
-      return `I can only answer basic questions. For bookings or guest services, please call ${'contact' in business ? business.contact : '(808) 555-0100'}.\n\n⚠️ Limited to basic Q&A in Starter plan.${disclaimer}`
+      return `I can only answer basic questions. For bookings or guest services, please call ${'contact' in business ? business.contact : '815-641-6689'}.\n\n⚠️ Limited to basic Q&A in Starter plan.${disclaimer}`
     } 
     
     else if (tierLevel === 'professional') {

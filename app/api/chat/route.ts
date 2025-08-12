@@ -110,6 +110,9 @@ export async function POST(request: NextRequest) {
     // Get AI settings to determine which provider to use
     const aiSettings = conversation.business.aiSettings as any || { provider: 'claude' }
     
+    // Get full business info including all amenities, policies, etc.
+    const fullBusinessInfo = conversation.business.businessInfo as any || {}
+    
     let aiResponse: string
     
     if (aiSettings.provider === 'chatgpt') {
@@ -150,7 +153,8 @@ export async function POST(request: NextRequest) {
             businessType: conversation.business.type,
             tier: conversation.business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
             welcomeMessage: conversation.business.welcomeMessage,
-            businessInfo: conversation.business.businessInfo,
+            businessInfo: fullBusinessInfo,
+            customPrompt: aiSettings.customPrompt,
             previousMessages: previousMessages.map(m => ({
               role: m.role as 'user' | 'assistant',
               content: m.content
@@ -165,7 +169,8 @@ export async function POST(request: NextRequest) {
           businessType: conversation.business.type,
           tier: conversation.business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
           welcomeMessage: conversation.business.welcomeMessage,
-          businessInfo: conversation.business.businessInfo,
+          businessInfo: fullBusinessInfo,
+          customPrompt: aiSettings.customPrompt,
           previousMessages: previousMessages.map(m => ({
             role: m.role as 'user' | 'assistant',
             content: m.content
@@ -182,7 +187,8 @@ export async function POST(request: NextRequest) {
           businessType: conversation.business.type,
           tier: conversation.business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
           welcomeMessage: conversation.business.welcomeMessage,
-          businessInfo: conversation.business.businessInfo,
+          businessInfo: fullBusinessInfo,
+          customPrompt: aiSettings.customPrompt,
           previousMessages: previousMessages.map(m => ({
             role: m.role as 'user' | 'assistant',
             content: m.content

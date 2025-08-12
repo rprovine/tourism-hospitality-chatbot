@@ -49,6 +49,8 @@ export default function UnifiedAIConfigPage() {
     usagePercentage: 0,
     monthlyBudget: 20
   })
+  const [isRetraining, setIsRetraining] = useState(false)
+  const [retrainMessage, setRetrainMessage] = useState('')
 
   useEffect(() => {
     // Get business tier for model restrictions
@@ -161,6 +163,9 @@ export default function UnifiedAIConfigPage() {
   }
 
   const triggerRetraining = async () => {
+    setIsRetraining(true)
+    setRetrainMessage('Retraining AI model with your knowledge base...')
+    
     try {
       const response = await fetch('/api/ai/learn', {
         method: 'POST',
@@ -170,11 +175,25 @@ export default function UnifiedAIConfigPage() {
       })
       
       if (response.ok) {
-        alert('AI retraining initiated successfully!')
+        setRetrainMessage('AI retraining completed successfully! Your chatbot is now updated with the latest information.')
         fetchTrainingStats()
+        setTimeout(() => {
+          setRetrainMessage('')
+          setIsRetraining(false)
+        }, 5000)
+      } else {
+        setRetrainMessage('Failed to retrain AI. Please try again.')
+        setTimeout(() => {
+          setRetrainMessage('')
+          setIsRetraining(false)
+        }, 3000)
       }
     } catch {
-      alert('Failed to initiate retraining')
+      setRetrainMessage('Failed to initiate retraining. Please check your connection.')
+      setTimeout(() => {
+        setRetrainMessage('')
+        setIsRetraining(false)
+      }, 3000)
     }
   }
 
@@ -450,11 +469,34 @@ export default function UnifiedAIConfigPage() {
                 </div>
               </div>
 
+              {/* Retrain Message */}
+              {retrainMessage && (
+                <div className={`p-3 rounded-lg mb-4 ${
+                  retrainMessage.includes('successfully') 
+                    ? 'bg-green-50 text-green-800 border border-green-200' 
+                    : retrainMessage.includes('Failed') 
+                    ? 'bg-red-50 text-red-800 border border-red-200'
+                    : 'bg-blue-50 text-blue-800 border border-blue-200'
+                }`}>
+                  <div className="flex items-center gap-2">
+                    {isRetraining && <RefreshCw className="h-4 w-4 animate-spin" />}
+                    {retrainMessage.includes('successfully') && <CheckCircle className="h-4 w-4" />}
+                    {retrainMessage.includes('Failed') && <AlertCircle className="h-4 w-4" />}
+                    <span className="text-sm">{retrainMessage}</span>
+                  </div>
+                </div>
+              )}
+
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button onClick={triggerRetraining} variant="outline" className="flex-1">
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Retrain AI
+                <Button 
+                  onClick={triggerRetraining} 
+                  variant="outline" 
+                  className="flex-1"
+                  disabled={isRetraining}
+                >
+                  <RefreshCw className={`h-4 w-4 mr-2 ${isRetraining ? 'animate-spin' : ''}`} />
+                  {isRetraining ? 'Retraining...' : 'Retrain AI'}
                 </Button>
                 <Link href="/knowledge-base" className="flex-1">
                   <Button variant="outline" className="w-full">
