@@ -1197,62 +1197,6 @@ Thank you!`)
             </CardContent>
           </Card>
 
-          {/* ROI Calculator */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-purple-600" />
-                ROI Calculator
-              </CardTitle>
-              <CardDescription>
-                Estimate your return on investment
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Monthly Phone Inquiries</label>
-                    <Input type="number" placeholder="500" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Average Handle Time (min)</label>
-                    <Input type="number" placeholder="5" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Staff Hourly Cost</label>
-                    <Input type="number" placeholder="25" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Conversion Rate Increase (%)</label>
-                    <Input type="number" placeholder="15" />
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
-                  <div className="grid md:grid-cols-3 gap-4 text-center">
-                    <div>
-                      <p className="text-sm text-gray-600">Monthly Savings</p>
-                      <p className="text-2xl font-bold text-green-600">$2,450</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Additional Revenue</p>
-                      <p className="text-2xl font-bold text-green-600">$8,200</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">ROI</p>
-                      <p className="text-2xl font-bold text-green-600">425%</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <Button className="w-full">
-                  Get Detailed ROI Report
-                  <Download className="h-4 w-4 ml-2" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
         </TabsContent>
       </Tabs>
     </div>

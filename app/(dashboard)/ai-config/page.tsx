@@ -164,14 +164,18 @@ export default function UnifiedAIConfigPage() {
 
   const triggerRetraining = async () => {
     setIsRetraining(true)
-    setRetrainMessage('Retraining AI model with your knowledge base...')
+    setRetrainMessage('Analyzing patterns and generating insights from your knowledge base...')
     
     try {
       const response = await fetch('/api/ai/learn', {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        },
+        body: JSON.stringify({
+          action: 'insights'
+        })
       })
       
       if (response.ok) {

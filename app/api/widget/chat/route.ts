@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
       // No direct match - provide helpful fallback based on tier
       const isDemo = validatedData.businessId === 'demo' || validatedData.businessId === 'demo-business-id'
       const businessInfo = business.businessInfo as any || {}
-      const contactPhone = businessInfo.phone || '(808) 555-0100'
+      const contactPhone = businessInfo.phone || '815-641-6689'
       const contactEmail = businessInfo.contactEmail || business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
       
       // Check if question is about specific business info we have
@@ -192,11 +192,15 @@ Our team will be happy to help you!`
         } else {
           // For higher tiers, try AI response
           try {
+            // Get AI settings to include custom instructions
+            const aiSettings = business.aiSettings as any || {}
+            
             const businessContext = {
               businessName: business.name,
               businessType: business.type,
               tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
               businessInfo: business.businessInfo,
+              customPrompt: aiSettings.customPrompt, // Add custom instructions
               knowledgeBase: relevantQAs.slice(0, 3),
               isDemo: isDemo
             }

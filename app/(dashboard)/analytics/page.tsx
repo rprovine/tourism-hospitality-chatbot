@@ -17,8 +17,10 @@ import {
   ChevronDown,
   Star,
   Target,
-  Activity
+  Activity,
+  CheckCircle2
 } from 'lucide-react'
+import Link from 'next/link'
 
 interface AnalyticsData {
   totalConversations: number
@@ -509,37 +511,77 @@ export default function AnalyticsPage() {
               <CardDescription>Recommendations based on your analytics data</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
-                  <Activity className="h-5 w-5 text-blue-600 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Peak Hours Optimization</h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Your chatbot receives the most traffic between 2-4 PM. Consider adding more detailed responses for common afternoon queries about dinner reservations and evening activities.
-                    </p>
+              {analytics && analytics.totalConversations > 10 ? (
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
+                    <Activity className="h-5 w-5 text-blue-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Peak Hours Analysis</h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Based on your {analytics.totalConversations} conversations, we'll identify peak traffic times and provide optimization recommendations once patterns emerge.
+                      </p>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="flex items-start gap-3 p-4 bg-green-50 rounded-lg">
-                  <Target className="h-5 w-5 text-green-600 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Conversion Opportunity</h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      23.5% of users asking about availability don&apos;t complete bookings. Adding a direct booking link in responses could increase conversion by an estimated 8-12%.
-                    </p>
+                  
+                  <div className="flex items-start gap-3 p-4 bg-green-50 rounded-lg">
+                    <Target className="h-5 w-5 text-green-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Conversion Metrics</h4>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Your current resolution rate is {analytics.resolutionRate}%. As more data accumulates, we'll provide specific recommendations to improve conversions.
+                      </p>
+                    </div>
                   </div>
+                  
+                  {analytics.topQuestions && analytics.topQuestions.length > 0 && (
+                    <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-lg">
+                      <Globe className="h-5 w-5 text-purple-600 mt-0.5" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Popular Questions</h4>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Your most common question is "{analytics.topQuestions[0].question}" ({analytics.topQuestions[0].count} times). Consider adding this to your quick actions or knowledge base.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                
-                <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-lg">
-                  <Globe className="h-5 w-5 text-purple-600 mt-0.5" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Language Expansion</h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      15% of your users speak Japanese. Consider adding more Japanese language responses and cultural customizations to improve engagement with this segment.
-                    </p>
+              ) : (
+                <div className="text-center py-8">
+                  <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">AI Insights Coming Soon</h3>
+                  <p className="text-sm text-gray-600 max-w-md mx-auto mb-6">
+                    Once your chatbot has processed at least 10 conversations, AI-powered insights will appear here with:
+                  </p>
+                  <div className="max-w-md mx-auto text-left space-y-2 mb-6">
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" />
+                      <span className="text-sm text-gray-700">Peak traffic hour analysis</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" />
+                      <span className="text-sm text-gray-700">Conversion optimization recommendations</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" />
+                      <span className="text-sm text-gray-700">Common question patterns</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" />
+                      <span className="text-sm text-gray-700">Language and demographic insights</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5" />
+                      <span className="text-sm text-gray-700">Response improvement suggestions</span>
+                    </div>
                   </div>
+                  <Link href="/widget">
+                    <Button>
+                      Test Your Chatbot
+                      <MessageSquare className="h-4 w-4 ml-2" />
+                    </Button>
+                  </Link>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
