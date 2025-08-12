@@ -68,8 +68,8 @@ export default function ChatWidget({
   const [showQuickActions, setShowQuickActions] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   
-  // Validate and filter quick actions based on tier
-  const validTier = ['starter', 'professional', 'premium', 'enterprise'].includes(tier) ? tier : 'professional'
+  // Validate and filter quick actions based on tier - default to starter for unknown tiers
+  const validTier = ['starter', 'professional', 'premium', 'enterprise'].includes(tier) ? tier : 'starter'
   const availableQuickActions = quickActions.filter(action => action.tier.includes(validTier))
   
   // Debug logging
@@ -115,6 +115,7 @@ export default function ChatWidget({
   const handleQuickAction = (action: string) => {
     setInput(action)
     setShowQuickActions(false)
+    // Don't show quick actions again after first use
     // Automatically send the quick action
     setTimeout(() => {
       handleSend(action)

@@ -303,11 +303,14 @@ export async function GET(request: NextRequest) {
     
     const businessInfo = business.businessInfo as any || {}
     
+    // Log the tier for debugging
+    console.log('Widget API - Business Tier:', business.tier, 'for business:', business.id)
+    
     return NextResponse.json(
       {
         businessId: business.id,
         businessName: business.name,
-        tier: business.tier,
+        tier: business.tier || 'starter', // Default to starter if null
         businessInfo: businessInfo, // Include real business data
         settings: {
           welcomeMessage: business.welcomeMessage || 'Aloha! How can I help you today?',

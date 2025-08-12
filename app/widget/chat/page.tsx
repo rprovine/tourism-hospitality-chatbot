@@ -74,7 +74,7 @@ function WidgetContent() {
         }
       `}</style>
       <ChatWidget
-        tier={businessConfig?.tier || 'professional'}
+        tier={businessConfig?.tier || 'starter'}
         businessName={businessConfig?.businessName || 'Your Business'}
         primaryColor={businessConfig?.settings?.primaryColor || primaryColor}
         welcomeMessage={businessConfig?.settings?.welcomeMessage || 'Aloha! How can I help you today?'}
