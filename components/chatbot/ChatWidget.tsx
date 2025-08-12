@@ -621,15 +621,13 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
                   </div>
                 </div>
               </div>
-              {!embedded && (
-                <button
-                  onClick={handleClose}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 transition-all hover:bg-black/20"
-                  aria-label="Close chat"
-                >
-                  <X className="h-4 w-4 text-white" />
-                </button>
-              )}
+              <button
+                onClick={handleClose}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-black/10 transition-all hover:bg-black/20"
+                aria-label="Close chat"
+              >
+                <X className="h-4 w-4 text-white" />
+              </button>
             </div>
 
             {/* Rating Overlay */}
@@ -758,8 +756,8 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
                       </div>
                     </div>
                     
-                    {/* Quick Actions - Show after welcome message */}
-                    {index === 0 && showQuickActions && messages.length === 1 && message.role === 'assistant' && (
+                    {/* Quick Actions - Show after first assistant message if no user messages yet */}
+                    {message.role === 'assistant' && showQuickActions && messages.filter(m => m.role === 'user').length === 0 && index === messages.findIndex(m => m.role === 'assistant') && (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
