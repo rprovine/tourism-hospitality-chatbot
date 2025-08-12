@@ -70,6 +70,17 @@ export default function ChatWidget({
   
   // Filter quick actions based on tier
   const availableQuickActions = quickActions.filter(action => action.tier.includes(tier))
+  
+  // Debug logging
+  useEffect(() => {
+    console.log('ChatWidget Debug:', {
+      tier,
+      availableQuickActions: availableQuickActions.length,
+      showQuickActions,
+      messagesLength: messages.length,
+      firstMessage: messages[0]
+    })
+  }, [tier, availableQuickActions.length, showQuickActions, messages.length])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -591,7 +602,7 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
       </AnimatePresence>
 
       <AnimatePresence>
-        {isOpen && (
+        {(embedded || isOpen) && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -756,8 +767,8 @@ I can handle any enterprise hospitality need. What would you like to explore?${d
                       </div>
                     </div>
                     
-                    {/* Quick Actions - Show after first assistant message if no user messages yet */}
-                    {message.role === 'assistant' && showQuickActions && messages.filter(m => m.role === 'user').length === 0 && index === messages.findIndex(m => m.role === 'assistant') && (
+                    {/* Quick Actions - Show after welcome message only */}
+                    {index === 0 && message.role === 'assistant' && showQuickActions && messages.length === 1 && (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
