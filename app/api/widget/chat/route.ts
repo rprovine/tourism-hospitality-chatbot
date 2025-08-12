@@ -95,93 +95,100 @@ export async function POST(request: NextRequest) {
       console.log(`Top match: "${relevantQAs[0].question}" with score ${relevantQAs[0].score}`)
     }
     
-    // Generate response based on tier
+    // Generate response based on tier - ALWAYS combine business profile + knowledge base + AI (for higher tiers)
     let response = ''
     
-    // Check if we have a direct knowledge base match
-    // Lower threshold to allow more matches (semantic search will ensure quality)
-    if (relevantQAs.length > 0 && relevantQAs[0].score > 40) {
-      console.log('Using direct knowledge base answer with score:', relevantQAs[0].score)
-      response = relevantQAs[0].answer
-      
-      // If there are multiple good matches, include them as well
-      if (relevantQAs.length > 1 && relevantQAs[1].score > 30) {
-        response += '\n\n**Related information:**'
-        for (let i = 1; i < Math.min(relevantQAs.length, 3); i++) {
-          if (relevantQAs[i].score > 30) {
-            response += `\n• ${relevantQAs[i].answer}`
-          }
+    // First, check for specific business info that should always be used
+    const isDemo = validatedData.businessId === 'demo' || validatedData.businessId === 'demo-business-id'
+    const businessInfo = business.businessInfo as any || {}
+    const contactPhone = businessInfo.phone || '815-641-6689'
+    const contactEmail = businessInfo.contactEmail || business.email || 'info@lenilani.com'
+    
+    // Check if question is about specific business info we have
+    const message = validatedData.message.toLowerCase()
+    let businessResponse = ''
+    
+    if (message.includes('check') && (message.includes('in') || message.includes('check-in'))) {
+      if (businessInfo.checkInTime) {
+        businessResponse = `Check-in begins at ${businessInfo.checkInTime}. Early check-in may be available - please call ${contactPhone} to inquire.`
+      }
+    } else if (message.includes('check') && (message.includes('out') || message.includes('check-out'))) {
+      if (businessInfo.checkOutTime) {
+        businessResponse = `Check-out is at ${businessInfo.checkOutTime}. Late check-out may be available for a small fee - please ask at the front desk.`
+      }
+    } else if (message.includes('parking')) {
+      if (businessInfo.parking) {
+        businessResponse = `Parking: ${businessInfo.parking}`
+      }
+    } else if (message.includes('wifi') || message.includes('wi-fi') || message.includes('internet')) {
+      if (businessInfo.wifi) {
+        businessResponse = `WiFi: ${businessInfo.wifi}`
+      }
+    } else if (message.includes('breakfast')) {
+      if (businessInfo.breakfast) {
+        businessResponse = `Breakfast: ${businessInfo.breakfast}`
+      }
+    } else if (message.includes('pool')) {
+      if (businessInfo.pool) {
+        businessResponse = `Pool: ${businessInfo.pool}`
+      }
+    } else if (message.includes('gym') || message.includes('fitness')) {
+      if (businessInfo.gym) {
+        businessResponse = `Gym/Fitness: ${businessInfo.gym}`
+      }
+    } else if (message.includes('restaurant') || message.includes('dining')) {
+      if (businessInfo.restaurant) {
+        businessResponse = `Restaurant: ${businessInfo.restaurant}`
+      }
+    } else if (message.includes('cancel')) {
+      if (businessInfo.cancellationPolicy) {
+        businessResponse = `Cancellation Policy: ${businessInfo.cancellationPolicy}`
+      }
+    } else if (message.includes('pet') || message.includes('dog') || message.includes('cat')) {
+      if (businessInfo.petPolicy) {
+        businessResponse = `Pet Policy: ${businessInfo.petPolicy}`
+      }
+    } else if (message.includes('smok')) {
+      if (businessInfo.smokingPolicy) {
+        businessResponse = `Smoking Policy: ${businessInfo.smokingPolicy}`
+      }
+    } else if (message.includes('address') || message.includes('location') || message.includes('where')) {
+      if (businessInfo.address) {
+        const fullAddress = `${businessInfo.address}${businessInfo.city ? ', ' + businessInfo.city : ''}${businessInfo.state ? ', ' + businessInfo.state : ''}${businessInfo.zip ? ' ' + businessInfo.zip : ''}`
+        businessResponse = `We're located at ${fullAddress}. ${businessInfo.airportDistance ? 'We are ' + businessInfo.airportDistance + ' from the airport.' : ''} ${businessInfo.beachDistance ? 'The beach is ' + businessInfo.beachDistance + ' away.' : ''}`
+      }
+    } else if (message.includes('phone') || message.includes('call')) {
+      businessResponse = `You can reach us at ${contactPhone}. ${businessInfo.frontDeskHours ? 'Front desk hours: ' + businessInfo.frontDeskHours : 'We\'re available 24/7 for assistance.'}`
+    } else if (message.includes('email')) {
+      businessResponse = `Our email is ${contactEmail}. We typically respond within 2-4 hours.`
+    }
+    
+    // Add knowledge base information if available (filter out low-quality entries)
+    let knowledgeResponse = ''
+    if (relevantQAs.length > 0 && relevantQAs[0].score > 50) {
+      const goodQAs = relevantQAs.filter(qa => qa.score > 50 && qa.answer.length > 10 && !['none', 'no', 'n/a'].includes(qa.answer.toLowerCase()))
+      if (goodQAs.length > 0) {
+        knowledgeResponse = goodQAs[0].answer
+        if (goodQAs.length > 1) {
+          knowledgeResponse += `\n\n**Additional information:**\n${goodQAs.slice(1, 3).map(qa => `• ${qa.answer}`).join('\n')}`
         }
       }
-    } else {
-      // No direct match - provide helpful fallback based on tier
-      const isDemo = validatedData.businessId === 'demo' || validatedData.businessId === 'demo-business-id'
-      const businessInfo = business.businessInfo as any || {}
-      const contactPhone = businessInfo.phone || '815-641-6689'
-      const contactEmail = businessInfo.contactEmail || business.email || 'info@' + business.name.toLowerCase().replace(/\s+/g, '') + '.com'
-      
-      // Check if question is about specific business info we have
-      const message = validatedData.message.toLowerCase()
-      if (message.includes('check') && (message.includes('in') || message.includes('check-in'))) {
-        if (businessInfo.checkInTime) {
-          response = `Check-in begins at ${businessInfo.checkInTime}. Early check-in may be available - please call ${contactPhone} to inquire.`
-        }
-      } else if (message.includes('check') && (message.includes('out') || message.includes('check-out'))) {
-        if (businessInfo.checkOutTime) {
-          response = `Check-out is at ${businessInfo.checkOutTime}. Late check-out may be available for a small fee - please ask at the front desk.`
-        }
-      } else if (message.includes('parking')) {
-        if (businessInfo.parking) {
-          response = businessInfo.parking
-        }
-      } else if (message.includes('wifi') || message.includes('wi-fi') || message.includes('internet')) {
-        if (businessInfo.wifi) {
-          response = businessInfo.wifi
-        }
-      } else if (message.includes('breakfast')) {
-        if (businessInfo.breakfast) {
-          response = businessInfo.breakfast
-        }
-      } else if (message.includes('pool')) {
-        if (businessInfo.pool) {
-          response = businessInfo.pool
-        }
-      } else if (message.includes('gym') || message.includes('fitness')) {
-        if (businessInfo.gym) {
-          response = businessInfo.gym
-        }
-      } else if (message.includes('restaurant') || message.includes('dining')) {
-        if (businessInfo.restaurant) {
-          response = businessInfo.restaurant
-        }
-      } else if (message.includes('cancel')) {
-        if (businessInfo.cancellationPolicy) {
-          response = businessInfo.cancellationPolicy
-        }
-      } else if (message.includes('pet') || message.includes('dog') || message.includes('cat')) {
-        if (businessInfo.petPolicy) {
-          response = businessInfo.petPolicy
-        }
-      } else if (message.includes('smok')) {
-        if (businessInfo.smokingPolicy) {
-          response = businessInfo.smokingPolicy
-        }
-      } else if (message.includes('address') || message.includes('location') || message.includes('where')) {
-        if (businessInfo.address) {
-          const fullAddress = `${businessInfo.address}${businessInfo.city ? ', ' + businessInfo.city : ''}${businessInfo.state ? ', ' + businessInfo.state : ''}${businessInfo.zip ? ' ' + businessInfo.zip : ''}`
-          response = `We're located at ${fullAddress}. ${businessInfo.airportDistance ? 'We are ' + businessInfo.airportDistance + ' from the airport.' : ''} ${businessInfo.beachDistance ? 'The beach is ' + businessInfo.beachDistance + ' away.' : ''}`
-        }
-      } else if (message.includes('phone') || message.includes('call')) {
-        response = `You can reach us at ${contactPhone}. ${businessInfo.frontDeskHours ? 'Front desk hours: ' + businessInfo.frontDeskHours : 'We\'re available 24/7 for assistance.'}`
-      } else if (message.includes('email')) {
-        response = `Our email is ${contactEmail}. We typically respond within 2-4 hours.`
-      }
-      
-      // If no specific match found, use the existing fallback logic
-      if (!response) {
-        // For starter tier, always provide contact fallback (no AI)
-        if (business.tier === 'starter') {
-          response = `I don't have specific information about that in my knowledge base. 
+    }
+    
+    // Combine business profile + knowledge base
+    if (businessResponse && knowledgeResponse) {
+      response = `${businessResponse}\n\n${knowledgeResponse}`
+    } else if (businessResponse) {
+      response = businessResponse
+    } else if (knowledgeResponse) {
+      response = knowledgeResponse
+    }
+    
+    // If no response yet or tier allows AI enhancement
+    if (!response) {
+      // For starter tier, always provide contact fallback (no AI)
+      if (business.tier === 'starter') {
+        response = `I don't have specific information about that in my knowledge base. 
 
 For assistance with your question, please:
 • Call us at ${contactPhone}
