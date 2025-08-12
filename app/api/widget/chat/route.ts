@@ -196,30 +196,30 @@ For assistance with your question, please:
 • Visit our front desk
 
 Our team will be happy to help you!`
-        } else {
-          // For higher tiers, try AI response
-          try {
-            // Get AI settings to include custom instructions
-            const aiSettings = business.aiSettings as any || {}
-            
-            const businessContext = {
-              businessName: business.name,
-              businessType: business.type,
-              tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
-              businessInfo: business.businessInfo,
-              customPrompt: aiSettings.customPrompt, // Add custom instructions
-              knowledgeBase: relevantQAs.slice(0, 3),
-              isDemo: isDemo
-            }
-            
-            response = await generateClaudeResponse(
-              validatedData.message,
-              businessContext
-            )
-          } catch (aiError) {
-            console.error('AI generation error:', aiError)
-            // Fallback for AI error
-            response = `I apologize, but I'm having trouble understanding your question. 
+      } else {
+        // For higher tiers, try AI response
+        try {
+          // Get AI settings to include custom instructions
+          const aiSettings = business.aiSettings as any || {}
+          
+          const businessContext = {
+            businessName: business.name,
+            businessType: business.type,
+            tier: business.tier as 'starter' | 'professional' | 'premium' | 'enterprise',
+            businessInfo: business.businessInfo,
+            customPrompt: aiSettings.customPrompt, // Add custom instructions
+            knowledgeBase: relevantQAs.slice(0, 3),
+            isDemo: isDemo
+          }
+          
+          response = await generateClaudeResponse(
+            validatedData.message,
+            businessContext
+          )
+        } catch (aiError) {
+          console.error('AI generation error:', aiError)
+          // Fallback for AI error
+          response = `I apologize, but I'm having trouble understanding your question. 
 
 For immediate assistance, please:
 • Call us at ${contactPhone}
@@ -227,7 +227,6 @@ For immediate assistance, please:
 • Visit our front desk
 
 Our team will be happy to help you with your specific needs.`
-          }
         }
       }
     }
