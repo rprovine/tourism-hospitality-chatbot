@@ -73,13 +73,13 @@ export default function ChatWidget({
   
   // Debug logging
   useEffect(() => {
-    console.log('ChatWidget Debug:', {
-      tier,
-      availableQuickActions: availableQuickActions.length,
-      showQuickActions,
-      messagesLength: messages.length,
-      firstMessage: messages[0]
-    })
+    console.log('ChatWidget Debug:')
+    console.log('- Tier:', tier)
+    console.log('- Available Quick Actions:', availableQuickActions.length)
+    console.log('- Show Quick Actions:', showQuickActions)
+    console.log('- Messages Length:', messages.length)
+    console.log('- First Message:', messages[0])
+    console.log('- Quick Actions List:', availableQuickActions)
   }, [tier, availableQuickActions.length, showQuickActions, messages.length])
 
   const scrollToBottom = () => {
