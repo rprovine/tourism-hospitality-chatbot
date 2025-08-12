@@ -47,8 +47,8 @@ export default function LandingPage() {
           <div className="flex items-center justify-between">
             <a href="#top" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <Bot className="h-6 sm:h-8 w-6 sm:w-8 text-cyan-700" />
-              <span className="text-lg sm:text-xl font-bold text-gray-900 hidden sm:inline">LeniLani Hospitality AI</span>
-              <span className="text-lg font-bold text-gray-900 sm:hidden">LeniLani AI</span>
+              <span className="text-lg sm:text-xl font-bold text-gray-900 hidden sm:inline">Hawaii Business Intelligence</span>
+              <span className="text-lg font-bold text-gray-900 sm:hidden">Hawaii BI</span>
             </a>
             
             {/* Desktop Navigation */}
@@ -1147,7 +1147,7 @@ export default function LandingPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Bot className="h-6 w-6 text-cyan-500" />
-                <span className="text-white font-semibold">LeniLani AI</span>
+                <span className="text-white font-semibold">Hawaii BI System</span>
               </div>
               <p className="text-sm text-gray-400">
                 Empowering Hawaii&apos;s hospitality industry with intelligent AI solutions.
@@ -1182,7 +1182,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>© 2024 LeniLani Consulting. All rights reserved.</p>
+            <p>© 2024 Hawaii Business Intelligence System. All rights reserved.</p>
           </div>
         </div>
       </footer>
