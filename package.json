@@ -1,6 +1,6 @@
 {
-  "name": "tourism-hospitality-chatbot",
-  "version": "0.1.0",
+  "name": "hawaii-business-intelligence-system",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,4 +1,5 @@
 {
+  "name": "hawaii-business-intelligence-system",
   "buildCommand": "prisma generate && next build --no-lint",
   "devCommand": "next dev",
   "installCommand": "npm install",
