@@ -20,6 +20,7 @@ function WidgetContent() {
       fetch(`/api/widget/chat?businessId=${businessId}`)
         .then(res => res.json())
         .then(data => {
+          console.log('Widget Business Config:', data)
           setBusinessConfig(data)
           setLoading(false)
         })

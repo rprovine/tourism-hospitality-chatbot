@@ -35,7 +35,7 @@ const quickActions: QuickAction[] = [
 ]
 
 export default function ChatWidget({
-  tier = 'starter',
+  tier = 'professional',
   businessName = 'Aloha Resort',
   primaryColor = '#0891b2',
   welcomeMessage = 'Aloha! How can I help you today?',
@@ -68,19 +68,21 @@ export default function ChatWidget({
   const [showQuickActions, setShowQuickActions] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   
-  // Filter quick actions based on tier
-  const availableQuickActions = quickActions.filter(action => action.tier.includes(tier))
+  // Validate and filter quick actions based on tier
+  const validTier = ['starter', 'professional', 'premium', 'enterprise'].includes(tier) ? tier : 'professional'
+  const availableQuickActions = quickActions.filter(action => action.tier.includes(validTier))
   
   // Debug logging
   useEffect(() => {
     console.log('ChatWidget Debug:')
-    console.log('- Tier:', tier)
+    console.log('- Raw Tier:', tier)
+    console.log('- Valid Tier:', validTier)
     console.log('- Available Quick Actions:', availableQuickActions.length)
     console.log('- Show Quick Actions:', showQuickActions)
     console.log('- Messages Length:', messages.length)
     console.log('- First Message:', messages[0])
     console.log('- Quick Actions List:', availableQuickActions)
-  }, [tier, availableQuickActions.length, showQuickActions, messages.length])
+  }, [tier, validTier, availableQuickActions.length, showQuickActions, messages.length])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
