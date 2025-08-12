@@ -1136,7 +1136,7 @@ Thank you!`)
                   <FileText className="h-4 w-4 mr-2" />
                   Q&A Templates
                 </Button>
-                <Link href="/roi-calculator" className="w-full">
+                <Link href="/roi-calculator" className="block w-full">
                   <Button 
                     variant="outline" 
                     className="w-full justify-start"

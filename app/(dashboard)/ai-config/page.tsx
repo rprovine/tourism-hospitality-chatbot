@@ -789,7 +789,8 @@ export default function UnifiedAIConfigPage() {
       </div>
 
       {/* Save Button */}
-      <div className="flex items-center justify-end bg-white p-4 border border-gray-200 rounded-lg sticky bottom-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-end bg-white p-4 border border-gray-200 rounded-lg sticky bottom-4">
         {saveMessage && (
           <div className={`flex items-center gap-2 text-sm mr-4 ${
             saveMessage.includes('Error') ? 'text-red-600' : 'text-green-600'
@@ -820,6 +821,7 @@ export default function UnifiedAIConfigPage() {
             </>
           )}
         </Button>
+        </div>
       </div>
     </div>
   )

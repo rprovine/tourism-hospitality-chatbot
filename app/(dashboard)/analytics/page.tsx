@@ -224,10 +224,16 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.totalConversations.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground flex items-center">
-              <TrendingUp className="h-3 w-3 text-green-600 mr-1" />
-              +12.5% from last period
-            </p>
+            {data.totalConversations > 0 ? (
+              <p className="text-xs text-muted-foreground flex items-center">
+                <TrendingUp className="h-3 w-3 text-green-600 mr-1" />
+                +12.5% from last period
+              </p>
+            ) : (
+              <p className="text-xs text-muted-foreground">
+                No data yet
+              </p>
+            )}
           </CardContent>
         </Card>
         
@@ -238,10 +244,16 @@ export default function AnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.uniqueUsers.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground flex items-center">
-              <TrendingUp className="h-3 w-3 text-green-600 mr-1" />
-              +8.3% from last period
-            </p>
+            {data.uniqueUsers > 0 ? (
+              <p className="text-xs text-muted-foreground flex items-center">
+                <TrendingUp className="h-3 w-3 text-green-600 mr-1" />
+                +8.3% from last period
+              </p>
+            ) : (
+              <p className="text-xs text-muted-foreground">
+                No data yet
+              </p>
+            )}
           </CardContent>
         </Card>
         
