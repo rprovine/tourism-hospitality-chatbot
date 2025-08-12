@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const businessesWithInvalidTiers = await prisma.business.findMany({
       where: {
         OR: [
-          { tier: null },
+          { tier: { equals: null } },
           { tier: 'none' },
           { tier: '' },
           {
@@ -37,8 +37,10 @@ export async function GET(request: NextRequest) {
       let newTier = 'starter' // Default tier
       
       if (subscription) {
-        // Map subscription plan to tier
-        if (subscription.planId?.includes('enterprise')) {
+        // Use subscription tier if available, otherwise map from planId
+        if (subscription.tier && ['starter', 'professional', 'premium', 'enterprise'].includes(subscription.tier)) {
+          newTier = subscription.tier
+        } else if (subscription.planId?.includes('enterprise')) {
           newTier = 'enterprise'
         } else if (subscription.planId?.includes('premium')) {
           newTier = 'premium'
