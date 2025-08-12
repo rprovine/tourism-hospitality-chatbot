@@ -789,9 +789,9 @@ export default function UnifiedAIConfigPage() {
       </div>
 
       {/* Save Button */}
-      <div className="flex items-center justify-between bg-white p-4 border border-gray-200 rounded-lg sticky bottom-4">
+      <div className="flex items-center justify-end bg-white p-4 border border-gray-200 rounded-lg sticky bottom-4">
         {saveMessage && (
-          <div className={`flex items-center gap-2 text-sm ${
+          <div className={`flex items-center gap-2 text-sm mr-4 ${
             saveMessage.includes('Error') ? 'text-red-600' : 'text-green-600'
           }`}>
             {saveMessage.includes('Error') ? (
@@ -806,7 +806,7 @@ export default function UnifiedAIConfigPage() {
           onClick={handleSave}
           disabled={isSaving}
           size="lg"
-          className="ml-auto bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-8 py-3"
+          className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-8 py-3"
         >
           {isSaving ? (
             <>
@@ -815,7 +815,7 @@ export default function UnifiedAIConfigPage() {
             </>
           ) : (
             <>
-              <Save className="ml-2 h-4 w-4" />
+              <Save className="mr-2 h-4 w-4" />
               Save All Settings
             </>
           )}
