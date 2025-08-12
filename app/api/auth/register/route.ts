@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
-import { sendWelcomeEmail } from '@/lib/email/sendgrid'
+import { sendWelcomeEmail } from '@/lib/email/resend'
 import { syncContactToHubSpot, canReactivate, getSubscriptionHistory } from '@/lib/payments/hubspot-sync'
 
 const prisma = new PrismaClient()

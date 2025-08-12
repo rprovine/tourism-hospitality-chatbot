@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { verifyToken } from '@/lib/auth'
-import { sendPaymentSuccessEmail } from '@/lib/email/sendgrid'
+import { sendPaymentSuccessEmail } from '@/lib/email/resend'
 import { syncContactToHubSpot } from '@/lib/payments/hubspot-sync'
 
 const prisma = new PrismaClient()
