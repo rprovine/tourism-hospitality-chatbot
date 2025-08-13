@@ -99,18 +99,18 @@ export async function POST(request: NextRequest) {
       take: 10 // Last 10 messages for context
     })
     
-    // Search knowledge base for relevant information
+    // ALWAYS search knowledge base for relevant information
     const knowledgeMatches = await searchKnowledgeBase(
       conversation.business.id,
       validatedData.message,
       'en', // TODO: Get language from conversation metadata
-      3
+      5 // Get more matches for better context
     )
     
     // Get AI settings to determine which provider to use
     const aiSettings = conversation.business.aiSettings as any || { provider: 'claude' }
     
-    // Get full business info including all amenities, policies, etc.
+    // ALWAYS get full business info - this should be passed to AI for ALL tiers
     const fullBusinessInfo = conversation.business.businessInfo as any || {}
     
     let aiResponse: string
