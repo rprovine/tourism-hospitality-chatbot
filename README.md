@@ -295,6 +295,17 @@ Our platform delivers:
 
 ## 📚 Documentation
 
+### Chatbot Architecture & Integration
+
+For comprehensive chatbot documentation including:
+- AI integration architecture
+- Data flow and processing
+- Configuration best practices  
+- API endpoint details
+- Response optimization
+
+See [CHATBOT.md](./CHATBOT.md)
+
 ### Widget Integration
 
 Add the chat widget to any website:
