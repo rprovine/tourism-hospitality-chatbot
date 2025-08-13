@@ -161,6 +161,21 @@ export async function POST(request: NextRequest) {
       businessResponse = `You can reach us at ${contactPhone}. ${businessInfo.frontDeskHours ? 'Front desk hours: ' + businessInfo.frontDeskHours : 'We\'re available 24/7 for assistance.'}`
     } else if (message.includes('email')) {
       businessResponse = `Our email is ${contactEmail}. We typically respond within 2-4 hours.`
+    } else if (message.includes('amenities') || (message.includes('what') && message.includes('offer'))) {
+      // Handle general amenities query
+      let amenitiesList = []
+      if (businessInfo.parking) amenitiesList.push(`• Parking: ${businessInfo.parking}`)
+      if (businessInfo.wifi) amenitiesList.push(`• WiFi: ${businessInfo.wifi}`)
+      if (businessInfo.breakfast) amenitiesList.push(`• Breakfast: ${businessInfo.breakfast}`)
+      if (businessInfo.pool) amenitiesList.push(`• Pool: ${businessInfo.pool}`)
+      if (businessInfo.gym) amenitiesList.push(`• Gym/Fitness: ${businessInfo.gym}`)
+      if (businessInfo.restaurant) amenitiesList.push(`• Restaurant: ${businessInfo.restaurant}`)
+      
+      if (amenitiesList.length > 0) {
+        businessResponse = `Here are our amenities:\n\n${amenitiesList.join('\n')}\n\nFor more information about any of our amenities, please call ${contactPhone}.`
+      } else {
+        businessResponse = `I'd be happy to tell you about our amenities. Please contact us directly for a complete list of services and facilities. Call us at ${contactPhone} for more details.`
+      }
     }
     
     // Add knowledge base information if available (filter out low-quality entries)

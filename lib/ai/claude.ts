@@ -180,8 +180,9 @@ IMPORTANT Business Information (USE THIS DATA IN YOUR RESPONSES):
 You MUST use the above business information when answering guest questions. For example:
 - If asked about check-in, use the exact check-in time provided above
 - If asked about contact info, use the phone/email provided above
-- If asked about amenities, use the specific details provided above
-- When listing amenities, include ALL amenities listed above
+- If asked about amenities, list ALL the amenities mentioned above in a clear, organized format
+- When someone asks "What amenities do you offer?" provide a comprehensive list of all available amenities
+- Always be specific and use the exact details provided in the business information
 `
   }
 
@@ -322,6 +323,22 @@ function generateFallbackResponse(query: string, tier: 'starter' | 'professional
     }
     if ((lowerQuery.includes('restaurant') || lowerQuery.includes('dining')) && info.restaurant) {
       return `${info.restaurant}${disclaimer}`
+    }
+    // Handle general amenities query
+    if (lowerQuery.includes('amenities') || (lowerQuery.includes('what') && lowerQuery.includes('offer'))) {
+      let amenitiesList = []
+      if (info.parking) amenitiesList.push(`• Parking: ${info.parking}`)
+      if (info.wifi) amenitiesList.push(`• WiFi: ${info.wifi}`)
+      if (info.breakfast) amenitiesList.push(`• Breakfast: ${info.breakfast}`)
+      if (info.pool) amenitiesList.push(`• Pool: ${info.pool}`)
+      if (info.gym) amenitiesList.push(`• Gym/Fitness: ${info.gym}`)
+      if (info.restaurant) amenitiesList.push(`• Restaurant: ${info.restaurant}`)
+      
+      if (amenitiesList.length > 0) {
+        return `Here are our amenities:\n\n${amenitiesList.join('\n')}\n\n${info.phone ? `For more information about any of our amenities, please call ${info.phone}.` : 'We\'re here to make your stay comfortable!'}${disclaimer}`
+      } else {
+        return `I'd be happy to tell you about our amenities. Please contact us directly for a complete list of services and facilities. ${info.phone ? `Call us at ${info.phone} for more details.` : ''}${disclaimer}`
+      }
     }
     if (lowerQuery.includes('cancel') && info.cancellationPolicy) {
       return `${info.cancellationPolicy}${disclaimer}`
