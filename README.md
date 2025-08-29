@@ -1,4 +1,4 @@
-# 🌺 Hawaii Business Intelligence System - AI-Powered Hospitality Platform
+# 🌺 Tourism Bot AI - Smart Hospitality Chatbot Platform
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.0-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)

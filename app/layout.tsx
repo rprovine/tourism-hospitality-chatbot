@@ -13,18 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hawaii Business Intelligence System - AI-Powered Hospitality Platform",
-  description: "Revolutionary AI platform for Hawaii's hospitality industry. GPT-5 + Claude dual AI, real-time analytics, revenue optimization, and 85% automation.",
+  title: "Tourism Bot AI - Smart Hospitality Chatbot Platform",
+  description: "Smart AI chatbot platform for tourism and hospitality. Automated guest interactions, real-time analytics, and revenue optimization.",
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
     apple: '/favicon.ico',
   },
   openGraph: {
-    title: 'Hawaii Business Intelligence System',
-    description: 'AI-powered platform increasing revenue by 35% for Hawaii hospitality businesses',
-    url: 'https://hawaii-business-intelligence.vercel.app',
-    siteName: 'Hawaii Business Intelligence System',
+    title: 'Tourism Bot AI',
+    description: 'AI-powered chatbot platform for tourism and hospitality businesses',
+    url: 'https://tourismbot.lenilani.com',
+    siteName: 'Tourism Bot AI',
     type: 'website',
   },
 };
