@@ -43,7 +43,7 @@ export default function DashboardNav() {
   const pathname = usePathname()
   const [businessTier, setBusinessTier] = useState<string>('starter')
   const [businessLogo, setBusinessLogo] = useState<string | null>(null)
-  const [businessName, setBusinessName] = useState<string>('LeniLani AI')
+  const [businessName, setBusinessName] = useState<string>('Tourism Bot AI')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function DashboardNav() {
         const business = JSON.parse(businessData)
         setBusinessTier(business.tier || 'starter')
         setBusinessLogo(business.logo || null)
-        setBusinessName(business.name || 'LeniLani AI')
+        setBusinessName(business.name || 'Tourism Bot AI')
       } catch (error) {
         console.error('Error parsing business data:', error)
       }
@@ -84,8 +84,8 @@ export default function DashboardNav() {
                       className="h-10 w-10 rounded-xl object-cover shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all" 
                     />
                   ) : (
-                    <div className="h-10 w-10 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl flex items-center justify-center shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all">
-                      <Bot className="h-5 w-5 text-cyan-600" />
+                    <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-teal-400 rounded-xl flex items-center justify-center shadow-sm ring-2 ring-gray-100 group-hover:ring-cyan-200 transition-all">
+                      <span className="text-white font-bold text-lg">TB</span>
                     </div>
                   )}
                 </div>
